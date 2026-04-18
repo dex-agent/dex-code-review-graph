@@ -1829,7 +1829,9 @@ class TestRescriptEdgeCases:
             and e.extra.get("rescript_call_kind") == "jsx"
         ]
         call_targets = {e.target for e in jsx_calls}
-        assert "User.Badge" in call_targets
+        # Cross-file resolver may qualify targets to "<file>::User.Badge" when
+        # the symbol is defined locally; accept either bare or qualified form.
+        assert any(t == "User.Badge" or t.endswith("::User.Badge") for t in call_targets)
         assert "AnalyticsFilterUi.Filter" in call_targets
 
     def test_jsx_call_attributed_to_enclosing_let(self):
