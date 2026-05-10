@@ -9,12 +9,13 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import os
 import re
+import subprocess
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NamedTuple, Optional
-
-import tree_sitter_language_pack as tslp
 
 from .tsconfig_resolver import TsconfigResolver
 
@@ -42,6 +43,49 @@ _SQL_KEYWORDS: frozenset[str] = frozenset({
 })
 
 logger = logging.getLogger(__name__)
+
+_PARSER_LOAD_TIMEOUT_SECONDS = float(os.environ.get("CRG_PARSER_LOAD_TIMEOUT_SECONDS", "5"))
+_UNAVAILABLE_LANGUAGES: set[str] = set()
+
+
+def _parser_load_probe_succeeds(
+    language: str,
+    timeout_seconds: float = _PARSER_LOAD_TIMEOUT_SECONDS,
+) -> bool:
+    """Return whether a tree-sitter language can be loaded without hanging.
+
+    Some binary bindings in tree-sitter-language-pack can hang during native
+    module import on specific platform/Python combinations. Probe in a child
+    process first so the main build can skip only that language instead of
+    blocking the whole repository graph build until an outer timeout kills it.
+    """
+    code = (
+        "from tree_sitter_language_pack import get_parser\n"
+        "import sys\n"
+        "get_parser(sys.argv[1])\n"
+    )
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-c", code, language],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=timeout_seconds,
+            check=False,
+        )
+    except (subprocess.TimeoutExpired, OSError) as exc:
+        logger.debug("tree-sitter parser probe failed for %s: %s", language, exc)
+        return False
+    if completed.returncode != 0:
+        logger.debug(
+            "tree-sitter parser probe unavailable for %s: %s",
+            language,
+            completed.stderr.strip(),
+        )
+        return False
+    return True
+
 
 # ---------------------------------------------------------------------------
 # Data models for extracted entities
@@ -788,11 +832,20 @@ class CodeParser:
         self._dart_pubspec_cache: dict[tuple[str, str], Optional[Path]] = {}
 
     def _get_parser(self, language: str):  # type: ignore[arg-type]
+        if language in _UNAVAILABLE_LANGUAGES:
+            return None
         if language not in self._parsers:
+            if not _parser_load_probe_succeeds(language):
+                _UNAVAILABLE_LANGUAGES.add(language)
+                logger.warning("Skipping unavailable tree-sitter parser for %s", language)
+                return None
             try:
+                import tree_sitter_language_pack as tslp
+
                 self._parsers[language] = tslp.get_parser(language)  # type: ignore[arg-type]
             except (LookupError, ValueError, ImportError) as exc:
                 # language not packaged, or grammar load failed
+                _UNAVAILABLE_LANGUAGES.add(language)
                 logger.debug("tree-sitter parser unavailable for %s: %s", language, exc)
                 return None
         return self._parsers[language]

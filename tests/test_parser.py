@@ -1,8 +1,10 @@
 """Tests for the Tree-sitter parser module."""
 
+import subprocess
 import tempfile
 from pathlib import Path
 
+from code_review_graph import parser as parser_module
 from code_review_graph.parser import CodeParser
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -10,7 +12,24 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 class TestCodeParser:
     def setup_method(self):
+        parser_module._UNAVAILABLE_LANGUAGES.clear()
         self.parser = CodeParser()
+
+    def teardown_method(self):
+        parser_module._UNAVAILABLE_LANGUAGES.clear()
+
+    def test_parser_probe_timeout_marks_language_unavailable(self, monkeypatch):
+        """A hanging tree-sitter binding import must skip that language, not hang builds."""
+
+        def fake_run(*args, **kwargs):
+            raise subprocess.TimeoutExpired(cmd=args[0], timeout=kwargs.get("timeout"))
+
+        monkeypatch.setattr(parser_module.subprocess, "run", fake_run)
+        monkeypatch.setattr(parser_module, "_UNAVAILABLE_LANGUAGES", set())
+
+        assert parser_module._parser_load_probe_succeeds("tsx", timeout_seconds=0.01) is False
+        assert CodeParser()._get_parser("tsx") is None
+        assert parser_module._UNAVAILABLE_LANGUAGES == {"tsx"}
 
     def test_detect_language_python(self):
         assert self.parser.detect_language(Path("foo.py")) == "python"
