@@ -492,3 +492,147 @@ class TestQueryGraphDisambiguation:
             repo_root=str(self.root),
         )
         assert "candidates" not in result
+
+
+# ---------------------------------------------------------------------------
+# Java FQN resolution (package.Class.method → graph file-path QN)
+# ---------------------------------------------------------------------------
+
+class TestJavaFQNResolution:
+    """query_graph must resolve Java package-qualified names, not just graph QNs.
+
+    Agents and IDEs write targets like ``com.example.service.OrderHandler.process``.
+    The graph stores nodes as ``/path/to/OrderHandler.java::OrderHandler.process``.
+    Without FQN decomposition the lookup silently returns not_found even though
+    the node exists.
+    """
+
+    def setup_method(self):
+        self.tmp = tempfile.mkdtemp()
+        self.root = Path(self.tmp) / "repo"
+        self.root.mkdir()
+        (self.root / ".git").mkdir()
+        (self.root / ".code-review-graph").mkdir()
+        self.db = GraphStore(str(self.root / ".code-review-graph" / "graph.db"))
+
+        handler_file = str(self.root / "OrderHandler.java")
+        caller_file = str(self.root / "OrderRouter.java")
+
+        self.db.upsert_node(NodeInfo(
+            kind="Class", name="OrderHandler",
+            file_path=handler_file,
+            line_start=1, line_end=50, language="java",
+        ))
+        self.db.upsert_node(NodeInfo(
+            kind="Function", name="process",
+            file_path=handler_file,
+            line_start=10, line_end=30, language="java",
+            parent_name="OrderHandler",
+        ))
+        self.db.upsert_node(NodeInfo(
+            kind="Function", name="routes",
+            file_path=caller_file,
+            line_start=5, line_end=15, language="java",
+        ))
+        # routes() calls process()
+        target_qn = handler_file + "::OrderHandler.process"
+        self.db.upsert_edge(EdgeInfo(
+            kind="CALLS",
+            source=caller_file + "::routes",
+            target=target_qn,
+            file_path=caller_file, line=10,
+        ))
+        self.db.commit()
+        self.db.close()
+
+    def teardown_method(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_java_fqn_class_dot_method_resolves(self):
+        """ClassName.method short form resolves to the graph node."""
+        result = query_graph(
+            pattern="callers_of",
+            target="OrderHandler.process",
+            repo_root=str(self.root),
+        )
+        assert result["status"] == "ok", (
+            f"Expected ok, got {result['status']}: {result.get('summary')}"
+        )
+        names = [r["name"] for r in result["results"]]
+        assert "routes" in names
+
+    def test_java_fqn_package_qualified_resolves(self):
+        """Full package.Class.method form resolves via FQN decomposition."""
+        result = query_graph(
+            pattern="callers_of",
+            target="com.example.service.OrderHandler.process",
+            repo_root=str(self.root),
+        )
+        assert result["status"] == "ok", (
+            f"Expected ok, got {result['status']}: {result.get('summary')}"
+        )
+        names = [r["name"] for r in result["results"]]
+        assert "routes" in names
+
+    def test_bare_method_name_with_unique_match_resolves(self):
+        """Plain method name resolves when only one node with that exact name exists.
+
+        The setup includes an OrderHandler class node whose FTS tokens overlap with
+        'process', so searching the bare method name can be ambiguous. A
+        uniquely-named method with no class name collision resolves cleanly.
+        """
+        db = GraphStore(str(self.root / ".code-review-graph" / "graph.db"))
+        unique_file = str(self.root / "Fulfillment.java")
+        db.upsert_node(NodeInfo(
+            kind="Function", name="fulfillOrder",
+            file_path=unique_file,
+            line_start=1, line_end=5, language="java",
+        ))
+        caller_file = str(self.root / "FulfillmentRouter.java")
+        db.upsert_node(NodeInfo(
+            kind="Function", name="routeFulfillment",
+            file_path=caller_file,
+            line_start=1, line_end=5, language="java",
+        ))
+        db.upsert_edge(EdgeInfo(
+            kind="CALLS",
+            source=caller_file + "::routeFulfillment",
+            target=unique_file + "::fulfillOrder",
+            file_path=caller_file, line=3,
+        ))
+        db.commit()
+        db.close()
+
+        result = query_graph(
+            pattern="callers_of",
+            target="fulfillOrder",
+            repo_root=str(self.root),
+        )
+        assert result["status"] == "ok"
+        names = [r["name"] for r in result["results"]]
+        assert "routeFulfillment" in names
+
+    def test_ambiguous_fqn_returns_disambiguation(self):
+        """FQN decomposition returns disambiguation when ClassName.method is in two files."""
+        db = GraphStore(str(self.root / ".code-review-graph" / "graph.db"))
+        # Same class name in a second module — same ClassName.method decomposition
+        file2 = str(self.root / "v2" / "OrderHandler.java")
+        Path(file2).parent.mkdir(exist_ok=True)
+        db.upsert_node(NodeInfo(
+            kind="Function", name="process",
+            file_path=file2,
+            line_start=1, line_end=5, language="java",
+            parent_name="OrderHandler",
+        ))
+        db.commit()
+        db.close()
+
+        # "OrderHandler.process" (width=2) now matches two nodes in different files
+        result = query_graph(
+            pattern="callers_of",
+            target="com.example.v2.OrderHandler.process",
+            repo_root=str(self.root),
+        )
+        assert result["status"] == "ambiguous"
+        assert "disambiguation" in result
+        assert len(result["disambiguation"]) >= 2

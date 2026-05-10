@@ -225,14 +225,36 @@ def query_graph(
                 "results": [], "edges": [], "graph_meta": meta,
             }
 
-        # Resolve target - try as-is, then as absolute path, then search
+        # Resolve target — four-step cascade:
+        # 1. Exact graph node lookup (file-path QN, e.g. "/repo/Foo.java::Bar.method")
+        # 2. Absolute path lookup (for file nodes passed as relative paths)
+        # 3. FTS name search on the raw target string
+        # 4. Java FQN decomposition: "a.b.Class.method" → try "Class.method",
+        #    then "method" — agents and IDEs naturally write Java FQNs; the graph
+        #    stores file-path QNs, so without this step a valid node is silently
+        #    missed and the response says not_found instead of finding the symbol.
         node = store.get_node(target)
         if not node:
             abs_target = str(root / target)
             node = store.get_node(abs_target)
+
+        candidates: list = []
         if not node:
-            # Search by name — return ranked disambiguation on multi-match
             candidates = store.search_nodes(target, limit=10)
+
+        # Step 4: Java FQN fallback — only runs when FTS returned nothing and the
+        # target looks like a dotted package name (no "::" means it's not already
+        # a file-path QN; multiple dots means it's not a bare name).
+        if not node and not candidates and "::" not in target and target.count(".") >= 1:
+            parts = target.split(".")
+            # Try progressively shorter suffixes: "Class.method", then "method"
+            for width in (2, 1):
+                short = ".".join(parts[-width:])
+                candidates = store.search_nodes(short, limit=10)
+                if candidates:
+                    break
+
+        if not node:
             if len(candidates) == 1:
                 node = candidates[0]
                 target = node.qualified_name
