@@ -1,25 +1,26 @@
 name: nextjs
-url: https://github.com/tirth8205/code-review-graph
+url: https://github.com/vercel/next.js
 commit: HEAD
-language: python
-size_category: medium
+language: typescript
+size_category: large
 
 test_commits:
-  - sha: 91083cb3b48229dd9d69c5e5c63cb59ca8a46822
-    description: "feat: community detection, flow analysis, and dead code improvements (#249)"
-    changed_files: 11
-  - sha: e4e9f0a1b30ba05b82a4cd17e5e00b0edd9adfd5
-    description: "fix: 11 open bugs post-v2.2.3 (parser, ignores, fastmcp CVE, Windows, VS Code) (#222)"
-    changed_files: 22
+  - sha: d81d5ab7dfbd003bd6b26390b75ee93d43729020
+    description: "Proof of concept: task eviction after snapshot for turbo-tasks-backend (#91790)"
+    changed_files: 34
+  - sha: d86e19772824281969a6a619e7d91be43663f91d
+    description: "Support configuring a default instant validation level (#93301)"
+    changed_files: 266
 
 entry_points:
-  - "code_review_graph/cli.py::cli"
-  - "code_review_graph/main.py::main"
+  - "packages/next/src/server/next-server.ts::NextNodeServer"
+  - "packages/next/src/server/base-server.ts::Server"
+  - "packages/next/src/client/app-bootstrap.ts::appBootstrap"
 
 search_queries:
-  - query: "GraphStore nodes"
-    expected: "code_review_graph/graph.py::GraphStore"
-  - query: "parse AST"
-    expected: "code_review_graph/parser.py::CodeParser"
-  - query: "full build"
-    expected: "code_review_graph/incremental.py::full_build"
+  - query: "NextNodeServer"
+    expected: "packages/next/src/server/next-server.ts::NextNodeServer"
+  - query: "appBootstrap hydrate"
+    expected: "packages/next/src/client/app-bootstrap.ts::appBootstrap"
+  - query: "getRSCModuleInformation"
+    expected: "packages/next/src/build/analysis/get-page-static-info.ts::getRSCModuleInformation"
