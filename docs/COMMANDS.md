@@ -1,6 +1,8 @@
 # All Available Commands
 
-## Skills (Claude Code slash commands)
+## Skills and Slash Commands
+
+These commands are installed for clients that support project skills or slash-command style workflows.
 
 ### `/code-review-graph:build-graph`
 Build or update the knowledge graph.

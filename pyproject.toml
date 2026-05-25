@@ -5,14 +5,14 @@ build-backend = "hatchling.build"
 [project]
 name = "code-review-graph"
 version = "2.3.4"
-description = "Persistent incremental knowledge graph for token-efficient, context-aware code reviews with Claude Code"
+description = "Local-first knowledge graph for token-efficient code review through MCP and CLI"
 readme = {file = "README.md", content-type = "text/markdown"}
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
     { name = "Tirth" },
 ]
-keywords = ["code-review", "knowledge-graph", "tree-sitter", "claude-code", "mcp"]
+keywords = ["code-review", "knowledge-graph", "tree-sitter", "mcp", "ai-coding-tools"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -94,7 +94,6 @@ packages = ["code_review_graph"]
 include = [
     "code_review_graph/",
     "skills/",
-    ".claude-plugin/",
     "docs/",
     "hooks/",
     "LICENSE",

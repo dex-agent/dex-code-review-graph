@@ -12,7 +12,7 @@
 - **Broad parser surface**: Python, JavaScript/TypeScript/TSX, Go, Rust, Java, C/C++, C#, Ruby, Kotlin, Swift, PHP, Scala, Solidity, Dart, R, Perl, Lua/Luau, Objective-C, shell scripts, Elixir, Zig, PowerShell, Julia, ReScript, GDScript, Nix, Verilog/SystemVerilog, SQL, Vue/Svelte SFCs, Astro files parsed through the TypeScript parser, Jupyter/Databricks notebooks, and Perl XS files.
 - **Local-first by design**: SQLite graph storage remains local, with no telemetry and no cloud-default behavior.
 
-## v2.1.0
+## v2.0.0
 - **22 MCP tools** (up from 9): 13 new tools for flows, communities, architecture, refactoring, wiki, multi-repo, and risk-scored change detection.
 - **5 MCP prompts**: `review_changes`, `architecture_map`, `debug_issue`, `onboard_developer`, `pre_merge_check` workflow templates.
 - **18 languages** (up from 15): Added Dart, R, Perl support.

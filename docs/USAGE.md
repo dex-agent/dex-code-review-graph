@@ -51,7 +51,7 @@ Parses your entire codebase. Takes ~10s for 500 files.
 ```
 /code-review-graph:review-delta
 ```
-Reviews only files changed since last commit + everything impacted. 5-10x fewer tokens than a full review.
+Reviews only files changed since last commit plus the graph-derived impact radius. Relevant review and impact responses include compact estimated `context_savings` metadata; the current evaluation sample averages 8.2x context reduction versus naive full-context review.
 
 ### 3. Review a PR
 ```

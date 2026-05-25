@@ -120,10 +120,10 @@ Parser support covers functions, classes, imports, call sites, inheritance, and 
 ## Benchmarks
 
 <p align="center">
-  <img src="diagrams/diagram5_benchmark_board.png" alt="Benchmarks across real repos: 4.9x to 27.3x fewer tokens with conservative impact analysis" width="85%" />
+  <img src="diagrams/diagram5_benchmark_board.png" alt="Benchmarks across real repositories with 8.2x average context reduction and conservative impact analysis" width="85%" />
 </p>
 
-All numbers come from the automated evaluation runner against 6 real open-source repositories (13 commits total). Reproduce with `code-review-graph eval --all`. Raw data in [`evaluate/reports/summary.md`](evaluate/reports/summary.md).
+All numbers come from the automated evaluation runner against 6 real open-source repositories (13 commits total). Reproduce with `code-review-graph eval --all`; the raw report is generated locally under `evaluate/reports/summary.md`.
 
 <details>
 <summary><strong>Token efficiency: 8.2x average reduction (naive vs graph)</strong></summary>

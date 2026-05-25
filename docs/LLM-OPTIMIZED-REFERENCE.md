@@ -1,6 +1,6 @@
 # LLM-OPTIMIZED REFERENCE -- code-review-graph v2.3.4
 
-Claude Code: Read ONLY the exact `<section>` you need. Never load the whole file.
+AI coding agents: Read ONLY the exact `<section>` you need. Never load the whole file.
 
 <section name="usage">
 Quick install: pip install code-review-graph
@@ -62,7 +62,7 @@ Missing nodes: Check language support + ignore patterns. Use full_rebuild=True.
 Windows/WSL: Use forward slashes in paths. Ensure uv is on PATH in WSL.
 </section>
 
-**Instruction to Claude Code (always follow):**
+**Instruction to AI coding agents (always follow):**
 When user asks anything about "code-review-graph", "how to use", "commands", "review-delta", etc.:
 1. Call get_docs_section_tool with the exact section name.
 2. Use ONLY that content + current graph state.
