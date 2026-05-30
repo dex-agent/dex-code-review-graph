@@ -2639,6 +2639,65 @@ class TestVerilogParsing:
         for nm in ("counter_t", "data_byte_t", "master", "slave"):
             assert nm in targets, f"no CONTAINS edge for {nm}"
 
+    # --- Tier 3: connection edges + verification constructs ------------------
+
+    def _ref_targets(self):
+        """Suffix names of all REFERENCES edge targets."""
+        return {
+            e.target.split("::")[-1].split(".")[-1]
+            for e in self.edges
+            if e.kind == "REFERENCES"
+        }
+
+    def test_named_port_references(self):
+        # Named port maps wire local module signals to instance ports, emitting
+        # REFERENCES edges from the enclosing module to those signals.
+        refs = [e for e in self.edges if e.kind == "REFERENCES"]
+        assert refs, "expected REFERENCES edges from named port connections"
+        targets = self._ref_targets()
+        # Top.u_add(.sum(stage_data)) and FIFOController.ptr_adder(.a(wr_ptr...))
+        assert "stage_data" in targets
+        assert "wr_ptr" in targets and "rd_ptr" in targets
+        # Source is attributed to the enclosing module, not a function.
+        assert any("Top" in e.source for e in refs)
+        assert any("FIFOController" in e.source for e in refs)
+
+    def test_empty_port_connection_no_edge(self):
+        # Empty maps — ptr_adder ``.sum()`` and u_fifo ``.full()``/``.empty()``
+        # — have no expression and must not emit REFERENCES edges. The port
+        # names themselves must never surface as targets.
+        targets = self._ref_targets()
+        assert "sum" not in targets
+        assert "full" not in targets and "empty" not in targets
+
+    def test_verification_constructs(self):
+        cg = self._kind("cg_count", "covergroup", "FIFOController")
+        prop = self._kind("p_full", "property", "FIFOController")
+        seq = self._kind("s_wr", "sequence", "FIFOController")
+        assert cg is not None
+        assert prop is not None
+        assert seq is not None
+
+    def test_sequence_name_not_body_signal(self):
+        # Regression guard: the sequence name is the direct-child identifier, not
+        # a body signal. A DFS would wrongly grab ``wr_en`` / ``full``.
+        for signal in ("wr_en", "full"):
+            assert self._kind(signal, "sequence") is None, (
+                f"body signal {signal} must not be a sequence node"
+            )
+
+    def test_generate_block_instantiation_calls(self):
+        # The g_add instantiation lives inside a generate block (parsed as
+        # interface_instantiation). Recursion must still descend to emit its
+        # CALLS edge, so Top instantiates Adder at least twice (u_add + g_add).
+        top_adder = [
+            e for e in self.edges
+            if e.kind == "CALLS" and "Top" in e.source and "Adder" in e.target
+        ]
+        assert len(top_adder) >= 2, (
+            "expected a CALLS edge for the generate-block Adder instantiation"
+        )
+
 class TestSQLParsing:
     def setup_method(self):
         self.parser = CodeParser()

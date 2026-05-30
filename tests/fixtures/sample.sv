@@ -81,6 +81,12 @@ module FIFOController #(parameter int DEPTH = 16, parameter int WIDTH = 8) (
         empty = (count == 0);
     end
 
+    // Tier 3 verification constructs (single-line; grammar is brittle on
+    // multi-line). Each becomes a Function node tagged with verilog_kind.
+    covergroup cg_count @(posedge clk); cp: coverpoint count; endgroup
+    property p_full; @(posedge clk) full |-> !empty; endproperty
+    sequence s_wr; wr_en ##1 !full; endsequence
+
 endmodule
 
 // Top-level wrapper: multi-module hierarchy with wire feedthrough.
@@ -93,4 +99,8 @@ module Top #(parameter int WIDTH = 8) (input logic clk, input logic rst_n, input
     localparam int   STAGES = 2;
     Adder #(.WIDTH(WIDTH)) u_add (.a(din), .b(din), .sum(stage_data));
     FIFOController #(.WIDTH(WIDTH)) u_fifo (.clk(clk), .rst_n(rst_n), .data_in(stage_data), .wr_en(stage_valid), .rd_en(stage_valid), .data_out(dout), .full(), .empty());
+    // Tier 3: instantiation inside a generate block. The grammar parses this
+    // as interface_instantiation; recursion must still descend to emit the
+    // CALLS edge to Adder and REFERENCES edges for the named connections.
+    generate genvar gi; for (gi = 0; gi < STAGES; gi++) begin: gblk Adder #(.WIDTH(WIDTH)) g_add (.a(din), .b(din), .sum(stage_data)); end endgenerate
 endmodule

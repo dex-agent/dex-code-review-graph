@@ -402,7 +402,8 @@ _CALL_TYPES: dict[str, list[str]] = {
         "macrocall_expression",
     ],
     "verilog": [
-        "module_instantiation", "function_subroutine_call", "subroutine_call", "system_tf_call"
+        "module_instantiation", "interface_instantiation",
+        "function_subroutine_call", "subroutine_call", "system_tf_call"
         ],
     # GDScript: bare calls produce ``call``; ``obj.method()`` is an
     # ``attribute`` node whose right-hand side is an ``attribute_call``.
@@ -5405,6 +5406,74 @@ class CodeParser:
                 _emit(mname, mi, "modport", None, None)
             return True
 
+        # --- Named port connections: REFERENCES edges (signal data flow) ---
+        # Grammar: named_port_connection > [., port_identifier, (, expression, )].
+        # The signal(s) wired to the instance port are the simple_identifier
+        # leaves inside the expression. Empty maps (``.sum()``) have no
+        # expression child and emit nothing. The connection lives at module
+        # scope, so the edge source is the enclosing module (matching the
+        # CALLS-edge attribution in _extract_calls); targets resolve to the
+        # Tier-1 signal nodes of that same module.
+        if node_type == "named_port_connection":
+            expr = next(
+                (c for c in child.children if c.type == "expression"), None,
+            )
+            if expr is None:
+                return True
+            seen: set[str] = set()
+
+            def _collect_idents(node) -> None:
+                if node.type == "simple_identifier":
+                    seen.add(_decode(node))
+                    return
+                for sub in node.children:
+                    _collect_idents(sub)
+
+            _collect_idents(expr)
+            source_name = (
+                self._qualify(enclosing_class, file_path, None)
+                if enclosing_class else file_path
+            )
+            for sig in seen:
+                edges.append(EdgeInfo(
+                    kind="REFERENCES",
+                    source=source_name,
+                    target=self._qualify(sig, file_path, enclosing_class),
+                    file_path=file_path,
+                    line=child.start_point[0] + 1,
+                ))
+            return True
+
+        # --- Verification: covergroups / properties (named identifier child) ---
+        if node_type in ("covergroup_declaration", "property_declaration"):
+            id_type = (
+                "covergroup_identifier"
+                if node_type == "covergroup_declaration"
+                else "property_identifier"
+            )
+            kind = node_type.split("_", 1)[0]  # covergroup / property
+            vname = None
+            for sub in child.children:
+                if sub.type == id_type:
+                    vname = _find_simple_identifier(sub)
+                    break
+            _emit(vname, child, kind, None, None)
+            return True
+
+        # --- Verification: sequences ---
+        # Grammar: sequence_declaration > [sequence, simple_identifier, ;,
+        #   sequence_expr, ;, endsequence]. The name is the DIRECT-child
+        # simple_identifier; a DFS would wrongly grab a body signal
+        # (sequence_expr > ... > simple_identifier), mirroring the typedef trap.
+        if node_type == "sequence_declaration":
+            sname = None
+            for sub in child.children:
+                if sub.type == "simple_identifier":
+                    sname = _decode(sub)
+                    break
+            _emit(sname, child, "sequence", None, None)
+            return True
+
         return False
 
     def _collect_file_scope(
@@ -6668,10 +6737,21 @@ class CodeParser:
                     return txt or None
             return None
 
-        # Verilog/SystemVerilog: module_instantiation's first child is the module name
+        # Verilog/SystemVerilog: module_instantiation's first child is the module
+        # name. Inside generate blocks the same construct parses as
+        # interface_instantiation, whose leading child is an interface_identifier
+        # wrapping the instantiated name.
         if language == "verilog" and node.type == "module_instantiation":
             if first.type == "simple_identifier":
                 return first.text.decode("utf-8", errors="replace")
+            return None
+        if language == "verilog" and node.type == "interface_instantiation":
+            for sub in node.children:
+                if sub.type == "interface_identifier":
+                    for leaf in sub.children:
+                        if leaf.type == "simple_identifier":
+                            return leaf.text.decode("utf-8", errors="replace")
+                    return sub.text.decode("utf-8", errors="replace")
             return None
 
         # Solidity wraps call targets in an 'expression' node – unwrap it
