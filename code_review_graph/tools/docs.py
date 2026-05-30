@@ -6,8 +6,8 @@ from pathlib import Path
 from typing import Any
 
 from ..embeddings import EmbeddingStore, embed_all_nodes
-from ..incremental import get_db_path
-from ._common import _get_store
+from ..incremental import find_project_root, get_db_path
+from ._common import _get_store, _validate_repo_root
 
 # ---------------------------------------------------------------------------
 # Tool 7: embed_graph
@@ -109,17 +109,27 @@ def get_docs_section(
 
     search_roots: list[Path] = []
 
+    # Wheel install: docs are packaged inside code_review_graph/docs.
+    in_pkg_docs = (
+        Path(__file__).parent.parent
+        / "docs"
+        / "LLM-OPTIMIZED-REFERENCE.md"
+    )
     if repo_root:
-        search_roots.append(Path(repo_root))
+        try:
+            search_roots.append(_validate_repo_root(Path(repo_root)))
+        except ValueError:
+            pass
+    elif in_pkg_docs.exists():
+        in_pkg_root = in_pkg_docs.parent.parent
+        search_roots.append(in_pkg_root)
 
-    try:
-        _, root = _get_store(repo_root)
-        if root not in search_roots:
-            search_roots.append(root)
-    except (RuntimeError, ValueError):
-        pass
+    if not repo_root:
+        project_root = find_project_root()
+        if project_root not in search_roots:
+            search_roots.append(project_root)
 
-    # Fallback: package directory (for uvx/pip installs)
+    # Editable/source-tree fallback: docs live next to code_review_graph/.
     pkg_docs = (
         Path(__file__).parent.parent.parent
         / "docs"

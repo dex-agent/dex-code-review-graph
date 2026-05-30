@@ -331,7 +331,7 @@ wheels = [
 
 [[package]]
 name = "code-review-graph"
-version = "2.3.2"
+version = "2.3.5"
 source = { editable = "." }
 dependencies = [
     { name = "fastmcp" },
@@ -387,6 +387,7 @@ wiki = [
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
+    { name = "pytest-asyncio" },
 ]
 
 [package.metadata]
@@ -411,6 +412,7 @@ requires-dist = [
     { name = "pyyaml", marker = "extra == 'eval'", specifier = ">=6.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.3.0,<1" },
     { name = "sentence-transformers", marker = "extra == 'embeddings'", specifier = ">=3.0.0,<4" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.0,<3" },
     { name = "tomli", marker = "python_full_version < '3.11' and extra == 'dev'", specifier = ">=2.0" },
     { name = "tree-sitter", specifier = ">=0.23.0,<1" },
     { name = "tree-sitter-language-pack", specifier = ">=0.3.0,<1" },
@@ -419,7 +421,10 @@ requires-dist = [
 provides-extras = ["embeddings", "google-embeddings", "communities", "eval", "wiki", "all", "enrichment", "dev"]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8.4.2" }]
+dev = [
+    { name = "pytest", specifier = ">=8.4.2" },
+    { name = "pytest-asyncio", specifier = ">=0.23,<1" },
+]
 
 [[package]]
 name = "colorama"
