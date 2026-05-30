@@ -177,6 +177,12 @@ def detect_entry_points(
         if not include_tests and (node.is_test or _is_test_file(node.file_path)):
             continue
 
+        # Skip Verilog/SystemVerilog signal-level nodes (ports/nets/params,
+        # modeled as Function nodes): they have no incoming CALLS edges and
+        # would otherwise all register as bogus entry-point roots.
+        if node.extra.get("verilog_kind"):
+            continue
+
         is_entry = False
 
         # True root: no one calls this function.

@@ -719,6 +719,14 @@ class GraphStore:
         # Batch-fetch nodes
         changed_nodes = self._batch_get_nodes(seeds)
         impacted_nodes = self._batch_get_nodes(impacted_qns)
+        # Drop Verilog/SystemVerilog signal-level nodes (ports/nets/params,
+        # modeled as Function nodes). They are leaves reached via CONTAINS/
+        # REFERENCES edges from a touched module, so excluding them removes no
+        # real downstream impact but stops every signal of that module from
+        # inflating impacted_files and the impact count.
+        impacted_nodes = [
+            n for n in impacted_nodes if not n.extra.get("verilog_kind")
+        ]
 
         total_impacted = len(impacted_nodes)
         truncated = total_impacted > max_nodes

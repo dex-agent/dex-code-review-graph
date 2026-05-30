@@ -6767,10 +6767,12 @@ class CodeParser:
                     return txt or None
             return None
 
-        # Verilog/SystemVerilog: module_instantiation's first child is the module
-        # name. Inside generate blocks the same construct parses as
-        # interface_instantiation, whose leading child is an interface_identifier
-        # wrapping the instantiated name.
+        # Verilog/SystemVerilog: module_instantiation's first child is the
+        # module name. Note the tree-sitter-verilog grammar's GLR resolution
+        # parses a *parameterized* instantiation (``Foo #(.W(W)) inst (...)``)
+        # inside a generate block as interface_instantiation instead, wrapping
+        # the instantiated name in an interface_identifier — both forms are
+        # handled so generate-block instances still emit CALLS edges.
         if language == "verilog" and node.type == "module_instantiation":
             if first.type == "simple_identifier":
                 return first.text.decode("utf-8", errors="replace")

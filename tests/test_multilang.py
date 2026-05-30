@@ -2803,6 +2803,23 @@ class TestVerilogParsing:
         assert stats.nodes_by_kind.get("Signal", 0) > 0
         assert "Function" in stats.nodes_by_kind  # real funcs still counted
 
+    def test_signals_excluded_from_flows_and_impact(self):
+        # Signal nodes must not register as flow entry points, nor inflate the
+        # impact radius of their enclosing module.
+        from code_review_graph.flows import detect_entry_points
+        from code_review_graph.graph import GraphStore
+        store = GraphStore(":memory:")
+        fixture = str(FIXTURES / "sample.sv")
+        store.store_file_nodes_edges(fixture, self.nodes, self.edges)
+        entry_names = {n.name for n in detect_entry_points(store)}
+        for sig in ("clk", "overflow_flag", "stage_data", "DEPTH"):
+            assert sig not in entry_names, f"signal {sig} wrongly an entry point"
+        impact = store.get_impact_radius([fixture])
+        for n in impact["impacted_nodes"]:
+            assert not n.extra.get("verilog_kind"), (
+                f"signal {n.name} wrongly in impact radius"
+            )
+
 class TestSQLParsing:
     def setup_method(self):
         self.parser = CodeParser()
