@@ -96,6 +96,7 @@ class TestRustParsing:
         names = {c.name for c in classes}
         assert "User" in names
         assert "InMemoryRepo" in names
+        assert "Repository" in names
 
     def test_finds_functions(self):
         funcs = [n for n in self.nodes if n.kind == "Function"]
@@ -108,10 +109,26 @@ class TestRustParsing:
     def test_finds_imports(self):
         imports = [e for e in self.edges if e.kind == "IMPORTS_FROM"]
         assert len(imports) >= 1
+        targets = {e.target for e in imports}
+        assert "std::collections::HashMap" in targets
 
     def test_finds_calls(self):
         calls = [e for e in self.edges if e.kind == "CALLS"]
         assert len(calls) >= 3
+
+    def test_finds_inheritance(self):
+        inherits = [e for e in self.edges if e.kind == "INHERITS"]
+        assert len(inherits) >= 1
+        pairs = {(e.source.split("::")[-1], e.target) for e in inherits}
+        assert ("InMemoryRepo", "Repository") in pairs
+
+    def test_resolves_scoped_calls(self):
+        calls = [e for e in self.edges if e.kind == "CALLS"]
+        # Find the call on line 54
+        line_54_calls = [e for e in calls if e.line == 54]
+        assert len(line_54_calls) == 1
+        call = line_54_calls[0]
+        assert call.target.endswith("::InMemoryRepo.new")
 
     def test_detects_test_attribute(self):
         tests = [n for n in self.nodes if n.kind == "Test"]
@@ -132,6 +149,42 @@ class TestRustParsing:
         for n in self.nodes:
             if n.name == "create_user":
                 assert not n.is_test
+
+
+class TestRustImportResolution:
+    def test_resolves_rust_project_import(self, tmp_path):
+        src = tmp_path / "src"
+        src.mkdir(parents=True)
+        (src / "db.rs").write_text("pub struct InMemoryRepo {}\n")
+        (src / "lib.rs").write_text(
+            "pub mod db;\n"
+            "use crate::db::InMemoryRepo;\n"
+        )
+        (tmp_path / "Cargo.toml").write_text("[package]\nname = \"test_pkg\"\n")
+
+        parser = CodeParser()
+        _, edges = parser.parse_file(src / "lib.rs")
+        imports = [e for e in edges if e.kind == "IMPORTS_FROM"]
+        assert len(imports) == 1
+        assert imports[0].target == str((src / "db.rs").resolve())
+
+    def test_resolves_rust_relative_import(self, tmp_path):
+        src = tmp_path / "src"
+        db_dir = src / "db"
+        db_dir.mkdir(parents=True)
+        (src / "lib.rs").write_text(
+            "pub mod db;\n"
+            "pub fn top_func() {}\n"
+        )
+        (db_dir / "mod.rs").write_text("pub mod tests;\n")
+        (db_dir / "tests.rs").write_text("use super::super::top_func;\n")
+        (tmp_path / "Cargo.toml").write_text("[package]\nname = \"test_pkg\"\n")
+
+        parser = CodeParser()
+        _, edges = parser.parse_file(db_dir / "tests.rs")
+        imports = [e for e in edges if e.kind == "IMPORTS_FROM"]
+        assert len(imports) == 1
+        assert imports[0].target == str((src / "lib.rs").resolve())
 
 
 class TestJavaParsing:
