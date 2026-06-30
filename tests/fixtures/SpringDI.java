@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 // Plain interface — not a Spring bean
 public interface OrderRepository {
@@ -61,6 +63,24 @@ class AuditLogger {
     }
 
     public void log(String msg) {}
+}
+
+// @Service with @RequiredArgsConstructor — mixes final and @NonNull fields
+@Service
+@RequiredArgsConstructor
+class PaymentService {
+    private final OrderRepository orderRepository;      // final — injected
+    @NonNull
+    private NotificationService notificationService;    // @NonNull non-final — injected
+    private String tag = "PaymentService";              // plain non-final — NOT injected
+}
+
+// @Component with @AllArgsConstructor — all non-static fields regardless of final
+@Component
+@AllArgsConstructor
+class ReportService {
+    private OrderRepository orderRepository;            // non-final — injected by @AllArgs
+    private NotificationService notificationService;    // non-final — injected by @AllArgs
 }
 
 // @Configuration with @Bean factory methods

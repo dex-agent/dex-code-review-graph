@@ -3885,17 +3885,17 @@ class CodeParser:
     ) -> None:
         """Emit INJECTS edges for Spring DI injection points in a Java class.
 
-        Handles three patterns:
+        Handles four patterns:
         - @Autowired / @Inject / @Resource field injection
         - @Autowired constructor injection
-        - Lombok @RequiredArgsConstructor / @AllArgsConstructor with final fields
+        - Lombok @RequiredArgsConstructor: final + @NonNull non-static fields
+        - Lombok @AllArgsConstructor: all non-static fields
         """
         if language != "java":
             return
 
-        has_lombok_constructor = any(
-            a in _LOMBOK_CONSTRUCTOR_ANNOTATIONS for a in class_annotations
-        )
+        has_required_args = "RequiredArgsConstructor" in class_annotations
+        has_all_args = "AllArgsConstructor" in class_annotations
         qualified_source = self._qualify(class_name, file_path, None)
 
         # Find the class body
@@ -3906,7 +3906,7 @@ class CodeParser:
                 if member.type == "field_declaration":
                     self._emit_spring_field_injection(
                         member, qualified_source, file_path,
-                        edges, has_lombok_constructor,
+                        edges, has_required_args, has_all_args,
                     )
                 elif member.type == "constructor_declaration":
                     self._emit_spring_constructor_injection(
@@ -3919,9 +3919,15 @@ class CodeParser:
         qualified_source: str,
         file_path: str,
         edges: list[EdgeInfo],
-        has_lombok_constructor: bool,
+        has_required_args: bool,
+        has_all_args: bool,
     ) -> None:
-        """Emit an INJECTS edge for a single field_declaration if injection applies."""
+        """Emit an INJECTS edge for a single field_declaration if injection applies.
+
+        Lombok semantics:
+        - @RequiredArgsConstructor: final fields + @NonNull-annotated fields (non-static)
+        - @AllArgsConstructor: all non-static fields regardless of final/@NonNull
+        """
         field_annotations: list[str] = []
         has_final = False
         has_static = False
@@ -3967,12 +3973,23 @@ class CodeParser:
             return
 
         has_inject_annotation = any(a in _SPRING_INJECT_ANNOTATIONS for a in field_annotations)
-        is_lombok_injected = has_lombok_constructor and has_final
+        has_non_null = "NonNull" in field_annotations
 
-        if not has_inject_annotation and not is_lombok_injected:
+        # @RequiredArgsConstructor: final + @NonNull fields
+        is_required_injected = has_required_args and (has_final or has_non_null)
+        # @AllArgsConstructor: every non-static field (static already filtered above)
+        is_all_injected = has_all_args
+
+        if not has_inject_annotation and not is_required_injected and not is_all_injected:
             return
 
-        injection_type = "field" if has_inject_annotation else "constructor_lombok"
+        if has_inject_annotation:
+            injection_type = "field"
+        elif is_all_injected and not is_required_injected:
+            injection_type = "constructor_lombok_all"
+        else:
+            injection_type = "constructor_lombok"
+
         extra: dict = {"injection_type": injection_type}
         if field_name:
             extra["field_name"] = field_name

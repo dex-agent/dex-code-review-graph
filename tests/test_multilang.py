@@ -2118,13 +2118,39 @@ class TestSpringDIParsing:
         sources = {e.source for e in injects}
         assert any("AuditLogger" in s for s in sources)
 
+    def test_required_args_nonnull_field_injected(self):
+        """@RequiredArgsConstructor should inject @NonNull non-final fields."""
+        injects = [e for e in self.edges if e.kind == "INJECTS"]
+        lombok_edges = [e for e in injects
+                        if e.extra.get("injection_type") == "constructor_lombok"]
+        payment_targets = {e.target for e in lombok_edges if "PaymentService" in e.source}
+        assert "OrderRepository" in payment_targets
+        assert "NotificationService" in payment_targets
+
+    def test_required_args_plain_field_not_injected(self):
+        """@RequiredArgsConstructor must NOT inject plain non-final, non-@NonNull fields."""
+        injects = [e for e in self.edges if e.kind == "INJECTS"]
+        payment_targets = {e.target for e in injects if "PaymentService" in e.source}
+        assert "String" not in payment_targets
+
+    def test_all_args_injects_all_non_static_fields(self):
+        """@AllArgsConstructor should inject all non-static fields including non-final."""
+        injects = [e for e in self.edges if e.kind == "INJECTS"]
+        all_args_edges = [e for e in injects
+                          if e.extra.get("injection_type") == "constructor_lombok_all"]
+        report_targets = {e.target for e in all_args_edges if "ReportService" in e.source}
+        assert "OrderRepository" in report_targets
+        assert "NotificationService" in report_targets
+
     def test_total_injects_edge_count(self):
         """Sanity check: total INJECTS edges matches known injection points."""
         injects = [e for e in self.edges if e.kind == "INJECTS"]
-        # NotificationService: 1 field
-        # OrderService: 2 lombok (orderRepository + notificationService)
-        # AuditLogger: 1 constructor
-        assert len(injects) >= 4
+        # NotificationService: 1 @Autowired field
+        # OrderService: 2 lombok (2 final fields)
+        # PaymentService: 2 lombok (1 final + 1 @NonNull)
+        # AuditLogger: 1 @Autowired constructor
+        # ReportService: 2 @AllArgsConstructor (2 non-final fields)
+        assert len(injects) >= 8
 
     def test_field_name_stored_in_injects_extra(self):
         """INJECTS edges must carry extra.field_name for the resolver."""
