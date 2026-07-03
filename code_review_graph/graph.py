@@ -492,11 +492,42 @@ class GraphStore:
 
         Returns the number of resolved edges.
         """
+        return self._resolve_bare_endpoints("CALLS", "target_qualified")
+
+    def resolve_bare_tested_by_sources(self) -> int:
+        """Batch-resolve bare-name TESTED_BY sources using the global node table.
+
+        TESTED_BY edges are derived from test-to-production CALLS edges at
+        parse time, so their production endpoint (the source) inherits the
+        bare name of any call the parser couldn't resolve cross-file — the
+        common case, since tests almost always import the code they test.
+        Qualified-name lookups (tests_for, review context) miss those edges
+        entirely.  Same in-place resolution and disambiguation strategy as
+        :meth:`resolve_bare_call_targets`.
+
+        Returns the number of resolved edges.
+        """
+        return self._resolve_bare_endpoints("TESTED_BY", "source_qualified")
+
+    def _resolve_bare_endpoints(self, kind: str, endpoint: str) -> int:
+        """Resolve bare-name edge endpoints of *kind* in column *endpoint*.
+
+        The opposite endpoint's file provides import evidence for
+        disambiguation: for CALLS the caller imports the callee's module,
+        for TESTED_BY the test file imports the module under test.
+        """
+        if endpoint not in ("source_qualified", "target_qualified"):
+            raise ValueError(f"Invalid edge endpoint column: {endpoint!r}")
+        counterpart = (
+            "source_qualified" if endpoint == "target_qualified"
+            else "target_qualified"
+        )
         conn = self._conn
 
         bare_edges = conn.execute(
-            "SELECT id, source_qualified, target_qualified, file_path "
-            "FROM edges WHERE kind = 'CALLS' AND target_qualified NOT LIKE '%::%'"
+            f"SELECT id, source_qualified, target_qualified, file_path "
+            f"FROM edges WHERE kind = ? AND {endpoint} NOT LIKE '%::%'",
+            (kind,),
         ).fetchall()
         if not bare_edges:
             return 0
@@ -509,7 +540,7 @@ class GraphStore:
         ).fetchall():
             node_lookup.setdefault(row["name"], []).append(row["qualified_name"])
 
-        # source_file -> set of imported files (for disambiguation)
+        # importing_file -> set of imported files (for disambiguation)
         import_targets: dict[str, set[str]] = {}
         for row in conn.execute(
             "SELECT DISTINCT file_path, target_qualified FROM edges "
@@ -521,7 +552,7 @@ class GraphStore:
 
         resolved = 0
         for edge in bare_edges:
-            bare_name = edge["target_qualified"]
+            bare_name = edge[endpoint]
             candidates = node_lookup.get(bare_name, [])
             if not candidates:
                 continue
@@ -529,13 +560,13 @@ class GraphStore:
             if len(candidates) == 1:
                 qualified = candidates[0]
             else:
-                # Disambiguate via imports
-                src_qn = edge["source_qualified"]
-                src_file = (
-                    src_qn.split("::", 1)[0] if "::" in src_qn
+                # Disambiguate via the counterpart endpoint's imports
+                ctx_qn = edge[counterpart]
+                ctx_file = (
+                    ctx_qn.split("::", 1)[0] if "::" in ctx_qn
                     else edge["file_path"]
                 )
-                imported_files = import_targets.get(src_file, set())
+                imported_files = import_targets.get(ctx_file, set())
                 imported = [
                     c for c in candidates
                     if c.split("::", 1)[0] in imported_files
@@ -546,14 +577,17 @@ class GraphStore:
                     continue
 
             conn.execute(
-                "UPDATE edges SET target_qualified = ? WHERE id = ?",
+                f"UPDATE edges SET {endpoint} = ? WHERE id = ?",
                 (qualified, edge["id"]),
             )
             resolved += 1
 
         if resolved:
             conn.commit()
-            logger.info("Resolved %d bare-name CALLS targets", resolved)
+            logger.info(
+                "Resolved %d bare-name %s %s", resolved, kind,
+                "sources" if endpoint == "source_qualified" else "targets",
+            )
         return resolved
 
     def get_all_files(self) -> list[str]:

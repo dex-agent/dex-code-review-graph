@@ -1,5 +1,6 @@
 """Tests for the shared post-processing pipeline."""
 
+import sqlite3
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -325,3 +326,69 @@ class TestWatchCallbackIntegration:
             callback.assert_not_called()
         finally:
             store.close()
+
+
+class TestResolveBareEndpointsStep:
+    """run_post_processing resolves bare edge endpoints before derived steps."""
+
+    def setup_method(self):
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # close the OS handle so Windows can unlink in teardown
+        self.store = GraphStore(self.tmp.name)
+
+    def teardown_method(self):
+        self.store.close()
+        Path(self.tmp.name).unlink(missing_ok=True)
+
+    def _seed_bare_edges(self):
+        for name, path, is_test in [
+            ("parse", "src/app.py", False),
+            ("helper", "src/util.py", False),
+            ("test_parse", "tests/test_app.py", True),
+        ]:
+            self.store.upsert_node(NodeInfo(
+                kind="Test" if is_test else "Function",
+                name=name, file_path=path,
+                line_start=1, line_end=10, language="python",
+                is_test=is_test,
+            ))
+        self.store.upsert_edge(EdgeInfo(
+            kind="CALLS", source="src/app.py::parse", target="helper",
+            file_path="src/app.py", line=1,
+        ))
+        self.store.upsert_edge(EdgeInfo(
+            kind="TESTED_BY", source="parse",
+            target="tests/test_app.py::test_parse",
+            file_path="tests/test_app.py", line=1,
+        ))
+        self.store.commit()
+
+    def test_resolves_bare_endpoints_and_reports_count(self):
+        self._seed_bare_edges()
+
+        result = run_post_processing(self.store)
+
+        assert result["bare_edges_resolved"] == 2
+        rows = self.store._conn.execute(
+            "SELECT source_qualified, target_qualified, kind FROM edges "
+            "WHERE kind IN ('CALLS', 'TESTED_BY')"
+        ).fetchall()
+        by_kind = {r["kind"]: (r["source_qualified"], r["target_qualified"]) for r in rows}
+        assert by_kind["CALLS"] == ("src/app.py::parse", "src/util.py::helper")
+        assert by_kind["TESTED_BY"] == (
+            "src/app.py::parse", "tests/test_app.py::test_parse",
+        )
+
+    def test_resolution_failure_is_isolated(self):
+        """A resolution failure becomes a warning, not a crashed pipeline."""
+        self._seed_bare_edges()
+        with patch.object(
+            GraphStore, "resolve_bare_call_targets",
+            side_effect=sqlite3.OperationalError("boom"),
+        ):
+            result = run_post_processing(self.store)
+
+        assert "bare_edges_resolved" not in result
+        assert any("Bare-endpoint resolution" in w for w in result["warnings"])
+        # Derived steps still ran
+        assert "communities_detected" in result

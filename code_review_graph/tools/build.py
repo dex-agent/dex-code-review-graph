@@ -33,6 +33,15 @@ def _run_postprocess(
     if postprocess == "none":
         return warnings
 
+    # -- Resolve bare edge endpoints (fast; before derived steps) --
+    try:
+        resolved = store.resolve_bare_call_targets()
+        resolved += store.resolve_bare_tested_by_sources()
+        build_result["bare_edges_resolved"] = resolved
+    except sqlite3.OperationalError as e:
+        logger.warning("Bare-endpoint resolution failed: %s", e)
+        warnings.append(f"Bare-endpoint resolution failed: {type(e).__name__}: {e}")
+
     # -- Signatures + FTS (fast, always run unless "none") --
     try:
         rows = store.get_nodes_without_signature()
@@ -463,6 +472,17 @@ def run_postprocess(
     warnings: list[str] = []
 
     try:
+        # -- Resolve bare edge endpoints first so derived steps see them --
+        try:
+            resolved = store.resolve_bare_call_targets()
+            resolved += store.resolve_bare_tested_by_sources()
+            result["bare_edges_resolved"] = resolved
+        except sqlite3.OperationalError as e:
+            logger.warning("Bare-endpoint resolution failed: %s", e)
+            warnings.append(
+                f"Bare-endpoint resolution failed: {type(e).__name__}: {e}"
+            )
+
         try:
             rows = store.get_nodes_without_signature()
             for row in rows:

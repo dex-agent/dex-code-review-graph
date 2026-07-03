@@ -1563,3 +1563,57 @@ class TestGetMinimalContext:
             task="refactor auth module", repo_root=str(self.root),
         )
         assert "refactor" in result["next_tool_suggestions"]
+
+
+class TestBuildResolvesBareEndpoints:
+    """_run_postprocess resolves bare edge endpoints at every level but 'none'."""
+
+    def setup_method(self):
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # close the OS handle so Windows can unlink in teardown
+        self.store = GraphStore(self.tmp.name)
+        for name, path, is_test in [
+            ("parse", "src/app.py", False),
+            ("test_parse", "tests/test_app.py", True),
+        ]:
+            self.store.upsert_node(NodeInfo(
+                kind="Test" if is_test else "Function",
+                name=name, file_path=path,
+                line_start=1, line_end=10, language="python",
+                is_test=is_test,
+            ))
+        self.store.upsert_edge(EdgeInfo(
+            kind="TESTED_BY", source="parse",
+            target="tests/test_app.py::test_parse",
+            file_path="tests/test_app.py", line=1,
+        ))
+        self.store.commit()
+
+    def teardown_method(self):
+        self.store.close()
+        Path(self.tmp.name).unlink(missing_ok=True)
+
+    def _tested_by_sources(self):
+        rows = self.store._conn.execute(
+            "SELECT source_qualified FROM edges WHERE kind = 'TESTED_BY'"
+        ).fetchall()
+        return [r["source_qualified"] for r in rows]
+
+    def test_minimal_level_resolves_bare_endpoints(self):
+        from code_review_graph.tools.build import _run_postprocess
+
+        build_result: dict = {}
+        warnings = _run_postprocess(self.store, build_result, "minimal")
+
+        assert warnings == []
+        assert build_result["bare_edges_resolved"] == 1
+        assert self._tested_by_sources() == ["src/app.py::parse"]
+
+    def test_none_level_skips_resolution(self):
+        from code_review_graph.tools.build import _run_postprocess
+
+        build_result: dict = {}
+        _run_postprocess(self.store, build_result, "none")
+
+        assert "bare_edges_resolved" not in build_result
+        assert self._tested_by_sources() == ["parse"]

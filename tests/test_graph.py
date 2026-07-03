@@ -414,3 +414,110 @@ class TestGetTransitiveTestsFrontierCap:
         assert len(indirect_default) == 1
         assert len(indirect_capped) == 1
         assert indirect_default[0]["name"] == indirect_capped[0]["name"]
+
+
+class TestResolveBareEndpoints:
+    """Bare-name resolution for CALLS targets and TESTED_BY sources."""
+
+    def setup_method(self):
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # close the OS handle so Windows can unlink in teardown
+        self.store = GraphStore(self.tmp.name)
+
+    def teardown_method(self):
+        self.store.close()
+        Path(self.tmp.name).unlink(missing_ok=True)
+
+    def _func(self, name, path, is_test=False):
+        self.store.upsert_node(NodeInfo(
+            kind="Test" if is_test else "Function",
+            name=name, file_path=path,
+            line_start=1, line_end=10, language="python",
+            is_test=is_test,
+        ))
+
+    def _edge(self, kind, source, target, file_path):
+        self.store.upsert_edge(EdgeInfo(
+            kind=kind, source=source, target=target,
+            file_path=file_path, line=1,
+        ))
+
+    def _edge_endpoints(self, kind):
+        rows = self.store._conn.execute(
+            "SELECT source_qualified, target_qualified FROM edges WHERE kind = ?",
+            (kind,),
+        ).fetchall()
+        return [(r["source_qualified"], r["target_qualified"]) for r in rows]
+
+    def test_resolves_unique_tested_by_source(self):
+        self._func("parse", "src/app.py")
+        self._func("test_parse", "tests/test_app.py", is_test=True)
+        self._edge(
+            "TESTED_BY", "parse", "tests/test_app.py::test_parse",
+            "tests/test_app.py",
+        )
+        self.store.commit()
+
+        assert self.store.resolve_bare_tested_by_sources() == 1
+        assert self._edge_endpoints("TESTED_BY") == [
+            ("src/app.py::parse", "tests/test_app.py::test_parse"),
+        ]
+
+    def test_ambiguous_source_without_import_evidence_stays_bare(self):
+        self._func("parse", "src/app.py")
+        self._func("parse", "src/other.py")
+        self._func("test_parse", "tests/test_app.py", is_test=True)
+        self._edge(
+            "TESTED_BY", "parse", "tests/test_app.py::test_parse",
+            "tests/test_app.py",
+        )
+        self.store.commit()
+
+        assert self.store.resolve_bare_tested_by_sources() == 0
+        assert self._edge_endpoints("TESTED_BY") == [
+            ("parse", "tests/test_app.py::test_parse"),
+        ]
+
+    def test_ambiguous_source_disambiguated_by_test_file_imports(self):
+        self._func("parse", "src/app.py")
+        self._func("parse", "src/other.py")
+        self._func("test_parse", "tests/test_app.py", is_test=True)
+        self._edge(
+            "IMPORTS_FROM", "tests/test_app.py", "src/app.py",
+            "tests/test_app.py",
+        )
+        self._edge(
+            "TESTED_BY", "parse", "tests/test_app.py::test_parse",
+            "tests/test_app.py",
+        )
+        self.store.commit()
+
+        assert self.store.resolve_bare_tested_by_sources() == 1
+        assert (
+            "src/app.py::parse", "tests/test_app.py::test_parse",
+        ) in self._edge_endpoints("TESTED_BY")
+
+    def test_unknown_source_name_is_left_alone(self):
+        self._func("test_ghost", "tests/test_app.py", is_test=True)
+        self._edge(
+            "TESTED_BY", "ghost", "tests/test_app.py::test_ghost",
+            "tests/test_app.py",
+        )
+        self.store.commit()
+
+        assert self.store.resolve_bare_tested_by_sources() == 0
+        assert self._edge_endpoints("TESTED_BY") == [
+            ("ghost", "tests/test_app.py::test_ghost"),
+        ]
+
+    def test_calls_targets_still_resolve(self):
+        """The shared helper keeps the original CALLS behavior intact."""
+        self._func("helper", "src/util.py")
+        self._func("caller", "src/app.py")
+        self._edge("CALLS", "src/app.py::caller", "helper", "src/app.py")
+        self.store.commit()
+
+        assert self.store.resolve_bare_call_targets() == 1
+        assert self._edge_endpoints("CALLS") == [
+            ("src/app.py::caller", "src/util.py::helper"),
+        ]
