@@ -1,6 +1,6 @@
 # Maintainer reconciliation — 2026-07-17
 
-Status: draft integration; final repository-wide validation is in progress.
+Status: local validation complete; ready for draft review and remote CI.
 
 Base: `main` at `b72413c`  
 Integration branch: `codex/reconcile-open-contributions-2026-07-17`  
@@ -52,9 +52,10 @@ only in `.claude/worktrees/codex-reconciliation`.
 Important local-branch conclusions:
 
 - `review/local-fixes` is a preservation source, not a merge candidate. Its
-  useful path and TESTED_BY work was extracted, while unsafe PID cleanup,
-  over-broad ignore rules, raw C++ header sniffing, and scoped-call false
-  positives remain excluded.
+  useful TESTED_BY work was extracted. Its incremental path work was disproven
+  under the real node-replacement lifecycle; unsafe PID cleanup, over-broad
+  ignore rules, raw C++ header sniffing, and scoped-call false positives also
+  remain excluded.
 - `release/v2.4.0` is the head of PR #559. Its token-budget, doctor, eval, and
   installer surfaces remain coupled and have correctness/supply-chain
   blockers. Four patch-equivalent commits were selected: the three-commit
@@ -70,19 +71,20 @@ Important local-branch conclusions:
 | --- | --- | --- |
 | `34c5d00` | PR #564 | Use `#graph-svg` instead of a page-wide `svg` selector in both templates; carries focused regressions. |
 | `d8e5453` | PR #565 | Remove machine-specific hook paths, add a PATH guard, and avoid applying Bash hooks to unrelated tools. |
-| `326786e` | PR #573 | Resolve PHP `use`, grouped imports, aliases, functions, and constants to local files; preserves contributor attribution. |
-| `3e3cfc1`, `42e3f47`, `4339f09` | exact patch-equivalents of PR #559 commits `278e400`, `03e319e`, `a11dc04` | Correct TESTED_BY direction at every selected consumer, update dead-code analysis, and add a parser-to-store-to-query regression. This incorporates the #527 work and supersedes overlapping PR #598. |
-| `c809c9f` | PR #559 commit | Render repository-relative paths in Action comments without taking the rest of the release branch. |
-| `0365f74` | issue #612 | Capture bare, member, chained, and null-conditional C# receiver calls with correct caller attribution; implemented red/green with focused tests. |
-| `d4f8307` | issue #613 | Keep packaged documentation fallback available through the real MCP wrapper; implemented red/green with an installed-layout regression. |
-| `2abe90f` | content-equivalent/rebased port of PR #578 | Replace regex JSONC stripping with a string-aware scanner so URLs and comment-like string contents survive; import-neighborhood context differs from the source patch. |
-| `8c86437` | PR #621 / issue #620 | Add `commandWindows` hook forms that drain stdin and fail open; exact contributor commit. Local Codex schema inspection confirms the field, but Windows execution still requires CI. |
-| `4f7fba0`, `cd3f1b1` | PR #563 | Generate the required uppercase `SKILL.md` filename and update regressions. This does not adopt PR #562's unnecessary lowercasing of the display name. |
-| `fce147e` | PR #354 | Refuse and preserve valid top-level arrays/scalars, while treating empty/comment-only configs as fresh objects. Conflict resolution retained PR #578's stronger string-aware JSONC parser. Production fixes for #312/#350 were intentionally omitted because they are already on `main`; their regressions remain. |
-| `b2cd68a` | PR #353 | Persist Kotlin/C# annotations using the established metadata shape and resolve C# namespace importers. This does not claim to solve the remaining impact-radius design in #310. |
-| `3177954` | PR #393 | Repair advertised Zig parsing and add structure/call/import/test fixtures. Conflict resolution retained the newer Nix implementation on `main`. |
-| `a42b964` | reconciliation review fix | Preserve an existing platform config byte-for-byte when its nested server collection has the wrong array/object type; red/green coverage exercises both schemas. |
-| `d31c7ab` | reconciliation review fix | Generate TESTED_BY for in-source Zig tests regardless of filename and carry effective parent names through nested C# namespaces; both gaps were reproduced before implementation. |
+| `cbf9355` | PR #573 | Resolve PHP `use`, grouped imports, aliases, functions, and constants to local files; preserves contributor attribution. |
+| `ddc8544`, `918ef13`, `580205d` | exact patch-equivalents of PR #559 commits `278e400`, `03e319e`, `a11dc04` | Correct TESTED_BY direction at every selected consumer, update dead-code analysis, and add a parser-to-store-to-query regression. This incorporates the #527 work and supersedes overlapping PR #598. |
+| `6ece151` | PR #559 commit | Render repository-relative paths in Action comments without taking the rest of the release branch. |
+| `771307e` | issue #612 | Capture bare, member, chained, and null-conditional C# receiver calls with correct caller attribution; implemented red/green with focused tests. |
+| `eeef686` | issue #613 | Keep packaged documentation fallback available through the real MCP wrapper; implemented red/green with an installed-layout regression. |
+| `571f665` | content-equivalent/rebased port of PR #578 | Replace regex JSONC stripping with a string-aware scanner so URLs and comment-like string contents survive; import-neighborhood context differs from the source patch. |
+| `9ef6641` | PR #621 / issue #620 | Add `commandWindows` hook forms that drain stdin and fail open; exact contributor commit. Local Codex schema inspection confirms the field, but Windows execution still requires CI. |
+| `df87b60`, `e5f563b` | PR #563 | Generate the uppercase `SKILL.md` filename required by the [Claude Code skills documentation](https://code.claude.com/docs/en/skills) and update regressions. This does not adopt PR #562's unnecessary lowercasing of the display name. |
+| `90408c9` | PR #354 | Refuse and preserve valid top-level arrays/scalars, while treating empty/comment-only configs as fresh objects. Conflict resolution retained PR #578's stronger string-aware JSONC parser. Production fixes for #312/#350 were intentionally omitted because they are already on `main`; their regressions remain. |
+| `0abd789` | PR #353 | Persist Kotlin/C# annotations using the established metadata shape and resolve C# namespace importers. This does not claim to solve the remaining impact-radius design in #310. |
+| `b9ec19d` | PR #393 | Repair advertised Zig parsing and add structure/call/import/test fixtures. Conflict resolution retained the newer Nix implementation on `main`. |
+| `fc549ae` | reconciliation review fix | Preserve an existing platform config byte-for-byte when its nested server collection has the wrong array/object type; red/green coverage exercises both schemas. |
+| `d611a2d` | reconciliation review fix | Generate TESTED_BY for in-source Zig tests regardless of filename and carry effective parent names through nested C# namespaces; both gaps were reproduced before implementation. |
+| `c7d7211` | reconciliation review fix | Replace recursive C# namespace discovery with an explicit stack; a 1,200-level AST regression failed before the change and now passes without truncating namespace metadata. |
 
 The final diff size and repository-wide validation results are recorded below.
 
@@ -223,8 +225,10 @@ large branch:
 - `crg-1nx` — redesign v2.4 token budgeting and the lean tool surface;
 - `crg-4ys` — split/harden doctor, eval, and installers;
 - `crg-ys0` — remove unsafe blockers from `review/local-fixes`;
-- `crg-lw5` — design stable symbol identity for collisions/overloads; and
-- `crg-o1d` — repair #569 across incremental node-ID replacement; and
+- `crg-lw5` — design stable symbol identity for collisions/overloads;
+- `crg-o1d` — repair #569 across incremental node-ID replacement;
+- `crg-dtv` — close SQLite connections exposed by coverage warnings;
+- `crg-8u4` — exclude maintainer-only `.beads` hooks from the sdist; and
 - existing platform/performance issues remain the owners for Windows daemon,
   HOME isolation, and daemon-stop behavior.
 
@@ -240,17 +244,39 @@ Recommended review order:
 
 Completed on the assembled branch:
 
-- touched test modules excluding the known native WatchDaemon failure:
-  `966 passed`;
-- focused combined Nix/Zig conflict-resolution suite: `18 passed`; and
+- final Python 3.13 suite excluding the known native WatchDaemon failure:
+  `1,447 passed`, `13 deselected`, `2 xpassed`;
+- isolated CI-equivalent coverage run: `1,446 passed`, `1 skipped`,
+  `13 deselected`, `2 xpassed`; coverage `72.95%` against a `65%` threshold;
+- combined skills/multilingual regression run: `501 passed`, plus the final
+  C# namespace regression class: `6 passed`;
+- ruff: clean; mypy: no issues in 62 source files; Bandit: no issues;
+- Python and VS Code schema versions both `9`;
+- wheel and sdist built successfully, and both contain the packaged
+  `LLM-OPTIMIZED-REFERENCE.md` required by the docs fallback;
+- full knowledge-graph rebuild: 181 parsed files, 3,415 nodes, 24,940 edges,
+  200 flows, 16 communities, and no build errors;
+- graph review: 25 changed files, risk score `0.65`, 26 affected flows; the
+  parser breadth is the main blast radius and received two independent review
+  passes plus focused language regressions; and
 - `git diff --check`: clean.
+
+The independent reviews first found five P1/P2 gaps: the two #569 lifecycle
+defects were removed, while the nested-config, Zig TESTED_BY, and nested-C#
+cases were fixed red/green. A second pass found the deep C# recursion failure;
+that too was fixed red/green. No other P1/P2 finding remained.
 
 The macOS Python 3.13 baseline has a native watchdog/FSEvents `SIGBUS` in
 `TestWatchDaemon` on both `main` and the integration branch. It is tracked in
 `crg-229` and is excluded from broad comparison runs; it must not be represented
 as a regression introduced here.
 
-Before this document changes from draft to ready, record fresh results for the
-full non-WatchDaemon suite, ruff, mypy, bandit, package build, schema sync,
-knowledge-graph rebuild/impact checks, and remote CI. Windows hook command
-execution cannot be claimed from this macOS host.
+The isolated coverage run emits 29 `ResourceWarning`s for unclosed SQLite
+connections; `crg-dtv` tracks turning those warnings into deterministic closes.
+Package inspection also found pre-existing maintainer-only `.beads` hooks in the
+sdist; `crg-8u4` tracks the manifest policy fix. Neither is hidden as a passing
+claim.
+
+Windows hook command execution cannot be claimed from this macOS host. The PR
+must remain a draft until GitHub's Python 3.10–3.13 matrix and Windows-relevant
+checks run; source PRs/issues should not be closed before merge.
