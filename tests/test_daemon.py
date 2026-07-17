@@ -14,6 +14,7 @@ from code_review_graph.daemon import (
     DaemonConfig,
     WatchDaemon,
     WatchRepo,
+    _serialize_toml,
     add_repo_to_config,
     clear_pid,
     is_daemon_running,
@@ -42,18 +43,20 @@ def sample_config_file(tmp_path):
     (repo_b / ".git").mkdir()
 
     config = tmp_path / "watch.toml"
+    # as_posix() keeps hand-written TOML valid on Windows, where native
+    # backslash paths are invalid basic-string escapes.
     config.write_text(
         f"[daemon]\n"
         f'session_name = "test-session"\n'
-        f'log_dir = "{tmp_path / "logs"}"\n'
+        f'log_dir = "{(tmp_path / "logs").as_posix()}"\n'
         f"poll_interval = 5\n"
         f"\n"
         f"[[repos]]\n"
-        f'path = "{repo_a}"\n'
+        f'path = "{repo_a.as_posix()}"\n'
         f'alias = "alpha"\n'
         f"\n"
         f"[[repos]]\n"
-        f'path = "{repo_b}"\n'
+        f'path = "{repo_b.as_posix()}"\n'
         f'alias = "beta"\n',
         encoding="utf-8",
     )
@@ -98,7 +101,7 @@ class TestConfigParsing:
 
         config_file = tmp_path / "watch.toml"
         config_file.write_text(
-            f'[[repos]]\npath = "{repo}"\n',
+            f'[[repos]]\npath = "{repo.as_posix()}"\n',
             encoding="utf-8",
         )
         cfg = load_config(config_file)
@@ -127,8 +130,8 @@ class TestConfigParsing:
 
         config_file = tmp_path / "watch.toml"
         config_file.write_text(
-            f'[[repos]]\npath = "{repo_a}"\nalias = "dup"\n\n'
-            f'[[repos]]\npath = "{repo_b}"\nalias = "dup"\n',
+            f'[[repos]]\npath = "{repo_a.as_posix()}"\nalias = "dup"\n\n'
+            f'[[repos]]\npath = "{repo_b.as_posix()}"\nalias = "dup"\n',
             encoding="utf-8",
         )
         cfg = load_config(config_file)
@@ -142,7 +145,7 @@ class TestConfigParsing:
 
         config_file = tmp_path / "watch.toml"
         config_file.write_text(
-            f'[[repos]]\npath = "{bare}"\nalias = "bare"\n',
+            f'[[repos]]\npath = "{bare.as_posix()}"\nalias = "bare"\n',
             encoding="utf-8",
         )
         cfg = load_config(config_file)
@@ -170,6 +173,36 @@ class TestConfigParsing:
         assert len(loaded.repos) == 1
         assert loaded.repos[0].alias == "rt"
         assert loaded.repos[0].path == str(repo.resolve())
+
+    def test_serialize_toml_escapes_backslashes_and_quotes(self):
+        """Windows paths and quotes must survive serialize -> parse."""
+        from code_review_graph.daemon import tomllib
+
+        config = DaemonConfig(
+            session_name='quo"ted',
+            log_dir=Path(r"C:\Users\example\logs"),
+            poll_interval=2,
+            repos=[WatchRepo(path=r"C:\Users\example\repo", alias="win")],
+        )
+        parsed = tomllib.loads(_serialize_toml(config))
+        assert parsed["daemon"]["session_name"] == 'quo"ted'
+        assert parsed["daemon"]["log_dir"] == str(Path(r"C:\Users\example\logs"))
+        assert parsed["repos"][0]["path"] == r"C:\Users\example\repo"
+
+    def test_serialize_toml_escapes_control_characters(self):
+        """TOML-forbidden control characters must survive serialize -> parse."""
+        from code_review_graph.daemon import tomllib
+
+        weird = "line1\nline2\ttabbed\x01ctrl\x7fdel"
+        config = DaemonConfig(
+            session_name=weird,
+            log_dir=Path("logs"),
+            poll_interval=2,
+            repos=[WatchRepo(path="repo", alias="a\rb")],
+        )
+        parsed = tomllib.loads(_serialize_toml(config))
+        assert parsed["daemon"]["session_name"] == weird
+        assert parsed["repos"][0]["alias"] == "a\rb"
 
     def test_add_repo_to_config(self, tmp_path):
         """add_repo_to_config adds a repo and saves."""
