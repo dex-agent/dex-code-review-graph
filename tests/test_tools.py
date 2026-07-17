@@ -29,6 +29,7 @@ from code_review_graph.tools import (
 class TestTools:
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
         self._seed_data()
 
@@ -642,6 +643,7 @@ class TestFindLargeFunctions:
 
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
         # Create functions of various sizes
         self.store.upsert_node(NodeInfo(
@@ -1287,6 +1289,7 @@ class TestComputeSummaries:
 
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
         self._seed_graph()
 

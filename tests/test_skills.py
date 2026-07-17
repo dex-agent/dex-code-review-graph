@@ -548,7 +548,8 @@ class TestGenerateCodexHooksConfig:
 
 class TestInstallCodexHooks:
     def test_creates_hooks_file(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("HOME", str(tmp_path))
+        # Path.home() ignores HOME on Windows; patch it like the cursor tests do.
+        monkeypatch.setattr("code_review_graph.skills.Path.home", lambda: tmp_path)
         hooks_path = install_codex_hooks(tmp_path / "repo")
         assert hooks_path == tmp_path / ".codex" / "hooks.json"
         assert hooks_path.exists()
@@ -558,7 +559,8 @@ class TestInstallCodexHooks:
         assert "SessionStart" in data["hooks"]
 
     def test_merges_with_existing(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("HOME", str(tmp_path))
+        # Path.home() ignores HOME on Windows; patch it like the cursor tests do.
+        monkeypatch.setattr("code_review_graph.skills.Path.home", lambda: tmp_path)
         codex_dir = tmp_path / ".codex"
         codex_dir.mkdir(parents=True)
         existing = {
@@ -578,7 +580,8 @@ class TestInstallCodexHooks:
         assert "SessionStart" in data["hooks"]
 
     def test_creates_hooks_backup(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("HOME", str(tmp_path))
+        # Path.home() ignores HOME on Windows; patch it like the cursor tests do.
+        monkeypatch.setattr("code_review_graph.skills.Path.home", lambda: tmp_path)
         codex_dir = tmp_path / ".codex"
         codex_dir.mkdir(parents=True)
         existing = {"hooks": {"Stop": []}}
@@ -593,7 +596,8 @@ class TestInstallCodexHooks:
         assert backup == existing
 
     def test_idempotent_by_command(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("HOME", str(tmp_path))
+        # Path.home() ignores HOME on Windows; patch it like the cursor tests do.
+        monkeypatch.setattr("code_review_graph.skills.Path.home", lambda: tmp_path)
         repo_root = tmp_path / "repo"
         install_codex_hooks(repo_root)
         install_codex_hooks(repo_root)
@@ -1233,6 +1237,7 @@ class TestInstallCursorHooks:
         assert (hooks_dir / "crg-session-start.sh").exists()
         assert (hooks_dir / "crg-pre-commit.sh").exists()
 
+    @pytest.mark.skipif(sys.platform == "win32", reason="POSIX exec bits")
     def test_scripts_are_executable(self, tmp_path):
         with patch("code_review_graph.skills.Path.home", return_value=tmp_path):
             install_cursor_hooks()
