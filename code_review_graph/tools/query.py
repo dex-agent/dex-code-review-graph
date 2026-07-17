@@ -6,6 +6,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from ..config_keys import normalize_spring_config_key
 from ..context_savings import attach_context_savings, estimate_file_tokens
 from ..embeddings import EmbeddingStore
 from ..graph import _sanitize_name, edge_to_dict, node_to_dict
@@ -28,6 +29,13 @@ _QUERY_PATTERNS = {
     "children_of": "Find all nodes contained in a file or class",
     "tests_for": "Find all tests for a given function or class",
     "inheritors_of": "Find all classes that inherit from a given class",
+    "triggers_of": "Find methods invoked by a scheduler or other trigger",
+    "triggered_by": "Find schedulers or other triggers that invoke a method",
+    "publishers_of": "Find methods that publish an event",
+    "listeners_of": "Find methods that listen for an event",
+    "handlers_of": "Find methods that handle an endpoint",
+    "endpoints_for": "Find endpoints handled by a method",
+    "consumers_of": "Find classes that consume a Spring configuration property",
     "file_summary": "Get a summary of all nodes in a file",
 }
 
@@ -159,7 +167,9 @@ def query_graph(
 
     Args:
         pattern: Query pattern. One of: callers_of, callees_of, imports_of,
-                 importers_of, children_of, tests_for, inheritors_of, file_summary.
+                 importers_of, children_of, tests_for, inheritors_of,
+                 triggers_of, triggered_by, publishers_of, listeners_of,
+                 handlers_of, endpoints_for, consumers_of, file_summary.
         target: The node name, qualified name, or file path to query about.
         repo_root: Repository root path. Auto-detected if omitted.
         detail_level: "standard" (full output) or "minimal" (summary only).
@@ -202,7 +212,8 @@ def query_graph(
         # Resolve target - try as-is, then as absolute path, then search.
         # file_summary targets are paths, so skip broad node search.
         node = None
-        if pattern != "file_summary":
+        raw_config_target = pattern == "consumers_of" and "::" not in target
+        if pattern != "file_summary" and not raw_config_target:
             node = store.get_node(target)
             if not node:
                 abs_target = str(root / target)
@@ -223,7 +234,7 @@ def query_graph(
                         "candidates": [node_to_dict(c) for c in candidates],
                     }
 
-        if not node and pattern != "file_summary":
+        if not node and pattern not in ("consumers_of", "file_summary"):
             return {
                 "status": "not_found",
                 "summary": f"No node found matching '{target}'.",
@@ -367,6 +378,64 @@ def query_graph(
                         if child:
                             results.append(node_to_dict(child))
                         edges_out.append(edge_to_dict(e))
+
+        elif pattern == "triggers_of":
+            for edge in store.get_edges_by_source(qn):
+                if edge.kind != "TRIGGERS":
+                    continue
+                triggered = store.get_node(edge.target_qualified)
+                if triggered:
+                    results.append(node_to_dict(triggered))
+                edges_out.append(edge_to_dict(edge))
+
+        elif pattern == "triggered_by":
+            for edge in store.get_edges_by_target(qn):
+                if edge.kind != "TRIGGERS":
+                    continue
+                trigger = store.get_node(edge.source_qualified)
+                if trigger:
+                    results.append(node_to_dict(trigger))
+                edges_out.append(edge_to_dict(edge))
+
+        elif pattern in ("publishers_of", "listeners_of"):
+            edge_kind = "PUBLISHES" if pattern == "publishers_of" else "HANDLES"
+            for edge in store.get_edges_by_target(qn):
+                if edge.kind != edge_kind:
+                    continue
+                source = store.get_node(edge.source_qualified)
+                if source:
+                    results.append(node_to_dict(source))
+                edges_out.append(edge_to_dict(edge))
+
+        elif pattern == "handlers_of":
+            for edge in store.get_edges_by_target(qn):
+                if edge.kind != "HANDLES":
+                    continue
+                handler = store.get_node(edge.source_qualified)
+                if handler:
+                    results.append(node_to_dict(handler))
+                edges_out.append(edge_to_dict(edge))
+
+        elif pattern == "endpoints_for":
+            for edge in store.get_edges_by_source(qn):
+                if edge.kind != "HANDLES":
+                    continue
+                endpoint = store.get_node(edge.target_qualified)
+                if endpoint and endpoint.kind == "Endpoint":
+                    results.append(node_to_dict(endpoint))
+                    edges_out.append(edge_to_dict(edge))
+
+        elif pattern == "consumers_of":
+            raw_key = node.name if node else target.removeprefix("config:")
+            raw_key = raw_key.removesuffix(".*")
+            key = normalize_spring_config_key(raw_key)
+            seen_config_sources: set[str] = set()
+            for edge in store.get_config_consumers(key):
+                consumer = store.get_node(edge.source_qualified)
+                if consumer and consumer.qualified_name not in seen_config_sources:
+                    results.append(node_to_dict(consumer))
+                    seen_config_sources.add(consumer.qualified_name)
+                edges_out.append(edge_to_dict(edge))
 
         elif pattern == "file_summary":
             graph_paths = _resolve_graph_file_paths(store, root, [target])

@@ -91,6 +91,16 @@ def _run_spring_resolver(store: GraphStore) -> Optional[dict]:
         return None
 
 
+def _run_spring_event_resolver(store: GraphStore) -> Optional[dict]:
+    """Run the Spring application-event resolver without failing a build."""
+    try:
+        from .event_resolver import resolve_spring_events
+        return resolve_spring_events(store)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Spring event resolver failed: %s", exc)
+        return None
+
+
 def _run_temporal_resolver(store: GraphStore) -> Optional[dict]:
     """Run the Temporal workflow/activity call resolver, swallowing any failure so
     build never fails because of it. Returns stats or None on error.
@@ -100,6 +110,16 @@ def _run_temporal_resolver(store: GraphStore) -> Optional[dict]:
         return resolve_temporal_calls(store)
     except Exception as exc:  # noqa: BLE001 - best-effort post-pass
         logger.warning("Temporal resolver failed: %s", exc)
+        return None
+
+
+def _run_hcl_resolver(store: GraphStore) -> Optional[dict]:
+    """Run Terraform module-scope resolution without failing a build."""
+    try:
+        from .hcl_resolver import resolve_hcl_module_references
+        return resolve_hcl_module_references(store)
+    except Exception as exc:  # noqa: BLE001 - best-effort post-pass
+        logger.warning("Terraform/HCL resolver failed: %s", exc)
         return None
 
 # Default ignore patterns (in addition to .gitignore).
@@ -547,7 +567,7 @@ def get_changed_files(repo_root: Path, base: str = "HEAD~1") -> list[str]:
     if detect_vcs(repo_root) == "svn":
         return _get_svn_changed_files(repo_root, base if _SAFE_SVN_REV.match(base) else None)
     # Git path
-    if not _SAFE_GIT_REF.match(base):
+    if base.startswith("-") or not _SAFE_GIT_REF.fullmatch(base):
         logger.warning("Invalid git ref rejected: %s", base)
         return []
     try:
@@ -626,7 +646,13 @@ def get_staged_and_unstaged(repo_root: Path) -> list[str]:
         return _get_svn_changed_files(repo_root)
     try:
         result = subprocess.run(
-            ["git", "status", "--porcelain=v1", "-z"],
+            [
+                "git",
+                "status",
+                "--porcelain=v1",
+                "-z",
+                "--untracked-files=all",
+            ],
             capture_output=True,
             cwd=str(repo_root),
             timeout=_GIT_TIMEOUT,
@@ -957,7 +983,9 @@ def full_build(
 
     rescript_stats = _run_rescript_resolver(store)
     spring_stats = _run_spring_resolver(store)
+    spring_event_stats = _run_spring_event_resolver(store)
     temporal_stats = _run_temporal_resolver(store)
+    hcl_stats = _run_hcl_resolver(store)
 
     return {
         "files_parsed": len(files),
@@ -966,7 +994,9 @@ def full_build(
         "errors": errors,
         "rescript_resolution": rescript_stats,
         "spring_resolution": spring_stats,
+        "event_resolution": spring_event_stats,
         "temporal_resolution": temporal_stats,
+        "hcl_resolution": hcl_stats,
     }
 
 
@@ -1095,7 +1125,12 @@ def incremental_update(
 
     spring_changed = any(rp.endswith(".java") for rp in all_files)
     spring_stats = _run_spring_resolver(store) if spring_changed else None
+    spring_event_stats = (
+        _run_spring_event_resolver(store) if spring_changed else None
+    )
     temporal_stats = _run_temporal_resolver(store) if spring_changed else None
+    hcl_changed = any(rp.endswith((".tf", ".hcl")) for rp in all_files)
+    hcl_stats = _run_hcl_resolver(store) if hcl_changed else None
 
     return {
         "files_updated": len(all_files),
@@ -1106,7 +1141,9 @@ def incremental_update(
         "errors": errors,
         "rescript_resolution": rescript_stats,
         "spring_resolution": spring_stats,
+        "event_resolution": spring_event_stats,
         "temporal_resolution": temporal_stats,
+        "hcl_resolution": hcl_stats,
     }
 
 

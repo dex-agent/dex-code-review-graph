@@ -4,6 +4,26 @@
 
 ### Added
 
+- Added Terraform/OpenTofu structural parsing for resources, data sources,
+  modules, variables, outputs, locals, providers, and expression references.
+  References resolve across sibling files in a Terraform module, and local
+  module sources connect to parsed target files (PR #514; Terraform portion of
+  #199).
+- Added Ansible playbook, role, task, handler, notification, include, and role
+  dependency extraction with qualified graph relationships, duplicate-task
+  disambiguation, and ordinary-YAML false-positive guards (PR #415).
+- Added bounded VB.NET structural parsing for namespaces, types, generics,
+  multiline members, properties, calls, inheritance, and interfaces. Same-file
+  targets resolve case-insensitively only when scope evidence is unique, and
+  overloads share one stable graph symbol (replacing PR #517).
+- Expanded SystemVerilog structure with ports, nets, parameters, packages,
+  typedefs, modports, port references, and verification declarations. Function
+  locals are excluded rather than promoted to module globals, and signal nodes
+  no longer pollute function risk, flow, dead-code, or size analyses (PR #522).
+- Corrected Rust trait and `impl` identity, preserving one concrete type across
+  repeated implementation blocks. Nested/aliased `use` trees, `Self` and
+  turbofish calls, and bounded cached Cargo path/workspace dependency resolution
+  now retain their original graph targets (replacing PR #526).
 - Added an explicit local JSON visualization export. The output is written
   atomically inside the ignored graph data directory and is documented as
   potentially containing absolute paths and code-structure metadata (PR #449).
@@ -30,6 +50,10 @@
 - Serialized first-use local embedding dependency imports and model construction
   across MCP worker threads. POSIX startup remains lazy, failed loads are not
   cached, and Windows retains its main-thread prewarm (#610, replacing PR #611).
+- PHP scoped/static calls now resolve during parsing when backed by same-file,
+  enclosing-class, import, qualified-name, or namespace evidence. This keeps
+  incremental work bounded to changed files and leaves unrelated globally
+  unique `Class::method` names unresolved (safe subset of PR #568).
 - Incremental Git change discovery now reads NUL-delimited byte output, so
   Unicode, whitespace, newline, and literal arrow paths are preserved while
   rename/copy records keep destination-only semantics (PR #618).
@@ -37,6 +61,10 @@
   preventing inherited transport descriptors from keeping Unix servers and
   workers alive after host disconnects, while normal non-interactive CLI/CI
   builds retain the faster process-pool default (PR #615).
+- Bare CALLS targets and TESTED_BY sources are qualified during postprocessing
+  only when same-file or import evidence identifies exactly one node. Query-time
+  fallbacks apply the same rule, preventing unrelated same-named functions from
+  inheriting tests (replacing the unsound subset of PR #601).
 - Corrected TESTED_BY edge direction across graph, refactor, and transitive-test
   consumers, with a parser-to-store-to-query regression (#527/#559/#598 class).
 - C# receiver calls now capture bare, chained, member, and null-conditional
