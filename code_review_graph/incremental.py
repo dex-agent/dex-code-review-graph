@@ -132,7 +132,7 @@ DEFAULT_IGNORE_PATTERNS = [
     "/coverage/**",
     "**/.cache/**",
     "/.tmp/**",
-    "/tmp/**",
+    "/tmp/**",  # nosec B108 -- repo-relative ignore glob, not a temp-file path
     "*.min.js",
     "*.min.css",
     "*.map",
