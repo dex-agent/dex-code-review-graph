@@ -19,6 +19,7 @@ from code_review_graph.parser import EdgeInfo, NodeInfo
 class TestChanges:
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
 
     def teardown_method(self):
@@ -440,17 +441,18 @@ class TestChanges:
             patch("code_review_graph.tools.review._get_store") as mock_get_store,
             patch("code_review_graph.tools.review.get_changed_files", return_value=[]),
             patch("code_review_graph.tools.review.get_staged_and_unstaged", return_value=[]),
+            # Prevent the tool from closing our shared store, then restore the
+            # real method so teardown releases the database handle on Windows.
+            patch.object(self.store, "close"),
         ):
             mock_get_store.return_value = (self.store, Path("/fake/repo"))
-            # Prevent the store from being closed by the tool
-            # (our teardown handles it).
-            self.store.close = lambda: None
 
             result = detect_changes_func(base="HEAD~1", repo_root="/fake/repo")
             assert result["status"] == "ok"
             assert result["risk_score"] == 0.0
             assert result["changed_functions"] == []
             assert result["test_gaps"] == []
+        assert getattr(self.store.close, "__func__", None) is GraphStore.close
 
     def test_detect_changes_tool_with_changes(self):
         """detect_changes_func returns full analysis for changed files."""
@@ -465,9 +467,9 @@ class TestChanges:
                 "code_review_graph.tools.review.parse_git_diff_ranges",
                 return_value={"app.py": [(1, 10)]},
             ),
+            patch.object(self.store, "close"),
         ):
             mock_get_store.return_value = (self.store, Path("/fake/repo"))
-            self.store.close = lambda: None
 
             result = detect_changes_func(base="HEAD~1", repo_root="/fake/repo")
             assert result["status"] == "ok"
@@ -475,6 +477,7 @@ class TestChanges:
             assert "risk_score" in result
             assert "test_gaps" in result
             assert "review_priorities" in result
+        assert getattr(self.store.close, "__func__", None) is GraphStore.close
 
 
 class TestAnalyzeChangesFunctionCap:
@@ -482,6 +485,7 @@ class TestAnalyzeChangesFunctionCap:
 
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
 
     def teardown_method(self):
@@ -532,6 +536,7 @@ class TestAnalyzeChangesInternalParseRemap:
 
     def setup_method(self):
         self.tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.tmp.close()  # release the handle before GraphStore reopens it on Windows
         self.store = GraphStore(self.tmp.name)
 
     def teardown_method(self):
