@@ -4,9 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+from unittest.mock import patch
 
-from code_review_graph import skills, uninstall
+import pytest
+
+from code_review_graph import cli, skills, uninstall
 from code_review_graph.cli import _handle_init
 
 
@@ -20,6 +24,29 @@ def _args(tmp_path: Path, platform: str) -> argparse.Namespace:
         no_skills=False,
         no_hooks=False,
     )
+
+
+def test_codex_skill_install_failure_is_reported_without_traceback(
+    monkeypatch, tmp_path, capsys
+):
+    repo = tmp_path / "repo"
+    (repo / ".git").mkdir(parents=True)
+    codex_home = tmp_path / "codex-home"
+    codex_home.mkdir()
+    (codex_home / "skills").write_text("occupied\n", encoding="utf-8")
+    monkeypatch.setenv("CODEX_HOME", str(codex_home))
+
+    with patch.object(sys, "argv", [
+        "code-review-graph", "install", "--platform", "codex",
+        "--repo", str(repo), "--no-hooks", "--no-instructions", "--yes",
+    ]), pytest.raises(SystemExit) as exc_info:
+        cli.main()
+
+    out = capsys.readouterr()
+    assert exc_info.value.code == 1
+    assert "Could not install Codex skill" in out.err
+    assert "Traceback" not in out.err
+    assert "Installed Codex skill" not in out.out
 
 
 def test_copilot_cli_install_reinstall_uninstall_lifecycle(

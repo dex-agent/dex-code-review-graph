@@ -644,6 +644,21 @@ class TestInstallCodexHooks:
 
         assert skill.read_text(encoding="utf-8") == "user-owned\n"
 
+    def test_incomplete_manifest_does_not_overwrite_user_skill(self, tmp_path, monkeypatch):
+        codex_home = tmp_path / "codex-home"
+        destination = codex_home / "skills" / "code-review-graph"
+        destination.mkdir(parents=True)
+        skill = destination / "SKILL.md"
+        skill.write_text("user-owned instructions\n", encoding="utf-8")
+        manifest = destination / ".code-review-graph-managed.json"
+        manifest.write_text('{"version": 1, "files": {}}', encoding="utf-8")
+        monkeypatch.setenv("CODEX_HOME", str(codex_home))
+
+        assert install_codex_skill() is None
+        assert skill.read_text(encoding="utf-8") == "user-owned instructions\n"
+        assert json.loads(manifest.read_text(encoding="utf-8"))["files"] == {}
+        assert not (destination / "agents" / "openai.yaml").exists()
+
     def test_symlinked_manifest_is_not_written(self, tmp_path, monkeypatch):
         codex_home = tmp_path / "codex-home"
         destination = codex_home / "skills" / "code-review-graph"

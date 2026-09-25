@@ -14,8 +14,9 @@ def test_fallback_routes_query_and_rejects_mutation(tmp_path):
     )
     repo = tmp_path / "repo"
     repo.mkdir()
+    (repo / ".git").mkdir()
     captured = tmp_path / "argv.json"
-    fake_cli = tmp_path / "fake-crg"
+    fake_cli = tmp_path / "fake crg"
     fake_cli.write_text(
         "#!/usr/bin/env python3\n"
         "import json, os, sys\n"
@@ -45,4 +46,16 @@ def test_fallback_routes_query_and_rejects_mutation(tmp_path):
         text=True,
     )
     assert result.returncode == 2
+    assert not captured.exists()
+
+    not_repo = tmp_path / "not-repo"
+    not_repo.mkdir()
+    result = subprocess.run(
+        [sys.executable, str(wrapper), "status", "--repo", str(not_repo)],
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 127
+    assert "No repository marker" in result.stderr
     assert not captured.exists()

@@ -17,7 +17,7 @@ Use CRG as a local structural index, not as a replacement for source inspection.
 
 1. Resolve the active repository root from the workspace or `git rev-parse --show-toplevel`. Never embed the checkout used during installation.
 2. Inspect the current tool inventory for CRG MCP tools. Prefer MCP when its tools are actually exposed.
-3. On the first CRG task for a repository, perform exactly one read-only health check. With MCP, use `get_minimal_context_tool(task=<short task>, repo_root=<root>)` or the available graph-stats tool. Without MCP, run the bundled helper’s `status --json` command. Reuse the result; do not poll status on every turn.
+3. On the first CRG task for a repository, perform exactly one read-only health check. With MCP, use `get_minimal_context_tool(task=<short task>, repo_root=<root>)` or the available graph-stats tool. Without MCP, run the bundled helper’s `status` command (it forwards `--json` to the CLI). Reuse the result; do not poll status on every turn.
 4. If the graph is healthy and fresh, use the smallest relevant MCP query or CLI read-only query to narrow the work. If an MCP call fails, retry at most once, then use the CLI helper.
 5. If the graph is missing, empty, or stale, report that once and stop using CRG for this task unless the user explicitly authorizes maintenance. Continue with the smallest useful source/test inspection.
 
@@ -49,7 +49,7 @@ python3 <skill-root>/scripts/crg_readonly.py impact --repo "<repo-root>"
 python3 <skill-root>/scripts/crg_readonly.py detect-changes --brief --repo "<repo-root>"
 ```
 
-The wrapper resolves/validates the repository, passes arguments without shell interpolation, and exposes only read-only commands. Set `CRG_BIN` only when the installed executable has a non-standard name/path. Preserve and report its errors; do not turn a failed fallback into permission to build.
+The wrapper resolves/validates the repository, passes arguments without shell interpolation, and exposes only read-only commands. Set `CRG_BIN` to the executable path only when it has a non-standard name/path. Preserve and report its errors; do not turn a failed fallback into permission to build.
 
 ## WSL and Windows scope
 

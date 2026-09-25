@@ -334,6 +334,7 @@ def _handle_init(args: argparse.Namespace) -> None:
     # --no-instructions to opt out.
     skip_skills = getattr(args, "no_skills", False)
     skip_hooks = getattr(args, "no_hooks", False)
+    codex_skill_error: str | None = None
     # Legacy: --skills/--hooks/--all still accepted (no-op, everything is default)
 
     from .skills import (
@@ -358,8 +359,19 @@ def _handle_init(args: argparse.Namespace) -> None:
             target == "all" and PLATFORMS["codex"]["detect"]()
         )
         if codex_detected:
-            codex_skill_dir = install_codex_skill()
-            print(f"Installed Codex skill in {codex_skill_dir}")
+            try:
+                codex_skill_dir = install_codex_skill()
+            except OSError as exc:
+                codex_skill_dir = None
+                codex_skill_error = f"Could not install Codex skill: {exc}"
+            if codex_skill_dir is None:
+                codex_skill_error = codex_skill_error or (
+                    "Codex skill installation refused existing files; check the warning above"
+                )
+                if target == "all":
+                    print(codex_skill_error, file=sys.stderr)
+            else:
+                print(f"Installed Codex skill in {codex_skill_dir}")
 
         # Claude Code skills are only relevant for Claude (or full install).
         if target in ("claude", "all"):
@@ -461,6 +473,8 @@ def _handle_init(args: argparse.Namespace) -> None:
         except Exception as exc:
             logger.warning("Could not install OpenCode plugin: %s", exc)
 
+    if codex_skill_error and target == "codex":
+        raise CodeReviewGraphError(codex_skill_error)
     print()
     print("Next steps:")
     print("  1. code-review-graph build    # build the knowledge graph")
@@ -1720,7 +1734,7 @@ def _dispatch() -> None:
                 raise SystemExit(1)
         else:
             repo_root = find_project_root()
-        db_path = get_db_path(repo_root)
+        db_path = get_db_path(repo_root, read_only=True)
         if not db_path.exists():
             print(
                 f"No graph found at {db_path}. Run `code-review-graph build` first.",

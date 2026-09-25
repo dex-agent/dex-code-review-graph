@@ -60,18 +60,9 @@ def _iter_resource_files(root: Path) -> dict[str, Path]:
     return files
 
 
-def bundled_skill_hashes() -> dict[str, str]:
-    """Return SHA-256 hashes for the files shipped with the skill."""
-
-    return {
-        relative: hashlib.sha256(path.read_bytes()).hexdigest()
-        for relative, path in _iter_resource_files(bundled_skill_dir()).items()
-    }
-
-
 def _read_manifest(skill_dir: Path) -> dict[str, str] | None:
     path = skill_dir / MANIFEST_NAME
-    if not path.is_file():
+    if skill_dir.is_symlink() or not _safe_target(skill_dir, path) or not path.is_file():
         return None
     try:
         parsed: Any = json.loads(path.read_text(encoding="utf-8"))
@@ -132,7 +123,7 @@ def _file_hash(path: Path) -> str | None:
         return None
 
 
-def install_codex_skill() -> Path:
+def install_codex_skill() -> Path | None:
     """Install or update the bundled skill and return its destination.
 
     A manifest records files owned by CRG.  Reinstall updates only those files
@@ -144,35 +135,20 @@ def install_codex_skill() -> Path:
     destination = codex_skill_dir()
     if destination.is_symlink() or not _safe_target(codex_home(), destination):
         logger.warning("Cannot install Codex skill through symlink: %s", destination)
-        return destination
+        return None
     destination.mkdir(parents=True, exist_ok=True)
     if not _safe_target(destination, destination / MANIFEST_NAME):
         logger.warning("Unsafe Codex skill manifest; leaving %s unchanged", destination)
-        return destination
+        return None
 
     manifest = _read_manifest(destination)
     if (destination / MANIFEST_NAME).exists() and manifest is None:
         logger.warning(
             "Existing Codex skill manifest is invalid; leaving %s unchanged", destination
         )
-        return destination
+        return None
 
-    # A manually installed copy may predate the manifest.  Adopt it only when
-    # every overlapping file is byte-identical; never overwrite user content.
     if manifest is None:
-        conflicts = [
-            relative
-            for relative, source in source_files.items()
-            if (destination / relative).exists()
-            and _file_hash(destination / relative)
-            != hashlib.sha256(source.read_bytes()).hexdigest()
-        ]
-        if conflicts:
-            logger.warning(
-                "Existing unmarked Codex skill differs (%s); leaving it unchanged",
-                ", ".join(conflicts),
-            )
-            return destination
         manifest = {}
 
     for relative in (*source_files, *manifest):
@@ -180,7 +156,24 @@ def install_codex_skill() -> Path:
             destination, destination / relative
         ):
             logger.warning("Unsafe Codex skill path; leaving %s unchanged", destination)
-            return destination
+            return None
+
+    # A manifest may omit files added by the user or by a newer bundle.
+    # Refuse before writing anything if one of those paths already differs.
+    conflicts = [
+        relative
+        for relative, source in source_files.items()
+        if relative not in manifest
+        and (destination / relative).exists()
+        and _file_hash(destination / relative)
+        != hashlib.sha256(source.read_bytes()).hexdigest()
+    ]
+    if conflicts:
+        logger.warning(
+            "Unmanaged Codex skill files differ (%s); leaving %s unchanged",
+            ", ".join(conflicts), destination,
+        )
+        return None
 
     current_hashes: dict[str, str] = {}
     preserved_files: set[str] = set()
@@ -243,7 +236,7 @@ def owned_skill_files(skill_dir: Path | None = None) -> list[Path]:
     owned: list[Path] = []
     for relative, expected_hash in expected.items():
         path = destination / relative
-        if path.is_file() and _file_hash(path) == expected_hash:
+        if _safe_target(destination, path) and path.is_file() and _file_hash(path) == expected_hash:
             owned.append(path)
     manifest_file = manifest_path(destination)
     if manifest is not None and manifest_file.is_file():

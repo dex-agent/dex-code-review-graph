@@ -2119,7 +2119,7 @@ def install_codex_hooks(repo_root: Path) -> Path:
     return hooks_path
 
 
-def install_codex_skill() -> Path:
+def install_codex_skill() -> Path | None:
     """Install the bundled global Codex skill in the active Codex home."""
 
     from .codex_skill import install_codex_skill as _install

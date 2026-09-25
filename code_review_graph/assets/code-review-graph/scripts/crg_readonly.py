@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import os
-import shlex
 import shutil
 import subprocess
 import sys
@@ -43,6 +42,12 @@ def _resolve_repo(raw: str | None) -> Path:
         root = Path(raw).expanduser().resolve()
         if not root.is_dir():
             raise ValueError(f"Repository directory does not exist: {root}")
+        if not any(
+            (parent / marker).exists()
+            for parent in (root, *root.parents)
+            for marker in (".code-review-graph", ".git", ".svn")
+        ):
+            raise ValueError(f"No repository marker found at or above: {root}")
         return root
     try:
         result = subprocess.run(
@@ -64,10 +69,7 @@ def _resolve_repo(raw: str | None) -> Path:
 def _crg_command() -> list[str]:
     override = os.environ.get("CRG_BIN", "").strip()
     if override:
-        parts = shlex.split(override)
-        if not parts:
-            raise ValueError("CRG_BIN is empty")
-        return parts
+        return [override]
     binary = shutil.which("code-review-graph")
     if binary:
         return [binary]
