@@ -101,3 +101,97 @@ def test_property_read_and_return_type_resolve_to_the_declared_classes(
         )
     finally:
         store.close()
+
+
+def test_property_reads_require_an_instance_method_receiver(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    module = root / "models.py"
+    module.write_text(
+        "class C:\n"
+        "    @property\n"
+        "    def value(self) -> int:\n"
+        "        return 1\n\n"
+        "    @classmethod\n"
+        "    def read_through_class(cls) -> object:\n"
+        "        return cls.value\n\n"
+        "    @staticmethod\n"
+        "    def read_through_static_parameter(self) -> object:\n"
+        "        return self.value\n\n"
+        "    def read_through_instance(self) -> int:\n"
+        "        return self.value\n",
+        encoding="utf-8",
+    )
+
+    store = _parse_repo(root, tmp_path / "graph.db")
+    try:
+        rows = store._conn.execute(
+            "SELECT source_qualified, target_qualified "
+            "FROM edges WHERE kind = 'CALLS' AND file_path = ?",
+            (module.resolve().as_posix(),),
+        ).fetchall()
+        calls = {
+            (row["source_qualified"], row["target_qualified"])
+            for row in rows
+        }
+        target = f"{module.resolve().as_posix()}::C.value"
+
+        assert (
+            f"{module.resolve().as_posix()}::C.read_through_instance",
+            target,
+        ) in calls
+        assert (
+            f"{module.resolve().as_posix()}::C.read_through_class",
+            target,
+        ) not in calls
+        assert (
+            f"{module.resolve().as_posix()}::C.read_through_static_parameter",
+            target,
+        ) not in calls
+    finally:
+        store.close()
+
+
+def test_property_store_targets_are_not_reads_but_augmented_assignment_is(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    module = root / "models.py"
+    source = (
+        "class C:\n"
+        "    @property\n"
+        "    def value(self) -> int:\n"
+        "        return 1\n\n"
+        "    def update(self) -> None:\n"
+        "        self.value = 2\n"
+        "        del self.value\n"
+        "        self.value, other = 2, 3\n"
+        "        for self.value in range(3):\n"
+        "            pass\n"
+        "        self.value += 1\n"
+    )
+    module.write_text(source, encoding="utf-8")
+
+    store = _parse_repo(root, tmp_path / "graph.db")
+    try:
+        rows = store._conn.execute(
+            "SELECT source_qualified, target_qualified, line "
+            "FROM edges WHERE kind = 'CALLS' AND file_path = ?",
+            (module.resolve().as_posix(),),
+        ).fetchall()
+        target = f"{module.resolve().as_posix()}::C.value"
+        update = f"{module.resolve().as_posix()}::C.update"
+        property_read_lines = {
+            row["line"]
+            for row in rows
+            if row["source_qualified"] == update
+            and row["target_qualified"] == target
+        }
+        augmented_assignment_line = source.splitlines().index(
+            "        self.value += 1",
+        ) + 1
+
+        assert property_read_lines == {augmented_assignment_line}
+    finally:
+        store.close()

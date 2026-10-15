@@ -6318,15 +6318,67 @@ class CodeParser:
 
         def bind_targets(
             left, value, type_node, env, class_fields, current_class,
+            instance_receiver_name,
         ) -> None:
             """Record what one binding form says about each name it binds."""
             for name, path in self._python_binding_targets(left):
                 bound = self._python_binding_evidence(
                     value, type_node, path, context,
-                    env, class_fields, current_class,
+                    env, class_fields, current_class, instance_receiver_name,
                 )
                 if bound is not None:
                     env[name] = bound
+
+        def instance_receiver_parameter(function_node) -> Optional[str]:
+            """Name the implicit instance parameter of an ordinary method."""
+            if any(
+                decorator.rsplit(".", 1)[-1] in {"classmethod", "staticmethod"}
+                for decorator in _python_decorator_names(function_node)
+            ):
+                return None
+            parameters = function_node.child_by_field_name("parameters")
+            if parameters is None or not parameters.named_children:
+                return None
+            first = parameters.named_children[0]
+            if first.type == "identifier":
+                return first.text.decode("utf-8", errors="replace")
+            if first.type in (
+                "typed_parameter", "typed_default_parameter", "default_parameter",
+            ):
+                name = next(
+                    (child for child in first.children if child.type == "identifier"),
+                    None,
+                )
+                return (
+                    name.text.decode("utf-8", errors="replace")
+                    if name is not None
+                    else None
+                )
+            return None
+
+        def is_attribute_store_target(attribute_node) -> bool:
+            """Whether this attribute itself is stored, deleted, or loop-bound.
+
+            Stop at an enclosing attribute/subscript: its receiver is still a
+            load (``self.value.child = ...`` reads ``self.value``). Augmented
+            assignment deliberately remains a read because Python fetches the
+            old property value before applying the operator.
+            """
+            parent = attribute_node.parent
+            while parent is not None:
+                if parent.type in ("attribute", "subscript", "augmented_assignment"):
+                    return False
+                if parent.type in ("assignment", "for_statement"):
+                    target = parent.child_by_field_name("left")
+                    return (
+                        target is not None
+                        and target.start_byte <= attribute_node.start_byte
+                        and attribute_node.end_byte <= target.end_byte
+                    )
+                if parent.type == "delete_statement":
+                    return True
+                parent = parent.parent
+            return False
 
         def walk(
             node,
@@ -6335,6 +6387,7 @@ class CodeParser:
             current_class: Optional[str] = None,
             current_function: Optional[str] = None,
             depth: int = 0,
+            instance_receiver_name: Optional[str] = None,
         ) -> None:
             if depth > self._MAX_AST_DEPTH:
                 return
@@ -6352,7 +6405,7 @@ class CodeParser:
                 for child in node.children:
                     walk(
                         child, class_env, fields, nested_class,
-                        current_function, depth + 1,
+                        current_function, depth + 1, None,
                     )
                 return
             if node_type == "function_definition":
@@ -6368,10 +6421,15 @@ class CodeParser:
                     if name_node is not None
                     else current_function
                 )
+                receiver_name = (
+                    instance_receiver_parameter(node)
+                    if current_class and current_function is None
+                    else None
+                )
                 for child in node.children:
                     walk(
                         child, scoped, class_fields, current_class,
-                        function_name, depth + 1,
+                        function_name, depth + 1, receiver_name,
                     )
                 return
             if node_type == "assignment":
@@ -6385,7 +6443,7 @@ class CodeParser:
                     node.child_by_field_name("left"),
                     node.child_by_field_name("right"),
                     node.child_by_field_name("type"),
-                    env, class_fields, current_class,
+                    env, class_fields, current_class, instance_receiver_name,
                 )
                 return
             if node_type == "as_pattern":
@@ -6397,7 +6455,7 @@ class CodeParser:
                 for child in node.children:
                     walk(
                         child, env, class_fields, current_class,
-                        current_function, depth + 1,
+                        current_function, depth + 1, instance_receiver_name,
                     )
                 alias = node.child_by_field_name("alias")
                 value = node.children[0] if node.children else None
@@ -6408,7 +6466,7 @@ class CodeParser:
                         else alias,
                         value,
                         None,
-                        env, class_fields, current_class,
+                        env, class_fields, current_class, instance_receiver_name,
                     )
                 return
             if node_type == "attribute":
@@ -6416,9 +6474,11 @@ class CodeParser:
                 property_name_node = node.child_by_field_name("attribute")
                 owner_evidence = self._python_expression_class_evidence(
                     owner, env, class_fields, current_class, context,
+                    instance_receiver_name,
                 )
                 if (
-                    owner_evidence is not None
+                    not is_attribute_store_target(node)
+                    and owner_evidence is not None
                     and owner_evidence[0] == "class"
                     and property_name_node is not None
                 ):
@@ -6472,7 +6532,7 @@ class CodeParser:
                         )
                         constructed = self._python_expression_class_evidence(
                             receiver_node, env, class_fields,
-                            current_class, context,
+                            current_class, context, instance_receiver_name,
                         )
                     if constructed is not None:
                         key = (
@@ -6485,7 +6545,7 @@ class CodeParser:
             for child in node.children:
                 walk(
                     child, env, class_fields, current_class,
-                    current_function, depth + 1,
+                    current_function, depth + 1, instance_receiver_name,
                 )
 
         walk(root, module_env, {})
@@ -6679,13 +6739,14 @@ class CodeParser:
         class_fields: dict[str, tuple[str, str]],
         current_class: Optional[str],
         context: _PyReceiverContext,
+        instance_receiver_name: Optional[str] = None,
     ) -> Optional[tuple[str, str]]:
         """Infer a class only from a local binding, field, or property annotation."""
         if expression is None:
             return None
         if expression.type == "identifier":
             name = expression.text.decode("utf-8", errors="replace")
-            if name in ("self", "cls"):
+            if name == instance_receiver_name:
                 return ("class", current_class) if current_class else None
             if name in context.class_names or name in context.imported_names:
                 # A bare class symbol is a class receiver, not an instance on
@@ -6700,6 +6761,7 @@ class CodeParser:
             return None
         owner_evidence = self._python_expression_class_evidence(
             owner, env, class_fields, current_class, context,
+            instance_receiver_name,
         )
         if owner_evidence is None or owner_evidence[0] != "class":
             return None
@@ -6809,6 +6871,7 @@ class CodeParser:
         env: Optional[dict[str, tuple[str, str]]] = None,
         class_fields: Optional[dict[str, tuple[str, str]]] = None,
         current_class: Optional[str] = None,
+        instance_receiver_name: Optional[str] = None,
     ) -> Optional[tuple[str, str]]:
         """What one binding says its target holds, or None for "nothing"."""
         if type_node is not None:
@@ -6835,6 +6898,7 @@ class CodeParser:
                 return "unknown", ""
             return self._python_binding_evidence(
                 elements[path[0]], None, path[1:], context,
+                env, class_fields, current_class, instance_receiver_name,
             )
         if value.type in _PY_LITERAL_VALUE_TYPES:
             return "builtin", ""
@@ -6843,6 +6907,7 @@ class CodeParser:
         if value.type == "attribute":
             return self._python_expression_class_evidence(
                 value, env or {}, class_fields or {}, current_class, context,
+                instance_receiver_name,
             ) or ("unknown", "")
         return "unknown", ""
 
