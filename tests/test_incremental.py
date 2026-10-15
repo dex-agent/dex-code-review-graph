@@ -576,17 +576,17 @@ class TestGitOperations:
 
     @patch("code_review_graph.incremental.subprocess.run")
     def test_get_changed_files_fallback(self, mock_run, tmp_path):
-        # First call fails, second succeeds
+        # A failed base diff falls back to the complete working-tree status.
         mock_run.side_effect = [
             MagicMock(returncode=1, stdout=b""),
-            MagicMock(returncode=0, stdout=b"A\0staged.py\0"),
-            MagicMock(returncode=0, stdout=b""),
+            MagicMock(returncode=0, stdout=b" M staged.py\0"),
         ]
         result = get_changed_files(tmp_path)
         assert result == ["staged.py"]
-        assert mock_run.call_count == 3
-        assert "-z" in mock_run.call_args_list[1].args[0]
-        assert "--others" in mock_run.call_args_list[2].args[0]
+        assert mock_run.call_count == 2
+        fallback_call = mock_run.call_args_list[1].args[0]
+        assert fallback_call[:2] == ["git", "status"]
+        assert "--untracked-files=all" in fallback_call
 
     @patch("code_review_graph.incremental.subprocess.run")
     def test_get_changed_files_includes_untracked_paths(self, mock_run, tmp_path):

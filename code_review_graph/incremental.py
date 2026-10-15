@@ -353,12 +353,31 @@ def find_repo_root(
 
 
 def detect_vcs(root: Path) -> str:
-    """Return ``'git'``, ``'svn'``, or ``'none'`` based on VCS markers at *root*."""
-    if (root / ".git").exists():
-        return "git"
-    if (root / ".svn").exists():
-        return "svn"
+    """Return the nearest Git or SVN working copy containing *root*."""
+    current = root
+    while True:
+        if (current / ".git").exists():
+            return "git"
+        if (current / ".svn").exists():
+            return "svn"
+        if current == current.parent:
+            break
+        current = current.parent
     return "none"
+
+
+def _git_worktree_prefix(repo_root: Path) -> str:
+    """Return the path from the Git root to a requested subproject root."""
+    requested_root = Path(repo_root).expanduser().resolve()
+    current = requested_root
+    while True:
+        if (current / ".git").exists():
+            if current == requested_root:
+                return ""
+            return requested_root.relative_to(current).as_posix()
+        if current == current.parent:
+            return ""
+        current = current.parent
 
 
 def find_project_root(
@@ -1096,7 +1115,7 @@ def get_changed_files(
         # --name-status (not --name-only): renames/copies must report BOTH
         # paths, or the old path never reaches the purge loop (issue #684).
         result = subprocess.run(
-            ["git", "diff", "--name-status", "-z", base, "--"],
+            ["git", "diff", "--relative", "--name-status", "-z", base, "--", "."],
             capture_output=True,
             cwd=str(repo_root),
             timeout=timeout,
@@ -1107,13 +1126,13 @@ def get_changed_files(
                 raise ChangeDiscoveryError(
                     f"git diff failed while discovering changed files (rc={result.returncode})"
                 )
-            # Fallback: try diff against empty tree (initial commit)
-            result = subprocess.run(
-                ["git", "diff", "--name-status", "-z", "--cached"],
-                capture_output=True,
-                cwd=str(repo_root),
+            # An unresolved base (for example HEAD~1 in a one-commit repo)
+            # cannot describe working-tree edits. Fall back to status so both
+            # staged and unstaged tracked changes, plus untracked files, survive.
+            return get_staged_and_unstaged(
+                repo_root,
                 timeout=timeout,
-                stdin=subprocess.DEVNULL,
+                require_vcs=require_vcs,
             )
         if result.returncode != 0:
             logger.warning("git diff failed while discovering changed files")
@@ -1281,6 +1300,8 @@ def get_staged_and_unstaged(
                 "--porcelain=v1",
                 "-z",
                 "--untracked-files=all",
+                "--",
+                ".",
             ],
             capture_output=True,
             cwd=str(repo_root),
@@ -1291,13 +1312,17 @@ def get_staged_and_unstaged(
             logger.warning("git status failed while discovering working-tree files")
             return []
         files: list[str] = []
+        prefix = _git_worktree_prefix(repo_root)
+        prefix_with_separator = f"{prefix}/" if prefix else ""
         records = result.stdout.split(b"\0")
         index = 0
         while index < len(records):
             record = records[index]
             if len(record) > 3:
                 status = record[:2]
-                files.append(os.fsdecode(record[3:]))
+                path = os.fsdecode(record[3:])
+                if not prefix or path.startswith(prefix_with_separator):
+                    files.append(path[len(prefix_with_separator):] if prefix else path)
                 # With porcelain -z, a rename/copy record stores the
                 # destination first and its source in the following record.
                 if b"R" in status or b"C" in status:
@@ -2050,7 +2075,7 @@ def incremental_update(
                     })
             continue
         abs_path = repo_root / rel_path
-        if not abs_path.is_file():
+        if abs_path.is_symlink() or not abs_path.is_file():
             remaining_identity.discard(rel_path)
             if normalize_file_path(abs_path) not in stale_files:
                 missing_paths.add(normalize_file_path(abs_path))
