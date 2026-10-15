@@ -108,13 +108,24 @@ def test_property_reads_require_an_instance_method_receiver(tmp_path: Path) -> N
     root.mkdir()
     module = root / "models.py"
     module.write_text(
+        "from __future__ import annotations\n\n"
+        "class Component:\n"
+        "    def run(self) -> int:\n"
+        "        return 1\n\n"
         "class C:\n"
         "    @property\n"
         "    def value(self) -> int:\n"
         "        return 1\n\n"
+        "    @property\n"
+        "    def component(self) -> Component:\n"
+        "        return Component()\n\n"
         "    @classmethod\n"
         "    def read_through_class(cls) -> object:\n"
         "        return cls.value\n\n"
+        "    @classmethod\n"
+        "    def read_through_annotated_class(cls: C) -> object:\n"
+        "        component = cls.component\n"
+        "        return component.run()\n\n"
         "    @staticmethod\n"
         "    def read_through_static_parameter(self) -> object:\n"
         "        return self.value\n\n"
@@ -135,6 +146,8 @@ def test_property_reads_require_an_instance_method_receiver(tmp_path: Path) -> N
             for row in rows
         }
         target = f"{module.resolve().as_posix()}::C.value"
+        component = f"{module.resolve().as_posix()}::C.component"
+        component_run = f"{module.resolve().as_posix()}::Component.run"
 
         assert (
             f"{module.resolve().as_posix()}::C.read_through_instance",
@@ -148,6 +161,11 @@ def test_property_reads_require_an_instance_method_receiver(tmp_path: Path) -> N
             f"{module.resolve().as_posix()}::C.read_through_static_parameter",
             target,
         ) not in calls
+        annotated_class_reader = (
+            f"{module.resolve().as_posix()}::C.read_through_annotated_class"
+        )
+        assert (annotated_class_reader, component) not in calls
+        assert (annotated_class_reader, component_run) not in calls
     finally:
         store.close()
 
