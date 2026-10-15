@@ -768,6 +768,13 @@ def build_or_update_graph(
                     build_result["status"] = "partial"
                 if not build_result.get("postprocess_contended"):
                     store.set_metadata(BUILD_STATE_KEY, BUILD_COMPLETE)
+                if embedding_provider and embedding_model:
+                    from code_review_graph.embeddings import has_embeddings
+
+                    if not has_embeddings(store):
+                        embedding_warnings: list[str] = []
+                        _report_refresh_skipped(build_result, embedding_warnings)
+                        build_result.setdefault("warnings", []).extend(embedding_warnings)
                 build_result["postprocess_level"] = postprocess_level
                 return build_result
             summary = (
