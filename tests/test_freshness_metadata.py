@@ -8,6 +8,7 @@ so every query carried a stale-graph caveat.
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -170,6 +171,92 @@ def test_skip_postprocess_marks_pending_and_noop_update_repairs_fts(repo):
             "WHERE nodes_fts MATCH ?",
             ("gammaHelper",),
         ).fetchone()[0] == 1
+
+
+def test_pending_changed_file_update_rebuilds_all_derived_data(repo):
+    for i in range(24):
+        (repo / f"mod{i}.py").write_text(
+            f"def f{i}(x):\n"
+            f"    return x + {i}\n"
+            f"\n"
+            f"class C{i}:\n"
+            f"    def m{i}(self):\n"
+            f"        return f{i}(1)\n"
+        )
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "add derived-data fixture")
+
+    build_or_update_graph(full_rebuild=True, repo_root=str(repo), postprocess="none")
+    with GraphStore(get_db_path(repo)) as store:
+        assert store._conn.execute("SELECT COUNT(*) FROM flows").fetchone()[0] == 0
+        assert store._conn.execute("SELECT COUNT(*) FROM communities").fetchone()[0] == 0
+
+    _commit(
+        repo,
+        "mod0.py",
+        "def f0(x):\n    return x + 100\n\n"
+        "class C0:\n    def m0(self):\n        return f0(1)\n",
+    )
+    updated = build_or_update_graph(full_rebuild=False, repo_root=str(repo))
+    assert updated["build_type"] == "incremental"
+    assert updated["files_updated"] == 1
+    with GraphStore(get_db_path(repo)) as store:
+        repaired_counts = (
+            store._conn.execute("SELECT COUNT(*) FROM flows").fetchone()[0],
+            store._conn.execute("SELECT COUNT(*) FROM communities").fetchone()[0],
+        )
+
+    rebuilt = build_or_update_graph(full_rebuild=True, repo_root=str(repo))
+    assert rebuilt["build_type"] == "full"
+    with GraphStore(get_db_path(repo)) as store:
+        full_counts = (
+            store._conn.execute("SELECT COUNT(*) FROM flows").fetchone()[0],
+            store._conn.execute("SELECT COUNT(*) FROM communities").fetchone()[0],
+        )
+    assert repaired_counts == full_counts
+    assert all(count > 0 for count in full_counts)
+
+
+def test_partial_skip_postprocess_update_keeps_pending_state(repo, monkeypatch):
+    from code_review_graph.build_state import BUILD_STATE_KEY, POSTPROCESS_PENDING
+
+    build_or_update_graph(full_rebuild=True, repo_root=str(repo), postprocess="minimal")
+    (repo / "a.py").write_text(
+        "def a():\n    return newName()\n\n"
+        "def newName():\n    return 3\n"
+    )
+    (repo / "b.py").write_text("def b():\n    return 22\n")
+    _git(repo, "add", "-A")
+    _git(repo, "commit", "-qm", "change files before skipped postprocess")
+    _fail_parsing(monkeypatch, "b.py")
+
+    updated = build_or_update_graph(
+        full_rebuild=False, repo_root=str(repo), postprocess="none"
+    )
+
+    assert updated["files_updated"] == 1
+    assert [error["file"] for error in updated["errors"]] == ["b.py"]
+    with GraphStore(get_db_path(repo)) as store:
+        assert store.get_metadata(BUILD_STATE_KEY) == POSTPROCESS_PENDING
+        assert store._conn.execute(
+            "SELECT COUNT(*) FROM nodes_fts WHERE nodes_fts MATCH ?", ("newName",)
+        ).fetchone()[0] == 0
+
+
+def test_status_json_marks_postprocess_pending_as_incomplete(repo, monkeypatch, capsys):
+    from code_review_graph import cli
+
+    build_or_update_graph(full_rebuild=True, repo_root=str(repo), postprocess="none")
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["code-review-graph", "status", "--repo", str(repo), "--json"],
+    )
+
+    cli.main()
+
+    status = json.loads(capsys.readouterr().out)
+    assert status["build_incomplete"] is True
 
 
 def test_watch_batch_after_commit_records_head(repo):

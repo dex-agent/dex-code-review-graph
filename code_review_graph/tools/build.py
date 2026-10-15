@@ -12,6 +12,7 @@ from ..build_state import (
     BUILD_COMPLETE,
     BUILD_IN_PROGRESS,
     BUILD_STATE_KEY,
+    INCOMPLETE_BUILD_STATES,
     POSTPROCESS_PENDING,
     advance_to_postprocess_pending,
     graph_contents_are_complete,
@@ -34,13 +35,8 @@ logger = logging.getLogger(__name__)
 
 
 def build_was_interrupted(store: Any) -> bool:
-    """True when file storage stopped before the graph contents were whole.
-
-    A ``postprocess-pending`` graph has all source rows stored, so a normal
-    update can repair its derived data without forcing a full graph rebuild.
-    Only ``in-progress`` needs a full rebuild to restore missing source rows.
-    """
-    return read_build_state(store) == BUILD_IN_PROGRESS
+    """True when the last build left source or derived data incomplete."""
+    return read_build_state(store) in INCOMPLETE_BUILD_STATES
 
 
 def _run_embedding_refresh(
@@ -636,14 +632,13 @@ def build_or_update_graph(
         if not full_rebuild and not store.has_nodes():
             full_rebuild = True
 
-        # A previous run that died between storing the last file and finishing
-        # post-processing left a current anchor over a half-derived graph.
-        # Trusting the anchor there is exactly what made that damage permanent,
-        # so repair it with a full rebuild instead of believing it.
+        # A previous run that died before post-processing left a current anchor
+        # over a half-derived graph. Preserve the visible incomplete marker,
+        # but only rebuild source files when storage itself was interrupted.
         interrupted = build_was_interrupted(store)
-        if interrupted and not full_rebuild:
+        if not graph_contents_are_complete(read_build_state(store)) and not full_rebuild:
             logger.warning(
-                "Previous build did not finish post-processing; rebuilding to repair it"
+                "Previous build stopped before all source files were stored; rebuilding"
             )
             full_rebuild = True
 
@@ -783,8 +778,14 @@ def build_or_update_graph(
         # incremental path and is a no-op when the state is already advanced.
         advance_to_postprocess_pending(store)
 
-        # Pass changed_files for incremental flow/community detection
-        changed = result.get("changed_files") if not full_rebuild else None
+        # A pending marker means derived tables may be missing across the
+        # whole graph. Recompute them from all stored rows after this source
+        # update, while keeping source parsing incremental.
+        changed = (
+            result.get("changed_files")
+            if not full_rebuild and previous_state != POSTPROCESS_PENDING
+            else None
+        )
         warnings = _run_postprocess(
             store,
             build_result,
@@ -808,10 +809,14 @@ def build_or_update_graph(
         if not build_result.get("postprocess_contended") and postprocess != "none":
             store.set_metadata(BUILD_STATE_KEY, BUILD_COMPLETE)
         elif postprocess == "none" and failed:
-            # A parse failure is already represented by the partial result.
-            # Keep the prior marker so one unparseable file does not turn the
-            # next otherwise-incremental update into a full rebuild.
-            store.set_metadata(BUILD_STATE_KEY, previous_state or "")
+            # A partial update can store some changed rows while another file
+            # fails. Keep derived data visibly pending so a later update can
+            # repair FTS/flows/communities for the rows that were stored.
+            rows_changed = result.get("files_updated", 0) or result.get("files_parsed", 0)
+            store.set_metadata(
+                BUILD_STATE_KEY,
+                POSTPROCESS_PENDING if rows_changed else (previous_state or ""),
+            )
         build_result["repaired_interrupted_build"] = interrupted
         return build_result
     finally:
