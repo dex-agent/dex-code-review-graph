@@ -6437,7 +6437,7 @@ class CodeParser:
                 for child in node.children:
                     walk(
                         child, env, class_fields, current_class,
-                        current_function, depth + 1,
+                        current_function, depth + 1, instance_receiver_name,
                     )
                 bind_targets(
                     node.child_by_field_name("left"),
