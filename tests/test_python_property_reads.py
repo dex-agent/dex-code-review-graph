@@ -195,3 +195,34 @@ def test_property_store_targets_are_not_reads_but_augmented_assignment_is(
         assert property_read_lines == {augmented_assignment_line}
     finally:
         store.close()
+
+
+def test_property_reads_skip_ambiguous_same_named_classes(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    module = root / "models.py"
+    module.write_text(
+        "class C:\n"
+        "    @property\n"
+        "    def value(self) -> str:\n"
+        "        return 'top'\n\n"
+        "    def read_top(self) -> str:\n"
+        "        return self.value\n\n"
+        "class Outer:\n"
+        "    class C:\n"
+        "        @property\n"
+        "        def value(self) -> int:\n"
+        "            return 1\n\n"
+        "        def read_nested(self) -> int:\n"
+        "            return self.value\n",
+        encoding="utf-8",
+    )
+
+    _, edges = CodeParser(repo_root=root).parse_file(module)
+
+    property_reads = [
+        edge
+        for edge in edges
+        if edge.extra and edge.extra.get("python_property_read")
+    ]
+    assert property_reads == []

@@ -6228,6 +6228,7 @@ class CodeParser:
         module_bindings: dict[str, set[str]] = {}
         imported_names: set[str] = set()
         class_names: set[str] = set()
+        ambiguous_property_classes: set[str] = set()
         symbol_origins: dict[str, str] = {}
         symbol_names: dict[str, str] = {}
         local_returns: dict[str, str] = {}
@@ -6246,6 +6247,8 @@ class CodeParser:
                     owner_class = name_node.text.decode(
                         "utf-8", errors="replace",
                     )
+                    if owner_class in class_names:
+                        ambiguous_property_classes.add(owner_class)
                     class_names.add(owner_class)
                 in_function = False
             elif (
@@ -6302,6 +6305,12 @@ class CodeParser:
         scan_declarations(root, None)
         for name in ambiguous_returns:
             local_returns.pop(name, None)
+        if ambiguous_property_classes:
+            property_returns = {
+                key: annotation
+                for key, annotation in property_returns.items()
+                if key[0] not in ambiguous_property_classes
+            }
 
         context = _PyReceiverContext(
             file_path=file_path,
@@ -6710,6 +6719,8 @@ class CodeParser:
             return {}
 
         properties: dict[tuple[str, str], str] = {}
+        class_names: set[str] = set()
+        ambiguous_classes: set[str] = set()
 
         def visit(node, owner_class: Optional[str] = None, in_function: bool = False):
             if node.type == "class_definition":
@@ -6719,6 +6730,10 @@ class CodeParser:
                     if name_node is not None
                     else owner_class
                 )
+                if name_node is not None:
+                    if nested_class in class_names:
+                        ambiguous_classes.add(nested_class)
+                    class_names.add(nested_class)
                 for child in node.children:
                     visit(child, nested_class, False)
                 return
@@ -6745,6 +6760,12 @@ class CodeParser:
                 visit(child, owner_class, in_function)
 
         visit(tree.root_node)
+        if ambiguous_classes:
+            properties = {
+                key: annotation
+                for key, annotation in properties.items()
+                if key[0] not in ambiguous_classes
+            }
         return properties
 
     def _python_expression_class_evidence(
