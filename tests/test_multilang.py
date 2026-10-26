@@ -2629,9 +2629,11 @@ class TestBashParsing:
 
     def test_functions_have_no_parent(self):
         """Bash has no classes so every function should be top-level."""
-        for n in self.nodes:
-            if n.kind == "Function":
-                assert n.parent_name is None
+        
+        functions = [node for node in self.nodes if node.kind == "Function"]
+
+        assert functions
+        assert all(node.parent_name is None for node in functions)
 
     def test_source_creates_import_edge(self):
         """`source ./lib.sh` / `. ./config.sh` should produce IMPORTS_FROM
@@ -4077,10 +4079,13 @@ class TestHCLParsing:
         contains = [e for e in self.edges if e.kind == "CONTAINS"]
         targets = {e.target for e in contains}
         # All non-File nodes should be contained by the file
-        for n in self.nodes:
-            if n.kind != "File":
-                qn = f"{n.file_path}::{n.name}"
-                assert qn in targets, f"missing CONTAINS for {n.name}"
+        non_file_nodes = filter(lambda node: node.kind != "File", self.nodes)
+        expected_targets = set(
+            map(lambda node: f"{node.file_path}::{node.name}", non_file_nodes)
+        )
+
+        assert expected_targets
+        assert expected_targets <= targets
 
     def test_resource_references_variable(self):
         """resource.aws_instance.web references var.instance_type."""
@@ -4561,11 +4566,12 @@ class TestAnsibleTasksParsing:
         file_path_str = str(_TASKS_FILE)
         sources = {e.source for e in self.edges if e.kind == "CONTAINS"}
         assert file_path_str in sources
-
+    
     def test_tasks_have_no_parent_play(self):
-        for n in self.nodes:
-            if n.kind == "Function":
-                assert n.parent_name is None, f"{n.name} should have no parent_play"
+        tasks = [node for node in self.nodes if node.kind == "Function"]
+
+        assert tasks
+        assert all(task.parent_name is None for task in tasks)
 
 
 @_ANSIBLE_SKIP
