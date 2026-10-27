@@ -4,6 +4,7 @@ import io
 import json
 import logging
 import sys
+import pytest
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -117,11 +118,9 @@ class TestWatchInteraction:
                     mock_db.return_value = MagicMock()
                     with patch("code_review_graph.incremental.watch") as mock_watch:
                         mock_watch.side_effect = RuntimeError("watcher already running")
-                        try:
+                        with pytest.raises(SystemExit) as exc_info:
                             cli.main()
-                            assert False, "Expected SystemExit"
-                        except SystemExit as exc:
-                            assert exc.code == 1
+                        assert exc_info.value.code == 1
 
 
 def test_visualize_json_uses_local_export(tmp_path, capsys):
@@ -642,12 +641,9 @@ class TestGraphToolExplicitRepoResolution:
         argv = ["code-review-graph", "search", "x", "--repo", str(bare)]
         with patch.object(sys, "argv", argv):
             with patch.object(cli, "_run_graph_tool_command") as mock_run:
-                try:
+                with pytest.raises(SystemExit) as exc_info:
                     cli.main()
-                    raised = False
-                except SystemExit as exc:
-                    raised = exc.code == 1
-        assert raised
+        assert exc_info.value.code == 1
         mock_run.assert_not_called()
         assert "does not look like a project root" in capsys.readouterr().err
 
