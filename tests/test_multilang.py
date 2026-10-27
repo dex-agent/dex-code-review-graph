@@ -892,10 +892,7 @@ class TestCSharpNamespaceResolution:
             "}\n",
         )
 
-        try:
-            nodes, _ = CodeParser().parse_file(source_file)
-        except RecursionError:
-            pytest.fail("C# namespace discovery overflowed on a deep expression AST")
+        nodes, _ = CodeParser().parse_file(source_file)
 
         file_node = next(node for node in nodes if node.kind == "File")
         assert file_node.extra.get("csharp_namespaces") == [
