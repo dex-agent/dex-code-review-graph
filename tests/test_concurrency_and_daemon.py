@@ -768,8 +768,27 @@ class TestConcurrentAccess:
 
         assert sum(stats.nodes_by_kind.values()) == stats.total_nodes
 
+    @staticmethod
+    def _seed_v1_database(db: Path) -> None:
+        """Create a version 1 database with pending migrations."""
+        seed = sqlite3.connect(str(db))
+        try:
+            seed.executescript(
+                "CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);"
+                "CREATE TABLE nodes (id INTEGER PRIMARY KEY, kind TEXT, name TEXT,"
+                " qualified_name TEXT UNIQUE, file_path TEXT, parent_name TEXT,"
+                " extra TEXT DEFAULT '{}', updated_at REAL);"
+                "CREATE TABLE edges (id INTEGER PRIMARY KEY, kind TEXT,"
+                " source_qualified TEXT, target_qualified TEXT, file_path TEXT,"
+                " extra TEXT DEFAULT '{}', updated_at REAL);"
+                "INSERT INTO metadata (key, value) VALUES ('schema_version', '1');"
+            )
+            seed.commit()
+        finally:
+            seed.close()
+
     def test_concurrent_first_open_should_not_race_in_migrations(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         """Two openers, both past the column check before either alters.
 
@@ -778,24 +797,7 @@ class TestConcurrentAccess:
         fresh database it reproduces on its own roughly one run in five.
         """
         db = tmp_path / "graph.db"
-        # A v1 database: schema in place, every migration still pending.
-        # parent_name and extra are in the base CREATE TABLE and no migration
-        # adds them, so a real v1 database carries both; the backfills from v13
-        # on read them, and a seed without them would fail for that reason
-        # rather than for the race this test is about.
-        seed = sqlite3.connect(str(db))
-        seed.executescript(
-            "CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);"
-            "CREATE TABLE nodes (id INTEGER PRIMARY KEY, kind TEXT, name TEXT,"
-            " qualified_name TEXT UNIQUE, file_path TEXT, parent_name TEXT,"
-            " extra TEXT DEFAULT '{}', updated_at REAL);"
-            "CREATE TABLE edges (id INTEGER PRIMARY KEY, kind TEXT,"
-            " source_qualified TEXT, target_qualified TEXT, file_path TEXT,"
-            " extra TEXT DEFAULT '{}', updated_at REAL);"
-            "INSERT INTO metadata (key, value) VALUES ('schema_version', '1');"
-        )
-        seed.commit()
-        seed.close()
+        self._seed_v1_database(db)
 
         gate = threading.Barrier(2, timeout=30)
         real_has_column = migrations_mod._has_column
@@ -805,7 +807,7 @@ class TestConcurrentAccess:
             result = real_has_column(conn, table, column)
             if (table, column) == ("nodes", "signature"):
                 seen.append("checked")
-                gate.wait()  # both openers have now decided the column is absent
+                gate.wait()
             return result
 
         monkeypatch.setattr(migrations_mod, "_has_column", gated_has_column)
@@ -829,7 +831,6 @@ class TestConcurrentAccess:
         for thread in threads:
             thread.join(timeout=60)
 
-        # Canary: both really reached the check-then-act window.
         assert len(seen) == 2, f"barrier never engaged both openers: {seen}"
         assert errors == [], f"{type(errors[0]).__name__}: {errors[0]}"
 
