@@ -871,8 +871,8 @@ class TestCommunityPrReconciliation:
 
         assert communities[1]["name"] == "services-invoice"
 
-    @pytest.mark.skipif(not IGRAPH_AVAILABLE, reason="igraph not installed")
-    def test_oversized_split_uses_member_names_and_real_cohesion(self):
+    @staticmethod
+    def _make_oversized_split_scenario():
         nodes = [
             *[
                 _community_node(i, f"services/auth.py::auth_{name}")
@@ -883,8 +883,10 @@ class TestCommunityPrReconciliation:
                 for i, name in enumerate(("load", "save", "delete"), start=4)
             ],
         ]
+
         left = [node.qualified_name for node in nodes[:3]]
         right = [node.qualified_name for node in nodes[3:]]
+
         edges = [
             _community_edge(1, left[0], left[1]),
             _community_edge(2, left[0], left[2]),
@@ -894,6 +896,7 @@ class TestCommunityPrReconciliation:
             _community_edge(6, right[1], right[2]),
             _community_edge(7, left[0], right[0]),
         ]
+
         parent = {
             "id": 7,
             "name": "services-parent",
@@ -902,6 +905,12 @@ class TestCommunityPrReconciliation:
             "members": [node.qualified_name for node in nodes],
             "dominant_language": "python",
         }
+
+        return nodes, edges, parent, left, right
+
+    @pytest.mark.skipif(not IGRAPH_AVAILABLE, reason="igraph not installed")
+    def test_oversized_split_uses_member_names_and_real_cohesion(self):
+        nodes, edges, parent, left, right = self._make_oversized_split_scenario()
 
         split = communities_module._split_oversized(
             [parent], nodes, edges, threshold_pct=0.1, min_split_size=2
@@ -919,6 +928,7 @@ class TestCommunityPrReconciliation:
                 for edge_id in range(8, 48)
             ],
         ]
+
         duplicate_split = communities_module._split_oversized(
             [parent],
             nodes,
@@ -926,6 +936,7 @@ class TestCommunityPrReconciliation:
             threshold_pct=0.1,
             min_split_size=2,
         )
+
         expected_partition = {
             frozenset(community["members"])
             for community in split
