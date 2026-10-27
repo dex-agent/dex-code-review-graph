@@ -570,52 +570,50 @@ class TestCommunities:
     def test_igraph_available_is_bool(self):
         """IGRAPH_AVAILABLE is a boolean."""
         assert isinstance(IGRAPH_AVAILABLE, bool)
-
-    def test_leiden_fallback_to_file_based(self):
-        """When Leiden produces 0 communities (all < min_size), fall back to file-based."""
-        # Seed nodes with only CONTAINS edges (no CALLS/IMPORTS -- sparse graph)
+    
+    def _seed_sparse_graph_for_fallback(self):
+        """Prepare a sparse graph containing only CONTAINS edges."""
         self.store.upsert_node(
             NodeInfo(
                 kind="File", name="a.py", file_path="a.py",
                 line_start=1, line_end=100, language="python",
             ), file_hash="a1"
         )
-        self.store.upsert_node(
-            NodeInfo(
-                kind="Function", name="f1", file_path="a.py",
-                line_start=1, line_end=10, language="python",
-                parent_name=None,
-            ), file_hash="a1"
-        )
-        self.store.upsert_node(
-            NodeInfo(
-                kind="Function", name="f2", file_path="a.py",
-                line_start=11, line_end=20, language="python",
-                parent_name=None,
-            ), file_hash="a1"
-        )
-        self.store.upsert_node(
-            NodeInfo(
-                kind="Function", name="f3", file_path="a.py",
-                line_start=21, line_end=30, language="python",
-                parent_name=None,
-            ), file_hash="a1"
-        )
-        self.store.upsert_edge(
-            EdgeInfo(kind="CONTAINS", source="a.py", target="a.py::f1",
-                     file_path="a.py", line=1)
-        )
-        self.store.upsert_edge(
-            EdgeInfo(kind="CONTAINS", source="a.py", target="a.py::f2",
-                     file_path="a.py", line=11)
-        )
-        self.store.upsert_edge(
-            EdgeInfo(kind="CONTAINS", source="a.py", target="a.py::f3",
-                     file_path="a.py", line=21)
-        )
-        # With high min_size, Leiden may produce tiny clusters that get dropped.
-        # The fallback to file-based should still produce results.
+
+        for name, start, end in (
+            ("f1", 1, 10),
+            ("f2", 11, 20),
+            ("f3", 21, 30),
+        ):
+            self.store.upsert_node(
+                NodeInfo(
+                    kind="Function",
+                    name=name,
+                    file_path="a.py",
+                    line_start=start,
+                    line_end=end,
+                    language="python",
+                    parent_name=None,
+                ), file_hash="a1"
+            )
+
+        for name, line in (("f1", 1), ("f2", 11), ("f3", 21)):
+            self.store.upsert_edge(
+                EdgeInfo(
+                    kind="CONTAINS",
+                    source="a.py",
+                    target=f"a.py::{name}",
+                    file_path="a.py",
+                    line=line,
+                )
+            )
+
+    def test_leiden_fallback_to_file_based(self):
+        """When Leiden produces 0 communities (all < min_size), fall back to file-based."""
+        self._seed_sparse_graph_for_fallback()
+
         result = detect_communities(self.store, min_size=2)
+
         assert isinstance(result, list)
         assert len(result) >= 1
 
