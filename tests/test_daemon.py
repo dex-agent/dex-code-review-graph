@@ -250,8 +250,12 @@ class TestConfigParsing:
         config_file.write_text("[daemon]\n", encoding="utf-8")
 
         add_repo_to_config(str(repo_a), alias="taken", config_path=config_file)
+        original_config = config_file.read_text(encoding="utf-8")
+
         with pytest.raises(ValueError, match="already in use"):
             add_repo_to_config(str(repo_b), alias="taken", config_path=config_file)
+
+        assert config_file.read_text(encoding="utf-8") == original_config
 
     def test_remove_repo_by_path(self, sample_config_file):
         """Removes a repo by its path."""

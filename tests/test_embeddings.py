@@ -165,6 +165,7 @@ class TestEmbeddingStore:
             store = EmbeddingStore(db)
             # Should not raise even if node doesn't exist
             store.remove_node("nonexistent::func")
+            assert store.count() == 0
             store.close()
 
     def test_embed_nodes_commits_each_batch(self, tmp_path):
