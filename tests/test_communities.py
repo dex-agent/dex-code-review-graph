@@ -948,15 +948,13 @@ class TestCommunityPrReconciliation:
 
         assert duplicate_partition == expected_partition
 
-    @pytest.mark.parametrize("bare_subjects", [False, True])
-    @pytest.mark.skipif(not IGRAPH_AVAILABLE, reason="igraph not installed")
-    def test_oversized_split_keeps_tests_with_their_subjects(
-        self, bare_subjects: bool
-    ):
+    @staticmethod
+    def _make_split_scenario_with_tests(bare_subjects):
         production = [
             _community_node(i, f"src/feature.py::feature_{i}")
             for i in range(1, 5)
         ]
+
         tests = [
             _community_node(
                 i + 4,
@@ -966,9 +964,11 @@ class TestCommunityPrReconciliation:
             )
             for i in range(1, 5)
         ]
+
         nodes = [*production, *tests]
         edges: list[GraphEdge] = []
         edge_id = 1
+
         for group in (production, tests):
             for left_idx, left_node in enumerate(group):
                 for right_node in group[left_idx + 1:]:
@@ -980,6 +980,7 @@ class TestCommunityPrReconciliation:
                         )
                     )
                     edge_id += 1
+
         for production_node, test_node in zip(production, tests):
             edges.append(
                 _community_edge(
@@ -994,6 +995,7 @@ class TestCommunityPrReconciliation:
                 )
             )
             edge_id += 1
+
         parent = {
             "id": 8,
             "name": "feature-parent",
@@ -1003,9 +1005,21 @@ class TestCommunityPrReconciliation:
             "dominant_language": "python",
         }
 
+        return production, tests, nodes, edges, parent
+
+    @pytest.mark.parametrize("bare_subjects", [False, True])
+    @pytest.mark.skipif(not IGRAPH_AVAILABLE, reason="igraph not installed")
+    def test_oversized_split_keeps_tests_with_their_subjects(
+        self, bare_subjects: bool
+    ):
+        production, tests, nodes, edges, parent = (
+            self._make_split_scenario_with_tests(bare_subjects)
+        )
+
         split = communities_module._split_oversized(
             [parent], nodes, edges, threshold_pct=0.1, min_split_size=2
         )
+
         member_to_community = {
             member: index
             for index, community in enumerate(split)
