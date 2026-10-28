@@ -442,9 +442,8 @@ class TestRefreshWiring:
         finally:
             graph.close()
 
-    def test_mcp_build_and_postprocess_forward_exact_scope(self):
-        from code_review_graph import main as crg_main
-
+    @staticmethod
+    def _invoke_mcp_tools_with_embedding_scope(crg_main):
         build_tool = getattr(
             crg_main.build_or_update_graph_tool,
             "fn",
@@ -455,6 +454,7 @@ class TestRefreshWiring:
             "fn",
             crg_main.run_postprocess_tool,
         )
+
         with (
             patch.object(
                 crg_main,
@@ -486,6 +486,13 @@ class TestRefreshWiring:
                     embedding_model="test-model",
                 )
             )
+
+        return build, postprocess
+
+    def test_mcp_build_and_postprocess_forward_exact_scope(self):
+        from code_review_graph import main as crg_main
+
+        build, postprocess = self._invoke_mcp_tools_with_embedding_scope(crg_main)
 
         assert build.call_args.kwargs["embedding_provider"] == "local"
         assert build.call_args.kwargs["embedding_model"] == "test-model"

@@ -737,8 +737,8 @@ class TestWatchDaemon:
             mock_alpha.terminate.assert_not_called()
             mock_beta.terminate.assert_not_called()
 
-    def test_reconcile_update_path(self, daemon_env, tmp_path):
-        """Same alias but different path = register, build if needed, terminate + new child."""
+    @staticmethod
+    def _prepare_reconcile_path_change(daemon_env, tmp_path):
         daemon = daemon_env["daemon"]
         config = daemon_env["config"]
         daemon._state_path = daemon_env["tmp_path"] / "daemon-state.json"
@@ -746,13 +746,14 @@ class TestWatchDaemon:
         mock_alpha = MagicMock()
         mock_alpha.pid = 100
         mock_alpha.poll.return_value = None
+
         mock_beta = MagicMock()
         mock_beta.pid = 200
         mock_beta.poll.return_value = None
+
         daemon._current_repos = {r.alias: r for r in config.repos}
         daemon._children = {"alpha": mock_alpha, "beta": mock_beta}
 
-        # Create a new repo directory for alpha with a different path (no graph.db)
         new_repo = tmp_path / "repo-a-v2"
         new_repo.mkdir()
         (new_repo / ".git").mkdir()
@@ -765,6 +766,14 @@ class TestWatchDaemon:
                 WatchRepo(path=str(new_repo), alias="alpha"),
                 config.repos[1],
             ],
+        )
+
+        return daemon, mock_alpha, new_repo, updated_config
+
+    def test_reconcile_update_path(self, daemon_env, tmp_path):
+        """Same alias but different path = register, build if needed, terminate + new child."""
+        daemon, mock_alpha, new_repo, updated_config = (
+            self._prepare_reconcile_path_change(daemon_env, tmp_path)
         )
 
         with (
@@ -782,7 +791,9 @@ class TestWatchDaemon:
             daemon.reconcile(updated_config)
 
             # alpha should be registered at the new path
-            mock_registry.register.assert_called_once_with(str(new_repo), alias="alpha")
+            mock_registry.register.assert_called_once_with(
+                str(new_repo), alias="alpha"
+            )
 
             # alpha should be built (new path has no graph.db)
             assert mock_run.call_count == 1
