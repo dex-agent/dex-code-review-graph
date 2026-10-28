@@ -1644,6 +1644,28 @@ class TestWatcherUnderStress:
             for path in (repo / "src").rglob("*.py")
         }
 
+    @staticmethod
+    def _apply_rapid_file_changes(repo: Path) -> None:
+        """Create, delete, modify and rename files in rapid succession."""
+        src = repo / "src"
+
+        for i in range(40):
+            (src / f"new{i}.py").write_text(
+                f"def n{i}(): return {i}\n",
+                encoding="utf-8",
+            )
+
+        for i in range(20):
+            (src / f"new{i}.py").unlink()
+
+        for i in range(20, 30):
+            (src / f"new{i}.py").write_text(
+                f"def n{i}(): return {i} * 2\n",
+                encoding="utf-8",
+            )
+
+        (src / "mod0.py").rename(src / "renamed0.py")
+
     def test_rapid_create_modify_delete_rename_converges(self, tmp_path: Path) -> None:
         """Forty creations, twenty deletions and a rename, then convergence.
 
@@ -1661,22 +1683,12 @@ class TestWatcherUnderStress:
 
         proc, health_dir = self._start_watcher(repo, env)
         try:
-            src = repo / "src"
-            for i in range(40):
-                (src / f"new{i}.py").write_text(f"def n{i}(): return {i}\n", encoding="utf-8")
-            for i in range(20):
-                (src / f"new{i}.py").unlink()
-            for i in range(20, 30):  # modify ten survivors
-                (src / f"new{i}.py").write_text(
-                    f"def n{i}(): return {i} * 2\n", encoding="utf-8"
-                )
-            (src / "mod0.py").rename(src / "renamed0.py")
+            self._apply_rapid_file_changes(repo)
 
             expected = self._disk_files(repo)
-            # Canary: the churn really reshaped the tree, so convergence is a
-            # claim about the watcher rather than about nothing having moved.
             assert len(expected) == 30, sorted(expected)
             assert expected != before
+
             assert _wait_for(
                 lambda: self._graph_files(repo) == expected, timeout=60
             ), (
@@ -1684,18 +1696,18 @@ class TestWatcherUnderStress:
                 f"{sorted(expected - self._graph_files(repo))} "
                 f"extra={sorted(self._graph_files(repo) - expected)}"
             )
-            # Canary: the watcher observed real events and still calls itself
-            # live. Health is republished on a timer, so poll rather than
-            # read once.
+
             assert _wait_for(
                 lambda: self._health(health_dir).get("events_seen", 0) > 0
             ), self._health(health_dir)
+
             health = self._health(health_dir)
             assert health["observer_alive"] is True
             assert health["dead_threads"] == []
             assert proc.poll() is None, "watcher exited during churn"
         finally:
             output = self._stop(proc)
+
         assert "Traceback" not in output, output[-2000:]
         assert _integrity(_db_path(repo)) == "ok"
 
