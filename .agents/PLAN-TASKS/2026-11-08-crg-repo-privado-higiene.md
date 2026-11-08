@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: RASCUNHO
+status: CONCLUIDO
 owner: sprinter
 date: '2026-11-08'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -106,9 +106,9 @@ Garimpo por categorias. Configuracao, backups, transacoes e bancos sao estado lo
 
 ## TASKs
 
-- [ ] A-01 — exclusoes verificadas
-- [ ] A-02 — suite e continuidade verificadas
-- [ ] A-03 — commit e readback privado verificados
+- [x] A-01 — exclusoes e preservacao no disco verificadas, stage sem padrao de segredo. Prova `evd_20261108131350755_0114_0009`.
+- [x] A-02 — 38 testes e Ruff verdes, continuidade reconciliada. Prova `evd_20261108131350810_0115_0011`.
+- [x] A-03 — Git e API confirmam private=true e SHA e326cfd49ebdca79f82b479e5932423f716b680e igual ao checkout. Prova `evd_20261108131413211_0116_0013`.
 
 ## Riscos e gates
 
@@ -117,3 +117,13 @@ Chato pergunta se um ignore esconderia evidencia util. Resposta: permitir explic
 ## Validacao
 
 Revisao causal da entrada: cada task produz o criterio associado. ER-01 protege os dados locais, ER-02 verifica o comportamento ja corrigido, ER-03 prova o destino real. goal_start_readiness=ready; causal_semantics_reviewed=true. SPT Revisor e Ponytail: desenho apto com readback e sem descarte.
+
+## Execucao e meta-analise final
+
+Flow `flow_20261108130638616_0107_0001`. Bead `crg-pr9` fechado. Git publicou a correcao em `b987efa` e a organizacao em `e326cfd`. O CLI Beads gerou automaticamente `8b1b76c` e `e391cec` ao trocar o remoto de sincronizacao. O primeiro tambem capturou as remocoes do indice ja preparadas, preservando os dois arquivos no disco. Diff desses commits conferido. Dolt push concluiu depois da inicializacao do main remoto.
+
+Chato e Ponytail conferiram origem, destino, escopo e recuperabilidade. Achado concreto foi o backup com credencial, excluido e preservado. O aviso de path do README foi interrogado na fonte e corresponde a exemplos genericos. E se o ignore ocultar fonte util? A allowlist inclui Trilhos, mapas e recibos escolhidos; todos os alvos dos INDEX versionados foram conferidos. E se o Git mostrar limpo com lixo local? O inventario bruto continua em receipts locais e a classificacao esta em docs/EDICAO-DEX.md. Nenhum arquivo local foi descartado.
+
+Fiscal sem RED mecanico. Modo strict mantem tres categorias nao avaliadas pelo auto-discovery e um aviso P1 de credencial; nao foi declarado verde integral. Avaliacao de receita recomenda reusar fechamento-corte no proximo corte, sem criar outro pacote. CI remoto retornou zero runs, portanto a prova de teste deste corte e local. Risco residual de produto: runtime MCP instalado ainda anterior ao fix. Proxima acao unica de seguranca: dono da conta confirma rotacao antes de reutilizar a credencial historica. Promocao MCP segue no ledger para o mantenedor.
+
+Fechamento oficial em 2026-11-08: checklist 3/3, verdict `vrd_20261108131605649_0126_0025` com status `pronto_com_ressalvas`, flow `complete` e blockers vazios. Revisao `evd_20261108131538075_0121_0019`. Garimpo resolveu seis candidatos como ledger-only por serem estados operacionais ja rastreados, com zero novas memorias fracas/duplicadas. A consolidacao documental deste fechamento recebe commit proprio apos o verdict.
