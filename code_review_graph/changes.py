@@ -421,7 +421,19 @@ def analyze_changes(
 
     # Map changes to nodes.
     if changed_ranges:
-        changed_nodes = map_changes_to_nodes(store, changed_ranges)
+        root = Path(repo_root) if repo_root is not None else Path()
+        requested_paths = {
+            os.path.normcase(os.path.normpath(root / path))
+            for path in changed_files
+        }
+        # An empty intersection is a known empty recut, not a missing diff.
+        changed_nodes = map_changes_to_nodes(
+            store,
+            {
+                path: ranges for path, ranges in changed_ranges.items()
+                if os.path.normcase(os.path.normpath(root / path)) in requested_paths
+            },
+        )
     else:
         # Fallback: all nodes in changed files.
         changed_nodes = []
