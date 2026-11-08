@@ -1,5 +1,9 @@
 # Documentation Index
 
+↩ [Nivel acima](../INDEX.md)
+
+- [EDICAO-DEX.md](EDICAO-DEX.md) — origem, organizacao e corte privado da casa.
+
 - [USAGE.md](USAGE.md) -- How to install and use
 - [FAQ.md](FAQ.md) -- How it compares to LSP, RAG, grep, and similar tools; when not to use it
 - [FEATURES.md](FEATURES.md) -- What's included, changelog

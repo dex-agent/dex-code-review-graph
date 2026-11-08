@@ -1,0 +1,87 @@
+{
+  "schema": "project.playbook.index.v1",
+  "generated_by": "tools/playbook/generate-playbook.py",
+  "authority": "derived_projection",
+  "repo_name": "code-review-graph",
+  "sources_revision": "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f",
+  "sent_revision": "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f",
+  "rules": [
+    {
+      "seal": "pb-8572b9fc",
+      "locator": "PENDENTES-LEDGER",
+      "title": "Leitura obrigatoria (bootstrap)",
+      "gatilho": "5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)",
+      "extrato": "1. `AGENTS.md`",
+      "rotas": [
+        "`AGENTS.md`",
+        "`.agents/ACTIVE.md`",
+        "`.agents/HANDOFF.md`",
+        "`.agents/PLAN-TASKS/ACTIVE.md`"
+      ],
+      "fonte": "AGENTS.md#L147-L155"
+    }
+  ],
+  "mesa": {
+    "status": "",
+    "escopo": "",
+    "governance_version": "",
+    "secoes": [],
+    "total_derived": 0
+  },
+  "runbook": [],
+  "nao_decodificadas": [
+    {
+      "titulo": "Quick Reference",
+      "ancora": "AGENTS.md#L5"
+    },
+    {
+      "titulo": "Non-Interactive Shell Commands",
+      "ancora": "AGENTS.md#L15"
+    },
+    {
+      "titulo": "Beads Issue Tracker",
+      "ancora": "AGENTS.md#L40"
+    },
+    {
+      "titulo": "Session Completion",
+      "ancora": "AGENTS.md#L59"
+    },
+    {
+      "titulo": "MCP Tools: code-review-graph",
+      "ancora": "AGENTS.md#L87"
+    },
+    {
+      "titulo": "Graphify local",
+      "ancora": "AGENTS.md#L125"
+    },
+    {
+      "titulo": "Continuidade local (leitura obrigatória antes de trabalho não trivial)",
+      "ancora": "AGENTS.md#L140"
+    },
+    {
+      "titulo": "Regras",
+      "ancora": "workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L3"
+    },
+    {
+      "titulo": "Limites",
+      "ancora": "workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L27"
+    }
+  ],
+  "fontes": [
+    {
+      "caminho": "AGENTS.md",
+      "sha256": "c9ed3751d23b307949a86f006de4b7a29c3dce31d2871b7fbf855e2a1db9e515",
+      "enviado": true
+    },
+    {
+      "caminho": ".agents/napkin.md",
+      "sha256": "c9a5048699f7b1d24cf0591c110919b2e5b0d3d4d976ff58bb66f3ef2327afa0",
+      "enviado": true
+    },
+    {
+      "caminho": "workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md",
+      "sha256": "c17e9297ebcb43f01558f95fc11c84eb2fc8f33171dbe4d0cd2df16ab12a7e05",
+      "enviado": true
+    }
+  ]
+}

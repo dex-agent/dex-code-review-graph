@@ -121,3 +121,45 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 2. Use `detect_changes_tool` for code review.
 3. Use `get_affected_flows_tool` to understand impact.
 4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+
+## Graphify local
+
+<!-- GRAPHIFY-LOCAL:START -->
+Catálogo automático; preserve regras humanas fora destes marcadores.
+
+- **Grafo registrado**: `agents-graphify-gatilhos-crg-2026-07-31` (16 nós, 13 arestas, 8 comunidades, 0 arquivos)
+  - Localizador: `GRAPHIFY-LOCAL::agents-graphify-gatilhos-crg-2026-07-31`
+  - Status: `ativo`
+  - Graph: `.agents/GRAPHIFY/gatilhos-crg-2026-07-31/graphify-out/graph.json`
+  - Report: `.agents/GRAPHIFY/gatilhos-crg-2026-07-31/graphify-out/GRAPH_REPORT.md`
+  - Consulta: `graphify query "<pergunta>" --graph ".agents/GRAPHIFY/gatilhos-crg-2026-07-31/graphify-out/graph.json"`
+
+- Todo achado Graphify é `source: graphify` até confirmação por `rg` ou fonte viva.
+<!-- GRAPHIFY-LOCAL:END -->
+
+## Continuidade local (leitura obrigatória antes de trabalho não trivial)
+
+- Leia `.agents/ACTIVE.md`
+- Leia `.agents/HANDOFF.md`
+- Leia `.agents/napkin.md` — runbook tático ativo: gotchas, comandos confiáveis, "Faça em vez disso"
+- Leia `.agents/GATILHOS-VIVOS.md` — lembrança quente: gatilhos de reuso da janela de contexto atual
+
+## Leitura obrigatoria (bootstrap)
+1. `AGENTS.md`
+2. `.agents/ACTIVE.md`
+3. `.agents/HANDOFF.md`
+4. `.agents/PLAN-TASKS/ACTIVE.md`
+5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)
+6. `.agents/napkin.md`
+
+<!-- playbook-pointer:start -->
+## Playbook (entrada externa)
+
+Este repo publica `PLAYBOOK.md` e `PLAYBOOK.index.json` na raiz: projecao GERADA
+das regras de decisao (fontes declaradas em `tools/playbook/playbook-sources.txt`).
+Nao editar a mao; a decisao completa mora na fonte citada.
+Regenerar apos editar fonte:
+`python -B tools/playbook/generate-playbook.py --repo . --write`.
+Verificar frescor: mesmo comando com `--check` (exit 0 limpo, exit 2 drift).
+Ativar trava de commit: `git config core.hooksPath tools/playbook/hooks`.
+<!-- playbook-pointer:end -->

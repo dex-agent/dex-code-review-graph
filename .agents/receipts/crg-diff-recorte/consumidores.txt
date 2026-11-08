@@ -1,0 +1,2 @@
+both: changes=['a'], context=['a'], risk=0.3
+outside-only: changes=[], context=[], risk=0.0

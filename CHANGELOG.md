@@ -18,6 +18,10 @@
 
 ### Fixed
 
+- Dex local edition: restrict Git diff ranges to explicitly requested files in
+  the shared change analyzer, including an empty requested intersection.
+  Two Git-backed regression cases cover both changed-file scenarios.
+
 - GitHub Copilot auto-detection now requires the Copilot extension and also
   recognizes the extension bundled with released VS Code installations.
 - Added a post-index Python import resolver using unique module suffixes, so
