@@ -5,12 +5,13 @@
 
 ## Abertas
 - [ ] CRG-CREDENCIAL-BACKUP [P1] — Confirmar rotacao da credencial exposta em backup historico local — quando: Antes de reutilizar a credencial historica; backup excluido do Git neste corte — owner: dono-da-conta
-- [ ] CRG-PROMOCAO-MCP [P2] — Promover a correcao testada para o runtime MCP instalado — quando: No proximo corte de instalacao apos o repo privado publicado — owner: mantenedor-CRG
 - [ ] CRG-UPSTREAM-GATES [P2] — Revalidar refactor, uninstall e hooks Windows antes de habilitar no perfil real — quando: Antes de habilitar as operacoes no perfil real; achados PARK-20260728-02 — owner: mantenedor-CRG
 - [ ] CRG-GRAPHIFY-HISTORICO [P2] — Regenerar Graphify com corpus atual e confirmar labeling e versao — quando: Na proxima consulta relacional que exigir grafo atual; antes de citar o corte antigo — owner: mantenedor-Graphify
 - [ ] CRG-ZCODE-CONTRATO [P2] — Provar contrato de cliente ZCode com fonte e tools-list real — quando: Antes de declarar compatibilidade ou editar configuracao ZCode — owner: mantenedor-ZCode
+- [ ] CRG-CLI-RECORTE [P2] — Expor recorte por arquivo em detect-changes na CLI com prova Git e JSON — quando: No proximo corte funcional da edicao Dex — owner: mantenedor-CRG
 ## Adiadas
 ## Supersedidas
+- [~] CRG-PROMOCAO-MCP [P2] — Promover a correcao testada para o runtime MCP instalado — quando: No proximo corte de instalacao apos o repo privado publicado — motivo: Dono definiu CLI como interface principal da edicao Dex; priorizar o recorte no executavel — supercedido por: CRG-CLI-RECORTE — owner: mantenedor-CRG
 ## Consumidas
 <!-- PENDENTES:JSON:START -->
 {
@@ -36,17 +37,17 @@
     {
       "id": "CRG-PROMOCAO-MCP",
       "titulo": "Promover a correcao testada para o runtime MCP instalado",
-      "status": "aberta",
+      "status": "supersedida",
       "nivel": "P2",
       "quando": "No proximo corte de instalacao apos o repo privado publicado",
       "data_limite": null,
       "owner": "mantenedor-CRG",
       "prova": null,
-      "motivo": null,
-      "supercedido_por": null,
+      "motivo": "Dono definiu CLI como interface principal da edicao Dex; priorizar o recorte no executavel",
+      "supercedido_por": "CRG-CLI-RECORTE",
       "criado_em": "2026-11-08",
       "concluida_em": null,
-      "atualizado_em": null
+      "atualizado_em": "2026-11-08"
     },
     {
       "id": "CRG-UPSTREAM-GATES",
@@ -86,6 +87,21 @@
       "quando": "Antes de declarar compatibilidade ou editar configuracao ZCode",
       "data_limite": null,
       "owner": "mantenedor-ZCode",
+      "prova": null,
+      "motivo": null,
+      "supercedido_por": null,
+      "criado_em": "2026-11-08",
+      "concluida_em": null,
+      "atualizado_em": null
+    },
+    {
+      "id": "CRG-CLI-RECORTE",
+      "titulo": "Expor recorte por arquivo em detect-changes na CLI com prova Git e JSON",
+      "status": "aberta",
+      "nivel": "P2",
+      "quando": "No proximo corte funcional da edicao Dex",
+      "data_limite": null,
+      "owner": "mantenedor-CRG",
       "prova": null,
       "motivo": null,
       "supercedido_por": null,
