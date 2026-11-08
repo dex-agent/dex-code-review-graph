@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
+- Fechamento oficial: flow `flow_20261108130638616_0107_0001` completo; verdict `vrd_20261108131605649_0126_0025` pronto com ressalvas, checklist 3/3. Git e Dolt publicados. Prova local de 38 testes, Ruff e Playbook; API confirmou visibilidade privada.
+
 - Corte corrente: [repo privado e higiene](PLAN-TASKS/2026-11-08-crg-repo-privado-higiene.md). A autorizacao do dono cobre criacao, commit e push. `origin` privado `dex-agent/dex-code-review-graph`; origem publica preservada em `upstream`.
 - Separacao: fontes e registros curados versionados. Config local `.codex/config.toml`, interacoes Beads, `.ppirtv`, backups e Graphify bruto ficam no disco e ignorados. Um backup historico contem credencial. Verificacao de rotacao no ledger com dono e quando.
 

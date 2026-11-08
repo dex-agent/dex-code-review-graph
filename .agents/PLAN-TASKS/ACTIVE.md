@@ -1,6 +1,6 @@
 # Trilho ativo
 
-- Atual: [repo privado e higiene](2026-11-08-crg-repo-privado-higiene.md), bead `crg-pr9`, flow `flow_20261108130638616_0107_0001`. Publicacao e higiene autorizadas em 2026-11-08. Owner: sessao executora.
+- Atual: [repo privado e higiene](2026-11-08-crg-repo-privado-higiene.md), checklist 3/3, bead `crg-pr9` fechado, flow `flow_20261108130638616_0107_0001` completo. Verdict `vrd_20261108131605649_0126_0025` pronto com ressalvas. Publicacao Git e Dolt comprovadas em 2026-11-08. Owner: mantenedor CRG.
 
 - Último corte: [recorte do diff](2026-11-07-crg-diff-recorte.md) — checklist 3/3, flow completo, veredito `vrd_20261107233038858_0102_0030` pronto com ressalvas. O registro abaixo preserva a replicação histórica.
 
