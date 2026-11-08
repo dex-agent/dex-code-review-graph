@@ -1,0 +1,99 @@
+{
+  "command": [
+    "code-review-graph",
+    "detect-changes",
+    "--repo",
+    ".agents\\TEMP\\crg-cli-diff-real-tmtmphhw\\repo",
+    "--base",
+    "e84e86d31910a4275531f05f67be32f6df4a3dd9",
+    "--files",
+    "code_review_graph/tools/query.py"
+  ],
+  "cli_revision": "bccd04a76f49f0af72ecb4f4c293b5dd12bb7b53",
+  "target": "573580bdb06cac6d34b075812d5045163e1cb244",
+  "base": "e84e86d31910a4275531f05f67be32f6df4a3dd9",
+  "git_hunks": [
+    [
+      408,
+      408
+    ],
+    [
+      410,
+      413
+    ],
+    [
+      417,
+      417
+    ]
+  ],
+  "expected": [
+    {
+      "name": "query_graph",
+      "file": "code_review_graph/tools/query.py",
+      "start": 228,
+      "end": 690,
+      "hunks": [
+        [
+          408,
+          408
+        ],
+        [
+          410,
+          413
+        ],
+        [
+          417,
+          417
+        ]
+      ]
+    }
+  ],
+  "returned": [
+    {
+      "name": "query_graph",
+      "file": "code_review_graph/tools/query.py",
+      "start": 228,
+      "end": 690,
+      "hunks": [
+        [
+          408,
+          408
+        ],
+        [
+          410,
+          413
+        ],
+        [
+          417,
+          417
+        ]
+      ]
+    }
+  ],
+  "matched": [
+    {
+      "name": "query_graph",
+      "file": "code_review_graph/tools/query.py",
+      "start": 228,
+      "end": 690,
+      "hunks": [
+        [
+          408,
+          408
+        ],
+        [
+          410,
+          413
+        ],
+        [
+          417,
+          417
+        ]
+      ]
+    }
+  ],
+  "missing": [],
+  "extra": [],
+  "test_gaps": [],
+  "affected_flows": []
+}

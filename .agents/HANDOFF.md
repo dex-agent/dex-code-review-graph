@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
+- [Piloto CLI em diff real](PLAN-TASKS/2026-11-08-crg-cli-diff-real.md): build no pai de 573580b, update isolado e comparação Git/AST/JSON. `query_graph` cobre os três hunks. O teste do ramo `references_to` passou e faltou em `tests_for`. Bead `crg-j6z`, owner mantenedor CRG, próximo corte.
+
 - Direcao atual: [CLI como interface principal](../docs/EDICAO-DEX.md#direcao-do-produto). `CRG-CLI-RECORTE` provado pelo executavel em `1e12485`; [Trilho](PLAN-TASKS/2026-11-08-crg-cli-recorte.md) e [mapas](MAPAS/INDEX.md). Use o executavel do checkout para reproduzir as provas.
 
 - Fechamento oficial do recorte CLI: flow `flow_20261108185314975_0133_0033` completo, veredito `vrd_20261108190531226_0153_0059` pronto com ressalvas, checklist 3/3. Produto `1e12485` e mapas `cd179cf` confirmados no main privado. Suite isolada 222 passou, 1 skip previsto. Git e Dolt publicados.

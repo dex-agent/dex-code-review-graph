@@ -1,0 +1,16 @@
+diff --git a/code_review_graph/tools/query.py b/code_review_graph/tools/query.py
+index 5e67212..cdb5e4e 100644
+--- a/code_review_graph/tools/query.py
++++ b/code_review_graph/tools/query.py
+@@ -408 +408 @@ def query_graph(
+-            seen_sources: set[str] = set()
++            seen_reference_sources: set[str] = set()
+@@ -410 +410,4 @@ def query_graph(
+-                if e.kind != "REFERENCES" or e.source_qualified in seen_sources:
++                if (
++                    e.kind != "REFERENCES"
++                    or e.source_qualified in seen_reference_sources
++                ):
+@@ -414 +417 @@ def query_graph(
+-                    seen_sources.add(e.source_qualified)
++                    seen_reference_sources.add(e.source_qualified)
