@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: RASCUNHO
+status: CONCLUIDO
 owner: sprinter
 date: '2026-11-08'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -114,7 +114,7 @@ banco proprio construido pelo executavel antes de cada comparacao.
 
 - [x] A-01 — RED dos dois casos, rejeicao de --files. Prova `evd_20261108190035825_0141_0043`.
 - [x] A-02 — Quatro casos Git/JSON passaram, 222 testes na suite isolada e Ruff verde. Prova `evd_20261108190035866_0142_0045`.
-- [ ] A-03 — tres mapas, commit, push e readback
+- [x] A-03 — tres mapas e push privado com HEAD Git/API igual em `cd179cf`. Prova `evd_20261108190508466_0152_0057`.
 
 ## Riscos e validacao
 
@@ -147,3 +147,19 @@ dono das faixas. E se o inventario mudar a identidade? NUL evita escapes;
 tab de cabecalho e tratado no parser, que preserva o nome. A prova compara
 Git e executavel em vez de tomar o indice como oracle. Mapas preservados
 por corte em `../MAPAS/INDEX.md`. O banco persistente permanece historico.
+
+## Veredito
+
+Flow `flow_20261108185314975_0133_0033` completo, sem bloqueios. Veredito
+`vrd_20261108190531226_0153_0059` pronto com ressalvas, checklist 3/3.
+Revisao `evd_20261108190415561_0147_0051`. Bead `crg-dqq` fechado e Dolt sincronizado.
+O readback Git/API confirmou `cd179cf` como main privado para o corte de
+produto e mapas. Esta consolidacao do veredito recebe commit documental.
+
+Garimpo: `CRG-GIT-PATHS-IDENTIDADE`, uma memoria de projeto validada
+L1↔L2 (1/1), com Finder e rg. Dois candidatos do fiscal reconciliados com a
+memoria e o recibo de suite existentes.
+
+Proximo passo unico de produto: no proximo corte, o mantenedor valida um
+diff real de um arquivo com a CLI do checkout e um indice de teste
+atualizado, confrontando os simbolos com o hunk Git.

@@ -1,7 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-08.
-- Fechamento atual: checklist 3/3, flow completo e verdict `vrd_20261108131605649_0126_0025` pronto com ressalvas. Publicacao Git/Dolt concluida; risco P1 de credencial no ledger.
+- Fechamento atual: recorte CLI, checklist 3/3, flow completo e veredito `vrd_20261108190531226_0153_0059` pronto com ressalvas. Publicacao Git/Dolt concluida; risco P1 de credencial no ledger.
 - Corte atual: [organizar repo privado](PLAN-TASKS/2026-11-08-crg-repo-privado-higiene.md), bead `crg-pr9` fechado. Repositorio `dex-agent/dex-code-review-graph` privado, commit organizador `e326cfd` publicado e readback Git/API igual. Remotos `origin` da casa e `upstream` original. Dolt push concluido.
 - Estado local separado por `.gitignore`; backups, runtime e grafos historicos preservados. Organizacao em [edicao Dex](../docs/EDICAO-DEX.md). Debitos vivos em [PENDENTES](PENDENTES.md).
 
@@ -11,6 +11,7 @@
 - Fechamento historico: replicação casa concluída com ressalvas (2026-07-31) —
   detalhe em `.agents/PLAN-TASKS/ACTIVE.md` e laudo
   `.agents/EVIDENCIAS/2026-07-31-code-review-graph-home-replication.md`.
-- Corte funcional atual: [recorte na CLI](PLAN-TASKS/2026-11-08-crg-cli-recorte.md). `detect-changes --files` provado em Git/JSON no commit `1e12485`. Publicacao em andamento. Owner: mantenedor CRG.
+- Corte funcional atual: [recorte na CLI](PLAN-TASKS/2026-11-08-crg-cli-recorte.md). `detect-changes --files` provado em Git/JSON no commit `1e12485` e publicado. Owner: mantenedor CRG.
+- Proximo passo de produto: no proximo corte, validar um diff real de um arquivo com indice de teste atualizado, confrontando hunk Git e JSON.
 - Lembrança quente: `.agents/GATILHOS-VIVOS.md`; runbook: `.agents/napkin.md`.
 
