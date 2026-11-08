@@ -1,0 +1,7 @@
+Source: C:\CodexProjetos\code-review-graph\.agents\TEMP\crg-cli-diff-real-tmtmphhw\repo\code_review_graph\tools\query.py
+Git target: 573580bdb06cac6d34b075812d5045163e1cb244
+CRG_DATA_DIR: unset (fixture resolves its own index)
+Command: python -m pytest -q tests/test_tools.py -k test_references_to_returns_type_dependents
+Exit: 0
+.                                                                        [100%]
+1 passed, 130 deselected in 0.51s

@@ -1,6 +1,7 @@
 # Trilho ativo
 
-- Atual: [recorte na CLI](2026-11-08-crg-cli-recorte.md), checklist 3/3, bead `crg-dqq` fechado, flow `flow_20261108185314975_0133_0033` completo. Veredito `vrd_20261108190531226_0153_0059` pronto com ressalvas. Produto `1e12485` e mapas `cd179cf` publicados no repo privado.
+- Atual: [piloto CLI em diff real](2026-11-08-crg-cli-diff-real.md), checklist 3/3. Flow `flow_20261108192331225_0160_0067` completo, veredito `vrd_20261108193045516_0179_0091` pronto com ressalvas. Recorte 1/1 em 573580b, omissão de teste no bead `crg-j6z`.
+- Anterior: [recorte na CLI](2026-11-08-crg-cli-recorte.md), checklist 3/3, bead `crg-dqq` fechado, flow `flow_20261108185314975_0133_0033` completo. Veredito `vrd_20261108190531226_0153_0059` pronto com ressalvas. Produto `1e12485` e mapas `cd179cf` publicados no repo privado.
 
 - Corte anterior: [repo privado e higiene](2026-11-08-crg-repo-privado-higiene.md), checklist 3/3, bead `crg-pr9` fechado, flow `flow_20261108130638616_0107_0001` completo. Verdict `vrd_20261108131605649_0126_0025` pronto com ressalvas. Publicacao Git e Dolt comprovadas em 2026-11-08. Owner: mantenedor CRG.
 
