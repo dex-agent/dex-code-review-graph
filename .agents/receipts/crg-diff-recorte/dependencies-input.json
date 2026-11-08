@@ -1,0 +1,116 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "sources": [
+    {
+      "availability": "available",
+      "revision": "603bdd2 + produto.patch",
+      "id": "s0",
+      "sha256": "3f209b6b0d86602849a74ad2f9a6abc5cde57be65e1256c2aa166950a0a51a6b",
+      "path": "code_review_graph/tools/review.py",
+      "anchor": "detect_changes_func"
+    },
+    {
+      "availability": "available",
+      "revision": "603bdd2 + produto.patch",
+      "id": "s1",
+      "sha256": "321e8e8a37f63a6118c29469601a2748502beacd29c35456d51b3f6bd3727633",
+      "path": "code_review_graph/tools/context.py",
+      "anchor": "get_minimal_context"
+    },
+    {
+      "availability": "available",
+      "revision": "603bdd2 + produto.patch",
+      "id": "s2",
+      "sha256": "8a99524c5d0726c7cb8764e8af25835baf00543388b1b4d20a42dfecd03487f1",
+      "path": "code_review_graph/changes.py",
+      "anchor": "analyze_changes"
+    }
+  ],
+  "directed": true,
+  "edges": [
+    {
+      "limitation": "recorte de mudancas, nao descoberta geral de fluxos",
+      "propagates": true,
+      "source_refs": [
+        "s0",
+        "s2"
+      ],
+      "source": "n0",
+      "condition": "analise de arquivos selecionados",
+      "evidence": "implemented",
+      "id": "n0-analyze",
+      "target": "n2",
+      "relation": "calls"
+    },
+    {
+      "limitation": "recorte de mudancas, nao descoberta geral de fluxos",
+      "propagates": true,
+      "source_refs": [
+        "s1",
+        "s2"
+      ],
+      "source": "n1",
+      "condition": "analise de arquivos selecionados",
+      "evidence": "implemented",
+      "id": "n1-analyze",
+      "target": "n2",
+      "relation": "calls"
+    }
+  ],
+  "graph": {
+    "environment": "Windows, Python 3.13",
+    "snapshot_id": "20261107-crg-diff-recorte",
+    "observed_at": "2026-11-07T20:29:37.3610303-03:00",
+    "scope": "dois consumidores da analise de recorte",
+    "excluded": [
+      "CLI e benchmarks"
+    ],
+    "method": "fonte e smoke isolado",
+    "object_id": "crg",
+    "revision": "603bdd2 + .agents/receipts/crg-diff-recorte/produto.patch",
+    "limits": [
+      "sem baseline formal comparavel"
+    ],
+    "coverage": "partial",
+    "evidence_level": "implemented"
+  },
+  "nodes": [
+    {
+      "external": false,
+      "type": "function",
+      "evidence": "implemented",
+      "owner": "mantenedor CRG",
+      "limitation": "",
+      "id": "n0",
+      "source_refs": [
+        "s0"
+      ],
+      "label": "detect_changes_func"
+    },
+    {
+      "external": false,
+      "type": "function",
+      "evidence": "implemented",
+      "owner": "mantenedor CRG",
+      "limitation": "",
+      "id": "n1",
+      "source_refs": [
+        "s1"
+      ],
+      "label": "get_minimal_context"
+    },
+    {
+      "external": false,
+      "type": "function",
+      "evidence": "implemented",
+      "owner": "mantenedor CRG",
+      "limitation": "",
+      "id": "n2",
+      "source_refs": [
+        "s2"
+      ],
+      "label": "analyze_changes"
+    }
+  ],
+  "multigraph": true
+}

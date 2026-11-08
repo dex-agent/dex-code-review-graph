@@ -95,3 +95,31 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 
 # Beads / Dolt files (added by bd init)
 .beads/proxieddb/
+
+# Machine-local configuration and append-only execution state
+/.codex/config.toml
+/.beads/interactions.jsonl
+/.ppirtv/
+/.env
+/.env.*
+
+# Curated project records travel; raw backups, graphs and runtime stay local.
+/.agents/*
+!/.agents/ACTIVE.md
+!/.agents/HANDOFF.md
+!/.agents/GATILHOS-VIVOS.md
+!/.agents/napkin.md
+!/.agents/ESTACIONAMENTO.md
+!/.agents/PENDENTES.md
+!/.agents/lembranca.md
+!/.agents/memorias/
+!/.agents/PLAN-TASKS/
+!/.agents/MAPAS/
+!/.agents/scripts/
+!/.agents/EVIDENCIAS/
+/.agents/EVIDENCIAS/*
+!/.agents/EVIDENCIAS/*.md
+!/.agents/receipts/
+/.agents/receipts/*
+!/.agents/receipts/crg-diff-recorte/
+!/.agents/receipts/repo-privado-created.json

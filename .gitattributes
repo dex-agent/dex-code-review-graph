@@ -1,0 +1,4 @@
+# Preserve raw regression receipts byte-for-byte, including captured whitespace.
+.agents/receipts/** -text -whitespace
+# Historical project records may end with a blank line.
+.agents/**/*.md whitespace=-blank-at-eof
