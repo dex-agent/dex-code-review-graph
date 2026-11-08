@@ -1238,15 +1238,16 @@ def incremental_update(
             continue
         if parser.detect_language(abs_path) is None:
             continue
-        # Quick hash check to skip unchanged files
-        try:
-            raw = abs_path.read_bytes()
-            fhash = hashlib.sha256(raw).hexdigest()
-            existing_nodes = store.get_nodes_by_file(str(abs_path))
-            if existing_nodes and existing_nodes[0].file_hash == fhash:
-                continue
-        except (OSError, PermissionError):
-            pass
+        # A dependent can resolve to a different target with identical bytes.
+        if rel_path not in dependent_files:
+            try:
+                raw = abs_path.read_bytes()
+                fhash = hashlib.sha256(raw).hexdigest()
+                existing_nodes = store.get_nodes_by_file(str(abs_path))
+                if existing_nodes and existing_nodes[0].file_hash == fhash:
+                    continue
+            except (OSError, PermissionError):
+                pass
         to_parse.append(rel_path)
 
     # Persist deletions before store_file_nodes_edges() opens its own

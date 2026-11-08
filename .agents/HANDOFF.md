@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
+- [Reexportações Python](PLAN-TASKS/2026-11-08-crg-python-reexports.md): `crg-j6z`, identidade canônica e update com regressão pela CLI. O histórico em `573580b` retorna o teste direto e mantém o recorte 1/1. Índice persistente preservado. Rebuild com backup é o próximo corte antes de usar a correção no grafo persistente.
+
 - [Piloto CLI em diff real](PLAN-TASKS/2026-11-08-crg-cli-diff-real.md): build no pai de 573580b, update isolado e comparação Git/AST/JSON. `query_graph` cobre os três hunks. O teste do ramo `references_to` passou e faltou em `tests_for`. Bead `crg-j6z`, owner mantenedor CRG, próximo corte.
 
 - Direcao atual: [CLI como interface principal](../docs/EDICAO-DEX.md#direcao-do-produto). `CRG-CLI-RECORTE` provado pelo executavel em `1e12485`; [Trilho](PLAN-TASKS/2026-11-08-crg-cli-recorte.md) e [mapas](MAPAS/INDEX.md). Use o executavel do checkout para reproduzir as provas.

@@ -129,6 +129,63 @@ class _PythonScopeBindingVisitor(ast.NodeVisitor):
                 self.names.add(alias.asname or alias.name)
 
 
+class _PythonExportBindings(_PythonScopeBindingVisitor):
+    """Also account for names captured by module-level control flow."""
+
+    def visit_ExceptHandler(self, node: ast.ExceptHandler) -> None:  # noqa: N802
+        if node.name:
+            self.names.add(node.name)
+        self.generic_visit(node)
+
+    def visit_MatchAs(self, node: ast.MatchAs) -> None:  # noqa: N802
+        if node.name:
+            self.names.add(node.name)
+        self.generic_visit(node)
+
+    def visit_MatchStar(self, node: ast.MatchStar) -> None:  # noqa: N802
+        if node.name:
+            self.names.add(node.name)
+
+    def visit_MatchMapping(self, node: ast.MatchMapping) -> None:  # noqa: N802
+        if node.rest:
+            self.names.add(node.rest)
+        self.generic_visit(node)
+
+
+@lru_cache(maxsize=256)
+def _python_static_exports(
+    path: Path, revision: tuple[int, int, int],
+) -> dict[str, tuple[str, str] | None]:
+    """Index single top-level bindings. None denotes a local definition."""
+    try:
+        tree = ast.parse(path.read_bytes(), filename=str(path))
+    except (OSError, SyntaxError, ValueError):
+        return {}
+
+    if any(
+        isinstance(node, ast.ImportFrom) and node.names[0].name == "*"
+        for node in ast.walk(tree)
+    ):
+        return {}
+
+    exports: dict[str, tuple[str, str] | None] = {}
+    bound: set[str] = set()
+    for statement in tree.body:
+        bindings = _PythonExportBindings()
+        bindings.visit(statement)
+        if isinstance(statement, ast.ImportFrom):
+            module = "." * statement.level + (statement.module or "")
+            for alias in statement.names:
+                exports[alias.asname or alias.name] = (module, alias.name)
+        elif isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            exports[statement.name] = None
+
+        for name in bound & bindings.names:
+            exports.pop(name, None)
+        bound.update(bindings.names)
+    return exports
+
+
 def _python_type_checking_aliases(
     tree: ast.Module,
 ) -> tuple[frozenset[str], frozenset[str]]:
@@ -12945,14 +13002,15 @@ class CodeParser:
         if language == "python":
             if node.type == "import_from_statement":
                 # from X.Y import A, B → {A: X.Y, B: X.Y}
-                module = None
+                module_node = node.child_by_field_name("module_name")
+                if module_node is None:
+                    return
+                module = module_node.text.decode("utf-8", errors="replace")
                 seen_import_keyword = False
                 for child in node.children:
-                    if child.type == "dotted_name" and not seen_import_keyword:
-                        module = child.text.decode("utf-8", errors="replace")
-                    elif child.type == "import":
+                    if child.type == "import":
                         seen_import_keyword = True
-                    elif seen_import_keyword and module:
+                    elif seen_import_keyword:
                         if child.type in ("identifier", "dotted_name"):
                             name = child.text.decode("utf-8", errors="replace")
                             import_map[name] = module
@@ -13180,6 +13238,8 @@ class CodeParser:
             return None
 
         if language == "python":
+            if module.startswith("."):
+                return self._resolve_python_module_in_repo(module, file_path)
             rel_path = module.replace(".", "/")
             candidates = [rel_path + ".py", rel_path + "/__init__.py"]
             # Walk up from caller's directory to find the module file
@@ -13783,16 +13843,52 @@ class CodeParser:
             boundary = self._python_repo_boundary(file_path)
             if not self._path_is_within(candidate, boundary) or not candidate.is_file():
                 return None
-            resolved = str(candidate)
+            # Star import expansion already supplies a defining file.
+            return self._qualify(symbol_name, str(candidate), None)
         else:
             resolved = self._resolve_module_to_file(module, file_path, language)
         if not resolved:
             return None
 
-        export_target = self._resolve_exported_symbol(resolved, symbol_name)
+        if language == "python":
+            export_target = self._resolve_python_export(resolved, symbol_name, file_path)
+        else:
+            export_target = self._resolve_exported_symbol(resolved, symbol_name)
         if export_target:
             return export_target
         return self._qualify(symbol_name, resolved, None)
+
+    def _resolve_python_export(
+        self, module_file: str, name: str, caller_file: str,
+    ) -> Optional[str]:
+        """Follow explicit bindings to a definition inside the repository."""
+        boundary = self._python_repo_boundary(caller_file)
+        visited: set[tuple[str, str]] = set()
+        while (module_file, name) not in visited:
+            path = Path(module_file)
+            if module_file in self._excluded_files or not self._path_is_within(
+                path, boundary,
+            ):
+                return None
+            visited.add((module_file, name))
+            try:
+                stat = path.stat()
+            except OSError:
+                return None
+            exports = _python_static_exports(
+                path, (stat.st_mtime_ns, stat.st_ctime_ns, stat.st_size),
+            )
+            if name not in exports:
+                return None
+            binding = exports[name]
+            if binding is None:
+                return self._qualify(name, module_file, None)
+            module, name = binding
+            resolved = self._resolve_python_module_in_repo(module, module_file)
+            if resolved is None:
+                return None
+            module_file = resolved
+        return None
 
     def _resolve_exported_symbol(
         self,
@@ -14781,10 +14877,9 @@ class CodeParser:
         if language == "python":
             # import x.y.z  or  from x.y import z
             if node.type == "import_from_statement":
-                for child in node.children:
-                    if child.type == "dotted_name":
-                        imports.append(child.text.decode("utf-8", errors="replace"))
-                        break
+                module = node.child_by_field_name("module_name")
+                if module is not None:
+                    imports.append(module.text.decode("utf-8", errors="replace"))
             else:
                 for child in node.children:
                     if child.type == "dotted_name":

@@ -1,0 +1,71 @@
+F
+================================== FAILURES ===================================
+____ TestDetectChangesEndToEnd.test_python_reexport_update_reassigns_test _____
+
+self = <tests.test_cli.TestDetectChangesEndToEnd object at 0x000002BE3214B390>
+tmp_path = WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1909/test_python_reexport_update_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002BE320DA8B0>
+
+    def test_python_reexport_update_reassigns_test(self, tmp_path, monkeypatch):
+        repo = tmp_path / "repo"
+        package = repo / "pkg"
+        package.mkdir(parents=True)
+        for name in ("old", "new", "unrelated"):
+            (package / f"{name}.py").write_text(
+                f"def run():\n    return {name!r}\n", encoding="utf-8",
+            )
+        (package / "__init__.py").write_text("from .bridge import run\n", encoding="utf-8")
+        bridge = package / "bridge.py"
+        bridge.write_text("from .old import run\n", encoding="utf-8")
+        (repo / "test_client.py").write_text(
+            "from pkg import run\n\ndef test_public():\n    run()\n", encoding="utf-8",
+        )
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-qm", "initial")
+    
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "index"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+    
+        def run(*args):
+            result = subprocess.run(
+                [str(executable), *args, "--repo", str(repo)],
+                capture_output=True, encoding="utf-8", timeout=60,
+            )
+            assert result.returncode == 0, result.stderr
+            return result.stdout.strip()
+    
+        def associated_tests():
+            return {
+                name: [
+                    node["name"] for node in json.loads(
+                        run("query", "tests_for", f"{package / (name + '.py')}::run"),
+                    )["results"]
+                ]
+                for name in ("old", "new", "unrelated")
+            }
+    
+        build = run("build")
+        before = associated_tests()
+        assert before == {"old": ["test_public"], "new": [], "unrelated": []}
+    
+        bridge.write_text("from .new import run\n", encoding="utf-8")
+        self._git(repo, "add", "pkg/bridge.py")
+        self._git(repo, "commit", "-qm", "retarget")
+        update = run("update", "--base", "HEAD~1")
+        after = associated_tests()
+>       assert after == {"old": [], "new": ["test_public"], "unrelated": []}
+E       AssertionError: assert {'new': [], '...nrelated': []} == {'new': ['tes...nrelated': []}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'new': []} != {'new': ['test_public']}
+E         {'old': ['test_public']} != {'old': []}
+E         Use -v to get more diff
+
+tests\test_cli.py:467: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_cli.py::TestDetectChangesEndToEnd::test_python_reexport_update_reassigns_test
+1 failed, 22 deselected in 5.80s

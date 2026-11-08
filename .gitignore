@@ -139,4 +139,15 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/crg-cli-diff-real/tests_for.json
 !/.agents/receipts/crg-cli-diff-real/test-branch.txt
 !/.agents/receipts/crg-cli-diff-real/dependencies-input.json
+!/.agents/receipts/crg-python-reexports/
+/.agents/receipts/crg-python-reexports/*
+!/.agents/receipts/crg-python-reexports/red.txt
+!/.agents/receipts/crg-python-reexports/green-parser.txt
+!/.agents/receipts/crg-python-reexports/red-incremental.txt
+!/.agents/receipts/crg-python-reexports/incremental.txt
+!/.agents/receipts/crg-python-reexports/historical.json
+!/.agents/receipts/crg-python-reexports/historical-tests-for.json
+!/.agents/receipts/crg-python-reexports/historical-detect.json
+!/.agents/receipts/crg-python-reexports/suite-comparison.json
+!/.agents/receipts/crg-python-reexports/dependencies-input.json
 !/.agents/receipts/repo-privado-created.json
