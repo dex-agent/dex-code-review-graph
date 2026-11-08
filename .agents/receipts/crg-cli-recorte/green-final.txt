@@ -1,0 +1,6 @@
+{"git_files": ["src/a.py", "src/b.py"], "git_scoped_patch": "diff --git a/src/a.py b/src/a.py\nindex 5482d09..e65763e 100644\n--- a/src/a.py\n+++ b/src/a.py\n@@ -2 +2 @@ def a():\n-    return 1\n+    return 2\n", "json_functions": ["a"], "json_files": ["src/a.py"], "json_risk": 0.3}
+.{"git_files": ["src/b.py"], "git_scoped_patch": "", "json_functions": [], "json_files": [], "json_risk": 0.0}
+.{"git_files": ["src/a espa\u00e7o.py", "src/b.py"], "git_scoped_patch": "diff --git \"a/src/a espa\\303\\247o.py\" \"b/src/a espa\\303\\247o.py\"\nindex 5482d09..e65763e 100644\n--- \"a/src/a espa\\303\\247o.py\"\t\n+++ \"b/src/a espa\\303\\247o.py\"\t\n@@ -2 +2 @@ def a():\n-    return 1\n+    return 2\n", "json_functions": ["a"], "json_files": ["src/a espa\u00e7o.py"], "json_risk": 0.3}
+.{"git_files": ["src/b.py"], "git_scoped_patch": "", "json_functions": [], "json_files": [], "json_risk": 0.0}
+.
+4 passed, 18 deselected in 6.24s

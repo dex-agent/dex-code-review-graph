@@ -11,6 +11,6 @@
 - Fechamento historico: replicação casa concluída com ressalvas (2026-07-31) —
   detalhe em `.agents/PLAN-TASKS/ACTIVE.md` e laudo
   `.agents/EVIDENCIAS/2026-07-31-code-review-graph-home-replication.md`.
-- Proximo corte funcional: expor o recorte por arquivo em `detect-changes` na CLI e provar os dois casos com Git e JSON pelo executavel. Owner: mantenedor CRG, no proximo corte de produto (`CRG-CLI-RECORTE`).
+- Corte funcional atual: [recorte na CLI](PLAN-TASKS/2026-11-08-crg-cli-recorte.md). `detect-changes --files` provado em Git/JSON no commit `1e12485`. Publicacao em andamento. Owner: mantenedor CRG.
 - Lembrança quente: `.agents/GATILHOS-VIVOS.md`; runbook: `.agents/napkin.md`.
 

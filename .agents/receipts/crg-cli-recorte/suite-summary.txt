@@ -1,0 +1,11 @@
+Windows, Python 3.13. Revisao de produto 1e12485776652e2812bbfebf09a48bc1d8e73190.
+pytest -q -s --basetemp <temp isolado sob C:/CodexProjetos>/cases
+  tests/test_cli.py tests/test_cli_tool_commands.py tests/test_cli_install.py
+  tests/test_cli_reconciliation.py tests/test_changes.py tests/test_incremental.py
+  tests/test_integration_git.py
+222 passed, 1 skipped in 34.22s. Exit 0.
+Skip previsto em test_git_discovery_preserves_literal_separator_characters no Windows.
+Ruff nos tres modulos e nos dois arquivos de testes alterados: All checks passed.
+O basetemp padrao sob o perfil herdava .code-review-graph em um teste de search
+sem marcadores. A falha foi reproduzida no baseline 016092d e a suite passou
+com o mesmo teste em uma arvore temporaria isolada.

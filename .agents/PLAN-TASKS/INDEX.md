@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-cli-recorte-20261108` | [Trilho](2026-11-08-crg-cli-recorte.md) | owner: mantenedor CRG.
+
 - `crg-repo-privado-higiene-20261108` | checklist 3/3, completo com ressalvas | owner: mantenedor CRG | [Trilho](2026-11-08-crg-repo-privado-higiene.md)
 
 - `crg-diff-recorte-20261107` | checklist 3/3 | owner: mantenedor CRG | [Trilho](2026-11-07-crg-diff-recorte.md)

@@ -1,0 +1,126 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+______ TestDetectChangesEndToEnd.test_detect_changes_file_scope[A-and-B] ______
+
+self = <tests.test_cli.TestDetectChangesEndToEnd object at 0x000001D10BB24410>
+tmp_path = WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1895/test_detect_changes_file_scope0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D10BA5E520>
+change_a = True
+
+    @pytest.mark.parametrize("change_a", [True, False], ids=["A-and-B", "B-only"])
+    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, change_a):
+        repo = tmp_path / "repo"
+        src = repo / "src"
+        src.mkdir(parents=True)
+        a = src / "a.py"
+        b = src / "b.py"
+        a.write_text("def a():\n    return 1\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 1\n")
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-q", "-m", "baseline")
+        if change_a:
+            a.write_text("def a():\n    return 2\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 2\n")
+    
+        git_files = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--name-only", "HEAD", "--"],
+            text=True, timeout=30,
+        ).splitlines()
+        git_scope = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--unified=0", "HEAD", "--", "src/a.py"],
+            text=True, timeout=30,
+        )
+        assert set(git_files) == ({"src/a.py", "src/b.py"} if change_a else {"src/b.py"})
+        assert bool(git_scope) is change_a
+        if change_a:
+            assert "@@ -2 +2 @@ def a():" in git_scope
+    
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+        build = subprocess.run(
+            [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
+            capture_output=True, text=True, timeout=60,
+        )
+        assert build.returncode == 0, build.stderr
+        run = subprocess.run(
+            [str(executable), "detect-changes", "--repo", str(repo),
+             "--base", "HEAD", "--files", "./src/a.py"],
+            capture_output=True, text=True, timeout=30,
+        )
+>       assert run.returncode == 0, run.stderr
+E       AssertionError: usage: code-review-graph [-h] [-v]
+E                                  {install,init,uninstall,build,update,postprocess,embed,watch,status,forget,visualize,wiki,register,unregister,repos,eval,detect-changes,enrich,dead-code,query,impact,search,flows,flow,communities,community,architecture,large-functions,refactor,serve,mcp,daemon} ...
+E         code-review-graph: error: unrecognized arguments: --files ./src/a.py
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['C:\\CodexProjetos\\code-review-graph\\.venv\\Scripts\\code-review-graph.exe', 'detect-changes'...arge-functions,refactor,serve,mcp,daemon} ...\ncode-review-graph: error: unrecognized arguments: --files ./src/a.py\n').returncode
+
+tests\test_cli.py:525: AssertionError
+______ TestDetectChangesEndToEnd.test_detect_changes_file_scope[B-only] _______
+
+self = <tests.test_cli.TestDetectChangesEndToEnd object at 0x000001D10BA5E060>
+tmp_path = WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1895/test_detect_changes_file_scope1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D10BA5D940>
+change_a = False
+
+    @pytest.mark.parametrize("change_a", [True, False], ids=["A-and-B", "B-only"])
+    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, change_a):
+        repo = tmp_path / "repo"
+        src = repo / "src"
+        src.mkdir(parents=True)
+        a = src / "a.py"
+        b = src / "b.py"
+        a.write_text("def a():\n    return 1\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 1\n")
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-q", "-m", "baseline")
+        if change_a:
+            a.write_text("def a():\n    return 2\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 2\n")
+    
+        git_files = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--name-only", "HEAD", "--"],
+            text=True, timeout=30,
+        ).splitlines()
+        git_scope = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--unified=0", "HEAD", "--", "src/a.py"],
+            text=True, timeout=30,
+        )
+        assert set(git_files) == ({"src/a.py", "src/b.py"} if change_a else {"src/b.py"})
+        assert bool(git_scope) is change_a
+        if change_a:
+            assert "@@ -2 +2 @@ def a():" in git_scope
+    
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+        build = subprocess.run(
+            [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
+            capture_output=True, text=True, timeout=60,
+        )
+        assert build.returncode == 0, build.stderr
+        run = subprocess.run(
+            [str(executable), "detect-changes", "--repo", str(repo),
+             "--base", "HEAD", "--files", "./src/a.py"],
+            capture_output=True, text=True, timeout=30,
+        )
+>       assert run.returncode == 0, run.stderr
+E       AssertionError: usage: code-review-graph [-h] [-v]
+E                                  {install,init,uninstall,build,update,postprocess,embed,watch,status,forget,visualize,wiki,register,unregister,repos,eval,detect-changes,enrich,dead-code,query,impact,search,flows,flow,communities,community,architecture,large-functions,refactor,serve,mcp,daemon} ...
+E         code-review-graph: error: unrecognized arguments: --files ./src/a.py
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['C:\\CodexProjetos\\code-review-graph\\.venv\\Scripts\\code-review-graph.exe', 'detect-changes'...arge-functions,refactor,serve,mcp,daemon} ...\ncode-review-graph: error: unrecognized arguments: --files ./src/a.py\n').returncode
+
+tests\test_cli.py:525: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_cli.py::TestDetectChangesEndToEnd::test_detect_changes_file_scope[A-and-B]
+FAILED tests/test_cli.py::TestDetectChangesEndToEnd::test_detect_changes_file_scope[B-only]
+2 failed, 18 deselected in 2.86s

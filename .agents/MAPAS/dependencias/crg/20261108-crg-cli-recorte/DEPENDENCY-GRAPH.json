@@ -1,0 +1,238 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-cli-recorte",
+    "observed_at": "2026-11-08T16:01:23-03:00",
+    "revision": "1e12485776652e2812bbfebf09a48bc1d8e73190",
+    "environment": "Windows, Python 3.13, Git",
+    "scope": "CLI detect-changes, parser de diff e inventario do build Git",
+    "evidence_level": "implemented",
+    "coverage": "partial",
+    "method": "Fonte do commit e execucao Git/CLI em quatro fixtures",
+    "excluded": [
+      "MCP, SVN, outros comandos e indice persistente"
+    ],
+    "limits": [
+      "Corte anterior excluia CLI; nao comparavel globalmente."
+    ]
+  },
+  "sources": [
+    {
+      "id": "s-cli",
+      "path": "../../../../../code_review_graph/cli.py",
+      "anchor": "main, subcomandos detect-changes e build",
+      "revision": "1e12485776652e2812bbfebf09a48bc1d8e73190",
+      "sha256": "bbd5283fde05997e2a08a8d2ded5f43db5ec9bbe6b2ef0786bfc86f8fe14b379",
+      "availability": "available"
+    },
+    {
+      "id": "s-diff",
+      "path": "../../../../../code_review_graph/changes.py",
+      "anchor": "analyze_changes e parse_git_diff_ranges",
+      "revision": "1e12485776652e2812bbfebf09a48bc1d8e73190",
+      "sha256": "36e31380c85153573291cd8640a09cc187fff0a290f85a77dd22816efae6de8e",
+      "availability": "available"
+    },
+    {
+      "id": "s-git",
+      "path": "../../../../../code_review_graph/incremental.py",
+      "anchor": "get_changed_files e get_all_tracked_files",
+      "revision": "1e12485776652e2812bbfebf09a48bc1d8e73190",
+      "sha256": "31a988339c7c4259d5128558b4460bbe0daad19490aff0181d5371d5a9ac83ca",
+      "availability": "available"
+    },
+    {
+      "id": "s-test",
+      "path": "../../../../../tests/test_cli.py",
+      "anchor": "test_detect_changes_file_scope",
+      "revision": "1e12485776652e2812bbfebf09a48bc1d8e73190",
+      "sha256": "d9742a0d260bf331372ab84dac0aa3f14cdfa784e519a050f931c1b71f59abd0",
+      "availability": "available"
+    },
+    {
+      "id": "s-proof",
+      "path": "../../../../receipts/crg-cli-recorte/green-final.txt",
+      "anchor": "quatro casos Git versus JSON",
+      "revision": "20261108-crg-cli-recorte",
+      "sha256": "015b45fa5eb034eaeeb597356968fbd1bf5c70ced75203bc2135ce49a926caa4",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n-cli",
+      "label": "CLI detect-changes --files",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-cli",
+        "s-proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n2",
+      "label": "analyze_changes",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-diff"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n-discovery",
+      "label": "get_changed_files",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-git"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n-ranges",
+      "label": "parse_git_diff_ranges",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-diff"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n-build",
+      "label": "CLI build",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-cli",
+        "s-proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n-tracked",
+      "label": "get_all_tracked_files",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-git"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "n-fixture",
+      "label": "TestDetectChangesEndToEnd",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-test",
+        "s-proof"
+      ],
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-discovery",
+      "source": "n-cli",
+      "target": "n-discovery",
+      "relation": "calls",
+      "condition": "descoberta da lista de arquivos",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-cli",
+        "s-git"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "cli-analyze",
+      "source": "n-cli",
+      "target": "n2",
+      "relation": "calls",
+      "condition": "lista filtrada ou selecao automatica",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-cli",
+        "s-diff"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "analyze-ranges",
+      "source": "n2",
+      "target": "n-ranges",
+      "relation": "calls",
+      "condition": "Git com mudancas no recorte, via parse_diff_ranges",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-diff"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "build-tracked",
+      "source": "n-build",
+      "target": "n-tracked",
+      "relation": "calls",
+      "condition": "build Git via full_build e collect_all_files",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-cli",
+        "s-git"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "test-cli",
+      "source": "n-fixture",
+      "target": "n-cli",
+      "relation": "executes",
+      "condition": "4 casos de Git vs JSON",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-test",
+        "s-proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "test-build",
+      "source": "n-fixture",
+      "target": "n-build",
+      "relation": "executes",
+      "condition": "indice separado por fixture",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "s-test",
+        "s-proof"
+      ],
+      "limitation": ""
+    }
+  ]
+}

@@ -83,6 +83,11 @@ local após publicar o corte. A ajuda do script confirma os argumentos.
 
 ## A — CRG / MCP (instalação e runtime)
 
+- [CRG-GIT-PATHS-IDENTIDADE] Recorte retorna zero em arquivo alterado com
+  espaco ou acento -> confira inventario Git, faixas do patch e filtro CLI
+  separadamente. Prova: `uv run --no-sync pytest -q -s tests/test_cli.py -k file_scope`.
+  Fonte: [memoria do projeto](memorias/crg-git-paths-identidade.md).
+
 - [CRG-REPLICADO-CASA] CRG 2.3.7 (uv tool Python 3.13, extras `[all]` +
   `google-genai`), bd 1.1.2 (`@beads/bd`), MCP allowlist 25 tools, handshake
   25/5/0 -> se falhar, seguir CRG-SHIM-UV-QUEBRADO -> fonte: laudo +

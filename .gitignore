@@ -122,4 +122,11 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/
 /.agents/receipts/*
 !/.agents/receipts/crg-diff-recorte/
+!/.agents/receipts/crg-cli-recorte/
+/.agents/receipts/crg-cli-recorte/*
+!/.agents/receipts/crg-cli-recorte/red.txt
+!/.agents/receipts/crg-cli-recorte/red-path.txt
+!/.agents/receipts/crg-cli-recorte/green-final.txt
+!/.agents/receipts/crg-cli-recorte/suite-summary.txt
+!/.agents/receipts/crg-cli-recorte/dependencies-input.json
 !/.agents/receipts/repo-privado-created.json
