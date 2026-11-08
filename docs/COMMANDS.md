@@ -329,6 +329,7 @@ code-review-graph visualize --serve            # Serve graph.html on localhost:8
 # Analysis
 code-review-graph detect-changes               # Risk-scored change analysis
 code-review-graph detect-changes --base HEAD~3 # Custom base ref
+code-review-graph detect-changes --base HEAD --files src/a.py src/b.py
 code-review-graph detect-changes --brief       # Compact panel with token-savings estimate
 code-review-graph detect-changes --brief --verify  # ...and cross-check vs tiktoken
 code-review-graph detect-changes --churn       # Add opt-in change-frequency risk
@@ -368,6 +369,10 @@ code-review-graph serve --http                 # Streamable HTTP on localhost:55
 code-review-graph serve --tools query_graph_tool,detect_changes_tool  # Tool allowlist
 code-review-graph mcp                          # Alias for serve
 ```
+
+`--files` intersects the discovered changes with the selected file paths.
+Use absolute paths or paths relative to the repository root. In JSON mode,
+a scoped query with no matching changes returns empty results and zero risk.
 
 ## Standalone Daemon CLI (`crg-daemon`)
 

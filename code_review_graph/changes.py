@@ -49,7 +49,7 @@ def parse_git_diff_ranges(
         return {}
     try:
         result = subprocess.run(
-            ["git", "diff", "--unified=0", base, "--"],
+            ["git", "-c", "core.quotepath=off", "diff", "--unified=0", base, "--"],
             capture_output=True,
             stdin=subprocess.DEVNULL,
             text=True,
@@ -149,7 +149,7 @@ def _parse_unified_diff(diff_text: str) -> dict[str, list[tuple[int, int]]]:
     for line in diff_text.splitlines():
         file_match = file_pattern.match(line)
         if file_match:
-            current_file = file_match.group(1)
+            current_file = file_match.group(1).removesuffix("\t")
             continue
 
         hunk_match = hunk_pattern.match(line)

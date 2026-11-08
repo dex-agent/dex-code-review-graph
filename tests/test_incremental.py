@@ -634,10 +634,11 @@ class TestGitOperations:
     def test_get_all_tracked_files(self, mock_run, tmp_path):
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout="a.py\nb.py\nc.go\n",
+            stdout=b"a.py\0b.py\0c.go\0",
         )
         result = get_all_tracked_files(tmp_path)
         assert result == ["a.py", "b.py", "c.go"]
+        assert "-z" in mock_run.call_args[0][0]
 
     @patch("code_review_graph.incremental.subprocess.run")
     def test_get_all_tracked_files_recurse_submodules_param(
@@ -645,7 +646,7 @@ class TestGitOperations:
     ):
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout="a.py\nsub/b.py\n",
+            stdout=b"a.py\0sub/b.py\0",
         )
         result = get_all_tracked_files(tmp_path, recurse_submodules=True)
         assert result == ["a.py", "sub/b.py"]
@@ -658,7 +659,7 @@ class TestGitOperations:
     ):
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout="a.py\n",
+            stdout=b"a.py\0",
         )
         result = get_all_tracked_files(tmp_path)
         assert result == ["a.py"]
@@ -672,7 +673,7 @@ class TestGitOperations:
     ):
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout="a.py\nsub/c.py\n",
+            stdout=b"a.py\0sub/c.py\0",
         )
         # None -> falls back to env var (_RECURSE_SUBMODULES=True)
         result = get_all_tracked_files(tmp_path, recurse_submodules=None)
@@ -687,7 +688,7 @@ class TestGitOperations:
     ):
         mock_run.return_value = MagicMock(
             returncode=0,
-            stdout="a.py\n",
+            stdout=b"a.py\0",
         )
         # Explicit False overrides env var
         result = get_all_tracked_files(tmp_path, recurse_submodules=False)

@@ -811,7 +811,7 @@ def get_all_tracked_files(
     if recurse_submodules is None:
         recurse_submodules = _RECURSE_SUBMODULES
 
-    cmd = ["git", "ls-files"]
+    cmd = ["git", "ls-files", "-z"]
     if recurse_submodules:
         cmd.append("--recurse-submodules")
 
@@ -819,12 +819,11 @@ def get_all_tracked_files(
         result = subprocess.run(
             cmd,
             capture_output=True,
-            text=True, encoding='utf-8', errors='replace',
             cwd=str(repo_root),
             timeout=_GIT_TIMEOUT,
             stdin=subprocess.DEVNULL,
         )
-        return [f.strip() for f in result.stdout.splitlines() if f.strip()]
+        return [os.fsdecode(path) for path in result.stdout.split(b"\0") if path]
     except (FileNotFoundError, subprocess.TimeoutExpired, UnicodeDecodeError):
         return []
 
