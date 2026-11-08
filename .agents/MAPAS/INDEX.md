@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261108-crg-python-reexports — resolução Python, update incremental e prova da CLI em 573580b.
+  - [Capacidades](capacidades-crg-20261108-crg-python-reexports.md)
+  - [Decisões históricas](decisoes-crg-20261108-crg-python-reexports.md)
+  - [Dependências](dependencias/crg/20261108-crg-python-reexports/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-08-crg-python-reexports.md)
+
 - 20261108-crg-cli-diff-real — executável bccd04a, índice isolado no commit 573580b e comparação Git/JSON.
   - [Capacidades](capacidades-crg-20261108-crg-cli-diff-real.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-cli-diff-real.md)

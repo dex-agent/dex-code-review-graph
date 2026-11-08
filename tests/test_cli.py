@@ -414,6 +414,59 @@ class TestDetectChangesEndToEnd:
             timeout=30,
         )
 
+    def test_python_reexport_update_reassigns_test(self, tmp_path, monkeypatch):
+        repo = tmp_path / "repo"
+        package = repo / "pkg"
+        package.mkdir(parents=True)
+        for name in ("old", "new", "unrelated"):
+            (package / f"{name}.py").write_text(
+                f"def run():\n    return {name!r}\n", encoding="utf-8",
+            )
+        (package / "__init__.py").write_text("from .bridge import run\n", encoding="utf-8")
+        bridge = package / "bridge.py"
+        bridge.write_text("from .old import run\n", encoding="utf-8")
+        (repo / "test_client.py").write_text(
+            "from pkg import run\n\ndef test_public():\n    run()\n", encoding="utf-8",
+        )
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-qm", "initial")
+
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "index"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+
+        def run(*args):
+            result = subprocess.run(
+                [str(executable), *args, "--repo", str(repo)],
+                capture_output=True, encoding="utf-8", timeout=60,
+            )
+            assert result.returncode == 0, result.stderr
+            return result.stdout.strip()
+
+        def associated_tests():
+            return {
+                name: [
+                    node["name"] for node in json.loads(
+                        run("query", "tests_for", f"{package / (name + '.py')}::run"),
+                    )["results"]
+                ]
+                for name in ("old", "new", "unrelated")
+            }
+
+        build = run("build")
+        before = associated_tests()
+        assert before == {"old": ["test_public"], "new": [], "unrelated": []}
+
+        bridge.write_text("from .new import run\n", encoding="utf-8")
+        self._git(repo, "add", "pkg/bridge.py")
+        self._git(repo, "commit", "-qm", "retarget")
+        update = run("update", "--base", "HEAD~1")
+        after = associated_tests()
+        assert after == {"old": [], "new": ["test_public"], "unrelated": []}
+        print(json.dumps({"build": build, "update": update, "before": before, "after": after}))
+
     def test_detect_changes_maps_committed_change_to_functions(
         self, tmp_path, capsys, monkeypatch,
     ):

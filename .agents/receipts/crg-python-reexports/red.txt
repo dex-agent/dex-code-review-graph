@@ -1,0 +1,20 @@
+FF..                                                                     [100%]
+================================== FAILURES ===================================
+____________________ test_python_explicit_reexport[direct] ____________________
+tests\test_parser.py:44: in test_python_explicit_reexport
+    assert [
+E   AssertionError: assert ['C:\\Users\\...it__.py::run'] == ['C:\\Users\\...impl.py::run']
+E     
+E     At index 0 diff: 'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1904\\test_python_explicit_reexport_0\\pkg\\__init__.py::run' != 'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1904\\test_python_explicit_reexport_0\\pkg\\impl.py::run'
+E     Use -v to get more diff
+________________ test_python_explicit_reexport[aliased-chain] _________________
+tests\test_parser.py:44: in test_python_explicit_reexport
+    assert [
+E   AssertionError: assert ['C:\\Users\\...it__.py::run'] == ['C:\\Users\\...impl.py::run']
+E     
+E     At index 0 diff: 'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1904\\test_python_explicit_reexport_1\\pkg\\__init__.py::run' != 'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1904\\test_python_explicit_reexport_1\\pkg\\impl.py::run'
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED tests/test_parser.py::test_python_explicit_reexport[direct] - Assertio...
+FAILED tests/test_parser.py::test_python_explicit_reexport[aliased-chain] - A...
+2 failed, 2 passed, 159 deselected in 0.75s

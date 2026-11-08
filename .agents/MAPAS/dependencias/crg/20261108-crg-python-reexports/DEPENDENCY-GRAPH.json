@@ -1,0 +1,176 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-python-reexports",
+    "observed_at": "2026-11-08T19:43:49-03:00",
+    "revision": "ad0b736 + parser 9b151e90a43d02e35a49a7c6d08a478c3011ff4739aa5f063379ac8620e4e46d; alvo 573580bdb06cac6d34b075812d5045163e1cb244",
+    "environment": "Windows, Python 3.13, Git",
+    "scope": "Reexportações explícitas e seus consumidores CLI",
+    "evidence_level": "observed",
+    "coverage": "partial",
+    "method": "RED/GREEN, build e update Git, AST e CLI",
+    "excluded": [
+      "Índice persistente e imports dinâmicos"
+    ],
+    "limits": [
+      "O limite padrão de expansão incremental é mantido."
+    ]
+  },
+  "sources": [
+    {
+      "id": "red",
+      "path": "../../../../receipts/crg-python-reexports/red.txt",
+      "anchor": "Identidade anterior",
+      "revision": "ad0b736",
+      "sha256": "1bc9aa331d1e6720d8c71bd985306195a06bc5c7c6b77740fba350c662bba66f",
+      "availability": "available"
+    },
+    {
+      "id": "parser",
+      "path": "../../../../receipts/crg-python-reexports/green-parser.txt",
+      "anchor": "CALLS e TESTED_BY",
+      "revision": "9b151e90a43d02e35a49a7c6d08a478c3011ff4739aa5f063379ac8620e4e46d",
+      "sha256": "27fc173fe2cb2f150bbb4292e2dce250936e91f6de1dd665102842d9b70bd150",
+      "availability": "available"
+    },
+    {
+      "id": "update",
+      "path": "../../../../receipts/crg-python-reexports/incremental.txt",
+      "anchor": "Troca de associação após update",
+      "revision": "20261108-crg-python-reexports",
+      "sha256": "a13b4668e8e81b5cd2fcf03ce1319d287da61f6458b7dfda40e3e31bc8971312",
+      "availability": "available"
+    },
+    {
+      "id": "historical",
+      "path": "../../../../receipts/crg-python-reexports/historical.json",
+      "anchor": "Resultado e base Git",
+      "revision": "573580bdb06cac6d34b075812d5045163e1cb244",
+      "sha256": "b3934350e41bfca719a67873aa2a6ef736d98a1c0800e97c2d8b5d8d1b851ea0",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "parser",
+      "label": "Resolução Python e arestas",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "red",
+        "parser"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "deps",
+      "label": "Dependentes de import relativo",
+      "type": "data",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "update"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "update",
+      "label": "CLI build e update",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "update"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "query",
+      "label": "CLI query tests_for",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "historical",
+        "update"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "diff",
+      "label": "CLI detect-changes --files",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "historical"
+      ],
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "update-deps",
+      "source": "update",
+      "target": "deps",
+      "relation": "consumes_contract",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "update"
+      ],
+      "condition": "A mudança de fachada encontra os importadores.",
+      "limitation": ""
+    },
+    {
+      "id": "update-parser",
+      "source": "update",
+      "target": "parser",
+      "relation": "calls",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "update",
+        "parser"
+      ],
+      "condition": "Reprocessa dependentes mesmo sem alteração nos bytes.",
+      "limitation": ""
+    },
+    {
+      "id": "query-parser",
+      "source": "query",
+      "target": "parser",
+      "relation": "consumes_contract",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "parser",
+        "historical"
+      ],
+      "condition": "A consulta usa a identidade da definição gravada no índice.",
+      "limitation": ""
+    },
+    {
+      "id": "diff-parser",
+      "source": "diff",
+      "target": "parser",
+      "relation": "consumes_contract",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "historical"
+      ],
+      "condition": "O recorte usa a faixa indexada da função.",
+      "limitation": ""
+    }
+  ]
+}

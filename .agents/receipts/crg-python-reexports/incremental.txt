@@ -1,0 +1,3 @@
+{"build": "Full build: 6 files, 10 nodes, 9 edges (postprocess=full)", "update": "Incremental: 3 files updated, 4 nodes, 6 edges (postprocess=full)", "before": {"old": ["test_public"], "new": [], "unrelated": []}, "after": {"old": [], "new": ["test_public"], "unrelated": []}}
+.
+1 passed, 22 deselected in 5.42s

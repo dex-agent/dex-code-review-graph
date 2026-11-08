@@ -3,11 +3,52 @@
 import tempfile
 from pathlib import Path
 
+import pytest
+
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import CodeParser
 
 FIXTURES = Path(__file__).parent / "fixtures"
+
+
+@pytest.mark.parametrize(
+    ("exports", "target_file", "target_name"),
+    [
+        ("from .impl import run\n", "impl.py", "run"),
+        ("from .bridge import execute as run\n", "impl.py", "run"),
+        ("from .impl import run\nrun = lambda: 2\n", "__init__.py", "run"),
+        ("from .bridge import run\n", "__init__.py", "run"),
+        ("from .impl import run\nif flag:\n    from .other import *\n", "__init__.py", "run"),
+        ("from .impl import run\nmatch value:\n    case [*run]: pass\n", "__init__.py", "run"),
+    ],
+    ids=["direct", "aliased-chain", "shadowed", "cycle", "conditional-star", "capture"],
+)
+def test_python_explicit_reexport(tmp_path, exports, target_file, target_name):
+    package = tmp_path / "pkg"
+    package.mkdir()
+    (package / "__init__.py").write_text(exports, encoding="utf-8")
+    (package / "impl.py").write_text("def run(): return 1\n", encoding="utf-8")
+    (package / "other.py").write_text("def run(): return 2\n", encoding="utf-8")
+    (package / "bridge.py").write_text(
+        "from .impl import run as execute\nfrom . import run\n", encoding="utf-8",
+    )
+    test_file = tmp_path / "test_client.py"
+    test_file.write_text(
+        "from pkg import run\n\ndef test_public():\n    run()\n",
+        encoding="utf-8",
+    )
+
+    _, edges = CodeParser(repo_root=tmp_path).parse_file(test_file)
+
+    caller = f"{test_file.resolve()}::test_public"
+    target = f"{(package / target_file).resolve()}::{target_name}"
+    assert [
+        edge.target for edge in edges if edge.kind == "CALLS" and edge.source == caller
+    ] == [target]
+    assert [
+        edge.source for edge in edges if edge.kind == "TESTED_BY" and edge.target == caller
+    ] == [target]
 
 
 class TestCodeParser:

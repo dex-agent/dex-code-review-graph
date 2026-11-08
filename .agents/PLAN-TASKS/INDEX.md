@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-python-reexports-20261108` | [Trilho](2026-11-08-crg-python-reexports.md) | checklist 4/4, completo com ressalvas | owner: mantenedor CRG.
+
 - `crg-cli-diff-real-20261108` | [Trilho](2026-11-08-crg-cli-diff-real.md) | checklist 3/3, completo com ressalvas | owner: mantenedor CRG.
 - `crg-cli-recorte-20261108` | [Trilho](2026-11-08-crg-cli-recorte.md) | checklist 3/3, completo com ressalvas | owner: mantenedor CRG.
 
