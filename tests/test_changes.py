@@ -432,6 +432,43 @@ class TestChanges:
         # Should still find functions even without ranges.
         assert len(result["changed_functions"]) >= 1
 
+    @pytest.mark.parametrize("requested_changed", [True, False])
+    def test_requested_file_ranges(self, tmp_path, requested_changed):
+        """A real Git diff can contain changes outside the review scope."""
+        def git(*args):
+            subprocess.run(["git", *args], cwd=tmp_path, check=True,
+                           capture_output=True)
+
+        git("init")
+        for name in ("a", "b"):
+            path = tmp_path / f"{name}.py"
+            path.write_text(f"def {name}():\n    return 1\n", encoding="utf-8")
+            self._add_func(name, path=str(path), line_start=1, line_end=2)
+        git("add", ".")
+        git("-c", "user.name=Test", "-c", "user.email=test@example.com",
+            "-c", "commit.gpgsign=false", "commit", "-m", "baseline")
+        for name in (("a", "b") if requested_changed else ("b",)):
+            (tmp_path / f"{name}.py").write_text(
+                f"def {name}():\n    return 2\n", encoding="utf-8",
+            )
+
+        from code_review_graph.tools import detect_changes_func
+
+        with (
+            patch("code_review_graph.tools.review._get_store",
+                  return_value=(self.store, tmp_path)),
+            patch.object(self.store, "close"),
+        ):
+            result = detect_changes_func(
+                base="HEAD", changed_files=["a.py"], repo_root=str(tmp_path),
+            )
+
+        expected = {"a"} if requested_changed else set()
+        assert {node["name"] for node in result["changed_functions"]} == expected
+        assert {node["name"] for node in result["test_gaps"]} == expected
+        if not requested_changed:
+            assert result["risk_score"] == 0.0
+
     # ---------------------------------------------------------------
     # detect_changes_func (integration)
     # ---------------------------------------------------------------
