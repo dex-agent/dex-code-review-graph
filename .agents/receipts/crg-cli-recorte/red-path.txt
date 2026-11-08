@@ -1,0 +1,72 @@
+..F.                                                                     [100%]
+================================== FAILURES ===================================
+_ TestDetectChangesEndToEnd.test_detect_changes_file_scope[space-utf8-A-and-B] _
+
+self = <tests.test_cli.TestDetectChangesEndToEnd object at 0x000001163D3EA2C0>
+tmp_path = WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1899/test_detect_changes_file_scope2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001163D3C5B50>
+change_a = True, filename = 'a espa�o.py'
+
+    @pytest.mark.parametrize("change_a", [True, False], ids=["A-and-B", "B-only"])
+    @pytest.mark.parametrize("filename", ["a.py", "a espa�o.py"], ids=["plain", "space-utf8"])
+    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, change_a, filename):
+        repo = tmp_path / "repo"
+        src = repo / "src"
+        src.mkdir(parents=True)
+        a = src / filename
+        b = src / "b.py"
+        selected = f"src/{filename}"
+        a.write_text("def a():\n    return 1\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 1\n")
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-q", "-m", "baseline")
+        if change_a:
+            a.write_text("def a():\n    return 2\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 2\n")
+    
+        git_files = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--name-only", "-z", "HEAD", "--"],
+            encoding="utf-8", timeout=30,
+        ).rstrip("\0").split("\0")
+        git_scope = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--unified=0", "HEAD", "--", selected],
+            encoding="utf-8", timeout=30,
+        )
+        assert set(git_files) == ({selected, "src/b.py"} if change_a else {"src/b.py"})
+        assert bool(git_scope) is change_a
+        if change_a:
+            assert "@@ -2 +2 @@ def a():" in git_scope
+    
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+        build = subprocess.run(
+            [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
+            capture_output=True, text=True, timeout=60,
+        )
+        assert build.returncode == 0, build.stderr
+        run = subprocess.run(
+            [str(executable), "detect-changes", "--repo", str(repo),
+             "--base", "HEAD", "--files", f"./{selected}"],
+            capture_output=True, encoding="utf-8", timeout=30,
+        )
+        assert run.returncode == 0, run.stderr
+        result = json.loads(run.stdout)
+        names = [node["name"] for node in result["changed_functions"]]
+        files = [
+            Path(node["file_path"]).relative_to(repo).as_posix()
+            for node in result["changed_functions"]
+        ]
+>       assert names == (["a"] if git_scope else [])
+E       AssertionError: assert [] == ['a']
+E         
+E         Right contains one more item: 'a'
+E         Use -v to get more diff
+
+tests\test_cli.py:534: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_cli.py::TestDetectChangesEndToEnd::test_detect_changes_file_scope[space-utf8-A-and-B]
+1 failed, 3 passed, 18 deselected in 8.17s

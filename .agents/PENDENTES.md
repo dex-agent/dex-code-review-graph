@@ -8,11 +8,11 @@
 - [ ] CRG-UPSTREAM-GATES [P2] — Revalidar refactor, uninstall e hooks Windows antes de habilitar no perfil real — quando: Antes de habilitar as operacoes no perfil real; achados PARK-20260728-02 — owner: mantenedor-CRG
 - [ ] CRG-GRAPHIFY-HISTORICO [P2] — Regenerar Graphify com corpus atual e confirmar labeling e versao — quando: Na proxima consulta relacional que exigir grafo atual; antes de citar o corte antigo — owner: mantenedor-Graphify
 - [ ] CRG-ZCODE-CONTRATO [P2] — Provar contrato de cliente ZCode com fonte e tools-list real — quando: Antes de declarar compatibilidade ou editar configuracao ZCode — owner: mantenedor-ZCode
-- [ ] CRG-CLI-RECORTE [P2] — Expor recorte por arquivo em detect-changes na CLI com prova Git e JSON — quando: No proximo corte funcional da edicao Dex — owner: mantenedor-CRG
 ## Adiadas
 ## Supersedidas
 - [~] CRG-PROMOCAO-MCP [P2] — Promover a correcao testada para o runtime MCP instalado — quando: No proximo corte de instalacao apos o repo privado publicado — motivo: Dono definiu CLI como interface principal da edicao Dex; priorizar o recorte no executavel — supercedido por: CRG-CLI-RECORTE — owner: mantenedor-CRG
 ## Consumidas
+- [x] CRG-CLI-RECORTE [P2] — Expor recorte por arquivo em detect-changes na CLI com prova Git e JSON — quando: No proximo corte funcional da edicao Dex — prova: 1e12485; quatro casos pelo executavel contra Git; 222 testes passaram na suite isolada — owner: mantenedor-CRG
 <!-- PENDENTES:JSON:START -->
 {
   "schema": "dex.pendencias.v2",
@@ -97,17 +97,17 @@
     {
       "id": "CRG-CLI-RECORTE",
       "titulo": "Expor recorte por arquivo em detect-changes na CLI com prova Git e JSON",
-      "status": "aberta",
+      "status": "concluida",
       "nivel": "P2",
       "quando": "No proximo corte funcional da edicao Dex",
       "data_limite": null,
       "owner": "mantenedor-CRG",
-      "prova": null,
+      "prova": "1e12485; quatro casos pelo executavel contra Git; 222 testes passaram na suite isolada",
       "motivo": null,
       "supercedido_por": null,
       "criado_em": "2026-11-08",
-      "concluida_em": null,
-      "atualizado_em": null
+      "concluida_em": "2026-11-08",
+      "atualizado_em": "2026-11-08"
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 Ultima atualizacao: 2026-11-08
 
-- Direcao atual: [CLI como interface principal](../docs/EDICAO-DEX.md#direcao-do-produto). Proximo corte `CRG-CLI-RECORTE`, selecao explicita por arquivo em `detect-changes` com prova pelo executavel. A promocao MCP deixa de ser o proximo corte.
+- Direcao atual: [CLI como interface principal](../docs/EDICAO-DEX.md#direcao-do-produto). `CRG-CLI-RECORTE` provado pelo executavel em `1e12485`; [Trilho](PLAN-TASKS/2026-11-08-crg-cli-recorte.md) e [mapas](MAPAS/INDEX.md). Use o executavel do checkout para reproduzir as provas.
 
 - Fechamento oficial: flow `flow_20261108130638616_0107_0001` completo; verdict `vrd_20261108131605649_0126_0025` pronto com ressalvas, checklist 3/3. Git e Dolt publicados. Prova local de 38 testes, Ruff e Playbook; API confirmou visibilidade privada.
 
