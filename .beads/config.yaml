@@ -14,7 +14,7 @@
 
 issue-prefix: "crg"
 sync:
-    remote: "git+https://github.com/tirth8205/code-review-graph"
+    remote: "git+https://github.com/dex-agent/dex-code-review-graph"
 
 # Use no-db mode: JSONL-only, no Dolt database
 
