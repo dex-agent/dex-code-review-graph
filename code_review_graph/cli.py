@@ -13,7 +13,7 @@ Usage:
     code-review-graph mcp [--auto-watch]
     code-review-graph visualize
     code-review-graph wiki
-    code-review-graph detect-changes [--base BASE] [--brief]
+    code-review-graph detect-changes [--base BASE] [--files PATH ...] [--brief]
     code-review-graph register <path> [--alias name]
     code-review-graph unregister <path_or_alias>
     code-review-graph repos
@@ -986,6 +986,10 @@ def main() -> None:
              "Does NOT re-parse files — for that, use 'update --brief'.",
     )
     detect_cmd.add_argument("--base", default="HEAD~1", help="Git diff base (default: HEAD~1)")
+    detect_cmd.add_argument(
+        "--files", nargs="+", metavar="PATH",
+        help="Restrict analysis to these files (paths relative to the repo root or absolute).",
+    )
     detect_cmd.add_argument(
         "--brief",
         action="store_true",
@@ -1964,12 +1968,23 @@ def main() -> None:
             if not changed:
                 changed = get_staged_and_unstaged(repo_root)
 
-            if not changed:
+            if args.files is not None:
+                requested = {
+                    os.path.normcase(os.path.normpath(repo_root / path))
+                    for path in args.files
+                }
+                changed = [
+                    path for path in changed
+                    if os.path.normcase(os.path.normpath(repo_root / path)) in requested
+                ]
+
+            if not changed and args.files is None:
                 print("No changes detected.")
             else:
                 result = analyze_changes(
                     store,
                     changed,
+                    changed_ranges=None if changed else {},
                     repo_root=str(repo_root),
                     base=base,
                     include_churn=getattr(args, "churn", False),

@@ -4,6 +4,10 @@
 
 ### Added
 
+- Dex local edition: `detect-changes --files PATH ...` scopes change analysis
+  to selected files and returns an empty JSON result when the scope has no
+  changes.
+
 - Added `code-review-graph forget PATH [PATH ...]` to drop already-parsed files
   from the graph without a full rebuild. Paths may be absolute, relative to the
   repository root, a directory (every file underneath is dropped), or a glob

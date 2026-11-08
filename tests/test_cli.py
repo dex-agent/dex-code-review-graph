@@ -2,9 +2,13 @@
 
 import json
 import logging
+import subprocess
 import sys
 from importlib.metadata import PackageNotFoundError
+from pathlib import Path
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from code_review_graph import cli
 
@@ -473,6 +477,69 @@ class TestDetectChangesEndToEnd:
         savings = result["context_savings"]
         assert result["changed_functions"]
         assert savings["saved_percent"] < 100
+
+    @pytest.mark.parametrize("change_a", [True, False], ids=["A-and-B", "B-only"])
+    @pytest.mark.parametrize("filename", ["a.py", "a espaço.py"], ids=["plain", "space-utf8"])
+    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, change_a, filename):
+        repo = tmp_path / "repo"
+        src = repo / "src"
+        src.mkdir(parents=True)
+        a = src / filename
+        b = src / "b.py"
+        selected = f"src/{filename}"
+        a.write_text("def a():\n    return 1\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 1\n")
+        self._git(repo, "init", "-q")
+        self._git(repo, "add", ".")
+        self._git(repo, "commit", "-q", "-m", "baseline")
+        if change_a:
+            a.write_text("def a():\n    return 2\n\ndef untouched():\n    return 0\n")
+        b.write_text("def b():\n    return 2\n")
+
+        git_files = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--name-only", "-z", "HEAD", "--"],
+            encoding="utf-8", timeout=30,
+        ).rstrip("\0").split("\0")
+        git_scope = subprocess.check_output(
+            ["git", "-C", str(repo), "diff", "--unified=0", "HEAD", "--", selected],
+            encoding="utf-8", timeout=30,
+        )
+        assert set(git_files) == ({selected, "src/b.py"} if change_a else {"src/b.py"})
+        assert bool(git_scope) is change_a
+        if change_a:
+            assert "@@ -2 +2 @@ def a():" in git_scope
+
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+        build = subprocess.run(
+            [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
+            capture_output=True, text=True, timeout=60,
+        )
+        assert build.returncode == 0, build.stderr
+        run = subprocess.run(
+            [str(executable), "detect-changes", "--repo", str(repo),
+             "--base", "HEAD", "--files", f"./{selected}"],
+            capture_output=True, encoding="utf-8", timeout=30,
+        )
+        assert run.returncode == 0, run.stderr
+        result = json.loads(run.stdout)
+        names = [node["name"] for node in result["changed_functions"]]
+        files = [
+            Path(node["file_path"]).relative_to(repo).as_posix()
+            for node in result["changed_functions"]
+        ]
+        assert names == (["a"] if git_scope else [])
+        assert files == ([selected] if git_scope else [])
+        if not git_scope:
+            assert result["test_gaps"] == result["affected_flows"] == []
+            assert result["risk_score"] == 0
+        print(json.dumps({
+            "git_files": git_files, "git_scoped_patch": git_scope,
+            "json_functions": names, "json_files": files, "json_risk": result["risk_score"],
+        }))
 
 
 def test_explicit_monorepo_subproject_runs_a_real_graph_search(

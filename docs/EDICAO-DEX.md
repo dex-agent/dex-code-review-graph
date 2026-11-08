@@ -12,11 +12,10 @@ consomem a mesma versao do checkout, com argumentos reproduziveis e JSON
 para analise automatizada. MCP permanece uma integracao para clientes que
 precisam de tools na sessao. Ambos compartilham o analisador de mudancas.
 
-O primeiro corte da CLI e expor a selecao explicita de arquivos em
-`detect-changes`, mantendo a saida JSON e o comportamento da chamada atual.
-A prova e de ponta a ponta pelo executavel: diff A+B com recorte A retorna
-somente A, e diff apenas em B com recorte A retorna zero simbolos. A CLI
-atual ja aceita `--base` e `--repo`; a selecao de arquivos e a lacuna deste corte.
+O primeiro corte entrega `detect-changes --files PATH ...` com JSON por
+padrao e a mesma descoberta automatica quando a opcao e omitida. A prova
+pelo executavel compara o diff do Git com os simbolos reportados: A+B com
+recorte A retorna somente A; B com recorte A retorna zero simbolos.
 
 ## Organizacao
 
