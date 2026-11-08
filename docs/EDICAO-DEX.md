@@ -5,6 +5,19 @@ upstream `tirth8205/code-review-graph`. O historico Git e a licenca MIT original
 sao preservados. O remoto `origin` aponta para a edicao privada e `upstream`
 permite comparar a evolucao do projeto de origem.
 
+## Direcao do produto
+
+A CLI e a interface principal da edicao Dex. O terminal e as automacoes
+consomem a mesma versao do checkout, com argumentos reproduziveis e JSON
+para analise automatizada. MCP permanece uma integracao para clientes que
+precisam de tools na sessao. Ambos compartilham o analisador de mudancas.
+
+O primeiro corte da CLI e expor a selecao explicita de arquivos em
+`detect-changes`, mantendo a saida JSON e o comportamento da chamada atual.
+A prova e de ponta a ponta pelo executavel: diff A+B com recorte A retorna
+somente A, e diff apenas em B com recorte A retorna zero simbolos. A CLI
+atual ja aceita `--base` e `--repo`; a selecao de arquivos e a lacuna deste corte.
+
 ## Organizacao
 
 - `code_review_graph/` e `tests/` mantem a estrutura do produto original.
