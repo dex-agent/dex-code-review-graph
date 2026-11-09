@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "local_backup": "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-dq9-090f14426f5c4649b2cef0b5ad03e438\\before.sqlite3",
+  "sqlite": {
+    "logical_sha256": "6309ad02f4a36b0825f70d914972bd32e71d0374c03db53eb9b4d045447b11c1",
+    "integrity": "ok",
+    "state": {
+      "sha": "c3682acb70bfcd15c024a27f60833ac54453db30",
+      "test_node": [
+        "Test",
+        1
+      ],
+      "tested_by": 1
+    }
+  },
+  "backup_file_sha256": "314b79a48f0efe031f85c3c15073273baaa0217e8b22345e60e97298ccb25674",
+  "restoration_reopened": true,
+  "second_writer": "SQLITE_BUSY"
+}

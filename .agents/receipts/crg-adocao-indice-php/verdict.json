@@ -1,0 +1,25 @@
+{
+  "flow_id": "flow_20261109060414853_0354_0313",
+  "verdict_id": "vrd_20261109061157643_0378_0345",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 5,
+    "total": 5
+  },
+  "bead": "crg-dq9",
+  "evidence_ids": [
+    "evd_20261109061138741_0373_0339",
+    "evd_20261109060554897_0361_0321",
+    "evd_20261109060606226_0362_0323",
+    "evd_20261109060828403_0363_0325",
+    "evd_20261109060847334_0364_0327",
+    "evd_20261109061018475_0365_0329"
+  ],
+  "residual_risks": [
+    "Embeddings das fontes alteradas não passaram por refresh. A manutenção tem dono e vence antes de usar ranking semântico para essas fontes.",
+    "crg-iu1 mantém as 24 falhas históricas da suíte Windows, fora da adoção do índice."
+  ],
+  "next_step": "Retomar crg-iu1 pelos três IDs de caminho PHP/Rust: reproduzir em Windows e Ubuntu, corrigir a seleção SQL da fixture e as comparações de caminho somente depois de confirmar o contrato, e repetir a seleção nos dois sistemas antes do próximo release Windows."
+}

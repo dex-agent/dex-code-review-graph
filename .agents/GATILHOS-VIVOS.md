@@ -59,6 +59,7 @@ quando instalado neste fechamento, com `--check` antes da consulta.
     pela API SQLite e verifique `PRAGMA integrity_check`. Com o rebuild
     autorizado, rode `code-review-graph build --repo <repo>` e repita as
     três verificações no mesmo SHA. [Prova isolada](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md).
+  - **CRG com embeddings existentes?** Semeie o candidato isolado com o backup SQLite antes do build. Compare o estado auxiliar e os vetores das fontes de hash igual. Um build a partir de banco vazio pode passar no controle funcional e perder a tabela de embeddings. [Memória operacional](memorias/crg-rebuild-preserva-embeddings-no-candidato-isolad-ddbe87c32bec.md).
   - **SHA diferente com alteração só documental?** Confira o diff e o recorte.
     O banco continua sendo um corte antigo; se o consumidor exige o HEAD,
     atualize antes de citá-lo como atual.

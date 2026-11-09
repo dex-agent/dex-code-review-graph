@@ -1,0 +1,409 @@
+{
+  "exit_code": 0,
+  "workspace_revision": "eeb486bd894c16c2db85a803560d26ddce3c4968",
+  "module_sha256": {
+    "parser.py": "67cb1b365c75b0dacc31db5b46dd6d0de680b29b704e737e57675827df96a05b",
+    "scoped_resolver.py": "b8fffcb01e3837d685a988335d1100f820ce6f9303de26874dc96d852ff58491"
+  },
+  "executable": "code-review-graph.exe",
+  "scenarios": {
+    "scoped": {
+      "findings": [],
+      "changed": "src/Payments/Calculator.php",
+      "test_sha256": "d2b67fe6f188d3ba0fd08d765151e9761aa90246c1b2b8a3deff31c3b67523dd",
+      "build": "Full build: 2 files, 6 nodes, 13 edges (postprocess=minimal)",
+      "update": "Incremental: 1 files updated, 3 nodes, 2 edges (postprocess=minimal)",
+      "repeat_update": "Incremental: 0 files updated, 0 nodes, 0 edges (postprocess=minimal)",
+      "rebuild": "Full build: 3 files, 9 nodes, 15 edges (postprocess=minimal)",
+      "missing": {
+        "git_head": "05ebe2ce725d29125284ea21c22320444542e2dd",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "not_found",
+          "tests": []
+        }
+      },
+      "added": {
+        "git_head": "b5dc3f0f175c3915c486f1fc36f07a632c1cfc57",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      },
+      "repeated": {
+        "git_head": "b5dc3f0f175c3915c486f1fc36f07a632c1cfc57",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      },
+      "rebuilt": {
+        "git_head": "b5dc3f0f175c3915c486f1fc36f07a632c1cfc57",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      }
+    },
+    "composer_alias": {
+      "findings": [],
+      "changed": "src/Payments/Calculator.php",
+      "test_sha256": "60de15dad1380a946f1aa68a352b2657e6db99f9fd189d4e4ebd3425333d5176",
+      "build": "Full build: 2 files, 6 nodes, 14 edges (postprocess=minimal)",
+      "update": "Incremental: 1 files updated, 3 nodes, 2 edges (postprocess=minimal)",
+      "repeat_update": "Incremental: 0 files updated, 0 nodes, 0 edges (postprocess=minimal)",
+      "rebuild": "Full build: 3 files, 9 nodes, 16 edges (postprocess=minimal)",
+      "missing": {
+        "git_head": "204386ba064f190d54c6de53738baf8fb94e43ac",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "not_found",
+          "tests": []
+        }
+      },
+      "added": {
+        "git_head": "915b2f4cbd7ed0de74c2c6e521f4c7071aaf8365",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      },
+      "repeated": {
+        "git_head": "915b2f4cbd7ed0de74c2c6e521f4c7071aaf8365",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      },
+      "rebuilt": {
+        "git_head": "915b2f4cbd7ed0de74c2c6e521f4c7071aaf8365",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

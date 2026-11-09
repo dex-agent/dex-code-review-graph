@@ -1,0 +1,40 @@
+{
+  "exit_code": 0,
+  "build": "Full build: 265 files, 5143 nodes, 42639 edges (postprocess=full)",
+  "php_fixtures": "scoped ok\ncomposer_alias ok",
+  "proof": {
+    "sqlite": {
+      "logical_sha256": "42bc3521eb1fd108584d140909e46cae19fa92da0be87d060903194fbcb35da8",
+      "integrity": "ok",
+      "state": {
+        "sha": "eeb486bd894c16c2db85a803560d26ddce3c4968",
+        "test_node": [
+          "Test",
+          1
+        ],
+        "tested_by": 1
+      }
+    },
+    "status": {
+      "built_at_commit": "eeb486bd894c16c2db85a803560d26ddce3c4968",
+      "current_sha": "eeb486bd894c16c2db85a803560d26ddce3c4968",
+      "last_updated": "2026-11-09T03:07:28"
+    },
+    "tests_for": {
+      "matches": [
+        {
+          "qualified_name": "C:\\CodexProjetos\\code-review-graph\\tests\\test_tools.py::TestQueryGraphCallTargetFallbacks.test_references_to_returns_type_dependents",
+          "indirect": false,
+          "inferred_by": null
+        }
+      ],
+      "result_count": 121
+    }
+  },
+  "embeddings": {
+    "before": 4745,
+    "after": 4745,
+    "unchanged_source_preserved": 4164
+  },
+  "active_image_preserved": true
+}

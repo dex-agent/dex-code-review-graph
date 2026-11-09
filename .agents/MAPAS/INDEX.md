@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-dq9 — adoção da correção PHP no banco persistente com restauração ensaiada.
+  - [Capacidades](capacidades-crg-20261109-crg-dq9.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-dq9.md)
+  - [Dependências](dependencias/crg/20261109-crg-dq9/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-adocao-indice-php.md)
+
 - 20261109-crg-x6m — identidade lexical de classes PHP e paridade entre update e rebuild.
   - [Capacidades](capacidades-crg-20261109-crg-x6m.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-x6m.md)

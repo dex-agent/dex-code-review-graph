@@ -2,7 +2,8 @@
 
 Ultima atualizacao: 2026-11-09
 
-- [Resolução PHP de homônimos](PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md): produto `fb9fc22`, com a identidade lexical comprovada para construtor e método, inclusive com Composer. [Veredito pronto com ressalvas](receipts/crg-x6m/verdict.json), checklist 4/4. Para consumir a correção no índice persistente legado, confirme o banco e siga a rota de backup e rebuild do gatilho vivo.
+- [Adoção da correção PHP no índice persistente](PLAN-TASKS/2026-11-09-crg-adocao-indice-php.md): `crg-dq9`, checklist 5/5, banco habitual adotado e reaberto pela CLI em `eeb486b`. Backup local restaurável, 4.745 embeddings retidos. `crg-87w` registra o frescor de vetores das fontes alteradas. [Veredito](receipts/crg-adocao-indice-php/verdict.json).
+- [Resolução PHP de homônimos](PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md): produto `fb9fc22`, com a identidade lexical comprovada para construtor e método, inclusive com Composer. [Veredito pronto com ressalvas](receipts/crg-x6m/verdict.json), checklist 4/4.
 
 - [Frescor semântico do índice](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md): backup verificado e rebuild isolado provam a reclassificação no mesmo SHA. Antes de adotar nova semântica no índice persistente, use a rota no [gatilho vivo](GATILHOS-VIVOS.md#staleness-artefatos-derivados).
 - [Classificação por caminho](PLAN-TASKS/2026-11-08-crg-test-path.md): regressões corrigidas em `3fb1ab3`, com CLI, SQLite e nove jobs de CI. `crg-iu1` mantém os 24 IDs preexistentes.
