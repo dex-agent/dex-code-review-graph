@@ -13,6 +13,58 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 
 @pytest.mark.parametrize(
+    ("checkout", "relative", "expected"),
+    [
+        ("checkout", "contest/Example.php", False),
+        ("tests/checkout", "src/Example.php", False),
+        ("checkout", "tests/Example.php", True),
+        ("tests/checkout", "src/Annotated.php", True),
+        ("checkout", "test/Example.php", True),
+        ("tests/checkout", "../Example.php", False),
+    ],
+    ids=["suffix", "ancestor", "real-tests", "annotation", "singular", "outside-root"],
+)
+def test_phpunit_path_scope(tmp_path, checkout, relative, expected):
+    root = tmp_path / checkout
+    path = root / relative
+    source = b"""<?php
+    class Example {
+        public function add($a, $b) { return $a + $b; }
+        public function testProductionHelper() { $x = new Example(); return $x->add(1, 2); }
+    }
+    """
+    if relative.endswith("Annotated.php"):
+        source = source.replace(
+            b"public function testProductionHelper",
+            b"#[Test] public function testProductionHelper",
+        )
+
+    nodes, edges = CodeParser(repo_root=root).parse_bytes(path, source)
+
+    method = next(node for node in nodes if node.name == "testProductionHelper")
+    assert method.file_path == str(path)
+    assert (method.kind, method.is_test) == (("Test", True) if expected else ("Function", False))
+    assert any(edge.kind == "TESTED_BY" for edge in edges) is expected
+
+
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("__tests__/Example.ts", True),
+        ("contest/Example.jl", False),
+        ("integrationtests/testthat/example.R", False),
+        ("test_tools/src/helper.py", False),
+        ("src/test_helper.py", True),
+    ],
+    ids=["root-jest", "julia-suffix", "r-suffix", "directory-not-filename", "test-filename"],
+)
+def test_test_directory_components(path, expected):
+    from code_review_graph.parser import _is_test_file
+
+    assert _is_test_file(path) is expected
+
+
+@pytest.mark.parametrize(
     ("exports", "target_file", "target_name"),
     [
         ("from .impl import run\n", "impl.py", "run"),
