@@ -132,3 +132,10 @@ jobs:
 
       - name: Run forget path tests
         run: python -m pytest --tb=short -v tests/test_forget.py
+
+      - name: Run explicit project root tests
+        run: >-
+          python -m pytest --tb=short -v
+          tests/test_cli.py::TestGraphToolExplicitRepoResolution
+          tests/test_cli.py::test_explicit_monorepo_subproject_runs_a_real_graph_search
+          tests/test_cli.py::test_explicit_markerless_repo_with_external_index
