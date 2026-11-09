@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261108-crg-indice-persistente — backup, build e associação direta verificada no índice persistente.
+  - [Capacidades](capacidades-crg-20261108-crg-indice-persistente.md)
+  - [Decisões históricas](decisoes-crg-20261108-crg-indice-persistente.md)
+  - [Dependências](dependencias/crg/20261108-crg-indice-persistente/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-08-crg-indice-persistente.md)
+
 - 20261108-crg-python-reexports — resolução Python, update incremental e prova da CLI em 573580b.
   - [Capacidades](capacidades-crg-20261108-crg-python-reexports.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-python-reexports.md)

@@ -1,0 +1,140 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-indice-persistente",
+    "observed_at": "2026-11-08T21:40:30-03:00",
+    "revision": "04fcb050275595bb096d1371f6be7d9305c08913",
+    "environment": "Windows, Python e Git",
+    "scope": "Backup, rebuild e tests_for do banco persistente",
+    "evidence_level": "observed",
+    "coverage": "partial",
+    "method": "SQLite online backup, build/status/query pela CLI, Git e leitura da aresta",
+    "excluded": [
+      "Índices de outros projetos e runtime global"
+    ],
+    "limits": [
+      "Fotografia da revisão inicial, antes da publicação documental."
+    ]
+  },
+  "sources": [
+    {
+      "id": "backup",
+      "path": "../../../../receipts/crg-indice-persistente/backup.json",
+      "anchor": "SQLite backup",
+      "revision": "04fcb050275595bb096d1371f6be7d9305c08913",
+      "sha256": "6f79ae8c2ae04e5f5d8ced2c9c25fea2f3142399f6eee8940b933be09dc4c2f4",
+      "availability": "available"
+    },
+    {
+      "id": "build",
+      "path": "../../../../receipts/crg-indice-persistente/proof-build.json",
+      "anchor": "status e Git HEAD",
+      "revision": "04fcb050275595bb096d1371f6be7d9305c08913",
+      "sha256": "db290329d60d41f5baa18c27140767696ac0e643d0e08233aafe44e0d81a812a",
+      "availability": "available"
+    },
+    {
+      "id": "association",
+      "path": "../../../../receipts/crg-indice-persistente/proof-association.json",
+      "anchor": "TESTED_BY e indirect=false",
+      "revision": "04fcb050275595bb096d1371f6be7d9305c08913",
+      "sha256": "23d55c2de9a06bb37c51d75ead8116394773e14cc6d48800b3492463c89922c3",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "build",
+      "label": "CLI build e status",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "build"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "db",
+      "label": "SQLite persistente",
+      "type": "database",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "build",
+        "association"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "backup",
+      "label": "Snapshot SQLite anterior",
+      "type": "artifact",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "backup"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "query",
+      "label": "CLI tests_for",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "association"
+      ],
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "build-db",
+      "source": "build",
+      "target": "db",
+      "relation": "consumes_contract",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "build"
+      ],
+      "condition": "Build e status usam o banco persistente resolvido.",
+      "limitation": ""
+    },
+    {
+      "id": "query-db",
+      "source": "query",
+      "target": "db",
+      "relation": "consumes_contract",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "association"
+      ],
+      "condition": "A consulta retorna o teste associado à definição.",
+      "limitation": ""
+    },
+    {
+      "id": "backup-db",
+      "source": "backup",
+      "target": "db",
+      "relation": "references",
+      "propagates": false,
+      "evidence": "observed",
+      "source_refs": [
+        "backup"
+      ],
+      "condition": "Snapshot verificado antes da reconstrução.",
+      "limitation": ""
+    }
+  ]
+}

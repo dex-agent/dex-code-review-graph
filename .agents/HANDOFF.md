@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
+- [Índice persistente](PLAN-TASKS/2026-11-08-crg-indice-persistente.md): backup SQLite íntegro, build com a CLI do checkout, SHA conferido e associação direta comprovada. Conferir staleness pelo `status --json` antes de consumir.
+
 - [Reexportações Python](PLAN-TASKS/2026-11-08-crg-python-reexports.md): `crg-j6z`, identidade canônica e update com regressão pela CLI. O histórico em `573580b` retorna o teste direto e mantém o recorte 1/1. Índice persistente preservado. Rebuild com backup é o próximo corte antes de usar a correção no grafo persistente.
 
 - [Piloto CLI em diff real](PLAN-TASKS/2026-11-08-crg-cli-diff-real.md): build no pai de 573580b, update isolado e comparação Git/AST/JSON. `query_graph` cobre os três hunks. O teste do ramo `references_to` passou e faltou em `tests_for`. Bead `crg-j6z`, owner mantenedor CRG, próximo corte.
