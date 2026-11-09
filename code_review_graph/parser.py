@@ -2719,6 +2719,8 @@ class CodeParser:
             import_map=import_map, defined_names=defined_names,
         )
 
+        edges = self._apply_typed_call_targets(edges, typed_call_targets)
+
         if language == "php":
             self._extract_php_laravel_edges(
                 tree.root_node,
@@ -2731,8 +2733,6 @@ class CodeParser:
                 edges,
                 file_path_str,
             )
-
-        edges = self._apply_typed_call_targets(edges, typed_call_targets)
 
         # Resolve bare call targets to qualified names using same-file definitions
         edges = self._resolve_call_targets(nodes, edges, file_path_str)
@@ -4549,6 +4549,9 @@ class CodeParser:
 
         resolved: list[EdgeInfo] = []
         for edge in edges:
+            if edge.kind == "CALLS" and "unresolved_targets" in edge.extra:
+                resolved.append(edge)
+                continue
             if (
                 edge.kind == "REFERENCES"
                 and edge.extra.get("julia_qualified_def")
@@ -5168,7 +5171,7 @@ class CodeParser:
                     )
                     type_name = type_node.text.decode(
                         "utf-8", errors="replace",
-                    ).strip("\\")
+                    )
                     if name and type_name:
                         result[name] = type_name
 
@@ -10763,13 +10766,7 @@ class CodeParser:
         edges: list[EdgeInfo],
         file_path: str,
     ) -> list[EdgeInfo]:
-        """Resolve PHP ``Class::method`` calls from lexical file evidence.
-
-        Resolution happens during parsing, so incremental updates touch only
-        the changed file. Bare cross-file class names are deliberately left
-        unresolved; accepted evidence is a same-file method, ``self``/``static``,
-        an explicit import, a qualified name, or the current PHP namespace.
-        """
+        """Resolve static calls and preserve lexical identities for PHP class references."""
         methods: dict[tuple[str, str], list[str]] = {}
         for node in nodes:
             if (
@@ -10847,7 +10844,17 @@ class CodeParser:
                 evidence,
             )
 
+        class_nodes = {
+            (node.line_start, node.name): node for node in nodes if node.kind == "Class"
+        }
+        constructed_receivers = {
+            (edge.line, edge.source, edge.target, edge.extra["receiver"]):
+            edge.extra["receiver_type"]
+            for edge in edges
+            if edge.extra.get("receiver_resolution") == "constructed_receiver"
+        }
         resolutions: dict[tuple[int, str, str], tuple[str, str]] = {}
+        class_references: dict[tuple[int, str, str, Optional[str]], str] = {}
 
         def walk_node(
             node,
@@ -10861,6 +10868,11 @@ class CodeParser:
                 return
             if node.type in self._class_types["php"]:
                 class_name = self._get_name(node, "php", "class")
+                declaration = class_nodes.get((node.start_point[0] + 1, class_name or ""))
+                if declaration is not None:
+                    declaration.extra["php_class_scope"] = self._php_resolve_class_reference(
+                        declaration.name, namespace, {},
+                    )
                 for child in node.children:
                     walk_node(
                         child,
@@ -10885,29 +10897,43 @@ class CodeParser:
                     )
                 return
 
-            scope, method = self._php_scoped_call_parts(node)
-            if scope and method:
-                target, evidence = resolve_target(
-                    scope,
-                    method,
-                    namespace,
-                    imports,
-                    enclosing_class,
+            if node.type in self._call_types["php"]:
+                line = node.start_point[0] + 1
+                source_name = (
+                    self._qualify(enclosing_func, file_path, enclosing_class)
+                    if enclosing_func else file_path
                 )
-                if target is not None and evidence is not None:
-                    stable_scope = scope.lstrip("\\")
-                    source_name = (
-                        self._qualify(
-                            enclosing_func, file_path, enclosing_class,
-                        )
-                        if enclosing_func
-                        else file_path
+                scope, method = self._php_scoped_call_parts(node)
+                if scope and method:
+                    target, evidence = resolve_target(
+                        scope, method, namespace, imports, enclosing_class,
                     )
-                    resolutions[(
-                        node.start_point[0] + 1,
-                        source_name,
-                        f"{stable_scope}::{method}",
-                    )] = (target, evidence)
+                    if target is not None and evidence is not None:
+                        stable_scope = scope.lstrip("\\")
+                        resolutions[(line, source_name, f"{stable_scope}::{method}")] = (
+                            target, evidence,
+                        )
+                elif node.type == "object_creation_expression":
+                    reference = next(
+                        (child.text.decode("utf-8", errors="replace")
+                         for child in node.children if child.type in ("name", "qualified_name")),
+                        "",
+                    )
+                    if reference and reference.casefold() not in {"self", "static", "parent"}:
+                        class_references[(line, source_name, reference.lstrip("\\"), None)] = (
+                            self._php_resolve_class_reference(reference, namespace, imports)
+                        )
+                elif constructed_receivers and node.type in (
+                    "member_call_expression", "nullsafe_member_call_expression",
+                ):
+                    receiver, method = self._get_member_call_receiver_method(node, "php")
+                    if receiver and method:
+                        site = (line, source_name, method, receiver)
+                        reference = constructed_receivers.get(site)
+                        if reference:
+                            class_references[site] = self._php_resolve_class_reference(
+                                reference, namespace, imports,
+                            )
 
             for child in node.children:
                 walk_node(
@@ -10955,18 +10981,26 @@ class CodeParser:
                 )
 
         walk_sequence(root)
-        if not resolutions:
+        if not resolutions and not class_references:
             return edges
 
         resolved: list[EdgeInfo] = []
         for edge in edges:
-            resolution = resolutions.get((edge.line, edge.source, edge.target))
-            if edge.kind != "CALLS" or resolution is None:
+            site = (edge.line, edge.source, edge.target)
+            resolution = resolutions.get(site)
+            receiver = edge.extra.get("receiver")
+            class_scope = class_references.get((*site, receiver))
+            if edge.kind != "CALLS" or (resolution is None and not class_scope):
                 resolved.append(edge)
                 continue
-            target, evidence = resolution
             extra = dict(edge.extra)
-            extra["scoped_resolution"] = evidence
+            target = edge.target
+            if resolution is not None:
+                target, extra["scoped_resolution"] = resolution
+            else:
+                extra["receiver_scope" if receiver else "php_class_scope"] = class_scope
+                # Keep the bare endpoint out of generic matching until its class is indexed.
+                extra["unresolved_targets"] = []
             resolved.append(EdgeInfo(
                 kind=edge.kind,
                 source=edge.source,

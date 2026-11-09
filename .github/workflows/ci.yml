@@ -115,6 +115,7 @@ jobs:
           tests/test_parser.py::test_test_directory_components
           tests/test_php_scoped_calls.py::test_phpunit_instance_call_creates_canonical_tested_by_edge
           tests/test_php_scoped_calls.py::test_phpunit_instance_call_is_visible_through_public_tests_for
+          tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace
           tests/test_postprocessing.py
           tests/test_refactor.py
           tests/test_search.py

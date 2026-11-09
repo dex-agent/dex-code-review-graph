@@ -13,19 +13,16 @@ When a local receiver was directly constructed (``$x = new Type(); $x->run()``),
 the parser stores the class as ``extra.receiver_scope`` and this pass uses that
 evidence to resolve the call without changing parse-only output (GitHub #745).
 
-This module runs after the graph is built and rewrites the resolvable
-``Class::method`` targets to the canonical qualified name of the defined
-method node, in the same style as the Spring/Temporal/ReScript resolvers.
+This pass runs after indexing. PHP constructors and constructed receivers
+match their full lexical class identity against indexed declarations.
 
 It is deliberately conservative so it never fabricates an edge:
 
-* Only genuine ``Class::method`` targets are considered; already-resolved
-  targets (``<file>::Class.method``) are left alone.
+* Already-resolved canonical targets are left alone.
 * ``self`` / ``static`` (PHP) and ``self`` / ``Self`` (Rust) resolve to the
   enclosing class/type of the caller.
-* A target resolves when exactly one ``(class, method)`` node exists in the
-  graph, or when the caller file's ``IMPORTS_FROM`` edges disambiguate between
-  several same-named definitions.
+* A legacy scoped/static target resolves when exactly one ``(class, method)``
+  node exists or the caller file's imports disambiguate several definitions.
 * Ambiguous or unknown targets (external types such as ``Vec::new`` or
   ``Redis::get`` with no in-graph definition) are left untouched, keeping the
   behaviour of unresolved external calls exactly as it is today.
@@ -264,7 +261,22 @@ def resolve_scoped_calls(store: GraphStore) -> dict:
         method_map.setdefault(key, []).append(row["qualified_name"])
         file_of[row["qualified_name"]] = row["file_path"]
 
-    if not method_map:
+    php_classes: dict[str, list[str]] = {}
+    php_class_scopes: dict[tuple[str, str], str] = {}
+    for row in conn.execute(
+        "SELECT name, qualified_name, file_path, extra FROM nodes "
+        "WHERE language = 'php' AND kind = 'Class'",
+    ):
+        try:
+            extra = json.loads(row["extra"] or "{}")
+        except (TypeError, json.JSONDecodeError):
+            continue
+        scope = extra.get("php_class_scope") if isinstance(extra, dict) else None
+        if isinstance(scope, str) and scope:
+            php_classes.setdefault(scope.casefold(), []).append(row["qualified_name"])
+            php_class_scopes[(row["file_path"], row["name"].casefold())] = scope.casefold()
+
+    if not method_map and not php_classes:
         return {"files_indexed": len(file_language), "calls_resolved": 0}
 
     # ------------------------------------------------------------------
@@ -345,46 +357,53 @@ def resolve_scoped_calls(store: GraphStore) -> dict:
             extra = {}
 
         resolution_target = target
-        receiver_scope = extra.get("receiver_scope")
-        if (
-            language == "php"
-            and "::" not in target
-            and isinstance(receiver_scope, str)
-            and receiver_scope
-        ):
-            resolution_target = f"{receiver_scope}::{target}"
-        elif not _is_unresolved_scoped_target(target):
-            continue
-
-        parsed = _scope_and_method(resolution_target, language)
-        if parsed is None:
-            continue
-        class_name, method, needs_enclosing = parsed
-
-        if needs_enclosing:
-            enclosing = _enclosing_class(row["source_qualified"])
-            if not enclosing:
+        if language == "php" and "::" not in target and extra.get("php_class_scope"):
+            scope = extra["php_class_scope"]
+            candidates = php_classes.get(scope.casefold(), []) if isinstance(scope, str) else []
+            if len(candidates) != 1:
                 continue
-            class_name = enclosing
-        assert class_name is not None  # non-enclosing parse always sets a class
-
-        candidates = method_map.get(
-            (language, _fold(class_name, language), _fold(method, language))
-        )
-        if not candidates:
-            continue
-
-        if len(candidates) == 1:
-            new_target = candidates[0]
-            via = "single_match"
+            new_target, via = candidates[0], "class_scope"
         else:
-            new_target = disambiguate(
-                candidates, row["file_path"], class_name, language
+            receiver_scope = extra.get("receiver_scope")
+            has_php_receiver = (
+                language == "php" and "::" not in target
+                and isinstance(receiver_scope, str) and bool(receiver_scope)
             )
-            if new_target is None:
+            if has_php_receiver:
+                resolution_target = f"{receiver_scope}::{target}"
+            elif not _is_unresolved_scoped_target(target):
                 continue
-            via = "import"
 
+            parsed = _scope_and_method(resolution_target, language)
+            if parsed is None:
+                continue
+            class_name, method, needs_enclosing = parsed
+            if needs_enclosing:
+                class_name = _enclosing_class(row["source_qualified"])
+            if not class_name:
+                continue
+
+            class_key = _fold(class_name, language)
+            candidates = method_map.get((language, class_key, _fold(method, language)), [])
+            if has_php_receiver:
+                candidates = [
+                    candidate for candidate in candidates
+                    if php_class_scopes.get((file_of[candidate], class_key))
+                    == receiver_scope.casefold()
+                ]
+                if len(candidates) != 1:
+                    continue
+            if not candidates:
+                continue
+            if len(candidates) == 1:
+                new_target, via = candidates[0], "single_match"
+            else:
+                new_target = disambiguate(candidates, row["file_path"], class_name, language)
+                if new_target is None:
+                    continue
+                via = "import"
+
+        extra.pop("unresolved_targets", None)
         extra["scoped_resolved"] = True
         extra["scoped_via"] = via
         serialized_extra = json.dumps(extra)
