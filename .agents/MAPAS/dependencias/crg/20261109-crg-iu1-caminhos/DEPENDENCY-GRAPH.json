@@ -1,0 +1,129 @@
+{
+  "multigraph": true,
+  "graph": {
+    "environment": "Windows nativo, Ubuntu WSL e GitHub Actions",
+    "method": "Pytest JUnit, Git e leitura da CI por SHA",
+    "observed_at": "2026-11-09T06:30:13.3308660Z",
+    "scope": "Provas de caminho PHP e Rust e saldo da suíte Windows",
+    "coverage": "partial",
+    "limits": [
+      "O job Windows usa seleção de testes."
+    ],
+    "revision": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b",
+    "object_id": "crg",
+    "evidence_level": "observed",
+    "excluded": [
+      "Índice persistente",
+      "Diagnóstico das outras 21 falhas"
+    ],
+    "snapshot_id": "20261109-crg-iu1-caminhos"
+  },
+  "edges": [
+    {
+      "source": "ci",
+      "evidence": "observed",
+      "propagates": true,
+      "condition": "Seleção obrigatória dos três node IDs no workflow existente",
+      "relation": "executes",
+      "target": "fixture",
+      "limitation": "",
+      "id": "ci-fixture",
+      "source_refs": [
+        "change",
+        "comparison"
+      ]
+    },
+    {
+      "source": "reconcile",
+      "evidence": "observed",
+      "propagates": true,
+      "condition": "Comparação de conjuntos de node IDs em Windows 3.13",
+      "relation": "consumes_contract",
+      "target": "baseline",
+      "limitation": "",
+      "id": "reconcile-baseline",
+      "source_refs": [
+        "comparison"
+      ]
+    }
+  ],
+  "schema": "dex.dependency-map.v1",
+  "sources": [
+    {
+      "availability": "available",
+      "path": "../../../../receipts/crg-iu1-caminhos/change.json",
+      "anchor": "change",
+      "sha256": "2cf44e69c779d077a8f3cdb9f1fc1b9e0bda7f39bd37d7e510f3fbc7005a9082",
+      "revision": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b",
+      "id": "change"
+    },
+    {
+      "availability": "available",
+      "path": "../../../../receipts/crg-iu1-caminhos/focused.json",
+      "anchor": "focused",
+      "sha256": "5ad61fc1312d6b145e163702750d6feac05a277f85bcb65ea6b3ff5e20b6b051",
+      "revision": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b",
+      "id": "focused"
+    },
+    {
+      "availability": "available",
+      "path": "../../../../receipts/crg-iu1-caminhos/comparison.json",
+      "anchor": "comparison",
+      "sha256": "a87cbb59f1fd75ce5dbb68f0fc78be7ee9df4771caa7cd67058dca839999c78c",
+      "revision": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b",
+      "id": "comparison"
+    }
+  ],
+  "directed": true,
+  "nodes": [
+    {
+      "owner": "mantenedor CRG",
+      "external": false,
+      "id": "fixture",
+      "type": "test",
+      "label": "Fixture PHP/Rust e destino qualificado",
+      "source_refs": [
+        "change",
+        "focused"
+      ],
+      "limitation": "",
+      "evidence": "observed"
+    },
+    {
+      "owner": "mantenedor CRG",
+      "external": false,
+      "id": "ci",
+      "type": "workflow",
+      "label": "Job Windows nativo",
+      "source_refs": [
+        "comparison"
+      ],
+      "limitation": "",
+      "evidence": "observed"
+    },
+    {
+      "owner": "mantenedor CRG",
+      "external": false,
+      "id": "reconcile",
+      "type": "command",
+      "label": "Comparação de IDs Windows",
+      "source_refs": [
+        "comparison"
+      ],
+      "limitation": "",
+      "evidence": "observed"
+    },
+    {
+      "owner": "mantenedor CRG",
+      "external": false,
+      "id": "baseline",
+      "type": "report",
+      "label": "Baseline de 24 IDs",
+      "source_refs": [
+        "comparison"
+      ],
+      "limitation": "",
+      "evidence": "observed"
+    }
+  ]
+}

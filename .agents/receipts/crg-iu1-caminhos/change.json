@@ -1,0 +1,24 @@
+{
+  "exit_code": 0,
+  "mutant_pytest_exit": 1,
+  "cases": {
+    "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods": {
+      "mutant_pytest": "failed at destination assertion",
+      "wrong_target": "src/Mail/Mailer.php::Mailer.dispatch"
+    },
+    "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace": {
+      "mutant_pytest": "failed at destination assertion",
+      "wrong_target": "src/Mail/Queue/Mailer.php::Mailer.dispatch"
+    },
+    "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module": {
+      "mutant_pytest": "failed at destination assertion",
+      "wrong_target": "src/billing/mailer.rs::Mailer.go"
+    }
+  },
+  "windows_ci_selects": [
+    "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods",
+    "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace",
+    "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module"
+  ],
+  "ruff_exit": 0
+}

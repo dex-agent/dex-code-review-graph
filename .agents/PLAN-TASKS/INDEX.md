@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-iu1-caminhos` | [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-dq9` | [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.
 
 - `crg-x6m-20261109` | [Trilho](2026-11-09-crg-x6m-php-homonimos.md) | concluído com ressalvas | owner: mantenedor CRG.
