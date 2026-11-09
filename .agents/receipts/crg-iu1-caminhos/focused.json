@@ -1,0 +1,31 @@
+{
+  "exit_code": 0,
+  "git_head": "7e2e4f2b92a5f5c49fb70ab51f8c2f39cd74d54e",
+  "windows": {
+    "python": "3.13.13",
+    "pytest_exit": 0,
+    "cases": {
+      "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods": "passed",
+      "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace": "passed",
+      "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module": "passed",
+      "tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace[scoped]": "passed",
+      "tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace[composer-alias]": "passed",
+      "tests/test_php_scoped_calls.py::test_unrelated_import_namespace_does_not_resolve": "passed",
+      "tests/test_rust_scoped_calls.py::test_unrelated_import_path_does_not_resolve": "passed"
+    }
+  },
+  "ubuntu": {
+    "system": "Ubuntu 26.04 LTS via WSL",
+    "python": "3.12.14",
+    "pytest_exit": 0,
+    "cases": {
+      "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods": "passed",
+      "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace": "passed",
+      "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module": "passed",
+      "tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace[scoped]": "passed",
+      "tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace[composer-alias]": "passed",
+      "tests/test_php_scoped_calls.py::test_unrelated_import_namespace_does_not_resolve": "passed",
+      "tests/test_rust_scoped_calls.py::test_unrelated_import_path_does_not_resolve": "passed"
+    }
+  }
+}

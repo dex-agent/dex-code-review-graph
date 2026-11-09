@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último encerrado: [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | bead `crg-dq9` | checklist 5/5 | veredito `vrd_20261109061157643_0378_0345` pronto com ressalvas.
+- Último encerrado: [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | bead `crg-iu1` em andamento | commit `f825c25` | checklist 5/5 | veredito `vrd_20261109063105983_0407_0382` pronto com ressalvas.
+
+- Anterior: [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | bead `crg-dq9` | checklist 5/5 | veredito `vrd_20261109061157643_0378_0345` pronto com ressalvas.
 - Anterior: [Resolução PHP de homônimos](2026-11-09-crg-x6m-php-homonimos.md) | bead `crg-x6m` | produto `fb9fc22` | checklist 4/4 | veredito `vrd_20261109055428929_0348_0306` pronto com ressalvas.
 - Anterior: [Frescor semântico do índice](2026-11-08-crg-k4q-frescor-indice.md) | bead `crg-k4q` | checklist 4/4 | veredito `vrd_20261109023002598_0322_0273` pronto com ressalvas.
 - Anterior: [Classificação por caminho](2026-11-08-crg-test-path.md) | bead `crg-08x` | checklist 4/4 | commit `3fb1ab3` | veredito `vrd_20261109020535975_0294_0238` pronto com ressalvas.

@@ -1,0 +1,23 @@
+{
+  "exit_code": 0,
+  "sha": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b",
+  "bead": "crg-iu1",
+  "bead_status": "in_progress",
+  "remaining": 21,
+  "julia_remaining": 13,
+  "owner": "mantenedor CRG",
+  "when": "antes do próximo release Windows",
+  "next_test": "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities",
+  "links_reopened": true,
+  "graph_sources_hashes_verified": true,
+  "revision_set": {
+    ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-caminhos.md": "64e48389998a8d71464937c9de52e3e29f10c45c6e9991cc70ca0761ad26dc9f",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-caminhos.md": "25763945d1f6afda78d32ea3aa8d5460ff0477a88804b39181071deac65c1e4d",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-caminhos/DEPENDENCY-MAP.md": "466c64c110ac882f27a24b0082bf243d96de67b672220b23f94a75783bf522eb",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-caminhos/DEPENDENCY-GRAPH.json": "9d2218e3e46244e52f6aa51f363af0186bf44887977be7446ea3316c57b8d3ea",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-caminhos/DEPENDENCY-GRAPH.html": "14b0eea402772b1ba4fad1e94629f98bc830ab2716f15d0b20362fa606e54366",
+    ".agents/MAPAS/INDEX.md": "18773434199da58bf13317d6e5146f9d90701b084e365d1b437fd06277b429ef",
+    ".agents/ACTIVE.md": "d68fdb69a28f72d21cc1e3dbd9443a7dc9dd8360f20cef02794f5b5b5c394f01",
+    ".agents/HANDOFF.md": "0bb157adecd7c437d126be5d096e13af9db37286e25f96f22da7273069182234"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "repo_kind": "project",
+  "searches": {
+    "global": {
+      "source": "global",
+      "result": "Template global presente e com instancia local",
+      "query": "manutencao iterativa com evidencia"
+    },
+    "local": {
+      "source": "local",
+      "result": "Workflow local já cobre baseline, contraprovas, validação por SHA, publicação e continuidade.",
+      "query": "manutencao iterativa CRG"
+    }
+  },
+  "candidates": [
+    {
+      "procedure": "Baseline de três IDs, contraprova de homônimo, JUnit nos dois sistemas, delta de IDs, CI por SHA e checkout do Trilho.",
+      "existing_workflow": "recipe",
+      "when": "No próximo recorte de testes com diferença entre plataformas",
+      "owner": "mantenedor CRG",
+      "name": "Manutencao iterativa CRG",
+      "decision": "reuse",
+      "reason": "Reuso do workflow instalado para comparar o antes e o depois com prova observável.",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "reuse_trigger": "Falha de teste dependente de plataforma"
+    }
+  ],
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "block_evidence": [
+    "proof"
+  ],
+  "sources": {
+    "recipe": {
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md"
+    },
+    "local": {
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md"
+    },
+    "global": {
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16",
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md"
+    },
+    "proof": {
+      "sha256": "a87cbb59f1fd75ce5dbb68f0fc78be7ee9df4771caa7cd67058dca839999c78c",
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-caminhos\\comparison.json"
+    }
+  },
+  "block_id": "crg-iu1-caminhos-20261109",
+  "reviewed_at": "2026-11-09T06:31:51.3710408Z",
+  "contract": "dex.fechamento.workflow-review.v1"
+}

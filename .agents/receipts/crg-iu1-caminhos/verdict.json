@@ -1,0 +1,26 @@
+{
+  "flow_id": "flow_20261109062016039_0386_0354",
+  "verdict_id": "vrd_20261109063105983_0407_0382",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 5,
+    "total": 5
+  },
+  "bead": "crg-iu1",
+  "evidence_ids": [
+    "evd_20261109062500852_0400_0372",
+    "evd_20261109062147606_0393_0362",
+    "evd_20261109062306109_0394_0364",
+    "evd_20261109062349088_0395_0366",
+    "evd_20261109062939138_0401_0374",
+    "evd_20261109063045106_0402_0376"
+  ],
+  "residual_risks": [
+    "O corte cobre três IDs. As demais falhas Windows continuam sob crg-iu1 e condicionam o próximo release Windows.",
+    "O índice local deve passar pelo check de staleness antes de sustentar conclusões sobre os testes alterados."
+  ],
+  "next_step": "Retomar crg-iu1 pelo teste test_qualified_definitions_have_collision_free_identities em Windows nativo e Ubuntu no mesmo SHA. Capturar caminhos e identidades qualificadas e localizar a primeira divergência antes de editar, sob o mantenedor CRG antes do próximo release Windows.",
+  "product_sha": "f825c2597e6bfba1a489a8b96856a9f4aa1a1f8b"
+}

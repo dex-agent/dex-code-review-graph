@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-iu1-caminhos — caminhos PHP/Rust no Windows e Ubuntu, com saldo da suíte por ID.
+  - [Capacidades](capacidades-crg-20261109-crg-iu1-caminhos.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-iu1-caminhos.md)
+  - [Dependências](dependencias/crg/20261109-crg-iu1-caminhos/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md)
+
 - 20261109-crg-dq9 — adoção da correção PHP no banco persistente com restauração ensaiada.
   - [Capacidades](capacidades-crg-20261109-crg-dq9.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-dq9.md)

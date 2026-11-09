@@ -1,6 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-09.
+- [Caminhos PHP/Rust no Windows e Ubuntu](PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md): `f825c25`, 7/7 em cada sistema e CI 9/9. A suíte Windows passou de 24 a 21 falhas, sem novos IDs. O mantenedor retoma `crg-iu1` pelo primeiro caso de identidade Julia antes do próximo release Windows. [Comparação por ID](receipts/crg-iu1-caminhos/comparison.json).
 - [Adoção da correção PHP no índice persistente](PLAN-TASKS/2026-11-09-crg-adocao-indice-php.md): banco habitual reconstruído em `eeb486b`, backup íntegro e restauração ensaiada. [Readback da CLI e SQLite](receipts/crg-adocao-indice-php/promotion.json). O mantenedor retoma `crg-iu1` antes do próximo release Windows.
 - [Resolução PHP de homônimos](PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md): produto `fb9fc22`. Duas fixtures com zero arestas para Shipping e paridade de update e rebuild para Payments. [Prova pela CLI e pelo SQLite](receipts/crg-x6m/cli.json).
 - [Frescor semântico do índice](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md): update alinhou o SHA sem reclassificar, rebuild no mesmo SHA recuperou a aresta direta. A rota de adoção está nos [gatilhos vivos](GATILHOS-VIVOS.md#staleness-artefatos-derivados).
