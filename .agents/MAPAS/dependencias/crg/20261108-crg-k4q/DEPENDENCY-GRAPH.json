@@ -1,0 +1,151 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-k4q",
+    "observed_at": "2026-11-09T02:29:20.2967540Z",
+    "revision": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+    "environment": "Windows Python 3.13 e Git isolado",
+    "scope": "reclassificação PHPUnit após rebuild",
+    "evidence_level": "observed",
+    "coverage": "partial",
+    "method": "Git, CLI e SQLite",
+    "excluded": [
+      "índice persistente"
+    ],
+    "limits": [
+      "um caso PHP e duas revisões"
+    ]
+  },
+  "sources": [
+    {
+      "id": "cli",
+      "path": "../../../../../code_review_graph/cli.py",
+      "anchor": "built_at_commit",
+      "revision": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+      "sha256": "bbd5283fde05997e2a08a8d2ded5f43db5ec9bbe6b2ef0786bfc86f8fe14b379",
+      "availability": "available"
+    },
+    {
+      "id": "update",
+      "path": "../../../../../.agents/receipts/crg-k4q/update.json",
+      "anchor": "git_changed_files",
+      "revision": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+      "sha256": "89769db77351e1ab41662d990e42c4855c06a3a5c0e1f7294eae732337a48032",
+      "availability": "available"
+    },
+    {
+      "id": "backup",
+      "path": "../../../../../.agents/receipts/crg-k4q/backup.json",
+      "anchor": "integrity_check",
+      "revision": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+      "sha256": "c210d1cc8ce970a7bc7f2c6e56954ac7d7b921d986b1741f0dc6b284f78648dc",
+      "availability": "available"
+    },
+    {
+      "id": "rebuild",
+      "path": "../../../../../.agents/receipts/crg-k4q/rebuild.json",
+      "anchor": "TESTED_BY",
+      "revision": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+      "sha256": "f7eae20a65825e1d83c3aa12bc0f8135f48e9542c0aa86d9c3b43736cab79665",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI status e tests_for",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "cli",
+        "rebuild"
+      ],
+      "limitation": "Fixture isolada"
+    },
+    {
+      "id": "update",
+      "label": "Update de arquivo alheio",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "update"
+      ],
+      "limitation": "Fixture isolada"
+    },
+    {
+      "id": "backup",
+      "label": "Backup SQLite read-only",
+      "type": "store",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "backup"
+      ],
+      "limitation": "Fixture isolada"
+    },
+    {
+      "id": "rebuild",
+      "label": "Rebuild e classificação nova",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "rebuild"
+      ],
+      "limitation": "Fixture isolada"
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-update",
+      "source": "cli",
+      "target": "update",
+      "relation": "consumes_contract",
+      "condition": "Leitura de SHA após update",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "cli",
+        "update"
+      ],
+      "limitation": "Fixture isolada"
+    },
+    {
+      "id": "backup-update",
+      "source": "backup",
+      "target": "update",
+      "relation": "consumes_contract",
+      "condition": "Cópia do estado anterior ao rebuild",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "update",
+        "backup"
+      ],
+      "limitation": "Fixture isolada"
+    },
+    {
+      "id": "cli-rebuild",
+      "source": "cli",
+      "target": "rebuild",
+      "relation": "consumes_contract",
+      "condition": "Consulta de associação direta após rebuild",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "cli",
+        "rebuild"
+      ],
+      "limitation": "Fixture isolada"
+    }
+  ]
+}

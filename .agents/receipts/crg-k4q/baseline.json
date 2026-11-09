@@ -1,0 +1,62 @@
+{
+  "exit_code": 0,
+  "module": {
+    "git": "c3682acb70bfcd15c024a27f60833ac54453db30",
+    "parser_sha256": "9b151e90a43d02e35a49a7c6d08a478c3011ff4739aa5f063379ac8620e4e46d"
+  },
+  "executable": "code-review-graph.exe",
+  "build": "Full build: 3 files, 8 nodes, 11 edges (postprocess=minimal)",
+  "php_source_sha256": {
+    "src/Calculator.php": "caa8116fccf282aa2fce4935fca2756e2cae989a8d95cf6fa4d01f3427532dd6",
+    "tests/CalculatorTest.php": "dd714f174c8382bdc69529cf2f96b1be109089734b688ab4b504683815ddbdc4"
+  },
+  "git_head": "00dd24826577ed49a640b9075ddae3d079390b71",
+  "status": {
+    "nodes": 8,
+    "edges": 11,
+    "files": 3,
+    "languages": [
+      "php"
+    ],
+    "last_updated": "2026-11-08T23:27:40",
+    "vcs": "git",
+    "built_on_branch": "master",
+    "built_at_commit": "00dd24826577ed49a640b9075ddae3d079390b71",
+    "current_branch": "master",
+    "current_sha": "00dd24826577ed49a640b9075ddae3d079390b71",
+    "svn_branch": null,
+    "svn_revision": null
+  },
+  "sqlite": {
+    "integrity_check": "ok",
+    "git_head_sha": "00dd24826577ed49a640b9075ddae3d079390b71",
+    "nodes": [
+      {
+        "kind": "Function",
+        "is_test": false,
+        "file_path": "src/Calculator.php",
+        "qualified_name": "src/Calculator.php::Calculator.add",
+        "line_start": 1,
+        "line_end": 1
+      },
+      {
+        "kind": "File",
+        "is_test": false,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php",
+        "line_start": 1,
+        "line_end": 11
+      },
+      {
+        "kind": "Function",
+        "is_test": false,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php::CalculatorTest.testAdd",
+        "line_start": 6,
+        "line_end": 9
+      }
+    ],
+    "TESTED_BY": []
+  },
+  "tests_for": []
+}

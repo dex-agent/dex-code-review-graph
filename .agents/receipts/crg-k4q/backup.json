@@ -1,0 +1,37 @@
+{
+  "exit_code": 0,
+  "path_local": "backup-kk_lrxid/index-before-rebuild.sqlite3",
+  "sha256": "2f7862cbfc640c1b02746c389989fdf65059027ef8afb2dcb182163fe646963f",
+  "size_bytes": 151552,
+  "sqlite": {
+    "integrity_check": "ok",
+    "git_head_sha": "5445efcca2b35a4267dbc66454a7d93a24f2684c",
+    "nodes": [
+      {
+        "kind": "Function",
+        "is_test": false,
+        "file_path": "src/Calculator.php",
+        "qualified_name": "src/Calculator.php::Calculator.add",
+        "line_start": 1,
+        "line_end": 1
+      },
+      {
+        "kind": "File",
+        "is_test": false,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php",
+        "line_start": 1,
+        "line_end": 11
+      },
+      {
+        "kind": "Function",
+        "is_test": false,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php::CalculatorTest.testAdd",
+        "line_start": 6,
+        "line_end": 9
+      }
+    ],
+    "TESTED_BY": []
+  }
+}

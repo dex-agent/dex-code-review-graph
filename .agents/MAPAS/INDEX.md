@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261108-crg-k4q — SHA Git e frescor semântico no índice isolado.
+  - [Capacidades](capacidades-crg-20261108-crg-k4q.md)
+  - [Decisões históricas](decisoes-crg-20261108-crg-k4q.md)
+  - [Dependências](dependencias/crg/20261108-crg-k4q/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md)
+
 - 20261108-crg-test-path — classificação relativa ao checkout, prova pela CLI e pelo SQLite.
   - [Capacidades](capacidades-crg-20261108-crg-test-path.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-test-path.md)

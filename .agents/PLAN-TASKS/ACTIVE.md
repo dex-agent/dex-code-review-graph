@@ -1,6 +1,7 @@
 # Trilho ativo
 
-- Atual: [Classificação por caminho](2026-11-08-crg-test-path.md) | bead `crg-08x` | checklist 4/4 | commit `3fb1ab3` | veredito `vrd_20261109020535975_0294_0238` pronto com ressalvas.
+- Atual: [Frescor semântico do índice](2026-11-08-crg-k4q-frescor-indice.md) | bead `crg-k4q` | checklist 4/4 | veredito `vrd_20261109023002598_0322_0273` pronto com ressalvas.
+- Anterior: [Classificação por caminho](2026-11-08-crg-test-path.md) | bead `crg-08x` | checklist 4/4 | commit `3fb1ab3` | veredito `vrd_20261109020535975_0294_0238` pronto com ressalvas.
 - Anterior: [PHPUnit direto no Windows](2026-11-08-crg-phpunit-windows.md) | checklist 4/4 | veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas | `crg-iu1` segue com 24 falhas.
 - Anterior: [Índice persistente](2026-11-08-crg-indice-persistente.md) | bead `crg-5vr` | checklist 3/3, veredito `vrd_20261109004217604_0235_0161` pronto com ressalvas.
 

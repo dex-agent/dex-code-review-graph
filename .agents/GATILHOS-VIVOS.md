@@ -52,6 +52,13 @@ quando instalado neste fechamento, com `--check` antes da consulta.
     Estacione a recuperação com owner e quando; instale só pela rota do owner.
   - **Verde, mas o conteúdo parece errado?** Atualidade não prova semântica.
     Abra a fonte e confronte a alegação. Fonte viva sempre vence memória.
+  - **CRG com SHA igual após mudança de parser?** Confirme `kind/is_test`,
+    a aresta `TESTED_BY` entre os nomes qualificados e o JSON `tests_for`
+    para um caso conhecido. Um update de arquivo alheio pode manter o nó antigo.
+    Para adotar a semântica nova, confirme o banco ativo, faça backup consistente
+    pela API SQLite e verifique `PRAGMA integrity_check`. Com o rebuild
+    autorizado, rode `code-review-graph build --repo <repo>` e repita as
+    três verificações no mesmo SHA. [Prova isolada](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md).
   - **SHA diferente com alteração só documental?** Confira o diff e o recorte.
     O banco continua sendo um corte antigo; se o consumidor exige o HEAD,
     atualize antes de citá-lo como atual.

@@ -1,0 +1,73 @@
+{
+  "exit_code": 0,
+  "module": {
+    "git": "5ec476253c5052fe3227ea1750f51657190cc5dd",
+    "parser_sha256": "dc6d7ef3618ffb0aa81ff92aaf8b10f80c14fad53f4a02607f8ab71924b29ee7"
+  },
+  "build": "Full build: 3 files, 8 nodes, 14 edges (postprocess=minimal)",
+  "php_source_sha256": {
+    "src/Calculator.php": "caa8116fccf282aa2fce4935fca2756e2cae989a8d95cf6fa4d01f3427532dd6",
+    "tests/CalculatorTest.php": "dd714f174c8382bdc69529cf2f96b1be109089734b688ab4b504683815ddbdc4"
+  },
+  "backup_sha256_after_rebuild": "2f7862cbfc640c1b02746c389989fdf65059027ef8afb2dcb182163fe646963f",
+  "git_head": "5445efcca2b35a4267dbc66454a7d93a24f2684c",
+  "status": {
+    "nodes": 8,
+    "edges": 14,
+    "files": 3,
+    "languages": [
+      "php"
+    ],
+    "last_updated": "2026-11-08T23:27:44",
+    "vcs": "git",
+    "built_on_branch": "master",
+    "built_at_commit": "5445efcca2b35a4267dbc66454a7d93a24f2684c",
+    "current_branch": "master",
+    "current_sha": "5445efcca2b35a4267dbc66454a7d93a24f2684c",
+    "svn_branch": null,
+    "svn_revision": null
+  },
+  "sqlite": {
+    "integrity_check": "ok",
+    "git_head_sha": "5445efcca2b35a4267dbc66454a7d93a24f2684c",
+    "nodes": [
+      {
+        "kind": "Function",
+        "is_test": false,
+        "file_path": "src/Calculator.php",
+        "qualified_name": "src/Calculator.php::Calculator.add",
+        "line_start": 1,
+        "line_end": 1
+      },
+      {
+        "kind": "File",
+        "is_test": true,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php",
+        "line_start": 1,
+        "line_end": 11
+      },
+      {
+        "kind": "Test",
+        "is_test": true,
+        "file_path": "tests/CalculatorTest.php",
+        "qualified_name": "tests/CalculatorTest.php::CalculatorTest.testAdd",
+        "line_start": 6,
+        "line_end": 9
+      }
+    ],
+    "TESTED_BY": [
+      [
+        "src/Calculator.php::Calculator.add",
+        "tests/CalculatorTest.php::CalculatorTest.testAdd"
+      ]
+    ]
+  },
+  "tests_for": [
+    {
+      "name": "testAdd",
+      "indirect": false,
+      "inferred_by": null
+    }
+  ]
+}

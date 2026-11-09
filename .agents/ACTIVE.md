@@ -1,7 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-08.
-- Próximo corte do mantenedor CRG: `crg-k4q` antes da próxima consulta ao índice persistente. Reproduzir update que alinha o SHA sem reclassificar e provar a rota de frescor.
+- [Frescor semântico do índice](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md): update alinhou o SHA sem reclassificar, rebuild no mesmo SHA recuperou a aresta direta. A rota de adoção está nos [gatilhos vivos](GATILHOS-VIVOS.md#staleness-artefatos-derivados).
 - [Classificação por caminho](PLAN-TASKS/2026-11-08-crg-test-path.md): commit `3fb1ab3` publicado. PHP e TypeScript em `contest/` e sob ancestral externo `tests/` perderam associações indevidas, com controles positivos preservados. [Provas e CI](receipts/crg-test-path/comparison.json).
 - Fechamento atual: PHPUnit Windows, checklist 4/4 e veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas. O risco P1 histórico de credencial segue no ledger.
 - Corte atual: [organizar repo privado](PLAN-TASKS/2026-11-08-crg-repo-privado-higiene.md), bead `crg-pr9` fechado. Repositorio `dex-agent/dex-code-review-graph` privado, commit organizador `e326cfd` publicado e readback Git/API igual. Remotos `origin` da casa e `upstream` original. Dolt push concluido.
