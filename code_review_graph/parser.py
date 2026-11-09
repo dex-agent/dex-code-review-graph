@@ -1805,7 +1805,8 @@ def _scan_rescript_modules(cleaned: str, offset_to_line) -> list[dict]:
 
 
 def _is_test_file(path: str) -> bool:
-    return any(p.search(path) for p in _TEST_FILE_PATTERNS)
+    test_path = path.replace(os.sep, "/")
+    return any(p.search(test_path) for p in _TEST_FILE_PATTERNS)
 
 
 def _is_test_function(

@@ -110,6 +110,9 @@ jobs:
           tests/test_graph.py
           tests/test_integration_v2.py
           tests/test_migrations.py
+          tests/test_multilang.py::TestPHPTestAnnotations::test_phpunit_camel_case_name_prefix_detected
+          tests/test_php_scoped_calls.py::test_phpunit_instance_call_creates_canonical_tested_by_edge
+          tests/test_php_scoped_calls.py::test_phpunit_instance_call_is_visible_through_public_tests_for
           tests/test_postprocessing.py
           tests/test_refactor.py
           tests/test_search.py
