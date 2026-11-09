@@ -126,3 +126,6 @@ jobs:
           tests/test_wiki.py
           tests/test_skills.py::TestInstallCodexHooks
           tests/test_skills.py::TestInstallCursorHooks
+
+      - name: Run Julia identity tests
+        run: python -m pytest --tb=short -v tests/test_julia_reconciliation.py
