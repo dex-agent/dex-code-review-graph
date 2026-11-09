@@ -1,6 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
-- Ultima atualizacao: 2026-11-08.
+- Ultima atualizacao: 2026-11-09.
+- Próximo corte recomendado `crg-x6m`: testar os dois caminhos de atribuição indevida ao homônimo, depois provar paridade de update e rebuild. [Achado do fallback genérico](memorias/crg-php-escopo-fallback-importa-por-chamada-nao-por-618c8b1d575e.md).
 - [Frescor semântico do índice](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md): update alinhou o SHA sem reclassificar, rebuild no mesmo SHA recuperou a aresta direta. A rota de adoção está nos [gatilhos vivos](GATILHOS-VIVOS.md#staleness-artefatos-derivados).
 - [Classificação por caminho](PLAN-TASKS/2026-11-08-crg-test-path.md): commit `3fb1ab3` publicado. PHP e TypeScript em `contest/` e sob ancestral externo `tests/` perderam associações indevidas, com controles positivos preservados. [Provas e CI](receipts/crg-test-path/comparison.json).
 - Fechamento atual: PHPUnit Windows, checklist 4/4 e veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas. O risco P1 histórico de credencial segue no ledger.
