@@ -5,6 +5,7 @@ import logging
 import sqlite3
 import subprocess
 import sys
+import sysconfig
 from contextlib import closing
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
@@ -13,6 +14,10 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from code_review_graph import cli
+
+
+def _installed_cli() -> Path:
+    return Path(sysconfig.get_path("scripts")) / f"code-review-graph{Path(sys.executable).suffix}"
 
 
 def test_get_version_falls_back_to_package_attr_when_metadata_missing(
@@ -436,8 +441,7 @@ class TestDetectChangesEndToEnd:
 
         monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "index"))
         monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-        python = Path(sys.executable)
-        executable = python.with_name(f"code-review-graph{python.suffix}")
+        executable = _installed_cli()
 
         def run(*args):
             result = subprocess.run(
@@ -567,8 +571,7 @@ class TestDetectChangesEndToEnd:
         monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
         monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
         monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-        python = Path(sys.executable)
-        executable = python.with_name(f"code-review-graph{python.suffix}")
+        executable = _installed_cli()
         build = subprocess.run(
             [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
             capture_output=True, text=True, timeout=60,
@@ -726,8 +729,7 @@ def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
     monkeypatch.setenv("CRG_HOME", str(tmp_path / "state"))
     monkeypatch.delenv("CRG_DATA_DIR", raising=False)
     monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-    python = Path(sys.executable)
-    executable = python.with_name(f"code-review-graph{python.suffix}")
+    executable = _installed_cli()
 
     def run(command, root, *args):
         return subprocess.run(
