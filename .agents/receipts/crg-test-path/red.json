@@ -1,0 +1,13 @@
+{
+  "exit_code": 1,
+  "failures": [
+    "tests/test_parser.py::test_phpunit_path_scope[suffix]",
+    "tests/test_parser.py::test_phpunit_path_scope[ancestor]",
+    "tests/test_parser.py::test_phpunit_path_scope[outside-root]",
+    "tests/test_parser.py::test_test_directory_components[root-jest]",
+    "tests/test_parser.py::test_test_directory_components[julia-suffix]",
+    "tests/test_parser.py::test_test_directory_components[r-suffix]"
+  ],
+  "summary": "6 failed, 3 passed in 0.77s",
+  "baseline": "b28fcd4583db157ff1d9f907efdf316f841c039d"
+}

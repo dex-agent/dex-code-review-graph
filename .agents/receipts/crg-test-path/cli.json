@@ -1,0 +1,258 @@
+{
+  "exit_code": 0,
+  "baseline": "b28fcd4583db157ff1d9f907efdf316f841c039d",
+  "parser_sha256": "dc6d7ef3618ffb0aa81ff92aaf8b10f80c14fad53f4a02607f8ab71924b29ee7",
+  "executable": "code-review-graph.exe",
+  "fixtures": {
+    "php": "<?php\nclass Example {\n    public function add($a, $b) { return $a + $b; }\n    public function testProductionHelper() { $x = new Example(); return $x->add(1, 2); }\n}\n",
+    "ts": "function add(a: number, b: number) { return a + b; }\ndescribe(\"behavior\", () => { add(1, 2); });\n"
+  },
+  "results": {
+    "baseline": {
+      "php-suffix": {
+        "relative_path": "contest/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "Example.testProductionHelper"
+        ],
+        "query_results": [
+          {
+            "name": "testProductionHelper",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-ancestor": {
+        "relative_path": "src/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "Example.testProductionHelper"
+        ],
+        "query_results": [
+          {
+            "name": "testProductionHelper",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-real-tests": {
+        "relative_path": "tests/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "Example.testProductionHelper"
+        ],
+        "query_results": [
+          {
+            "name": "testProductionHelper",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-neutral": {
+        "relative_path": "src/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Function",
+            "is_test": false
+          }
+        ],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "ts-suffix": {
+        "relative_path": "contest/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "describe:behavior@L2"
+        ],
+        "query_results": [
+          {
+            "name": "describe:behavior@L2",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      },
+      "ts-ancestor": {
+        "relative_path": "src/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "describe:behavior@L2"
+        ],
+        "query_results": [
+          {
+            "name": "describe:behavior@L2",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      },
+      "ts-root-jest": {
+        "relative_path": "__tests__/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "describe:behavior@L2"
+        ],
+        "query_results": [
+          {
+            "name": "describe:behavior@L2",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      }
+    },
+    "fixed": {
+      "php-suffix": {
+        "relative_path": "contest/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Function",
+            "is_test": false
+          }
+        ],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-ancestor": {
+        "relative_path": "src/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Function",
+            "is_test": false
+          }
+        ],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-real-tests": {
+        "relative_path": "tests/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "Example.testProductionHelper"
+        ],
+        "query_results": [
+          {
+            "name": "testProductionHelper",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "php-neutral": {
+        "relative_path": "src/Example.php",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Function",
+            "is_test": false
+          }
+        ],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "bbc39b61c66635b8b308a2bbf8c434122939450ccfc52688c4a36cdebb765372"
+      },
+      "ts-suffix": {
+        "relative_path": "contest/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      },
+      "ts-ancestor": {
+        "relative_path": "src/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [],
+        "tested_by": [],
+        "query_results": [],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      },
+      "ts-root-jest": {
+        "relative_path": "__tests__/Example.ts",
+        "git_checkout": "checkout",
+        "native_identity_verified": true,
+        "nodes": [
+          {
+            "kind": "Test",
+            "is_test": true
+          }
+        ],
+        "tested_by": [
+          "describe:behavior@L2"
+        ],
+        "query_results": [
+          {
+            "name": "describe:behavior@L2",
+            "indirect": false
+          }
+        ],
+        "source_sha256": "afecc4501fe349d32cc045c16f1fa3cebc038fc108fda68470bc76c16725e5b4"
+      }
+    }
+  }
+}

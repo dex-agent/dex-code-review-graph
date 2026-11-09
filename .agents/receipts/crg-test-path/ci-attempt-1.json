@@ -1,0 +1,55 @@
+{
+  "id": 42548260647,
+  "head_sha": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+  "run_attempt": 1,
+  "conclusion": "failure",
+  "html_url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42548260647",
+  "jobs": [
+    {
+      "name": "security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "schema-sync",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Windows daemon and file handles",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "test (3.11)",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "name": "test (3.13)",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "name": "test (3.10)",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "test (3.12)",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "failure_signature": "Ubuntu 3.12 pytest interrupted after 1695 passed with KeyboardInterrupt in unittest.mock.py:1198, exit 2"
+}

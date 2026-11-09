@@ -2,7 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
-- [Revisão adversarial PHPUnit](receipts/crg-phpunit-adversarial/LAUDO.md): reproduziu a classificação falsa por caminho no executável, encontrou dois riscos independentes do índice e confirmou os nove jobs da CI do fechamento anterior. Próximo corte `crg-08x`. Evidências operacionais separadas em `crg-k4q` e `crg-x6m`.
+- [Classificação por caminho](PLAN-TASKS/2026-11-08-crg-test-path.md): regressões corrigidas em `3fb1ab3`, com CLI, SQLite e nove jobs de CI. Próximo corte `crg-k4q` antes de consultar o índice persistente. `crg-iu1` mantém os 24 IDs preexistentes.
+- [Revisão adversarial PHPUnit](receipts/crg-phpunit-adversarial/LAUDO.md): origem do RED. Evidências operacionais separadas em `crg-k4q` e `crg-x6m`.
 
 - [PHPUnit no Windows](PLAN-TASKS/2026-11-08-crg-phpunit-windows.md): consulta direta comprovada em banco isolado, 3 regressões verdes e seleção CI Windows reproduzida localmente. Mantenedor CRG retoma as 24 falhas restantes de `crg-iu1` antes do próximo release Windows. O índice persistente passa pelo check de staleness antes do próximo consumo.
 

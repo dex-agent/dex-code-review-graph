@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261108-crg-test-path — classificação relativa ao checkout, prova pela CLI e pelo SQLite.
+  - [Capacidades](capacidades-crg-20261108-crg-test-path.md)
+  - [Decisões históricas](decisoes-crg-20261108-crg-test-path.md)
+  - [Dependências](dependencias/crg/20261108-crg-test-path/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-08-crg-test-path.md)
+
 - 20261108-crg-phpunit-windows — classificação e associação direta PHPUnit no Windows.
   - [Capacidades](capacidades-crg-20261108-crg-phpunit-windows.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-phpunit-windows.md)
