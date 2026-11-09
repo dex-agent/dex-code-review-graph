@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-iu1-raiz-externa` | [Identidade da raiz com índice externo](2026-11-09-crg-iu1-raiz-externa.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-iu1-forget` | [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | owner: mantenedor CRG.
 
 - `crg-iu1-julia` | [Portabilidade dos testes Julia](2026-11-09-crg-iu1-julia.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.

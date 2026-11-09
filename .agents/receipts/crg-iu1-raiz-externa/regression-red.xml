@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.149" timestamp="2026-11-09T19:58:43.765639-03:00" hostname="PREDATOR"><testcase classname="tests.test_cli" name="test_explicit_markerless_repo_with_external_index" time="0.998"><failure message="AssertionError: INFO: Graph database will be stored at: C:\Users\crsan\AppData\Local\Temp\pytest-of-crsan\pytest-1964\test_explicit_markerless_repo_0\external&#10;  INFO: Schema version 1 -&gt; 9: running migrations&#10;  INFO: Running migration v2&#10;  INFO: Migration v2: added 'signature' column to nodes&#10;  INFO: Running migration v3&#10;  INFO: Migration v3: created flows and flow_memberships tables&#10;  INFO: Running migration v4&#10;  INFO: Migration v4: added 'community_id' column to nodes&#10;  INFO: Migration v4: created communities table&#10;  INFO: Running migration v5&#10;  INFO: Migration v5: created nodes_fts FTS5 virtual table&#10;  INFO: Running migration v6&#10;  INFO: Migration v6: created summary tables (community_summaries, flow_snapshots, risk_index)&#10;  INFO: Running migration v7&#10;  INFO: Migration v7: added compound edge indexes&#10;  INFO: Running migration v8&#10;  INFO: Migration v8: created composite edge index&#10;  INFO: Running migration v9&#10;  INFO: Migration v9: added edge confidence columns&#10;  INFO: Migrations complete, now at schema version 9&#10;  Traceback (most recent call last):&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 198, in _run_module_as_main&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code&#10;    File &quot;C:\CodexProjetos\code-review-graph\.venv\Scripts\code-review-graph.exe\__main__.py&quot;, line 10, in &lt;module&gt;&#10;      sys.exit(main())&#10;               ~~~~^^&#10;    File &quot;C:\CodexProjetos\code-review-graph\code_review_graph\cli.py&quot;, line 1668, in main&#10;      result = build_or_update_graph(&#10;          full_rebuild=True,&#10;      ...&lt;2 lines&gt;...&#10;          **embedding_refresh_kwargs,&#10;      )&#10;    File &quot;C:\CodexProjetos\code-review-graph\code_review_graph\tools\build.py&quot;, line 503, in build_or_update_graph&#10;      store, root = _get_store(repo_root)&#10;                    ~~~~~~~~~~^^^^^^^^^^^&#10;    File &quot;C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py&quot;, line 213, in _get_store&#10;      root = _resolve_root(repo_root)&#10;    File &quot;C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py&quot;, line 204, in _resolve_root&#10;      return _validate_repo_root(Path(repo_root)) if repo_root else find_project_root()&#10;             ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^&#10;    File &quot;C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py&quot;, line 194, in _validate_repo_root&#10;      raise ValueError(&#10;      ...&lt;3 lines&gt;...&#10;      )&#10;  ValueError: repo_root does not look like a project root (no .git, .svn, or .code-review-graph directory found): C:\Users\crsan\AppData\Local\Temp\pytest-of-crsan\pytest-1964\test_explicit_markerless_repo_0\parent\project&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\CodexProjetos\\code-review-graph\\.venv\\Scripts\\code-review-graph.exe', 'build', '--repo...\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1964\\test_explicit_markerless_repo_0\\parent\\project\n').returncode">tmp_path = WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1964/test_explicit_markerless_repo_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000017DC79ADCD0&gt;
+
+    def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
+        parent = tmp_path / "parent"
+        parent.mkdir()
+        (parent / "parent.py").write_text("def parent_canary():\n    return 1\n", encoding="utf-8")
+        data = tmp_path / "external"
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "state"))
+        monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
+    
+        def run(command, root, *args):
+            return subprocess.run(
+                [str(executable), command, "--repo", str(root), *args],
+                capture_output=True, encoding="utf-8", timeout=60,
+            )
+    
+        parent_build = run("build", parent, "--skip-postprocess")
+        assert parent_build.returncode == 0, parent_build.stderr
+        child = parent / "project"
+        nested = child / "nested"
+        nested.mkdir(parents=True)
+        source = child / "child.py"
+        source.write_text("def external_root_canary():\n    return 2\n", encoding="utf-8")
+    
+        build = run("build", child, "--data-dir", str(data), "--skip-postprocess")
+&gt;       assert build.returncode == 0, build.stderr
+E       AssertionError: INFO: Graph database will be stored at: C:\Users\crsan\AppData\Local\Temp\pytest-of-crsan\pytest-1964\test_explicit_markerless_repo_0\external
+E         INFO: Schema version 1 -&gt; 9: running migrations
+E         INFO: Running migration v2
+E         INFO: Migration v2: added 'signature' column to nodes
+E         INFO: Running migration v3
+E         INFO: Migration v3: created flows and flow_memberships tables
+E         INFO: Running migration v4
+E         INFO: Migration v4: added 'community_id' column to nodes
+E         INFO: Migration v4: created communities table
+E         INFO: Running migration v5
+E         INFO: Migration v5: created nodes_fts FTS5 virtual table
+E         INFO: Running migration v6
+E         INFO: Migration v6: created summary tables (community_summaries, flow_snapshots, risk_index)
+E         INFO: Running migration v7
+E         INFO: Migration v7: added compound edge indexes
+E         INFO: Running migration v8
+E         INFO: Migration v8: created composite edge index
+E         INFO: Running migration v9
+E         INFO: Migration v9: added edge confidence columns
+E         INFO: Migrations complete, now at schema version 9
+E         Traceback (most recent call last):
+E           File "&lt;frozen runpy&gt;", line 198, in _run_module_as_main
+E           File "&lt;frozen runpy&gt;", line 88, in _run_code
+E           File "C:\CodexProjetos\code-review-graph\.venv\Scripts\code-review-graph.exe\__main__.py", line 10, in &lt;module&gt;
+E             sys.exit(main())
+E                      ~~~~^^
+E           File "C:\CodexProjetos\code-review-graph\code_review_graph\cli.py", line 1668, in main
+E             result = build_or_update_graph(
+E                 full_rebuild=True,
+E             ...&lt;2 lines&gt;...
+E                 **embedding_refresh_kwargs,
+E             )
+E           File "C:\CodexProjetos\code-review-graph\code_review_graph\tools\build.py", line 503, in build_or_update_graph
+E             store, root = _get_store(repo_root)
+E                           ~~~~~~~~~~^^^^^^^^^^^
+E           File "C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py", line 213, in _get_store
+E             root = _resolve_root(repo_root)
+E           File "C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py", line 204, in _resolve_root
+E             return _validate_repo_root(Path(repo_root)) if repo_root else find_project_root()
+E                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+E           File "C:\CodexProjetos\code-review-graph\code_review_graph\tools\_common.py", line 194, in _validate_repo_root
+E             raise ValueError(
+E             ...&lt;3 lines&gt;...
+E             )
+E         ValueError: repo_root does not look like a project root (no .git, .svn, or .code-review-graph directory found): C:\Users\crsan\AppData\Local\Temp\pytest-of-crsan\pytest-1964\test_explicit_markerless_repo_0\parent\project
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\CodexProjetos\\code-review-graph\\.venv\\Scripts\\code-review-graph.exe', 'build', '--repo...\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1964\\test_explicit_markerless_repo_0\\parent\\project\n').returncode
+
+tests\test_cli.py:747: AssertionError</failure></testcase></testsuite></testsuites>

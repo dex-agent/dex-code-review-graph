@@ -1,0 +1,7 @@
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:52.5249324Z collecting ... collected 5 items
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:52.7337467Z tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_in_monorepo_uses_subproject_root PASSED [ 20%]
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:52.7446117Z tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_without_markers_errors_cleanly PASSED [ 40%]
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:52.7553088Z tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_repo_inside_module_resolves_to_nearest_marker PASSED [ 60%]
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:53.0912890Z tests/test_cli.py::test_explicit_monorepo_subproject_runs_a_real_graph_search PASSED [ 80%]
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:55.1938960Z tests/test_cli.py::test_explicit_markerless_repo_with_external_index PASSED [100%]
+Windows daemon and file handles	Run explicit project root tests	2026-11-09T23:10:55.1940263Z ============================== 5 passed in 2.69s ==============================

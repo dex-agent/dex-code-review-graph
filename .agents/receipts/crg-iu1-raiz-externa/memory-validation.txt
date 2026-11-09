@@ -1,0 +1,3 @@
+OK memorias/launcher-dos-testes-cli-segue-a-instalacao-python-805f9a0b7627.md erros=[]
+OK memorias/raiz-crg-e-indice-externo-tem-identidades-diferente-07f33e219cc9.md erros=[]
+BATCH: 2/2 validos

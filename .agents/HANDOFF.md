@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-09
 
+- [Raiz explícita com índice externo](PLAN-TASKS/2026-11-09-crg-iu1-raiz-externa.md) — o caso sem VCS passa em Windows e Ubuntu. O mantenedor retoma `crg-iu1` pelo caso dbt `TestDbtModelParsing::test_contains_edge` antes do próximo release Windows. Reproduzir nos dois sistemas e comparar a identidade da aresta com a representação do caminho. [Saldo por ID](receipts/crg-iu1-raiz-externa/comparison.json).
+
 - [Seleção exata do forget no Windows](PLAN-TASKS/2026-11-09-crg-iu1-forget.md): `aca7f74` e CI 9/9. `pkg_extra` fica no índice e o Ubuntu distingue `PKG` de `pkg`. Restam cinco IDs em `crg-iu1`. O mantenedor começa pelo caso de `--repo` explícito sem marcadores antes do próximo release Windows. [Saldo por ID](receipts/crg-iu1-forget/comparison.json).
 
 - [Portabilidade dos testes Julia](PLAN-TASKS/2026-11-09-crg-iu1-julia.md): `9f1f19b`, 27/27 Windows e Ubuntu, 27/27 no job Windows e CI 9/9. `crg-iu1` fica com oito IDs. Próximo corte: reproduzir o trio de `_match_files_to_forget` e conferir `forget --dry-run` em banco descartável. [Comparação por ID](receipts/crg-iu1-julia/comparison.json).

@@ -1,0 +1,29 @@
+{
+  "flow_id": "flow_20261109225741604_0474_0001",
+  "checklist": {
+    "total": 5,
+    "checked": 5
+  },
+  "bead": "crg-iu1",
+  "bead_status": "in_progress",
+  "dolt_push": "success",
+  "ci_run": 42717572321,
+  "final_test_sha": "61ff0da14a7f65250134b90c5a0fa95a60770acf",
+  "next_step": "Mantenedor CRG: antes do próximo release Windows, reproduzir test_dbt_parser.py::TestDbtModelParsing::test_contains_edge em Windows e Ubuntu e comparar a identidade da aresta CONTAINS com a representação do caminho antes de editar o parser.",
+  "memory_validation": "2/2",
+  "file_sha256": {
+    ".agents/ACTIVE.md": "06cdc810e0e8aea2d17281be80b668261c423f16096ff9fc0f90222788b2dda6",
+    ".agents/HANDOFF.md": "d537cca909a497593cb4f5947ce4b195fab77395d4e119eb8c7f1c7bc2f022ce",
+    ".agents/PLAN-TASKS/ACTIVE.md": "e2f97e2530d43cfed4d42aacc0e9a1d38a99a474dac1a62799fca68a19f163c1",
+    ".agents/PLAN-TASKS/INDEX.md": "5207679caad981ebea650635ecf710c3eacb4bc1529f8a41a9695a8e04f0cedc",
+    ".agents/MAPAS/INDEX.md": "de46db26f1cd964da8ed9becb27b0d3b735452d392d39b220e50362fa16332ff",
+    ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-raiz-externa.md": "311036d0aa1072c1447370370842090bf79e01b8876fd42c4d0c542566af311d",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-raiz-externa.md": "4174c7ff0b23010f6d742c2d7c14680dca43318ff92775134d9f57c0ec0a59ff",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-raiz-externa/DEPENDENCY-MAP.md": "bf4ce55752df94b101b4af18da8010b98746c5023b1defb0a5f6127eb6838923",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-raiz-externa/DEPENDENCY-GRAPH.json": "66c4d841ce3ef59d250c472df3ce448268ed765c93219715e55dfeb13d481257",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-raiz-externa/DEPENDENCY-GRAPH.html": "44afa0393d1a259f9a939f977cbdf3a3f3a082cef6c03ceab74779128fadf737",
+    ".agents/PLAN-TASKS/2026-11-09-crg-iu1-raiz-externa.md": "d6bbc29d22d11dbf04379baa8989143d484b8c737f5b8e787218fccddfb6151d",
+    ".agents/receipts/crg-iu1-raiz-externa/memory-validation.txt": "1c7cd8ce301651bd69c1e942f62c0ec432c2b58ec0d420f51bd421fac238e571",
+    ".agents/receipts/crg-iu1-raiz-externa/workflow-review.json": "5df7a4deef8df3e0a4be5ef4335d4ce6003025ce2eabe5823ca3837c0500736d"
+  }
+}

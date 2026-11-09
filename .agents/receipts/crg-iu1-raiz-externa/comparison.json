@@ -1,0 +1,17 @@
+{
+  "baseline": "aca7f74",
+  "product_sha": "f145ca80519846eb7581bd047188a7054c801be6",
+  "removed": [
+    "tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_without_markers_errors_cleanly"
+  ],
+  "remaining": [
+    "tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge",
+    "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding",
+    "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "new": [],
+  "summary": "4 failed, 2322 passed, 12 skipped, 2 xpassed in 82.16s (0:01:22)",
+  "final_test_sha": "61ff0da14a7f65250134b90c5a0fa95a60770acf",
+  "final_summary": "4 failed, 2322 passed, 12 skipped, 2 xpassed in 73.94s"
+}

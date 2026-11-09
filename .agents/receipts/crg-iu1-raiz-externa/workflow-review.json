@@ -1,0 +1,56 @@
+{
+  "contract": "dex.fechamento.workflow-review.v1",
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "repo_kind": "project",
+  "block_id": "crg-iu1-raiz-externa-20261109",
+  "reviewed_at": "2026-11-09T23:08:52.9635804Z",
+  "sources": {
+    "recipe": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md",
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b"
+    },
+    "local": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md",
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497"
+    },
+    "global": {
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md",
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16"
+    },
+    "proof": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-raiz-externa\\green.json",
+      "sha256": "1178188133396b1e3816b74b90e6ccd66e429f2b6ede380bff30d8af377a2dda"
+    }
+  },
+  "block_evidence": [
+    "proof"
+  ],
+  "searches": {
+    "global": {
+      "result": "Template global localizado",
+      "source": "global",
+      "query": "manutencao-iterativa-com-evidencia"
+    },
+    "local": {
+      "result": "Receita local usada no corte da raiz externa",
+      "source": "local",
+      "query": "code-review-graph-manutencao-iterativa-com-evidencia"
+    }
+  },
+  "candidates": [
+    {
+      "existing_workflow": "recipe",
+      "reason": "A receita dá o recorte, a prova no executável e os três mapas.",
+      "owner": "mantenedor CRG",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "when": "Na próxima alteração funcional da CLI",
+      "reuse_trigger": "Regressão de identidade ou de resolução de caminho com prova pela CLI.",
+      "procedure": "Trilho, RED isolado, fixture, Git, CLI, SQLite, CI e veredito.",
+      "decision": "reuse",
+      "name": "Manutenção iterativa com evidência CRG"
+    }
+  ]
+}
