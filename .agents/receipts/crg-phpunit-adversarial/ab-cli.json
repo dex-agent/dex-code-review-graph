@@ -1,0 +1,93 @@
+{
+  "executable": "code-review-graph.exe",
+  "fixture": "<?php namespace App; class Example { public function add($a, $b) {return $a + $b;} public function testProductionHelper() { $x = new Example(); return $x->add(1,2); } }",
+  "results": [
+    {
+      "revision": "c3682acb70bfcd15c024a27f60833ac54453db30",
+      "variant": "src_neutro",
+      "path_relative": "src/Example.php",
+      "kind": "Function",
+      "is_test": 0,
+      "tested_by_edges": 0,
+      "query_results": []
+    },
+    {
+      "revision": "c3682acb70bfcd15c024a27f60833ac54453db30",
+      "variant": "sufixo_contest",
+      "path_relative": "contest/Example.php",
+      "kind": "Function",
+      "is_test": 0,
+      "tested_by_edges": 0,
+      "query_results": []
+    },
+    {
+      "revision": "c3682acb70bfcd15c024a27f60833ac54453db30",
+      "variant": "ancestral_tests",
+      "path_relative": "src/Example.php",
+      "kind": "Function",
+      "is_test": 0,
+      "tested_by_edges": 0,
+      "query_results": []
+    },
+    {
+      "revision": "c3682acb70bfcd15c024a27f60833ac54453db30",
+      "variant": "tests_real",
+      "path_relative": "tests/Example.php",
+      "kind": "Function",
+      "is_test": 0,
+      "tested_by_edges": 0,
+      "query_results": []
+    },
+    {
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "variant": "src_neutro",
+      "path_relative": "src/Example.php",
+      "kind": "Function",
+      "is_test": 0,
+      "tested_by_edges": 0,
+      "query_results": []
+    },
+    {
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "variant": "sufixo_contest",
+      "path_relative": "contest/Example.php",
+      "kind": "Test",
+      "is_test": 1,
+      "tested_by_edges": 1,
+      "query_results": [
+        {
+          "name": "testProductionHelper",
+          "indirect": false
+        }
+      ]
+    },
+    {
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "variant": "ancestral_tests",
+      "path_relative": "src/Example.php",
+      "kind": "Test",
+      "is_test": 1,
+      "tested_by_edges": 1,
+      "query_results": [
+        {
+          "name": "testProductionHelper",
+          "indirect": false
+        }
+      ]
+    },
+    {
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "variant": "tests_real",
+      "path_relative": "tests/Example.php",
+      "kind": "Test",
+      "is_test": 1,
+      "tested_by_edges": 1,
+      "query_results": [
+        {
+          "name": "testProductionHelper",
+          "indirect": false
+        }
+      ]
+    }
+  ]
+}

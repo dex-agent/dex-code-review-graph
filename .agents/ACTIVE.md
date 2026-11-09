@@ -1,6 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-08.
+- Próximo corte do mantenedor CRG: `crg-08x` antes de retomar `crg-iu1`. Revisão A/B mostrou cobertura indevida em `contest/` e em checkout sob ancestral `tests/`. [Laudo e repertório adversarial](receipts/crg-phpunit-adversarial/LAUDO.md)
 - Fechamento atual: PHPUnit Windows, checklist 4/4 e veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas. O risco P1 histórico de credencial segue no ledger.
 - Corte atual: [organizar repo privado](PLAN-TASKS/2026-11-08-crg-repo-privado-higiene.md), bead `crg-pr9` fechado. Repositorio `dex-agent/dex-code-review-graph` privado, commit organizador `e326cfd` publicado e readback Git/API igual. Remotos `origin` da casa e `upstream` original. Dolt push concluido.
 - Estado local separado por `.gitignore`; backups, runtime e grafos historicos preservados. Organizacao em [edicao Dex](../docs/EDICAO-DEX.md). Debitos vivos em [PENDENTES](PENDENTES.md).
