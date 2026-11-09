@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261108-crg-phpunit-windows — classificação e associação direta PHPUnit no Windows.
+  - [Capacidades](capacidades-crg-20261108-crg-phpunit-windows.md)
+  - [Decisões históricas](decisoes-crg-20261108-crg-phpunit-windows.md)
+  - [Dependências](dependencias/crg/20261108-crg-phpunit-windows/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-08-crg-phpunit-windows.md)
+
 - 20261108-crg-indice-persistente — backup, build e associação direta verificada no índice persistente.
   - [Capacidades](capacidades-crg-20261108-crg-indice-persistente.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-indice-persistente.md)

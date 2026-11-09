@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-08
 
+- [PHPUnit no Windows](PLAN-TASKS/2026-11-08-crg-phpunit-windows.md): consulta direta comprovada em banco isolado, 3 regressões verdes e seleção CI Windows reproduzida localmente. Mantenedor CRG retoma as 24 falhas restantes de `crg-iu1` antes do próximo release Windows. O índice persistente passa pelo check de staleness antes do próximo consumo.
+
 - [Índice persistente](PLAN-TASKS/2026-11-08-crg-indice-persistente.md): backup SQLite íntegro, build com a CLI do checkout, SHA conferido e associação direta comprovada. Conferir staleness pelo `status --json` antes de consumir.
 
 - [Reexportações Python](PLAN-TASKS/2026-11-08-crg-python-reexports.md): `crg-j6z`, identidade canônica e update com regressão pela CLI. O histórico em `573580b` retorna o teste direto e mantém o recorte 1/1. Índice persistente preservado. Rebuild com backup é o próximo corte antes de usar a correção no grafo persistente.
