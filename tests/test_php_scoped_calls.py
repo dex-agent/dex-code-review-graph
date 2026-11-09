@@ -493,14 +493,17 @@ def test_windows_resolved_import_path_disambiguates_same_named_methods(
             ),
         },
     )
-    queue_file = store._conn.execute(
-        "SELECT file_path FROM nodes "
-        "WHERE name = 'dispatch' AND file_path LIKE '%/Queue/Mailer.php'"
-    ).fetchone()["file_path"]
-    store._conn.execute(
-        "UPDATE edges SET target_qualified = ? WHERE kind = 'IMPORTS_FROM'",
-        (queue_file.replace("/", "\\"),),
+    queue_file = tmp_path / "src/Queue/Mailer.php"
+    queue_methods = store._conn.execute(
+        "SELECT qualified_name FROM nodes WHERE name = 'dispatch' AND file_path = ?",
+        (str(queue_file),),
+    ).fetchall()
+    assert len(queue_methods) == 1
+    updated_import = store._conn.execute(
+        "UPDATE edges SET target_qualified = ? WHERE kind = 'IMPORTS_FROM' AND file_path = ?",
+        (queue_file.as_posix().replace("/", "\\"), str(tmp_path / "src/Http/Ctrl.php")),
     )
+    assert updated_import.rowcount == 1
     store._conn.commit()
 
     stats = resolve_scoped_calls(store)
@@ -511,7 +514,7 @@ def test_windows_resolved_import_path_disambiguates_same_named_methods(
         if call["confidence_tier"] == "INFERRED"
     ]
     assert len(resolved) == 1
-    assert "Queue/Mailer.php::Mailer.dispatch" in resolved[0]["target_qualified"]
+    assert resolved[0]["target_qualified"] == queue_methods[0]["qualified_name"]
 
 
 def test_php_method_matching_is_case_insensitive(tmp_path: Path) -> None:
@@ -650,7 +653,8 @@ def test_import_suffix_match_selects_correct_namespace(tmp_path: Path) -> None:
         if c["confidence_tier"] == "INFERRED" and "dispatch" in c["target_qualified"]
     ]
     assert len(resolved) == 1
-    assert "Order/Queue/Mailer" in resolved[0]["target_qualified"]
+    expected_path = (tmp_path / "src/Order/Queue/Mailer.php").as_posix()
+    assert resolved[0]["target_qualified"].replace("\\", "/") == f"{expected_path}::Mailer.dispatch"
 
 
 def test_unresolved_external_scoped_call_is_left_untouched(tmp_path: Path) -> None:

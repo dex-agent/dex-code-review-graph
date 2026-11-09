@@ -279,8 +279,8 @@ def test_import_suffix_match_selects_correct_module(tmp_path: Path) -> None:
         )
     ]
     assert len(resolved) == 1
-    assert "shipping/mailer.rs" in resolved[0]["target_qualified"]
-    assert "billing/mailer.rs" not in resolved[0]["target_qualified"]
+    expected_path = (tmp_path / "src/shipping/mailer.rs").as_posix()
+    assert resolved[0]["target_qualified"].replace("\\", "/") == f"{expected_path}::Mailer.go"
 
 
 def test_unrelated_import_path_does_not_resolve(tmp_path: Path) -> None:
