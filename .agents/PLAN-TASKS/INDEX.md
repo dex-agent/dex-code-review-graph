@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-indice-persistente-20261108` | [Trilho](2026-11-08-crg-indice-persistente.md) | checklist 3/3, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-python-reexports-20261108` | [Trilho](2026-11-08-crg-python-reexports.md) | checklist 4/4, completo com ressalvas | owner: mantenedor CRG.
 
 - `crg-cli-diff-real-20261108` | [Trilho](2026-11-08-crg-cli-diff-real.md) | checklist 3/3, completo com ressalvas | owner: mantenedor CRG.

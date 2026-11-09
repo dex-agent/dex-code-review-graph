@@ -1,0 +1,28 @@
+{
+  "git_head": "04fcb050275595bb096d1371f6be7d9305c08913",
+  "database": ".code-review-graph/graph.db",
+  "pattern": "tests_for",
+  "target": "C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\query.py::query_graph",
+  "match": {
+    "id": 14869,
+    "kind": "Test",
+    "name": "test_references_to_returns_type_dependents",
+    "qualified_name": "C:\\CodexProjetos\\code-review-graph\\tests\\test_tools.py::TestQueryGraphCallTargetFallbacks.test_references_to_returns_type_dependents",
+    "file_path": "C:\\CodexProjetos\\code-review-graph\\tests\\test_tools.py",
+    "line_start": 330,
+    "line_end": 369,
+    "language": "python",
+    "parent_name": "TestQueryGraphCallTargetFallbacks",
+    "is_test": true,
+    "indirect": false
+  },
+  "edge": {
+    "kind": "TESTED_BY",
+    "source": "C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\query.py::query_graph",
+    "target": "C:\\CodexProjetos\\code-review-graph\\tests\\test_tools.py::TestQueryGraphCallTargetFallbacks.test_references_to_returns_type_dependents",
+    "line": 358
+  },
+  "result_count": 121,
+  "returned": 100,
+  "results_omitted": 21
+}

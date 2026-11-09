@@ -150,4 +150,11 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/crg-python-reexports/historical-detect.json
 !/.agents/receipts/crg-python-reexports/suite-comparison.json
 !/.agents/receipts/crg-python-reexports/dependencies-input.json
+!/.agents/receipts/crg-indice-persistente/
+/.agents/receipts/crg-indice-persistente/*
+!/.agents/receipts/crg-indice-persistente/backup.json
+!/.agents/receipts/crg-indice-persistente/proof-build.json
+!/.agents/receipts/crg-indice-persistente/proof-status.json
+!/.agents/receipts/crg-indice-persistente/proof-association.json
+!/.agents/receipts/crg-indice-persistente/dependencies-input.json
 !/.agents/receipts/repo-privado-created.json
