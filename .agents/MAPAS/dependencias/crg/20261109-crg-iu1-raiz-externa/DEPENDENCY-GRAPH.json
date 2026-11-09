@@ -1,0 +1,177 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261109-crg-iu1-raiz-externa",
+    "observed_at": "2026-11-09T23:01:35.497Z",
+    "revision": "f145ca80519846eb7581bd047188a7054c801be6",
+    "scope": "Identidade da raiz explícita com índice externo",
+    "environment": "Windows, Ubuntu e GitHub Actions",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "excluded": [
+      "Índice persistente",
+      "Outras famílias do crg-iu1"
+    ],
+    "limits": [
+      "Prova do executável em projetos descartáveis."
+    ],
+    "method": "Git, CLI, SQLite e workflow"
+  },
+  "sources": [
+    {
+      "availability": "available",
+      "id": "red",
+      "path": "../../../../receipts/crg-iu1-raiz-externa/red.json",
+      "revision": "92d7ca02ce051cd8e66cef55dfa4151f0cc5ab0a",
+      "anchor": "red",
+      "sha256": "5ec6b73b3fd474b80009990e2ba2d286ca796e4104025137b97b7435fc41a0ca"
+    },
+    {
+      "availability": "available",
+      "id": "green",
+      "path": "../../../../receipts/crg-iu1-raiz-externa/green.json",
+      "revision": "f145ca80519846eb7581bd047188a7054c801be6",
+      "anchor": "green",
+      "sha256": "1178188133396b1e3816b74b90e6ccd66e429f2b6ede380bff30d8af377a2dda"
+    },
+    {
+      "availability": "available",
+      "id": "common",
+      "path": "../../../../../code_review_graph/tools/_common.py",
+      "revision": "f145ca80519846eb7581bd047188a7054c801be6",
+      "anchor": "common",
+      "sha256": "92ecfd9d96431f7b3c0f89b72a06a54b9d16ee8cbe57271e24b97e84b41d5e6f"
+    },
+    {
+      "availability": "available",
+      "id": "workflow",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "revision": "f145ca80519846eb7581bd047188a7054c801be6",
+      "anchor": "workflow",
+      "sha256": "38f39c159c34e2a7773d02e14a7bdda1e4f3ca42814ac6463d82a6b3ba32a3ca"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI build e search",
+      "type": "command",
+      "source_refs": [
+        "red",
+        "green"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "identity",
+      "label": "Regra comum de identidade de projeto",
+      "type": "function",
+      "source_refs": [
+        "common",
+        "green"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "registry",
+      "label": "Associação exata no registry",
+      "type": "registry",
+      "source_refs": [
+        "common",
+        "red"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "test",
+      "label": "Regressão executável e controles",
+      "type": "test",
+      "source_refs": [
+        "green"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "ci",
+      "label": "Job Windows",
+      "type": "workflow",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-identity",
+      "source": "cli",
+      "target": "identity",
+      "relation": "calls",
+      "condition": "Reconhecimento da raiz explícita",
+      "source_refs": [
+        "common",
+        "green"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "identity-registry",
+      "source": "identity",
+      "target": "registry",
+      "relation": "consumes_contract",
+      "condition": "Consulta somente o vínculo exato do projeto",
+      "source_refs": [
+        "common"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "test-cli",
+      "source": "test",
+      "target": "cli",
+      "relation": "executes",
+      "condition": "Build e search no subprocesso",
+      "source_refs": [
+        "green"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "ci-test",
+      "source": "ci",
+      "target": "test",
+      "relation": "executes",
+      "condition": "Etapa Run explicit project root tests",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    }
+  ]
+}

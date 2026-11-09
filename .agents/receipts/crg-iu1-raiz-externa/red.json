@@ -1,0 +1,15 @@
+{
+  "baseline": "92d7ca0",
+  "binding": true,
+  "build": {
+    "exit": 1,
+    "stdout": "",
+    "stderr": "INFO: Graph database will be stored at: <scratch>\\external\nINFO: Schema version 1 -> 9: running migrations\nINFO: Running migration v2\nINFO: Migration v2: added 'signature' column to nodes\nINFO: Running migration v3\nINFO: Migration v3: created flows and flow_memberships tables\nINFO: Running migration v4\nINFO: Migration v4: added 'community_id' column to nodes\nINFO: Migration v4: created communities table\nINFO: Running migration v5\nINFO: Migration v5: created nodes_fts FTS5 virtual table\nINFO: Running migration v6\nINFO: Migration v6: created summary tables (community_summaries, flow_snapshots, risk_index)\nINFO: Running migration v7\nINFO: Migration v7: added compound edge indexes\nINFO: Running migration v8\nINFO: Migration v8: created composite edge index\nINFO: Running migration v9\nINFO: Migration v9: added edge confidence columns\nINFO: Migrations complete, now at schema version 9\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\CodexProjetos\\code-review-graph\\.venv\\Scripts\\code-review-graph.exe\\__main__.py\", line 10, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"C:\\CodexProjetos\\code-review-graph\\code_review_graph\\cli.py\", line 1668, in main\n    result = build_or_update_graph(\n        full_rebuild=True,\n    ...<2 lines>...\n        **embedding_refresh_kwargs,\n    )\n  File \"C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\build.py\", line 503, in build_or_update_graph\n    store, root = _get_store(repo_root)\n                  ~~~~~~~~~~^^^^^^^^^^^\n  File \"C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\_common.py\", line 213, in _get_store\n    root = _resolve_root(repo_root)\n  File \"C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\_common.py\", line 204, in _resolve_root\n    return _validate_repo_root(Path(repo_root)) if repo_root else find_project_root()\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"C:\\CodexProjetos\\code-review-graph\\code_review_graph\\tools\\_common.py\", line 194, in _validate_repo_root\n    raise ValueError(\n    ...<3 lines>...\n    )\nValueError: repo_root does not look like a project root (no .git, .svn, or .code-review-graph directory found): <scratch>\\project\n"
+  },
+  "search": {
+    "exit": 1,
+    "stdout": "",
+    "stderr": "--repo does not look like a project root (no .git, .svn, or .code-review-graph found at or above): <scratch>\\project\n"
+  },
+  "indexed_files": 0
+}

@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-iu1-raiz-externa — raiz registrada, armazenamento externo e controles de fronteira.
+  - [Capacidades](capacidades-crg-20261109-crg-iu1-raiz-externa.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-iu1-raiz-externa.md)
+  - [Dependências](dependencias/crg/20261109-crg-iu1-raiz-externa/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-iu1-raiz-externa.md)
+
 - 20261109-crg-iu1-forget — seleção literal da pasta, contraprova Ubuntu e saldo Windows.
   - [Capacidades](capacidades-crg-20261109-crg-iu1-forget.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-iu1-forget.md)

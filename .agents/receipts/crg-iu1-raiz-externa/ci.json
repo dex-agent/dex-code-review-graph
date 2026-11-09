@@ -1,0 +1,684 @@
+{
+  "attempt": 1,
+  "conclusion": "success",
+  "headSha": "61ff0da14a7f65250134b90c5a0fa95a60770acf",
+  "jobs": [
+    {
+      "completedAt": "2026-11-09T23:05:58Z",
+      "conclusion": "success",
+      "databaseId": 129502955744,
+      "name": "schema-sync",
+      "startedAt": "2026-11-09T23:05:46Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:49Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:55Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:56Z",
+          "conclusion": "success",
+          "name": "Check Python/VSCode schema versions match",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:56Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 6,
+          "startedAt": "2026-11-09T23:05:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:56Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 7,
+          "startedAt": "2026-11-09T23:05:56Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502955744"
+    },
+    {
+      "completedAt": "2026-11-09T23:06:31Z",
+      "conclusion": "success",
+      "databaseId": 129502956015,
+      "name": "type-check",
+      "startedAt": "2026-11-09T23:05:45Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:54Z",
+          "conclusion": "success",
+          "name": "Set up Python",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:16Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:29Z",
+          "conclusion": "success",
+          "name": "Run mypy",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:29Z",
+          "conclusion": "success",
+          "name": "Post Set up Python",
+          "number": 9,
+          "startedAt": "2026-11-09T23:06:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:30Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:06:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:30Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:06:30Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956015"
+    },
+    {
+      "completedAt": "2026-11-09T23:06:23Z",
+      "conclusion": "success",
+      "databaseId": 129502956059,
+      "name": "lint",
+      "startedAt": "2026-11-09T23:05:46Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:51Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:57Z",
+          "conclusion": "success",
+          "name": "Set up Python",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:18Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:18Z",
+          "conclusion": "success",
+          "name": "Lint with ruff",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:19Z",
+          "conclusion": "success",
+          "name": "Post Set up Python",
+          "number": 9,
+          "startedAt": "2026-11-09T23:06:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:19Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:06:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:19Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:06:19Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956059"
+    },
+    {
+      "completedAt": "2026-11-09T23:07:04Z",
+      "conclusion": "success",
+      "databaseId": 129502956171,
+      "name": "test (3.10)",
+      "startedAt": "2026-11-09T23:05:46Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:50Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:56Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:57Z",
+          "conclusion": "success",
+          "name": "Set up Python 3.10",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:18Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:01Z",
+          "conclusion": "success",
+          "name": "Run tests with coverage",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:01Z",
+          "conclusion": "success",
+          "name": "Post Set up Python 3.10",
+          "number": 9,
+          "startedAt": "2026-11-09T23:07:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:02Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:07:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:02Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:07:02Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956171"
+    },
+    {
+      "completedAt": "2026-11-09T23:11:00Z",
+      "conclusion": "success",
+      "databaseId": 129502956192,
+      "name": "Windows daemon and file handles",
+      "startedAt": "2026-11-09T23:05:46Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:55Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:55Z",
+          "conclusion": "success",
+          "name": "Set up Python",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:02Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:47Z",
+          "conclusion": "success",
+          "name": "Run native daemon and resource-handle tests",
+          "number": 5,
+          "startedAt": "2026-11-09T23:07:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:49Z",
+          "conclusion": "success",
+          "name": "Run Julia identity tests",
+          "number": 6,
+          "startedAt": "2026-11-09T23:10:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:51Z",
+          "conclusion": "success",
+          "name": "Run forget path tests",
+          "number": 7,
+          "startedAt": "2026-11-09T23:10:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:55Z",
+          "conclusion": "success",
+          "name": "Run explicit project root tests",
+          "number": 8,
+          "startedAt": "2026-11-09T23:10:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:55Z",
+          "conclusion": "success",
+          "name": "Post Set up Python",
+          "number": 15,
+          "startedAt": "2026-11-09T23:10:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:58Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 16,
+          "startedAt": "2026-11-09T23:10:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:10:58Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-11-09T23:10:58Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956192"
+    },
+    {
+      "completedAt": "2026-11-09T23:07:27Z",
+      "conclusion": "success",
+      "databaseId": 129502956250,
+      "name": "test (3.13)",
+      "startedAt": "2026-11-09T23:05:45Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Set up Python 3.13",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:11Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:25Z",
+          "conclusion": "success",
+          "name": "Run tests with coverage",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:26Z",
+          "conclusion": "success",
+          "name": "Post Set up Python 3.13",
+          "number": 9,
+          "startedAt": "2026-11-09T23:07:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:26Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:07:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:26Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:07:26Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956250"
+    },
+    {
+      "completedAt": "2026-11-09T23:07:19Z",
+      "conclusion": "success",
+      "databaseId": 129502956343,
+      "name": "test (3.12)",
+      "startedAt": "2026-11-09T23:05:45Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:49Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:49Z",
+          "conclusion": "success",
+          "name": "Set up Python 3.12",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:07Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:17Z",
+          "conclusion": "success",
+          "name": "Run tests with coverage",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:17Z",
+          "conclusion": "success",
+          "name": "Post Set up Python 3.12",
+          "number": 9,
+          "startedAt": "2026-11-09T23:07:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:17Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:07:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:17Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:07:17Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956343"
+    },
+    {
+      "completedAt": "2026-11-09T23:07:28Z",
+      "conclusion": "success",
+      "databaseId": 129502956373,
+      "name": "test (3.11)",
+      "startedAt": "2026-11-09T23:05:45Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:48Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:49Z",
+          "conclusion": "success",
+          "name": "Set up Python 3.11",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:10Z",
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:26Z",
+          "conclusion": "success",
+          "name": "Run tests with coverage",
+          "number": 5,
+          "startedAt": "2026-11-09T23:06:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:26Z",
+          "conclusion": "success",
+          "name": "Post Set up Python 3.11",
+          "number": 9,
+          "startedAt": "2026-11-09T23:07:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:27Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:07:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:07:27Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:07:27Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502956373"
+    },
+    {
+      "completedAt": "2026-11-09T23:06:04Z",
+      "conclusion": "success",
+      "databaseId": 129502957211,
+      "name": "security",
+      "startedAt": "2026-11-09T23:05:46Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-09T23:05:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:49Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-11-09T23:05:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:54Z",
+          "conclusion": "success",
+          "name": "Set up Python",
+          "number": 3,
+          "startedAt": "2026-11-09T23:05:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:05:57Z",
+          "conclusion": "success",
+          "name": "Install bandit",
+          "number": 4,
+          "startedAt": "2026-11-09T23:05:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:01Z",
+          "conclusion": "success",
+          "name": "Run bandit security scan",
+          "number": 5,
+          "startedAt": "2026-11-09T23:05:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:01Z",
+          "conclusion": "success",
+          "name": "Post Set up Python",
+          "number": 9,
+          "startedAt": "2026-11-09T23:06:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:02Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 10,
+          "startedAt": "2026-11-09T23:06:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-09T23:06:02Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-11-09T23:06:02Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321/job/129502957211"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42717572321"
+}

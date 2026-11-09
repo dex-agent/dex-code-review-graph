@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último corte: [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | checklist 5/5 | produto `aca7f74` | bead `crg-iu1` com cinco IDs.
+- Último corte: [Raiz explícita com índice externo](2026-11-09-crg-iu1-raiz-externa.md) | checklist 5/5 | produto `f145ca8` e CI em `61ff0da` | bead `crg-iu1` com quatro IDs | [veredito](../receipts/crg-iu1-raiz-externa/verdict.json).
+
+- Anterior: [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | checklist 5/5 | produto `aca7f74`.
 
 - Último encerrado: [Portabilidade dos testes Julia](2026-11-09-crg-iu1-julia.md) | bead `crg-iu1` aberto com oito IDs | checklist 5/5 | veredito `vrd_20261109064902297_0441_0426` pronto com ressalvas.
 

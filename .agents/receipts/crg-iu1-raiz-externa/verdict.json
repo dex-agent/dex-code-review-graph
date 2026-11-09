@@ -1,0 +1,34 @@
+{
+  "flow_id": "flow_20261109225741604_0474_0001",
+  "verdict_id": "vrd_20261109231303502_0501_0039",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 5,
+    "total": 5
+  },
+  "bead": "crg-iu1",
+  "product_sha": "f145ca80519846eb7581bd047188a7054c801be6",
+  "final_test_sha": "61ff0da14a7f65250134b90c5a0fa95a60770acf",
+  "ci_run": 42717572321,
+  "evidence_ids": [
+    "evd_20261109230030938_0481_0009",
+    "evd_20261109230030998_0482_0011",
+    "evd_20261109230756147_0495_0029",
+    "evd_20261109231124476_0496_0031",
+    "evd_20261109231234874_0497_0033",
+    "evd_20261109230656248_0493_0025",
+    "evd_20261109231252573_0499_0036"
+  ],
+  "residual_risks": [
+    "Quatro falhas históricas permanecem na suíte integral Windows sob crg-iu1.",
+    "A prova da raiz externa usa índices descartáveis. O índice persistente habitual não foi reconstruído neste corte."
+  ],
+  "next_step": "Mantenedor CRG: antes do próximo release Windows, reproduzir test_dbt_parser.py::TestDbtModelParsing::test_contains_edge em Windows e Ubuntu e comparar a identidade da aresta CONTAINS com a representação do caminho antes de editar o parser.",
+  "memory": {
+    "trigger": "CRG-CLI-LAUNCHER-SYSCONFIG",
+    "receipt_id": "6935955ce5bcc347a0ef94da",
+    "validation": "2/2"
+  }
+}

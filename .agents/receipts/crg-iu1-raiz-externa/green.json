@@ -1,0 +1,20 @@
+{
+  "windows": {
+    "tests": 169,
+    "skipped": 0,
+    "controls": [
+      "test_explicit_markerless_repo_with_external_index",
+      "test_explicit_repo_without_markers_errors_cleanly",
+      "test_explicit_monorepo_subproject_runs_a_real_graph_search"
+    ]
+  },
+  "ubuntu": {
+    "tests": 169,
+    "skipped": 1,
+    "controls": [
+      "test_explicit_markerless_repo_with_external_index",
+      "test_explicit_repo_without_markers_errors_cleanly",
+      "test_explicit_monorepo_subproject_runs_a_real_graph_search"
+    ]
+  }
+}
