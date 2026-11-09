@@ -1,0 +1,221 @@
+{
+  "workspace_head": "03ddddebb03c7691452e33bf9a28b4f14870d288",
+  "python": "3.13.13",
+  "upgrade_and_naming": {
+    "baseline": {
+      "kind": "Function",
+      "is_test": false,
+      "CALLS": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "TESTED_BY": [],
+      "Payments": {
+        "status": "ok",
+        "tests": []
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": []
+      },
+      "build_matches_head": true
+    },
+    "update_cli": "Incremental: 1 files updated, 2 nodes, 1 edges (postprocess=minimal)",
+    "stale": {
+      "kind": "Function",
+      "is_test": false,
+      "CALLS": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "TESTED_BY": [],
+      "Payments": {
+        "status": "ok",
+        "tests": []
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": []
+      },
+      "build_matches_head": true
+    },
+    "edit_cli": "Incremental: 1 files updated, 3 nodes, 11 edges (postprocess=minimal)",
+    "edited": {
+      "kind": "Test",
+      "is_test": true,
+      "CALLS": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "TESTED_BY": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "Payments": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testAdd",
+            "indirect": false,
+            "inferred_by": null
+          }
+        ]
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testAdd",
+            "indirect": false,
+            "inferred_by": "naming_convention"
+          }
+        ]
+      },
+      "build_matches_head": true
+    },
+    "rebuild_cli": "Full build: 4 files, 11 nodes, 16 edges (postprocess=minimal)",
+    "rebuilt": {
+      "kind": "Test",
+      "is_test": true,
+      "CALLS": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "TESTED_BY": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "Payments": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testAdd",
+            "indirect": false,
+            "inferred_by": null
+          }
+        ]
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testAdd",
+            "indirect": false,
+            "inferred_by": "naming_convention"
+          }
+        ]
+      },
+      "build_matches_head": true
+    }
+  },
+  "sticky_homonym": {
+    "first_build_cli": "Full build: 2 files, 6 nodes, 13 edges (postprocess=minimal)",
+    "initial": {
+      "kind": "Test",
+      "is_test": true,
+      "CALLS": [
+        {
+          "method": "src/Shipping/Calculator.php::Calculator.add",
+          "resolver": "single_match"
+        }
+      ],
+      "TESTED_BY": [
+        {
+          "method": "src/Shipping/Calculator.php::Calculator.add",
+          "resolver": "single_match"
+        }
+      ],
+      "Payments": {
+        "status": "not_found",
+        "tests": []
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testItAdds",
+            "indirect": false,
+            "inferred_by": null
+          }
+        ]
+      },
+      "build_matches_head": true
+    },
+    "update_cli": "Incremental: 1 files updated, 3 nodes, 2 edges (postprocess=minimal)",
+    "incremental": {
+      "kind": "Test",
+      "is_test": true,
+      "CALLS": [
+        {
+          "method": "src/Shipping/Calculator.php::Calculator.add",
+          "resolver": "single_match"
+        }
+      ],
+      "TESTED_BY": [
+        {
+          "method": "src/Shipping/Calculator.php::Calculator.add",
+          "resolver": "single_match"
+        }
+      ],
+      "Payments": {
+        "status": "ok",
+        "tests": []
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testItAdds",
+            "indirect": false,
+            "inferred_by": null
+          }
+        ]
+      },
+      "build_matches_head": true
+    },
+    "rebuild_cli": "Full build: 3 files, 9 nodes, 15 edges (postprocess=minimal)",
+    "rebuilt": {
+      "kind": "Test",
+      "is_test": true,
+      "CALLS": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "TESTED_BY": [
+        {
+          "method": "src/Payments/Calculator.php::Calculator.add",
+          "resolver": "import"
+        }
+      ],
+      "Payments": {
+        "status": "ok",
+        "tests": [
+          {
+            "name": "testItAdds",
+            "indirect": false,
+            "inferred_by": null
+          }
+        ]
+      },
+      "Shipping": {
+        "status": "ok",
+        "tests": []
+      },
+      "build_matches_head": true
+    }
+  }
+}

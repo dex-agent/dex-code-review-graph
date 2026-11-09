@@ -1,0 +1,94 @@
+{
+  "baseline_detector_revision": "c3682acb70bfcd15c024a27f60833ac54453db30",
+  "current_parser_revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+  "platform": "win32",
+  "python": "3.13.13",
+  "cases": {
+    "plain/src/view.ts": {
+      "before": {
+        "classifications": [
+          {
+            "kind": "Function",
+            "name": "describe",
+            "is_test": 0
+          }
+        ],
+        "tests_for_sum": []
+      },
+      "after": {
+        "classifications": [
+          {
+            "kind": "Function",
+            "name": "describe",
+            "is_test": 0
+          }
+        ],
+        "tests_for_sum": []
+      }
+    },
+    "contest/src/view.ts": {
+      "before": {
+        "classifications": [
+          {
+            "kind": "Function",
+            "name": "describe",
+            "is_test": 0
+          }
+        ],
+        "tests_for_sum": []
+      },
+      "after": {
+        "classifications": [
+          {
+            "kind": "Test",
+            "name": "describe",
+            "is_test": 1
+          },
+          {
+            "kind": "Test",
+            "name": "describe:production callback@L3",
+            "is_test": 1
+          }
+        ],
+        "tests_for_sum": [
+          {
+            "name": "describe:production callback@L3",
+            "indirect": false
+          }
+        ]
+      }
+    },
+    "tests/app/src/view.ts": {
+      "before": {
+        "classifications": [
+          {
+            "kind": "Function",
+            "name": "describe",
+            "is_test": 0
+          }
+        ],
+        "tests_for_sum": []
+      },
+      "after": {
+        "classifications": [
+          {
+            "kind": "Test",
+            "name": "describe",
+            "is_test": 1
+          },
+          {
+            "kind": "Test",
+            "name": "describe:production callback@L3",
+            "is_test": 1
+          }
+        ],
+        "tests_for_sum": [
+          {
+            "name": "describe:production callback@L3",
+            "indirect": false
+          }
+        ]
+      }
+    }
+  }
+}

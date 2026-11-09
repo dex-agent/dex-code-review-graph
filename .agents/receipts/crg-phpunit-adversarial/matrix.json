@@ -1,0 +1,446 @@
+{
+  "tool": "ZCode 0.17.0 via review-zcode.mjs",
+  "catalog_source": "https://openrouter.ai/api/v1/models",
+  "observed_at": "2026-11-09T01:03:08.421872+00:00",
+  "bundle_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+  "technical_counts": {
+    "not_dispatched": 7,
+    "passed": 10,
+    "blocked": 3
+  },
+  "semantic_counts": {
+    "not_run": 7,
+    "delivered": 9,
+    "no_response": 3,
+    "insufficient": 1
+  },
+  "profiles": [
+    {
+      "profile": "agent-agnes-30-flash.md",
+      "explicit": true,
+      "model_id": "agnes-3.0-flash",
+      "reasoning": "high",
+      "profile_sha256": "fcf0ce02e16e71db75b9c697ee694674c1696cfd194f223a55a6c3a63b902c1b",
+      "price_status": "unverified",
+      "catalog_id": null,
+      "pricing": null,
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-cohere-north-mini-code-free.md",
+      "explicit": false,
+      "model_id": "cohere/north-mini-code:free",
+      "reasoning": "enabled",
+      "profile_sha256": "4c770f15414f036981106329ab3d85ac16a8cabe64f454302a2fab000e175d18",
+      "price_status": "free_confirmed",
+      "catalog_id": "cohere/north-mini-code:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 11637,
+      "tool_parts_observed": 0,
+      "response_sha256": "907af51aa36291636badf22dff4e152c10b7868198f583f7a39816ec46f089e1",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Sugere subdiretorios e linguagens vizinhas. Refutados requisitos de barra POSIX no QN e de CI como fonte de 27→24."
+    },
+    {
+      "profile": "agent-deepseek-v4-flash.md",
+      "explicit": true,
+      "model_id": "deepseek-v4-flash",
+      "reasoning": "high",
+      "profile_sha256": "ad97693b82310920afa5c7f616a6f52c6b591ba0c8131b17588c6fa097af4e86",
+      "price_status": "unverified",
+      "catalog_id": null,
+      "pricing": null,
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-dots-studio-dots-3-note-preview-free.md",
+      "explicit": false,
+      "model_id": "dots-studio/dots-3-note-preview:free",
+      "reasoning": "enabled",
+      "profile_sha256": "7e23588401549898703e030a5c519659ddd9cfdb4a434b319a03cea0f4e5a142",
+      "price_status": "free_confirmed",
+      "catalog_id": "dots-studio/dots-3-note-preview:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "blocked",
+      "reason": "runtime_error",
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": false,
+      "response_chars": 0,
+      "tool_parts_observed": 0,
+      "semantic_review_status": "no_response",
+      "findings_disposition": "inconclusive"
+    },
+    {
+      "profile": "agent-free-code-review.md",
+      "explicit": false,
+      "model_id": "openrouter/free",
+      "reasoning": "enabled",
+      "profile_sha256": "ee5244037bf53ec8bc02a85f51011a4196c7735e29c6710efd6d683bae27afa3",
+      "price_status": "free_confirmed",
+      "catalog_id": "openrouter/free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 8579,
+      "tool_parts_observed": 0,
+      "response_sha256": "02ce2142929a64945ecba733e9080b67a941bb02dccd022abdb05081e13b27d2",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Substring e indice legado validados. Nao ha prova de que indice legado explique as 24 falhas."
+    },
+    {
+      "profile": "agent-free-test-designer.md",
+      "explicit": false,
+      "model_id": "openrouter/free",
+      "reasoning": "enabled",
+      "profile_sha256": "de824fb8ce4bc72c6017681bd513cfa7bac02721478de9e781582c27a6648ed6",
+      "price_status": "free_confirmed",
+      "catalog_id": "openrouter/free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 8409,
+      "tool_parts_observed": 0,
+      "response_sha256": "a532390fbbc3e8717d0dad3479f7091c26e0f836e3c68b047a60aa2228dd3a7f",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Homônimos e incremental aproveitados. Consulta por path relativo e independencia de ancestral refutadas."
+    },
+    {
+      "profile": "agent-free.md",
+      "explicit": true,
+      "model_id": null,
+      "reasoning": null,
+      "profile_sha256": null,
+      "price_status": "profile_missing",
+      "catalog_id": null,
+      "pricing": null,
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-google-gemma-4-26b-a4b-it-free.md",
+      "explicit": false,
+      "model_id": "google/gemma-4-26b-a4b-it:free",
+      "reasoning": "enabled",
+      "profile_sha256": "8ad9e8536967ae6391a54ddecc7bd26bc8356f088793b1d3794193105bb10f6e",
+      "price_status": "free_confirmed",
+      "catalog_id": "google/gemma-4-26b-a4b-it:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "blocked",
+      "reason": "app-server closed",
+      "input_sha256": null,
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": null,
+      "runtime_model_verified": false,
+      "response_chars": 0,
+      "tool_parts_observed": null,
+      "semantic_review_status": "no_response",
+      "findings_disposition": "inconclusive"
+    },
+    {
+      "profile": "agent-google-gemma-4-31b-it-free.md",
+      "explicit": false,
+      "model_id": "google/gemma-4-31b-it:free",
+      "reasoning": "enabled",
+      "profile_sha256": "2e552a7fe048fd0fa806b7d803537d228827c462f7fd5d7f9eb01f71119e580e",
+      "price_status": "free_confirmed",
+      "catalog_id": "google/gemma-4-31b-it:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "blocked",
+      "reason": "write EPIPE",
+      "input_sha256": null,
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": null,
+      "runtime_model_verified": false,
+      "response_chars": 0,
+      "tool_parts_observed": null,
+      "semantic_review_status": "no_response",
+      "findings_disposition": "inconclusive"
+    },
+    {
+      "profile": "agent-liquid-lfm-2-5-2-6b-free.md",
+      "explicit": false,
+      "model_id": "liquid/lfm-2.5-2.6b:free",
+      "reasoning": "enabled",
+      "profile_sha256": "8b1c0081192518ba5dd80316205eda7d84a5885da16069a1f3fa4dbe189e962e",
+      "price_status": "free_confirmed",
+      "catalog_id": "liquid/lfm-2.5-2.6b:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 3089,
+      "tool_parts_observed": 0,
+      "response_sha256": "c22e04f25b5a64a12d7560018181e3086f3ea2f99e709eab9acf9e863b558bfe",
+      "semantic_review_status": "insufficient",
+      "findings_disposition": "Texto entregue, mas inventa regexes e testes criados e nao investiga os contraexemplos."
+    },
+    {
+      "profile": "agent-mimo-v26-flash.md",
+      "explicit": true,
+      "model_id": "xiaomi/mimo-v2.6-flash:floor",
+      "reasoning": "high",
+      "profile_sha256": "dce16e1e52ce8f51d1447647515ceeaa69344d167a579cb00ee26d4405523f09",
+      "price_status": "paid",
+      "catalog_id": "xiaomi/mimo-v2.6-flash",
+      "pricing": {
+        "prompt": "0.00000014",
+        "completion": "0.00000028",
+        "input_cache_read": "0.0000000028"
+      },
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-nvidia-nemotron-3-5-content-safety-free.md",
+      "explicit": false,
+      "model_id": "nvidia/nemotron-3.5-content-safety:free",
+      "reasoning": "enabled",
+      "profile_sha256": "a703199634d0697272e432afb89266a4c1b525df52a3577b8070f61ed1ef6d70",
+      "price_status": "free_listing_without_live_endpoint",
+      "catalog_id": null,
+      "pricing": null,
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run",
+      "endpoint_probe": {
+        "http": 200,
+        "id": "nvidia/nemotron-3.5-content-safety:free",
+        "endpoints": []
+      }
+    },
+    {
+      "profile": "agent-nvidia-nemotron-3-5-lightning-free.md",
+      "explicit": false,
+      "model_id": "nvidia/nemotron-3.5-lightning:free",
+      "reasoning": "enabled",
+      "profile_sha256": "142ed58d7c28689ce3a30c4a877a71b704943a944282fa956a07a974ce2a97e6",
+      "price_status": "free_confirmed",
+      "catalog_id": "nvidia/nemotron-3.5-lightning:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 6735,
+      "tool_parts_observed": 0,
+      "response_sha256": "3bf447133595bb8d1a1231e7186cf174fab440370d67b835282a9e353aaca925",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Ressalva de localizacao aproveitavel. Mutacao de QN e necessidade de as_posix refutadas no contrato e A/B."
+    },
+    {
+      "profile": "agent-nvidia-nemotron-3-5-super-vl-free.md",
+      "explicit": false,
+      "model_id": "nvidia/nemotron-3.5-super-vl:free",
+      "reasoning": "enabled",
+      "profile_sha256": "785e9b084cc78c071d7c92da4ed6e09a48ad51148c77412dfe89418916565e37",
+      "price_status": "free_confirmed",
+      "catalog_id": "nvidia/nemotron-3.5-super-vl:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 9128,
+      "tool_parts_observed": 0,
+      "response_sha256": "3012e87095aacd51523f58f62f0bdbf62aab65213481b46084c84f4538a151a2",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Indice legado confirmado. Oito consultas por variantes de path e a CI real refutam os outros riscos alegados."
+    },
+    {
+      "profile": "agent-nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free.md",
+      "explicit": false,
+      "model_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "reasoning": "enabled",
+      "profile_sha256": "faec32885c12c2425c1d269c682b96e124edfe46d8e2d1fa7bc1e9ad3b33de72",
+      "price_status": "free_confirmed",
+      "catalog_id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 2554,
+      "tool_parts_observed": 0,
+      "response_sha256": "5af6399beae9a1c324dfcd8218ce7031ccb51085591c17b736f8be89277d5e67",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Regex exclusiva de barra invertida refutada. O nome test_*.py nao discrimina o patch."
+    },
+    {
+      "profile": "agent-openrouter-free.md",
+      "explicit": true,
+      "model_id": "openrouter/free",
+      "reasoning": "enabled",
+      "profile_sha256": "8dc05ecfd9744b8ce5bb1faff0eb308f38d7f8b28064e06c3824c027ebf9be8b",
+      "price_status": "free_confirmed",
+      "catalog_id": "openrouter/free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 9776,
+      "tool_parts_observed": 0,
+      "response_sha256": "69733a24137bdecc24a1c3105a9542a38179c1d95762372b8f106cc8139b3e5f",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Path.replace como renomeacao refutado por tipo str e assinatura. Ancestral absoluto importa no A/B."
+    },
+    {
+      "profile": "agent-qwen37-flash.md",
+      "explicit": true,
+      "model_id": "qwen/qwen3.7-flash:floor",
+      "reasoning": "enabled",
+      "profile_sha256": "e697b755076ada8ab87abd4ea2995d77bbf1f526515c721714e956c64a1871ce",
+      "price_status": "paid",
+      "catalog_id": "qwen/qwen3.7-flash",
+      "pricing": {
+        "prompt": "0.00000003",
+        "completion": "0.00000013",
+        "input_cache_read": "0.000000006",
+        "input_cache_write": "0.000000038",
+        "overrides": [
+          {
+            "min_prompt_tokens": 32000,
+            "prompt": "0.0000001",
+            "completion": "0.0000004",
+            "input_cache_read": "0.00000002",
+            "input_cache_write": "0.000000125"
+          },
+          {
+            "min_prompt_tokens": 256000,
+            "prompt": "0.0000002",
+            "completion": "0.0000008",
+            "input_cache_read": "0.00000004",
+            "input_cache_write": "0.00000025"
+          }
+        ]
+      },
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-qwen38-flash.md",
+      "explicit": true,
+      "model_id": "qwen/qwen3.8-flash:floor",
+      "reasoning": "xhigh",
+      "profile_sha256": "a5143363028e19fbd9bc59c44f59bb6317d22431829ba6ab7f50d119fa44ee51",
+      "price_status": "paid",
+      "catalog_id": "qwen/qwen3.8-flash",
+      "pricing": {
+        "prompt": "0.00000015",
+        "completion": "0.00000047",
+        "input_cache_read": "0.000000016"
+      },
+      "technical_status": "not_dispatched",
+      "semantic_review_status": "not_run"
+    },
+    {
+      "profile": "agent-recursive-flint-v1-0-free.md",
+      "explicit": false,
+      "model_id": "recursive/flint-v1.0:free",
+      "reasoning": "enabled",
+      "profile_sha256": "158d4811540946b06bed9bd878602a4860f7162afeea554cebd7e3d9d9be9a22",
+      "price_status": "free_confirmed",
+      "catalog_id": "recursive/flint-v1.0:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 5228,
+      "tool_parts_observed": 0,
+      "response_sha256": "ac190c65b7f707556d46116505d8cccab981a5059e58f9b81cee1e34a9edd11c",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Lacuna de reparse confirmada. Nome-first preexistente, suite Windows completa verificada."
+    },
+    {
+      "profile": "agent-xingchen-agi-xing4-0-29b-a4b-free.md",
+      "explicit": false,
+      "model_id": "xingchen-agi/xing4.0-29b-a4b:free",
+      "reasoning": "enabled",
+      "profile_sha256": "20c63f23a1279ad9a8004627ac01ccc234fd833a13704b634d4b34f44ca8a932",
+      "price_status": "free_confirmed",
+      "catalog_id": "xingchen-agi/xing4.0-29b-a4b:free",
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      },
+      "technical_status": "passed",
+      "reason": null,
+      "input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "requested_input_sha256": "9814b7c29fd71e9fcd5065b1adb6697b4e11709d969489cebdb5d365d7bf7b13",
+      "mode_observed": "build",
+      "runtime_model_verified": true,
+      "response_chars": 5712,
+      "tool_parts_observed": 0,
+      "response_sha256": "c3365b688721a06d4837dcb984b3995f8339a318311d0df6178fc94e2a9af2d5",
+      "semantic_review_status": "delivered",
+      "findings_disposition": "Aceite funcional refutado pelo A/B. Preservacao de caminho nativo confirmada; Path nao produz sempre /."
+    }
+  ]
+}
