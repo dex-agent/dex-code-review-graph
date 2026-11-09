@@ -675,9 +675,21 @@ class TestGraphToolExplicitRepoResolution:
         repo_root = mock_run.call_args.args[1]
         assert repo_root == module.resolve()
 
-    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, capsys):
+    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, capsys, monkeypatch):
         bare = tmp_path / "not-a-project"
         bare.mkdir()
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "isolated-state"))
+        host_markers = {
+            parent / marker
+            for parent in tmp_path.resolve().parents
+            for marker in (".git", ".svn", ".code-review-graph")
+        }
+        real_exists = Path.exists
+
+        def exists(path, *args, **kwargs):
+            return path not in host_markers and real_exists(path, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "exists", exists)
         argv = ["code-review-graph", "search", "x", "--repo", str(bare)]
         with patch.object(sys, "argv", argv):
             with patch.object(cli, "_run_graph_tool_command") as mock_run:
