@@ -12,8 +12,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build, incremental_update
+from code_review_graph.postprocessing import run_post_processing
 from code_review_graph.scoped_resolver import _path_tokens, resolve_scoped_calls
 from code_review_graph.tools.query import get_impact_radius, query_graph
 
@@ -38,6 +41,69 @@ def _calls(store: GraphStore) -> list[dict]:
             "FROM edges WHERE kind = 'CALLS'"
         ).fetchall()
     ]
+
+
+@pytest.mark.parametrize("composer", [False, True], ids=["scoped", "composer-alias"])
+def test_php_imported_constructor_and_method_keep_namespace(tmp_path: Path, composer: bool):
+    shipping = "src/Shipping/Calculator.php"
+    payments = "src/Payments/Calculator.php"
+    source = "<?php namespace App\\{}; class Calculator {{ function add() {{}} }}"
+    test_file = tmp_path / "tests/CalculatorTest.php"
+    caller = f"{test_file}::CalculatorTest.testItAdds"
+    alias = r"use App\Shipping\Calculator as ShippingCalculator;" if composer else ""
+    files = {
+        shipping: source.format("Shipping"),
+        "tests/CalculatorTest.php": rf"""<?php
+namespace App\Tests;
+use App\Payments\Calculator;
+{alias}
+class CalculatorTest {{
+    function testItAdds() {{
+        $calculator = new Calculator();
+        $calculator->add();
+    }}
+}}
+""",
+    }
+    if composer:
+        files["composer.json"] = json.dumps({"autoload": {"psr-4": {"App\\": "src/"}}})
+
+    def destinations(store, rel):
+        constructor = f"{tmp_path / rel}::Calculator"
+        method = f"{constructor}.add"
+        return [
+            (row["kind"], row["destination"])
+            for row in store._conn.execute(
+                "SELECT kind, CASE kind WHEN 'CALLS' THEN target_qualified "
+                "ELSE source_qualified END AS destination FROM edges "
+                "WHERE (kind='CALLS' AND source_qualified=? AND target_qualified IN (?,?)) "
+                "OR (kind='TESTED_BY' AND target_qualified=? AND source_qualified IN (?,?)) "
+                "ORDER BY kind, destination",
+                (caller, constructor, method, caller, constructor, method),
+            )
+        ]
+
+    with _build(tmp_path, files) as store:
+        run_post_processing(store)
+        assert destinations(store, shipping) == []
+
+        target = tmp_path / payments
+        target.parent.mkdir()
+        target.write_text(source.format("Payments"), encoding="utf-8")
+        incremental_update(tmp_path, store, changed_files=[payments])
+        run_post_processing(store)
+        assert destinations(store, shipping) == []
+        assert destinations(store, payments) == [
+            (kind, f"{target}::{symbol}")
+            for kind in ("CALLS", "TESTED_BY")
+            for symbol in ("Calculator", "Calculator.add")
+        ]
+        updated = destinations(store, payments)
+
+        full_build(tmp_path, store)
+        run_post_processing(store)
+        assert destinations(store, shipping) == []
+        assert destinations(store, payments) == updated
 
 
 def _build_phpunit_calculator(tmp_path: Path) -> GraphStore:
