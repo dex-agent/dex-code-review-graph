@@ -1,0 +1,33 @@
+{
+  "indexed": true,
+  "maps": [
+    ".agents/MAPAS/capacidades-crg-20261109-crg-dq9.md",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-dq9.md",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-dq9/DEPENDENCY-MAP.md"
+  ],
+  "fresh_shadow_had_embeddings_table": false,
+  "seeded_rebuild": {
+    "before": 4745,
+    "after": 4745,
+    "unchanged_source_preserved": 4164
+  },
+  "exit_code": 0,
+  "dependency_source_hashes": [
+    {
+      "sha256": "98e1d59eabe0c2c9d3483122a377533b32b0e54c3612cb9f3a7038e20f3f2190",
+      "id": "backup"
+    },
+    {
+      "sha256": "3b0f3cc66739b9ad267bb6adf0da2c2c5853b37e69605663831f8c55c4149170",
+      "id": "candidate"
+    },
+    {
+      "sha256": "1ab5438a1cc48f2fde4d8298e440685c2d8585af4020996207e0c98a4c78a95e",
+      "id": "promotion"
+    },
+    {
+      "sha256": "72ca9caa3d23df7d2a42b5f9056b2ca5568edee3dd91a01d2ddfcb21b094452d",
+      "id": "php-fixtures"
+    }
+  ]
+}

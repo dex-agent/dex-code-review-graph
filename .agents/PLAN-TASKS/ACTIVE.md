@@ -1,6 +1,7 @@
 # Trilho ativo
 
-- Último encerrado: [Resolução PHP de homônimos](2026-11-09-crg-x6m-php-homonimos.md) | bead `crg-x6m` | produto `fb9fc22` | checklist 4/4 | veredito `vrd_20261109055428929_0348_0306` pronto com ressalvas.
+- Último encerrado: [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | bead `crg-dq9` | checklist 5/5 | veredito `vrd_20261109061157643_0378_0345` pronto com ressalvas.
+- Anterior: [Resolução PHP de homônimos](2026-11-09-crg-x6m-php-homonimos.md) | bead `crg-x6m` | produto `fb9fc22` | checklist 4/4 | veredito `vrd_20261109055428929_0348_0306` pronto com ressalvas.
 - Anterior: [Frescor semântico do índice](2026-11-08-crg-k4q-frescor-indice.md) | bead `crg-k4q` | checklist 4/4 | veredito `vrd_20261109023002598_0322_0273` pronto com ressalvas.
 - Anterior: [Classificação por caminho](2026-11-08-crg-test-path.md) | bead `crg-08x` | checklist 4/4 | commit `3fb1ab3` | veredito `vrd_20261109020535975_0294_0238` pronto com ressalvas.
 - Anterior: [PHPUnit direto no Windows](2026-11-08-crg-phpunit-windows.md) | checklist 4/4 | veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas | `crg-iu1` segue com 24 falhas.

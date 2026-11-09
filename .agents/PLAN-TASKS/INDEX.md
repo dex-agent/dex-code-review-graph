@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-dq9` | [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-x6m-20261109` | [Trilho](2026-11-09-crg-x6m-php-homonimos.md) | concluído com ressalvas | owner: mantenedor CRG.
 
 - `crg-k4q-frescor-2026-11-08` | [Trilho](2026-11-08-crg-k4q-frescor-indice.md) | checklist 4/4, completo com ressalvas | owner: mantenedor CRG.
