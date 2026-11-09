@@ -1,6 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-09.
+- [Seleção exata do forget no Windows](PLAN-TASKS/2026-11-09-crg-iu1-forget.md): `aca7f74` corrige `forget PKG` com prova no executável e SQLite. CI 9/9, módulo Windows 13/13, suíte integral Windows 8 → 5 IDs conhecidos. Próxima retomada de `crg-iu1`: resolução explícita de repositório sem marcadores antes do release Windows. [Saldo por ID](receipts/crg-iu1-forget/comparison.json).
 - [Portabilidade dos testes Julia](PLAN-TASKS/2026-11-09-crg-iu1-julia.md): `9f1f19b`, 27/27 em cada sistema e na CI Windows. A suíte integral caiu de 21 para 8 falhas, sem novos IDs. O mantenedor retoma `crg-iu1` pelos três casos de seleção do comando `forget` antes do próximo release Windows. [Comparação por ID](receipts/crg-iu1-julia/comparison.json).
 - [Caminhos PHP/Rust no Windows e Ubuntu](PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md): `f825c25`, 7/7 em cada sistema e CI 9/9. A suíte Windows passou de 24 a 21 falhas, sem novos IDs. O mantenedor retoma `crg-iu1` pelo primeiro caso de identidade Julia antes do próximo release Windows. [Comparação por ID](receipts/crg-iu1-caminhos/comparison.json).
 - [Adoção da correção PHP no índice persistente](PLAN-TASKS/2026-11-09-crg-adocao-indice-php.md): banco habitual reconstruído em `eeb486b`, backup íntegro e restauração ensaiada. [Readback da CLI e SQLite](receipts/crg-adocao-indice-php/promotion.json). O mantenedor retoma `crg-iu1` antes do próximo release Windows.

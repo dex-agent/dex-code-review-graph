@@ -1,0 +1,22 @@
+{
+  "bead": "crg-iu1",
+  "paths": {
+    ".agents/PLAN-TASKS/2026-11-09-crg-iu1-forget.md": "7ad80eb454fc3c282f0d53d047987a4bfd86219822a61cac5023ef6a1fb2ab11",
+    ".agents/ACTIVE.md": "924fda965942a5d412d177d372a3449e72096b22925c4981535fb28b3f0ea313",
+    ".agents/HANDOFF.md": "12c97ccc68b3eb94cf04caca5a5191346841e43deda4091aa721d90db2dd9ec7",
+    ".agents/PLAN-TASKS/ACTIVE.md": "038452e08d11a2e0c66d72d1c3bace1d48fee3cd3d5d7afb7c932b80e2492c8f",
+    ".agents/PLAN-TASKS/INDEX.md": "05903776cbf849248e745ec0ef0637683442fded5eb7768e3d537e2c42a84c66",
+    ".agents/MAPAS/INDEX.md": "d0d3191159dc167f9eeff79c5127754413d804ce6a72c7d675ff562921cb75f5",
+    ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-forget.md": "a254d4ac35575dfd0300fec2033ccb616fda14347e299cae022e53c5e73e12ab",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-forget/DEPENDENCY-MAP.md": "a7a8464257da0bbe685f547d04aed01db748e384f280b18bb7c8b238e00bd50c",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-forget/DEPENDENCY-GRAPH.json": "1d916201aca181dca6963a819fcdc0ac5e4a567c72aad4d1fc9f492375be4b3a",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-forget/DEPENDENCY-GRAPH.html": "006eed0a1270606a82a244b6f4853a38f697de4c09a456678384c987ba17382f",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-forget.md": "92e821841b7a979a06717e8d0e58fe4191036ffece3c9a0f81e83741e8f35655"
+  },
+  "total": 5,
+  "checked": 5,
+  "exit_code": 0,
+  "product_sha": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+  "remaining": 5,
+  "memory_validated": 1
+}

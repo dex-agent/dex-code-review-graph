@@ -1,0 +1,183 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261109-crg-iu1-forget",
+    "observed_at": "2026-11-09T21:08:35.773Z",
+    "revision": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+    "scope": "Seleção literal da CLI forget",
+    "environment": "Windows, Ubuntu e GitHub Actions",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "excluded": [
+      "Índice persistente",
+      "Outras famílias do crg-iu1"
+    ],
+    "limits": [
+      "Observado em repos descartáveis com caminho Windows comum e pastas distintas no Ubuntu."
+    ],
+    "method": "Git, executável, SQLite e workflow"
+  },
+  "sources": [
+    {
+      "availability": "available",
+      "id": "red",
+      "path": "../../../../receipts/crg-iu1-forget/red.json",
+      "revision": "6d1c5df111bc7b8d90a6e109e37ee8cfd104fabc",
+      "anchor": "red",
+      "sha256": "c66625de9843c8beda1face4a0f5ea9c7aa1c5122e4eae6bed4c3d1395a8f65c"
+    },
+    {
+      "availability": "available",
+      "id": "windows",
+      "path": "../../../../receipts/crg-iu1-forget/green-windows.json",
+      "revision": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+      "anchor": "windows",
+      "sha256": "fd5cc95c367390c8d5b08866032fec5a9159e7648e6cbc246694c5caab7163be"
+    },
+    {
+      "availability": "available",
+      "id": "ubuntu",
+      "path": "../../../../receipts/crg-iu1-forget/green-ubuntu.json",
+      "revision": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+      "anchor": "ubuntu",
+      "sha256": "cd46e0dd1ab6cdc4ec277d21481fb9eaa0944f6412075a37b707d49558e3f47d"
+    },
+    {
+      "availability": "available",
+      "id": "workflow",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "revision": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+      "anchor": "workflow",
+      "sha256": "5a9e018e997cef0a7d68ae1e95bd1731891eb9f0c1eeaa60d623471e8590bd23"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI forget",
+      "type": "command",
+      "source_refs": [
+        "red",
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "matcher",
+      "label": "Seletor literal de pasta",
+      "type": "function",
+      "source_refs": [
+        "red",
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "sqlite",
+      "label": "Índice SQLite",
+      "type": "database",
+      "source_refs": [
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "regression",
+      "label": "Regressão de identidade da pasta",
+      "type": "test",
+      "source_refs": [
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "ci",
+      "label": "Job Windows",
+      "type": "workflow",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-matcher",
+      "source": "cli",
+      "target": "matcher",
+      "relation": "calls",
+      "condition": "Padrão literal é comparado ao conjunto de caminhos armazenados",
+      "source_refs": [
+        "red",
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "matcher-sqlite",
+      "source": "matcher",
+      "target": "sqlite",
+      "relation": "consumes_contract",
+      "condition": "O comando remove usando as chaves originais devolvidas pelo seletor",
+      "source_refs": [
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "regression-sqlite",
+      "source": "regression",
+      "target": "sqlite",
+      "relation": "references",
+      "condition": "Asserção do conjunto remanescente",
+      "source_refs": [
+        "windows",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": false
+    },
+    {
+      "id": "ci-regression",
+      "source": "ci",
+      "target": "regression",
+      "relation": "executes",
+      "condition": "Etapa Run forget path tests",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    }
+  ]
+}

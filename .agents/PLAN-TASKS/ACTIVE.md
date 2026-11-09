@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- Último corte: [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | checklist 5/5 | produto `aca7f74` | bead `crg-iu1` com cinco IDs.
+
 - Último encerrado: [Portabilidade dos testes Julia](2026-11-09-crg-iu1-julia.md) | bead `crg-iu1` aberto com oito IDs | checklist 5/5 | veredito `vrd_20261109064902297_0441_0426` pronto com ressalvas.
 
 - Anterior: [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | bead `crg-iu1` | commit `f825c25` | checklist 5/5 | veredito `vrd_20261109063105983_0407_0382` pronto com ressalvas.

@@ -1,0 +1,25 @@
+{
+  "mode": "green",
+  "platform": "posix",
+  "build": "Full build: 5 files, 10 nodes, 5 edges (postprocess=full)",
+  "same_directory": false,
+  "before": [
+    "PKG/other.py",
+    "main.py",
+    "pkg/auth.py",
+    "pkg/views.py",
+    "pkg_extra/keep.py"
+  ],
+  "dry_run": "[dry-run] Would forget these files:\n  PKG/other.py\n\n[dry-run] 1 file(s) would be removed from the graph. No changes made.",
+  "preview": [
+    "PKG/other.py"
+  ],
+  "removal": "Forgetting these files:\n  PKG/other.py\n\nForgot 1 file(s); 4 file(s) remain in the graph.",
+  "after": [
+    "main.py",
+    "pkg/auth.py",
+    "pkg/views.py",
+    "pkg_extra/keep.py"
+  ],
+  "all_sources_exist": true
+}

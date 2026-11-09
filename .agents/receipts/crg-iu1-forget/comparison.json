@@ -1,0 +1,18 @@
+{
+  "baseline_product_sha": "9f1f19b",
+  "product_sha": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+  "removed": [
+    "tests/test_forget.py::TestMatchFilesToForget::test_directory_prefix_matches_everything_underneath",
+    "tests/test_forget.py::TestMatchFilesToForget::test_exact_absolute_path",
+    "tests/test_forget.py::TestMatchFilesToForget::test_multiple_patterns_are_unioned_and_deduplicated"
+  ],
+  "remaining": [
+    "tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_without_markers_errors_cleanly",
+    "tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge",
+    "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding",
+    "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "new": [],
+  "summary": "5 failed, 2320 passed, 12 skipped, 2 xpassed in 70.46s (0:01:10)"
+}

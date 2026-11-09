@@ -1,0 +1,22 @@
+{
+  "mode": "red",
+  "platform": "nt",
+  "build": "Full build: 4 files, 8 nodes, 4 edges (postprocess=full)",
+  "same_directory": true,
+  "before": [
+    "main.py",
+    "pkg/auth.py",
+    "pkg/views.py",
+    "pkg_extra/keep.py"
+  ],
+  "dry_run": "No parsed files matched the given path(s).\nThe graph currently tracks 4 file(s).",
+  "preview": [],
+  "removal": "No parsed files matched the given path(s).\nThe graph currently tracks 4 file(s).",
+  "after": [
+    "main.py",
+    "pkg/auth.py",
+    "pkg/views.py",
+    "pkg_extra/keep.py"
+  ],
+  "all_sources_exist": true
+}
