@@ -513,20 +513,19 @@ def _find_explicit_repo_root(start: Path) -> "Path | None":
     """Resolve an explicit --repo for graph-tool commands.
 
     Walks upward from ``start``, stopping at the nearest directory that
-    contains a ``.code-review-graph``, ``.git``, or ``.svn`` marker. Unlike
+    has a local marker or an exact external index binding. Unlike
     ``find_repo_root``, a registered subproject (``.code-review-graph``)
     counts as a boundary, so a monorepo subdirectory built with
     ``build --repo mono/module`` resolves to the module — not to the
     monorepo's top-level ``.git`` (#697).
     """
+    from .tools._common import _has_project_identity
+
     current = start.resolve()
     if not current.is_dir():
         return None
     while True:
-        if any(
-            (current / marker).exists()
-            for marker in (".code-review-graph", ".git", ".svn")
-        ):
+        if _has_project_identity(current):
             return current
         if current == current.parent:
             return None
@@ -1318,13 +1317,15 @@ def main() -> None:
             # For an explicit --repo the walk must treat .code-review-graph
             # as a project boundary too: the plain .git/.svn walk resolves a
             # registered monorepo subdirectory to the monorepo root and the
-            # graph built at the --repo path is never found (#697). Nearest
-            # marker wins, so pointing inside a repo still works.
+            # graph built at the --repo path is never found (#697). The nearest
+            # recognized project wins, so pointing inside a repo still works.
             repo_root = _find_explicit_repo_root(Path(args.repo).expanduser())
             if repo_root is None:
                 print(
-                    f"--repo does not look like a project root (no .git, .svn, "
-                    f"or .code-review-graph found at or above): {args.repo}",
+                    f"--repo does not look like a project root "
+                    f"(no .git, .svn, or .code-review-graph found and no registered "
+                    f"external index at or above): "
+                    f"{args.repo}",
                     file=sys.stderr,
                 )
                 raise SystemExit(1)

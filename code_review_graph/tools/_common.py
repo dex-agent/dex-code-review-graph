@@ -173,27 +173,38 @@ _BUILTIN_CALL_NAMES: set[str] = {
 }
 
 
+def _has_project_identity(path: Path) -> bool:
+    """Recognize a project by a local marker or its exact external index binding."""
+    if any((path / marker).exists() for marker in (".git", ".svn", ".code-review-graph")):
+        return True
+
+    from ..registry import Registry, default_registry_path
+
+    registry_path = default_registry_path()
+    if not registry_path.is_file():
+        return False
+    try:
+        return bool(Registry(registry_path).get_data_dir_for_repo(str(path)))
+    except (AttributeError, KeyError, OSError, TypeError, ValueError):
+        logger.debug("Could not read project binding for %s", path, exc_info=True)
+        return False
+
+
 def _validate_repo_root(path: "Path | str") -> Path:
     """Validate that a path is a plausible project root.
 
-    Ensures the path is an existing directory that contains a ``.git``,
-    ``.svn``, or ``.code-review-graph`` directory, preventing arbitrary
-    file-system traversal via the ``repo_root`` parameter.
+    Requires an existing directory with a local marker or an exact registry
+    binding to an external data directory.
     """
     resolved = Path(path).resolve()
     if not resolved.is_dir():
         raise ValueError(
             f"repo_root is not an existing directory: {resolved}"
         )
-    has_vcs = (
-        (resolved / ".git").exists()
-        or (resolved / ".svn").exists()
-        or (resolved / ".code-review-graph").exists()
-    )
-    if not has_vcs:
+    if not _has_project_identity(resolved):
         raise ValueError(
             f"repo_root does not look like a project root "
-            f"(no .git, .svn, or .code-review-graph directory found): "
+            f"(no .git, .svn, or .code-review-graph found and no registered external index): "
             f"{resolved}"
         )
     return resolved
