@@ -1,0 +1,23 @@
+{
+  "mode": "green",
+  "platform": "nt",
+  "build": "Full build: 4 files, 8 nodes, 4 edges (postprocess=full)",
+  "same_directory": true,
+  "before": [
+    "main.py",
+    "pkg/auth.py",
+    "pkg/views.py",
+    "pkg_extra/keep.py"
+  ],
+  "dry_run": "[dry-run] Would forget these files:\n  pkg\\auth.py\n  pkg\\views.py\n\n[dry-run] 2 file(s) would be removed from the graph. No changes made.",
+  "preview": [
+    "pkg/auth.py",
+    "pkg/views.py"
+  ],
+  "removal": "Forgetting these files:\n  pkg\\auth.py\n  pkg\\views.py\n\nForgot 2 file(s); 2 file(s) remain in the graph.",
+  "after": [
+    "main.py",
+    "pkg_extra/keep.py"
+  ],
+  "all_sources_exist": true
+}

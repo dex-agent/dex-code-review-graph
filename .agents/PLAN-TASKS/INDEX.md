@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-iu1-forget` | [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | owner: mantenedor CRG.
+
 - `crg-iu1-julia` | [Portabilidade dos testes Julia](2026-11-09-crg-iu1-julia.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.
 
 - `crg-iu1-caminhos` | [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | checklist 5/5, pronto com ressalvas | owner: mantenedor CRG.

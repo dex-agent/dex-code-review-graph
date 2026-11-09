@@ -1,0 +1,16 @@
+Windows daemon and file handles	Run forget path tests	﻿2026-11-09T21:10:06.5324299Z ##[group]Run python -m pytest --tb=short -v tests/test_forget.py
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:06.5324856Z ^[[36;1mpython -m pytest --tb=short -v tests/test_forget.py^[[0m
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2016374Z tests/test_forget.py::TestMatchFilesToForget::test_exact_relative_path PASSED [  7%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2043805Z tests/test_forget.py::TestMatchFilesToForget::test_exact_absolute_path PASSED [ 15%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2072110Z tests/test_forget.py::TestMatchFilesToForget::test_directory_prefix_matches_everything_underneath PASSED [ 23%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2101416Z tests/test_forget.py::TestMatchFilesToForget::test_relative_glob PASSED  [ 30%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2128192Z tests/test_forget.py::TestMatchFilesToForget::test_no_match_returns_empty PASSED [ 38%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2172343Z tests/test_forget.py::TestMatchFilesToForget::test_multiple_patterns_are_unioned_and_deduplicated PASSED [ 46%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.2198160Z tests/test_forget.py::TestMatchFilesToForget::test_blank_pattern_is_ignored PASSED [ 53%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.5015006Z tests/test_forget.py::test_forget_removes_matching_file_and_keeps_the_rest PASSED [ 61%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:07.8273529Z tests/test_forget.py::test_forget_directory_drops_every_file_underneath PASSED [ 69%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:08.1682584Z tests/test_forget.py::test_forget_directory_uses_filesystem_case_identity PASSED [ 76%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:08.3832158Z tests/test_forget.py::test_forget_dry_run_changes_nothing PASSED         [ 84%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:08.6157987Z tests/test_forget.py::test_forget_reports_when_nothing_matches PASSED    [ 92%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:08.6787106Z tests/test_forget.py::test_forget_without_a_graph_exits_nonzero PASSED   [100%]
+Windows daemon and file handles	Run forget path tests	2026-11-09T21:10:08.6788352Z ============================= 13 passed in 1.61s ==============================

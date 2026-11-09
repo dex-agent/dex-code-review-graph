@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-09
 
+- [Seleção exata do forget no Windows](PLAN-TASKS/2026-11-09-crg-iu1-forget.md): `aca7f74` e CI 9/9. `pkg_extra` fica no índice e o Ubuntu distingue `PKG` de `pkg`. Restam cinco IDs em `crg-iu1`. O mantenedor começa pelo caso de `--repo` explícito sem marcadores antes do próximo release Windows. [Saldo por ID](receipts/crg-iu1-forget/comparison.json).
+
 - [Portabilidade dos testes Julia](PLAN-TASKS/2026-11-09-crg-iu1-julia.md): `9f1f19b`, 27/27 Windows e Ubuntu, 27/27 no job Windows e CI 9/9. `crg-iu1` fica com oito IDs. Próximo corte: reproduzir o trio de `_match_files_to_forget` e conferir `forget --dry-run` em banco descartável. [Comparação por ID](receipts/crg-iu1-julia/comparison.json).
 
 - [Caminhos PHP/Rust no Windows e Ubuntu](PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md): `f825c25`, 7/7 em cada sistema, 9/9 na CI e três IDs removidos do baseline Windows. Este corte histórico registrou 21 falhas antes da rodada Julia. [Comparação por ID](receipts/crg-iu1-caminhos/comparison.json).

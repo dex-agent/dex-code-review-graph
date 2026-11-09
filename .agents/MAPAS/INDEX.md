@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-iu1-forget — seleção literal da pasta, contraprova Ubuntu e saldo Windows.
+  - [Capacidades](capacidades-crg-20261109-crg-iu1-forget.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-iu1-forget.md)
+  - [Dependências](dependencias/crg/20261109-crg-iu1-forget/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-iu1-forget.md)
+
 - 20261109-crg-iu1-julia — portabilidade Julia, contraprovas e saldo Windows por ID.
   - [Capacidades](capacidades-crg-20261109-crg-iu1-julia.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-iu1-julia.md)

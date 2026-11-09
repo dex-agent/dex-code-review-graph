@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.370" timestamp="2026-11-09T18:04:55.796587-03:00" hostname="PREDATOR"><testcase classname="tests.test_forget" name="test_forget_directory_uses_filesystem_case_identity" time="0.057"><failure message="AssertionError: assert {'C:\\Users\\...tra\\keep.py'} == {'C:\\Users\\...tra\\keep.py'}&#10;  &#10;  Extra items in the left set:&#10;  'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1959\\test_forget_directory_uses_fil0\\pkg\\views.py'&#10;  'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1959\\test_forget_directory_uses_fil0\\pkg\\auth.py'&#10;  Use -v to get more diff">seeded_repo = (WindowsPath('C:/Users/crsan/AppData/Local/Temp/pytest-of-crsan/pytest-1959/test_forget_directory_uses_fil0'), {'auth'...C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1959\\test_forget_directory_uses_fil0\\pkg\\views.py'})
+
+    def test_forget_directory_uses_filesystem_case_identity(seeded_repo):
+        repo_root, files = seeded_repo
+        package = repo_root / "pkg"
+        package.mkdir()
+        requested = repo_root / "PKG"
+        neighbor = str(repo_root / "pkg_extra" / "keep.py")
+        distinct = str(requested / "other.py")
+    
+        store = GraphStore(get_db_path(repo_root))
+        try:
+            _seed_file(store, neighbor, "keep")
+            if not requested.exists():
+                requested.mkdir()
+                _seed_file(store, distinct, "other")
+            if requested.samefile(package):
+                expected = {files["main"], neighbor}
+            else:
+                expected = {*files.values(), neighbor}
+        finally:
+            store.close()
+    
+        _run_forget(repo_root, "PKG")
+    
+        store = GraphStore(get_db_path(repo_root))
+        try:
+&gt;           assert set(store.get_all_files()) == expected
+E           AssertionError: assert {'C:\\Users\\...tra\\keep.py'} == {'C:\\Users\\...tra\\keep.py'}
+E             
+E             Extra items in the left set:
+E             'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1959\\test_forget_directory_uses_fil0\\pkg\\views.py'
+E             'C:\\Users\\crsan\\AppData\\Local\\Temp\\pytest-of-crsan\\pytest-1959\\test_forget_directory_uses_fil0\\pkg\\auth.py'
+E             Use -v to get more diff
+
+tests\test_forget.py:174: AssertionError</failure></testcase></testsuite></testsuites>

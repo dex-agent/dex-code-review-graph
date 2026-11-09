@@ -1,0 +1,32 @@
+{
+  "flow_id": "flow_20261109210335862_0447_0001",
+  "verdict_id": "vrd_20261109211245181_0469_0031",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 5,
+    "total": 5
+  },
+  "bead": "crg-iu1",
+  "product_sha": "aca7f74688daa12d52982ff6f99e69fc12b0745b",
+  "ci_run": 42699224753,
+  "evidence_ids": [
+    "evd_20261109210628203_0454_0009",
+    "evd_20261109210628255_0455_0011",
+    "evd_20261109210653231_0456_0013",
+    "evd_20261109211041245_0467_0027",
+    "evd_20261109211234421_0468_0029",
+    "evd_20261109210728876_0462_0021"
+  ],
+  "residual_risks": [
+    "Cinco IDs históricos permanecem na suíte integral Windows sob crg-iu1.",
+    "A contraprova de nomes distintos foi observada no Ubuntu. O Windows validado usa um volume que equipara pkg e PKG."
+  ],
+  "next_step": "Mantenedor CRG: antes do próximo release Windows, reproduzir test_explicit_repo_without_markers_errors_cleanly pela CLI e confirmar a resolução de --repo antes de alterar código.",
+  "memory": {
+    "trigger": "CRG-FORGET-IDENTIDADE-PASTA",
+    "receipt_id": "4462b8bb7aed17c33f1497be",
+    "validation": "1/1"
+  }
+}

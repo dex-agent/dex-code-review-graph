@@ -1,0 +1,15 @@
+{
+  "contract": "consciencia-memorias.validate-memory-batch.v1",
+  "root": ".agents",
+  "l1": "lembranca.md",
+  "capability": "v2-markdown",
+  "total": 1,
+  "validos": 1,
+  "resultados": [
+    {
+      "destino": "memorias/forget-literal-usa-identidade-da-pasta-25856efd39ca.md",
+      "ok": true,
+      "erros": []
+    }
+  ]
+}
