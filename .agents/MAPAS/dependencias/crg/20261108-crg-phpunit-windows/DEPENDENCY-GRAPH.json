@@ -1,0 +1,176 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-phpunit-windows",
+    "observed_at": "2026-11-09T00:54:50.604747+00:00",
+    "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+    "environment": "Windows Python 3.13.13 e seleção CI 3.12",
+    "scope": "classificação e associação direta PHPUnit",
+    "evidence_level": "mixed",
+    "coverage": "partial",
+    "method": "Git, pytest, CLI e SQLite",
+    "excluded": [
+      "restante da arquitetura do CRG"
+    ],
+    "limits": [
+      "execução remota da CI fora da evidência local"
+    ]
+  },
+  "sources": [
+    {
+      "id": "parser",
+      "path": "../../../../../code_review_graph/parser.py",
+      "anchor": "_is_test_file",
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "sha256": "d0242e568f4c7c01985b18d452a21a7d70517effaa1470caee6b61cb2204aeb8",
+      "availability": "available"
+    },
+    {
+      "id": "proof",
+      "path": "../../../../../.agents/receipts/crg-phpunit-windows/summary.json",
+      "anchor": "phpunit_cli",
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "sha256": "c37c3df90771a3df0c10fc39cdc432ce7f883b5adec3531764a4fc9c87b605bc",
+      "availability": "available"
+    },
+    {
+      "id": "ci",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "anchor": "Windows daemon and file handles",
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "sha256": "8f4667b12ffe9ed879081529a231c4addf02acda4827a9e16f94af36984eb16f",
+      "availability": "available"
+    },
+    {
+      "id": "test",
+      "path": "../../../../../tests/test_php_scoped_calls.py",
+      "anchor": "test_phpunit_instance_call_creates_canonical_tested_by_edge",
+      "revision": "92fdfe052c2d97755659d1c81a3a1593e204c1c6",
+      "sha256": "da7b618012695fc5b5139ff61c25d9e379dfbb7dcacf36a48c2e6a27779fb30c",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "parser",
+      "label": "Detector de arquivos de teste",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "parser"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "graph",
+      "label": "Grafo SQLite e TESTED_BY",
+      "type": "store",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "cli",
+      "label": "CLI query tests_for",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "ci",
+      "label": "CI Windows",
+      "type": "workflow",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "ci"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "test",
+      "label": "Regressões PHPUnit",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "proof",
+        "test"
+      ],
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "graph-parser",
+      "source": "graph",
+      "target": "parser",
+      "relation": "consumes_contract",
+      "condition": "Ao construir o grafo de um projeto PHP",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "parser",
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "cli-graph",
+      "source": "cli",
+      "target": "graph",
+      "relation": "consumes_contract",
+      "condition": "Ao consultar tests_for",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "test-graph",
+      "source": "test",
+      "target": "graph",
+      "relation": "consumes_contract",
+      "condition": "Ao verificar TESTED_BY e identidade do teste",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "test",
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "ci-test",
+      "source": "ci",
+      "target": "test",
+      "relation": "executes",
+      "condition": "Na seleção de testes Windows",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "ci",
+        "test"
+      ],
+      "limitation": ""
+    }
+  ]
+}

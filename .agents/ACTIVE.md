@@ -1,7 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-08.
-- Fechamento atual: índice persistente, checklist 3/3 e veredito `vrd_20261109004217604_0235_0161` pronto com ressalvas. Risco P1 histórico de credencial no ledger.
+- Fechamento atual: PHPUnit Windows, checklist 4/4 e veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas. O risco P1 histórico de credencial segue no ledger.
 - Corte atual: [organizar repo privado](PLAN-TASKS/2026-11-08-crg-repo-privado-higiene.md), bead `crg-pr9` fechado. Repositorio `dex-agent/dex-code-review-graph` privado, commit organizador `e326cfd` publicado e readback Git/API igual. Remotos `origin` da casa e `upstream` original. Dolt push concluido.
 - Estado local separado por `.gitignore`; backups, runtime e grafos historicos preservados. Organizacao em [edicao Dex](../docs/EDICAO-DEX.md). Debitos vivos em [PENDENTES](PENDENTES.md).
 
@@ -15,6 +15,6 @@
 - Prova real da CLI: [Trilho](PLAN-TASKS/2026-11-08-crg-cli-diff-real.md), recorte 1/1 em 573580b e índice de teste no SHA alvo. A consulta de testes omitiu o teste do ramo `references_to`.
 - Corte de reexportações Python: [Trilho](PLAN-TASKS/2026-11-08-crg-python-reexports.md), checklist 4/4 e prova CLI no alvo histórico. A suíte Windows mantém 27 falhas do baseline, em `crg-iu1`.
 - Índice persistente reconstruído pelo executável corrigido. O teste de `references_to` aparece como associação direta. [Trilho](PLAN-TASKS/2026-11-08-crg-indice-persistente.md)
-- Próximo corte do mantenedor CRG: reconciliar as 27 falhas já presentes na suíte Windows no bead `crg-iu1`, antes do próximo release Windows.
+- [PHPUnit no Windows](PLAN-TASKS/2026-11-08-crg-phpunit-windows.md): associação direta provada pela CLI e pelo SQLite em `92fdfe0`. A suíte caiu de 27 para 24 falhas, sem IDs novos. O mantenedor retoma `crg-iu1` antes do próximo release Windows.
 - Lembrança quente: `.agents/GATILHOS-VIVOS.md`; runbook: `.agents/napkin.md`.
 
