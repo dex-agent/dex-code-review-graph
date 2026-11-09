@@ -2,7 +2,9 @@
 
 Ultima atualizacao: 2026-11-09
 
-- [Caminhos PHP/Rust no Windows e Ubuntu](PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md): `f825c25`, 7/7 em cada sistema, 9/9 na CI e três IDs removidos do baseline Windows. Em `crg-iu1`, 13 das 21 falhas restantes são de Julia. Começar por `test_qualified_definitions_have_collision_free_identities` em Windows e Ubuntu, capturando a primeira divergência antes de editar. [Comparação por ID](receipts/crg-iu1-caminhos/comparison.json).
+- [Portabilidade dos testes Julia](PLAN-TASKS/2026-11-09-crg-iu1-julia.md): `9f1f19b`, 27/27 Windows e Ubuntu, 27/27 no job Windows e CI 9/9. `crg-iu1` fica com oito IDs. Próximo corte: reproduzir o trio de `_match_files_to_forget` e conferir `forget --dry-run` em banco descartável. [Comparação por ID](receipts/crg-iu1-julia/comparison.json).
+
+- [Caminhos PHP/Rust no Windows e Ubuntu](PLAN-TASKS/2026-11-09-crg-iu1-caminhos-php-rust.md): `f825c25`, 7/7 em cada sistema, 9/9 na CI e três IDs removidos do baseline Windows. Este corte histórico registrou 21 falhas antes da rodada Julia. [Comparação por ID](receipts/crg-iu1-caminhos/comparison.json).
 
 - [Adoção da correção PHP no índice persistente](PLAN-TASKS/2026-11-09-crg-adocao-indice-php.md): `crg-dq9`, checklist 5/5, banco habitual adotado e reaberto pela CLI em `eeb486b`. Backup local restaurável, 4.745 embeddings retidos. `crg-87w` registra o frescor de vetores das fontes alteradas. [Veredito](receipts/crg-adocao-indice-php/verdict.json).
 - [Resolução PHP de homônimos](PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md): produto `fb9fc22`, com a identidade lexical comprovada para construtor e método, inclusive com Composer. [Veredito pronto com ressalvas](receipts/crg-x6m/verdict.json), checklist 4/4.

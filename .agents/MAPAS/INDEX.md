@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-iu1-julia — portabilidade Julia, contraprovas e saldo Windows por ID.
+  - [Capacidades](capacidades-crg-20261109-crg-iu1-julia.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-iu1-julia.md)
+  - [Dependências](dependencias/crg/20261109-crg-iu1-julia/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-iu1-julia.md)
+
 - 20261109-crg-iu1-caminhos — caminhos PHP/Rust no Windows e Ubuntu, com saldo da suíte por ID.
   - [Capacidades](capacidades-crg-20261109-crg-iu1-caminhos.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-iu1-caminhos.md)

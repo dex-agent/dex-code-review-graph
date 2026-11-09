@@ -1,0 +1,152 @@
+{
+  "directed": true,
+  "sources": [
+    {
+      "availability": "available",
+      "id": "baseline",
+      "path": "../../../../receipts/crg-iu1-julia/baseline.json",
+      "revision": "186259e733b043d8fd8cfe145cf7dc1919b41ea4",
+      "anchor": "baseline",
+      "sha256": "8068e9a40ee50ac4e5ea222bc1fc35ed151670f7cd13364d289b07aa5820333a"
+    },
+    {
+      "availability": "available",
+      "id": "change",
+      "path": "../../../../receipts/crg-iu1-julia/change.json",
+      "revision": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+      "anchor": "change",
+      "sha256": "f352f0591549cf556630cc2dc2d05434f982ffa3655482b73022fec15a5dd8b4"
+    },
+    {
+      "availability": "available",
+      "id": "focused",
+      "path": "../../../../receipts/crg-iu1-julia/focused.json",
+      "revision": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+      "anchor": "focused",
+      "sha256": "256222fc12f1aab6c7aac95dd77807b737563c26998846c756bd67979841d822"
+    },
+    {
+      "availability": "available",
+      "id": "comparison",
+      "path": "../../../../receipts/crg-iu1-julia/comparison.json",
+      "revision": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+      "anchor": "comparison",
+      "sha256": "91ea91ee628a9c2c1aecea78e6e5b6f56fed195d914415d5bc9afcf5e3c998e7"
+    }
+  ],
+  "edges": [
+    {
+      "source": "assertions",
+      "relation": "consumes_contract",
+      "target": "fixture",
+      "limitation": "",
+      "propagates": true,
+      "evidence": "observed",
+      "condition": "Caminho esperado vem da entrada, mantendo arquivo, escopo e símbolo",
+      "id": "assertions-fixture",
+      "source_refs": [
+        "change",
+        "focused"
+      ]
+    },
+    {
+      "source": "ci",
+      "relation": "executes",
+      "target": "assertions",
+      "limitation": "",
+      "propagates": true,
+      "evidence": "observed",
+      "condition": "A etapa Windows roda todo o arquivo e registra cada ID",
+      "id": "ci-assertions",
+      "source_refs": [
+        "comparison"
+      ]
+    },
+    {
+      "source": "delta",
+      "relation": "consumes_contract",
+      "target": "ci",
+      "limitation": "",
+      "propagates": true,
+      "evidence": "observed",
+      "condition": "O corte exige CI no SHA publicado além da suíte Windows integral",
+      "id": "delta-ci",
+      "source_refs": [
+        "comparison"
+      ]
+    }
+  ],
+  "multigraph": true,
+  "nodes": [
+    {
+      "external": false,
+      "owner": "mantenedor CRG",
+      "label": "Entrada de caminho nativo",
+      "limitation": "",
+      "evidence": "observed",
+      "id": "fixture",
+      "type": "test_fixture",
+      "source_refs": [
+        "baseline",
+        "change"
+      ]
+    },
+    {
+      "external": false,
+      "owner": "mantenedor CRG",
+      "label": "Asserções Julia de identidade completa",
+      "limitation": "",
+      "evidence": "observed",
+      "id": "assertions",
+      "type": "test",
+      "source_refs": [
+        "change",
+        "focused"
+      ]
+    },
+    {
+      "external": false,
+      "owner": "mantenedor CRG",
+      "label": "Etapa Julia no job Windows",
+      "limitation": "",
+      "evidence": "observed",
+      "id": "ci",
+      "type": "workflow",
+      "source_refs": [
+        "comparison"
+      ]
+    },
+    {
+      "external": false,
+      "owner": "mantenedor CRG",
+      "label": "Saldo Windows por ID",
+      "limitation": "",
+      "evidence": "observed",
+      "id": "delta",
+      "type": "report",
+      "source_refs": [
+        "baseline",
+        "comparison"
+      ]
+    }
+  ],
+  "schema": "dex.dependency-map.v1",
+  "graph": {
+    "limits": [
+      "CI Windows seletiva; saldo integral vem da execução local."
+    ],
+    "evidence_level": "observed",
+    "snapshot_id": "20261109-crg-iu1-julia",
+    "scope": "Portabilidade Julia e saldo Windows por ID",
+    "excluded": [
+      "Índice persistente",
+      "Diagnóstico dos oito IDs residuais"
+    ],
+    "coverage": "partial",
+    "revision": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+    "object_id": "crg",
+    "observed_at": "2026-11-09T06:47:40.4334289Z",
+    "method": "Pytest JUnit, contraprova e log remoto por SHA",
+    "environment": "Windows, Ubuntu WSL e GitHub Actions"
+  }
+}

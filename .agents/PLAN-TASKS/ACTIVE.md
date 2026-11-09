@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último encerrado: [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | bead `crg-iu1` em andamento | commit `f825c25` | checklist 5/5 | veredito `vrd_20261109063105983_0407_0382` pronto com ressalvas.
+- Último encerrado: [Portabilidade dos testes Julia](2026-11-09-crg-iu1-julia.md) | bead `crg-iu1` aberto com oito IDs | checklist 5/5 | veredito `vrd_20261109064902297_0441_0426` pronto com ressalvas.
+
+- Anterior: [Caminhos PHP/Rust no Windows e Ubuntu](2026-11-09-crg-iu1-caminhos-php-rust.md) | bead `crg-iu1` | commit `f825c25` | checklist 5/5 | veredito `vrd_20261109063105983_0407_0382` pronto com ressalvas.
 
 - Anterior: [Adoção da correção PHP no índice persistente](2026-11-09-crg-adocao-indice-php.md) | bead `crg-dq9` | checklist 5/5 | veredito `vrd_20261109061157643_0378_0345` pronto com ressalvas.
 - Anterior: [Resolução PHP de homônimos](2026-11-09-crg-x6m-php-homonimos.md) | bead `crg-x6m` | produto `fb9fc22` | checklist 4/4 | veredito `vrd_20261109055428929_0348_0306` pronto com ressalvas.
