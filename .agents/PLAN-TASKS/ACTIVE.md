@@ -1,6 +1,7 @@
 # Trilho ativo
 
-- Atual: [PHPUnit direto no Windows](2026-11-08-crg-phpunit-windows.md) | checklist 4/4 | veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas | `crg-iu1` segue com 24 falhas.
+- Atual: [Classificação por caminho](2026-11-08-crg-test-path.md) | bead `crg-08x` | checklist 4/4 | commit `3fb1ab3` | veredito `vrd_20261109020535975_0294_0238` pronto com ressalvas.
+- Anterior: [PHPUnit direto no Windows](2026-11-08-crg-phpunit-windows.md) | checklist 4/4 | veredito `vrd_20261109005555936_0268_0205` pronto com ressalvas | `crg-iu1` segue com 24 falhas.
 - Anterior: [Índice persistente](2026-11-08-crg-indice-persistente.md) | bead `crg-5vr` | checklist 3/3, veredito `vrd_20261109004217604_0235_0161` pronto com ressalvas.
 
 - Anterior: [Reexportações Python](2026-11-08-crg-python-reexports.md) | bead `crg-j6z` | checklist 4/4, flow completo e veredito `vrd_20261108224740560_0208_0128` pronto com ressalvas.

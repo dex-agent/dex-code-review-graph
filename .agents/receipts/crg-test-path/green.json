@@ -1,0 +1,20 @@
+{
+  "ruff_scope": "production and added tests",
+  "pytest_summary": "27 passed in 1.16s",
+  "windows_yaml_selectors": [
+    "tests/test_parser.py::test_phpunit_path_scope",
+    "tests/test_parser.py::test_test_directory_components"
+  ],
+  "ruff_exit": 0,
+  "exit_code": 0,
+  "selectors": [
+    "tests/test_parser.py::test_phpunit_path_scope",
+    "tests/test_parser.py::test_test_directory_components",
+    "tests/test_parser.py::TestCodeParser::test_jest_tests_dir_detected_as_test_file",
+    "tests/test_parser.py::TestCodeParser::test_jest_tests_dir_produces_test_nodes",
+    "tests/test_multilang.py::TestPHPTestAnnotations",
+    "tests/test_php_scoped_calls.py::test_phpunit_instance_call_creates_canonical_tested_by_edge",
+    "tests/test_php_scoped_calls.py::test_phpunit_instance_call_is_visible_through_public_tests_for"
+  ],
+  "preexisting_test_file_lint_findings": 3
+}

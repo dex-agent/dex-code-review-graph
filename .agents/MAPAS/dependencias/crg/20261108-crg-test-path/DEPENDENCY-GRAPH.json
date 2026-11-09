@@ -1,0 +1,195 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261108-crg-test-path",
+    "observed_at": "2026-11-09T01:58:58.4515632Z",
+    "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+    "environment": "Windows Python 3.13.13 e GitHub Actions",
+    "scope": "classificação de testes pelo caminho relativo e consulta de associações",
+    "evidence_level": "mixed",
+    "coverage": "partial",
+    "method": "Git, pytest, executável e SQLite",
+    "excluded": [
+      "demais fluxos e migração do índice persistente"
+    ],
+    "limits": [
+      "Jedi confirmado pelo contrato em código"
+    ]
+  },
+  "sources": [
+    {
+      "id": "parser",
+      "path": "../../../../../code_review_graph/parser.py",
+      "anchor": "_is_test_file",
+      "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+      "sha256": "dc6d7ef3618ffb0aa81ff92aaf8b10f80c14fad53f4a02607f8ab71924b29ee7",
+      "availability": "available"
+    },
+    {
+      "id": "jedi",
+      "path": "../../../../../code_review_graph/jedi_resolver.py",
+      "anchor": "enrich_jedi_calls",
+      "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+      "sha256": "c4fd89096f622897f4ee17538e87117248e45e2c3b8ff4fe3e03f95e7638b19f",
+      "availability": "available"
+    },
+    {
+      "id": "test",
+      "path": "../../../../../tests/test_parser.py",
+      "anchor": "test_phpunit_path_scope",
+      "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+      "sha256": "2bd11f3f1aaf1ddf522443038ab523f5ae97bcf9ddab5d76523394611d9046be",
+      "availability": "available"
+    },
+    {
+      "id": "ci",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "anchor": "Windows daemon and file handles",
+      "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+      "sha256": "99a4116b23b4b400c0284ead514d9d9cc223379fb8d9977c1b0b5e3dc03b02e4",
+      "availability": "available"
+    },
+    {
+      "id": "proof",
+      "path": "../../../../../.agents/receipts/crg-test-path/cli.json",
+      "anchor": "results",
+      "revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+      "sha256": "684a58055e00fe3947759a52a741c4d17b45bcc0e6b5e1d03c8acc4c517bbbc8",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "parser",
+      "label": "Detector por caminho relativo",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "parser"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "jedi",
+      "label": "Enriquecimento Jedi",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "jedi"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "graph",
+      "label": "Grafo SQLite e TESTED_BY",
+      "type": "store",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "cli",
+      "label": "CLI query tests_for",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "ci",
+      "label": "Seleção Windows",
+      "type": "workflow",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "ci"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "test",
+      "label": "Regressões de classificação",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "evidence": "implemented",
+      "source_refs": [
+        "test"
+      ],
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "jedi-parser",
+      "source": "jedi",
+      "target": "parser",
+      "relation": "consumes_contract",
+      "condition": "Durante enriquecimento Python",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "jedi",
+        "parser"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "graph-parser",
+      "source": "graph",
+      "target": "parser",
+      "relation": "consumes_contract",
+      "condition": "Ao construir os bancos isolados",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "proof",
+        "parser"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "cli-graph",
+      "source": "cli",
+      "target": "graph",
+      "relation": "consumes_contract",
+      "condition": "Ao consultar tests_for",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "ci-test",
+      "source": "ci",
+      "target": "test",
+      "relation": "executes",
+      "condition": "Na seleção de testes Windows",
+      "propagates": true,
+      "evidence": "implemented",
+      "source_refs": [
+        "ci",
+        "test"
+      ],
+      "limitation": ""
+    }
+  ]
+}

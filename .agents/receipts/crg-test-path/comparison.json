@@ -1,0 +1,105 @@
+{
+  "full_windows_3_13": {
+    "baseline": "b28fcd4583db157ff1d9f907efdf316f841c039d",
+    "unchanged_failure_ids": [
+      "tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_without_markers_errors_cleanly",
+      "tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge",
+      "tests/test_forget.py::TestMatchFilesToForget::test_exact_absolute_path",
+      "tests/test_forget.py::TestMatchFilesToForget::test_directory_prefix_matches_everything_underneath",
+      "tests/test_forget.py::TestMatchFilesToForget::test_multiple_patterns_are_unioned_and_deduplicated",
+      "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding",
+      "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities",
+      "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function",
+      "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module",
+      "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions",
+      "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls",
+      "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods",
+      "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call",
+      "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup",
+      "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope",
+      "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths",
+      "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path",
+      "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent",
+      "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope",
+      "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods",
+      "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace",
+      "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module",
+      "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+      "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+    ],
+    "summary": "24 failed, 2298 passed, 12 skipped, 2 xpassed in 119.66s (0:01:59)",
+    "fixed_failures": [],
+    "pytest_exit": 1,
+    "new_failures": []
+  },
+  "selected_windows_ci_3_12": "522 passed, 10 skipped in 21.76s",
+  "github_attempt_1": "ci-attempt-1.json",
+  "wsl_python_3_12": {
+    "summary": "2327 passed, 7 skipped, 2 xpassed, 1 warning in 41.84s",
+    "coverage": "82.14%"
+  },
+  "exit_code": 0,
+  "wsl_python_3_14": {
+    "issue": "crg-hmu",
+    "summary": "1 failed, 2326 passed, 7 skipped, 2 xpassed",
+    "baseline_reproduced": true,
+    "failure": "tests/test_embedding_initialization.py::test_windows_server_still_prewarms_before_mcp_run"
+  },
+  "product_revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+  "github_actions": {
+    "private": true,
+    "id": 42548260647,
+    "head_sha": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04",
+    "html_url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42548260647",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 2,
+    "jobs": [
+      {
+        "name": "test (3.11)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (3.13)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (3.10)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test (3.12)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Windows daemon and file handles",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "security",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "lint",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "schema-sync",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  }
+}

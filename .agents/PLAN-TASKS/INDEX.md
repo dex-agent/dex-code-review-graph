@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-test-path-20261108` | [Trilho](2026-11-08-crg-test-path.md) | checklist 4/4, completo com ressalvas | owner: mantenedor CRG.
+
 - `crg-phpunit-windows-20261108` | [Trilho](2026-11-08-crg-phpunit-windows.md) | checklist 4/4, completo com ressalvas | owner: mantenedor CRG.
 
 - `crg-indice-persistente-20261108` | [Trilho](2026-11-08-crg-indice-persistente.md) | checklist 3/3, pronto com ressalvas | owner: mantenedor CRG.

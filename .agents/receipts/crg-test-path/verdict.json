@@ -1,0 +1,19 @@
+{
+  "flow_id": "flow_20261109015255779_0274_0212",
+  "status": "complete",
+  "verdict": {
+    "verdict_id": "vrd_20261109020535975_0294_0238",
+    "status": "pronto_com_ressalvas"
+  },
+  "checklist": "4/4",
+  "evidence_ids": [
+    "evd_20261109015809162_0288_0230",
+    "evd_20261109015403793_0281_0220",
+    "evd_20261109015550186_0282_0222",
+    "evd_20261109015700250_0283_0224",
+    "evd_20261109020442687_0289_0232"
+  ],
+  "blockers": [],
+  "closure_blockers": [],
+  "product_revision": "3fb1ab318f9c92f5bbb5d1d7f9b4462a24a5ff04"
+}
