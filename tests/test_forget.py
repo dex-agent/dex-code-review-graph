@@ -24,39 +24,41 @@ from code_review_graph.search import rebuild_fts_index
 class TestMatchFilesToForget:
     """Unit tests for the pure path/glob matcher."""
 
-    stored = [
-        "/repo/pkg/auth.py",
-        "/repo/pkg/views.py",
-        "/repo/main.py",
-    ]
+    @pytest.fixture(autouse=True)
+    def native_paths(self, tmp_path: Path) -> None:
+        self.root = tmp_path.resolve()
+        self.auth = str(self.root / "pkg" / "auth.py")
+        self.views = str(self.root / "pkg" / "views.py")
+        self.main = str(self.root / "main.py")
+        self.stored = [self.auth, self.views, self.main]
 
     def test_exact_relative_path(self):
-        matched = cli._match_files_to_forget(self.stored, ["pkg/auth.py"], Path("/repo"))
-        assert matched == ["/repo/pkg/auth.py"]
+        matched = cli._match_files_to_forget(self.stored, ["pkg/auth.py"], self.root)
+        assert matched == [self.auth]
 
     def test_exact_absolute_path(self):
-        matched = cli._match_files_to_forget(self.stored, ["/repo/main.py"], Path("/repo"))
-        assert matched == ["/repo/main.py"]
+        matched = cli._match_files_to_forget(self.stored, [self.main], self.root)
+        assert matched == [self.main]
 
     def test_directory_prefix_matches_everything_underneath(self):
-        matched = cli._match_files_to_forget(self.stored, ["pkg"], Path("/repo"))
-        assert matched == ["/repo/pkg/auth.py", "/repo/pkg/views.py"]
+        matched = cli._match_files_to_forget(self.stored, ["pkg"], self.root)
+        assert matched == [self.auth, self.views]
 
     def test_relative_glob(self):
-        matched = cli._match_files_to_forget(self.stored, ["pkg/*.py"], Path("/repo"))
-        assert matched == ["/repo/pkg/auth.py", "/repo/pkg/views.py"]
+        matched = cli._match_files_to_forget(self.stored, ["pkg/*.py"], self.root)
+        assert matched == [self.auth, self.views]
 
     def test_no_match_returns_empty(self):
-        assert cli._match_files_to_forget(self.stored, ["missing.py"], Path("/repo")) == []
+        assert cli._match_files_to_forget(self.stored, ["missing.py"], self.root) == []
 
     def test_multiple_patterns_are_unioned_and_deduplicated(self):
         matched = cli._match_files_to_forget(
-            self.stored, ["pkg/auth.py", "pkg"], Path("/repo")
+            self.stored, ["pkg/auth.py", "pkg"], self.root
         )
-        assert matched == ["/repo/pkg/auth.py", "/repo/pkg/views.py"]
+        assert matched == [self.auth, self.views]
 
     def test_blank_pattern_is_ignored(self):
-        assert cli._match_files_to_forget(self.stored, ["   "], Path("/repo")) == []
+        assert cli._match_files_to_forget(self.stored, ["   "], self.root) == []
 
 
 def _seed_file(store: GraphStore, abs_path: str, symbol: str) -> None:
