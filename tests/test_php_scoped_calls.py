@@ -55,6 +55,7 @@ def _build_phpunit_calculator(tmp_path: Path) -> GraphStore:
                 "    {\n"
                 "        return $a + $b;\n"
                 "    }\n"
+                "    public function testProductionHelper(): void {}\n"
                 "}\n"
             ),
             "tests/CalculatorTest.php": (
@@ -89,10 +90,14 @@ def test_phpunit_instance_call_creates_canonical_tested_by_edge(
         "SELECT qualified_name FROM nodes "
         "WHERE name = 'add' AND parent_name = 'Calculator'"
     ).fetchone()
+    production_node = store._conn.execute(
+        "SELECT kind, is_test FROM nodes WHERE name = 'testProductionHelper'"
+    ).fetchone()
 
+    assert dict(production_node) == {"kind": "Function", "is_test": 0}
     assert dict(test_node) == {
         "qualified_name": (
-            f"{tmp_path}/tests/CalculatorTest.php"
+            f"{tmp_path / 'tests' / 'CalculatorTest.php'}"
             "::CalculatorTest.testItAddsTwoNumbers"
         ),
         "kind": "Test",
