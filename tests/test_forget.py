@@ -146,6 +146,36 @@ def test_forget_directory_drops_every_file_underneath(seeded_repo):
         store.close()
 
 
+def test_forget_directory_uses_filesystem_case_identity(seeded_repo):
+    repo_root, files = seeded_repo
+    package = repo_root / "pkg"
+    package.mkdir()
+    requested = repo_root / "PKG"
+    neighbor = str(repo_root / "pkg_extra" / "keep.py")
+    distinct = str(requested / "other.py")
+
+    store = GraphStore(get_db_path(repo_root))
+    try:
+        _seed_file(store, neighbor, "keep")
+        if not requested.exists():
+            requested.mkdir()
+            _seed_file(store, distinct, "other")
+        if requested.samefile(package):
+            expected = {files["main"], neighbor}
+        else:
+            expected = {*files.values(), neighbor}
+    finally:
+        store.close()
+
+    _run_forget(repo_root, "PKG")
+
+    store = GraphStore(get_db_path(repo_root))
+    try:
+        assert set(store.get_all_files()) == expected
+    finally:
+        store.close()
+
+
 def test_forget_dry_run_changes_nothing(seeded_repo, capsys):
     repo_root, files = seeded_repo
 

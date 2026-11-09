@@ -220,7 +220,18 @@ def _match_files_to_forget(
         expanded = Path(pattern).expanduser()
         absolute = expanded if expanded.is_absolute() else root / expanded
         absolute_str = os.path.normpath(str(absolute))
+        directory = absolute_str
+        if os.name == "nt" and os.path.isdir(absolute_str):
+            # Recover the on-disk spelling without expanding aliases to other paths.
+            try:
+                resolved = os.path.realpath(absolute_str, strict=True)
+            except OSError:
+                pass
+            else:
+                if os.path.normcase(resolved) == os.path.normcase(absolute_str):
+                    directory = resolved
         dir_prefix = absolute_str.rstrip(os.sep) + os.sep
+        resolved_dir_prefix = directory.rstrip(os.sep) + os.sep
 
         for stored_path in stored:
             normalised = os.path.normpath(stored_path)
@@ -239,7 +250,7 @@ def _match_files_to_forget(
                 matched.add(stored_path)
                 continue
             # Every file underneath a named directory.
-            if normalised.startswith(dir_prefix):
+            if normalised.startswith((dir_prefix, resolved_dir_prefix)):
                 matched.add(stored_path)
                 continue
             # Glob patterns, matched against both the absolute and relative form.

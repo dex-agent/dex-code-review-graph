@@ -129,3 +129,6 @@ jobs:
 
       - name: Run Julia identity tests
         run: python -m pytest --tb=short -v tests/test_julia_reconciliation.py
+
+      - name: Run forget path tests
+        run: python -m pytest --tb=short -v tests/test_forget.py
