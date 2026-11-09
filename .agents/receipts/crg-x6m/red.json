@@ -1,0 +1,426 @@
+{
+  "exit_code": 1,
+  "workspace_revision": "35ef0743ba9ee4efd9d79aa2bb90a183cd15852d",
+  "executable": "code-review-graph.exe",
+  "scenarios": {
+    "scoped": {
+      "findings": [
+        "missing: Shipping received CALLS/TESTED_BY or a query result",
+        "added: Shipping received CALLS/TESTED_BY or a query result",
+        "added: missing direct method association for Payments",
+        "repeated: Shipping received CALLS/TESTED_BY or a query result",
+        "repeated: missing direct method association for Payments",
+        "updated, repeated and rebuilt snapshots differ"
+      ],
+      "changed": "src/Payments/Calculator.php",
+      "test_sha256": "d2b67fe6f188d3ba0fd08d765151e9761aa90246c1b2b8a3deff31c3b67523dd",
+      "build": "Full build: 2 files, 6 nodes, 13 edges (postprocess=minimal)",
+      "update": "Incremental: 1 files updated, 3 nodes, 2 edges (postprocess=minimal)",
+      "repeat_update": "Incremental: 0 files updated, 0 nodes, 0 edges (postprocess=minimal)",
+      "rebuild": "Full build: 3 files, 9 nodes, 15 edges (postprocess=minimal)",
+      "missing": {
+        "git_head": "c709c7a4349978c84b3542cdbb9f735d55d125d9",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "not_found",
+          "tests": []
+        }
+      },
+      "added": {
+        "git_head": "d97467143e178a0396f620e6d7f5d5bc7e91efd7",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": []
+        }
+      },
+      "repeated": {
+        "git_head": "d97467143e178a0396f620e6d7f5d5bc7e91efd7",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": []
+        }
+      },
+      "rebuilt": {
+        "git_head": "d97467143e178a0396f620e6d7f5d5bc7e91efd7",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 7
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Payments/Calculator.php::Calculator.add",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 8
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        }
+      }
+    },
+    "composer_alias": {
+      "findings": [
+        "missing: Shipping received CALLS/TESTED_BY or a query result",
+        "added: Shipping received CALLS/TESTED_BY or a query result",
+        "added: missing direct method association for Payments",
+        "repeated: Shipping received CALLS/TESTED_BY or a query result",
+        "repeated: missing direct method association for Payments",
+        "rebuilt: missing direct method association for Payments",
+        "updated, repeated and rebuilt snapshots differ"
+      ],
+      "changed": "src/Payments/Calculator.php",
+      "test_sha256": "60de15dad1380a946f1aa68a352b2657e6db99f9fd189d4e4ebd3425333d5176",
+      "build": "Full build: 2 files, 6 nodes, 14 edges (postprocess=minimal)",
+      "update": "Incremental: 1 files updated, 3 nodes, 2 edges (postprocess=minimal)",
+      "repeat_update": "Incremental: 0 files updated, 0 nodes, 0 edges (postprocess=minimal)",
+      "rebuild": "Full build: 3 files, 9 nodes, 16 edges (postprocess=minimal)",
+      "missing": {
+        "git_head": "dd73dbb6932e89c1a1324d9c1847b856e7096ef3",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "not_found",
+          "tests": []
+        }
+      },
+      "added": {
+        "git_head": "7dca339cb66253cb39ca18754e20516fa272129c",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": []
+        }
+      },
+      "repeated": {
+        "git_head": "7dca339cb66253cb39ca18754e20516fa272129c",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "src/Shipping/Calculator.php::Calculator.add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": [
+            {
+              "name": "testItAdds",
+              "indirect": false,
+              "inferred_by": null
+            }
+          ]
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": []
+        }
+      },
+      "rebuilt": {
+        "git_head": "7dca339cb66253cb39ca18754e20516fa272129c",
+        "edges": [
+          {
+            "kind": "CALLS",
+            "destination": "Calculator",
+            "line": 8
+          },
+          {
+            "kind": "CALLS",
+            "destination": "add",
+            "line": 9
+          },
+          {
+            "kind": "CALLS",
+            "destination": "assertSame",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "Calculator",
+            "line": 8
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "add",
+            "line": 9
+          },
+          {
+            "kind": "TESTED_BY",
+            "destination": "assertSame",
+            "line": 9
+          }
+        ],
+        "Shipping": {
+          "status": "ok",
+          "tests": []
+        },
+        "Payments": {
+          "status": "ok",
+          "tests": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "flow_id": "flow_20261109054125732_0328_0280",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "verdict_id": "vrd_20261109055428929_0348_0306",
+  "verdict": "pronto_com_ressalvas",
+  "product_sha": "fb9fc22da3d1966f5754d9db7938cd4b0ad8caba",
+  "checklist": {
+    "total": 4,
+    "checked": 4
+  },
+  "evidence_ids": [
+    "evd_20261109055046872_0342_0298",
+    "evd_20261109054358815_0335_0288",
+    "evd_20261109054652065_0336_0290",
+    "evd_20261109054813588_0337_0292",
+    "evd_20261109055357222_0343_0300"
+  ],
+  "residual_risks": [
+    "Índices criados antes da correção podem conservar arestas antigas até backup e rebuild.",
+    "A suíte Windows integral mantém os IDs preexistentes em crg-iu1."
+  ],
+  "next_step": "Retomar crg-iu1 pelos três IDs de caminhos da seleção PHP/Rust. Reproduzir os mesmos node IDs em Windows e Ubuntu, ajustar a expectativa de caminho no owner do teste e repetir a seleção antes do próximo release Windows."
+}

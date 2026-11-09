@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-x6m — identidade lexical de classes PHP e paridade entre update e rebuild.
+  - [Capacidades](capacidades-crg-20261109-crg-x6m.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-x6m.md)
+  - [Dependências](dependencias/crg/20261109-crg-x6m/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md)
+
 - 20261108-crg-k4q — SHA Git e frescor semântico no índice isolado.
   - [Capacidades](capacidades-crg-20261108-crg-k4q.md)
   - [Decisões históricas](decisoes-crg-20261108-crg-k4q.md)

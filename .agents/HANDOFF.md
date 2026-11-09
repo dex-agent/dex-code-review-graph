@@ -2,7 +2,7 @@
 
 Ultima atualizacao: 2026-11-09
 
-- Próximo corte recomendado `crg-x6m`: proteger o escopo PHP no resolvedor especializado e no fallback de nomes simples. Em fixture com Composer e outro alias para Shipping, o fallback genérico recriou as arestas para o homônimo mesmo com o resolvedor especializado desabilitado na sonda. [Reprodução e gatilho](memorias/crg-php-escopo-fallback-importa-por-chamada-nao-por-618c8b1d575e.md).
+- [Resolução PHP de homônimos](PLAN-TASKS/2026-11-09-crg-x6m-php-homonimos.md): produto `fb9fc22`, com a identidade lexical comprovada para construtor e método, inclusive com Composer. [Veredito pronto com ressalvas](receipts/crg-x6m/verdict.json), checklist 4/4. Para consumir a correção no índice persistente legado, confirme o banco e siga a rota de backup e rebuild do gatilho vivo.
 
 - [Frescor semântico do índice](PLAN-TASKS/2026-11-08-crg-k4q-frescor-indice.md): backup verificado e rebuild isolado provam a reclassificação no mesmo SHA. Antes de adotar nova semântica no índice persistente, use a rota no [gatilho vivo](GATILHOS-VIVOS.md#staleness-artefatos-derivados).
 - [Classificação por caminho](PLAN-TASKS/2026-11-08-crg-test-path.md): regressões corrigidas em `3fb1ab3`, com CLI, SQLite e nove jobs de CI. `crg-iu1` mantém os 24 IDs preexistentes.

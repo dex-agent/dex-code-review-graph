@@ -1,0 +1,13 @@
+{
+  "ruff_exit": 0,
+  "windows_yaml_selector": "tests/test_php_scoped_calls.py::test_php_imported_constructor_and_method_keep_namespace",
+  "unchanged_windows_failure_ids": [
+    "tests/test_php_scoped_calls.py::test_windows_resolved_import_path_disambiguates_same_named_methods",
+    "tests/test_php_scoped_calls.py::test_import_suffix_match_selects_correct_namespace",
+    "tests/test_rust_scoped_calls.py::test_import_suffix_match_selects_correct_module"
+  ],
+  "focused_summary": "3 failed, 90 passed in 5.38s",
+  "focused_pytest_exit": 1,
+  "new_and_positive_controls_passed": 5,
+  "exit_code": 0
+}
