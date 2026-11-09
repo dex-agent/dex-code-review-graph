@@ -1,0 +1,32 @@
+{
+  "flow_id": "flow_20261109063944151_0413_0389",
+  "verdict_id": "vrd_20261109064902297_0441_0426",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 5,
+    "total": 5
+  },
+  "bead": "crg-iu1",
+  "evidence_ids": [
+    "evd_20261109064402732_0429_0410",
+    "evd_20261109064043766_0420_0397",
+    "evd_20261109064142964_0421_0399",
+    "evd_20261109064226716_0427_0407",
+    "evd_20261109064736695_0434_0416",
+    "evd_20261109064802454_0435_0418"
+  ],
+  "residual_risks": [
+    "O saldo Windows fora da família Julia continua no crg-iu1 e condiciona o próximo release Windows.",
+    "O índice persistente requer check de staleness antes de sustentar conclusões sobre os testes alterados."
+  ],
+  "next_step": "Retomar crg-iu1 pelos três casos de _match_files_to_forget. Reproduzir o caso de caminho absoluto e os dois vizinhos em Windows e Ubuntu, comparar caminho armazenado, raiz e padrão normalizado, depois confirmar o conjunto exato pela CLI forget --dry-run em índice descartável antes de editar. Owner mantenedor CRG, antes do próximo release Windows.",
+  "product_sha": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+  "memory": {
+    "scope": "project",
+    "trigger": "CRG-JULIA-ASSERT-CAMINHO",
+    "validation": "1/1",
+    "receipt_id": "d76083669e67fa40811e6d75"
+  }
+}

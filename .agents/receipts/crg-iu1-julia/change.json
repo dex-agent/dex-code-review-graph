@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "base": "186259e733b043d8fd8cfe145cf7dc1919b41ea4",
+  "changed": [
+    ".github/workflows/ci.yml",
+    "tests/test_julia_reconciliation.py"
+  ],
+  "ruff": "passed",
+  "git_diff_check": "passed",
+  "windows_ci_selector": "tests/test_julia_reconciliation.py",
+  "mutants": [
+    "scope: rejected at 139",
+    "file: rejected at 139",
+    "self-call: rejected at 275"
+  ]
+}

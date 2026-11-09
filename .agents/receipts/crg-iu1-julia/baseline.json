@@ -1,0 +1,246 @@
+{
+  "exit_code": 0,
+  "sha": "186259e733b043d8fd8cfe145cf7dc1919b41ea4",
+  "windows": {
+    "cases": {
+      "tests/test_julia_reconciliation.py::test_function_stub_is_a_function": "passed",
+      "tests/test_julia_reconciliation.py::test_malformed_qualified_stub_fails_soft": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:(==)(a, b) = true-==]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function +(a, b)\\n    a\\nend-+-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function (==)(a, b)\\n    true\\nend-==-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:+(a, b)\\n    a\\nend-+-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:(==)(a, b)\\n    true\\nend-==-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function A.B.:+(a, b)\\n    a\\nend-+-A.B-A.B]": "passed",
+      "tests/test_julia_reconciliation.py::test_parameterized_const_only_is_a_type": "passed",
+      "tests/test_julia_reconciliation.py::test_import_alias_records_real_dependency": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities": "failure",
+      "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function": "failure",
+      "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module": "failure",
+      "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions": "failure",
+      "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls": "failure",
+      "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods": "failure",
+      "tests/test_julia_reconciliation.py::test_wrapped_qualified_signature_is_not_a_self_call": "passed",
+      "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call": "failure",
+      "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup": "failure",
+      "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope": "failure",
+      "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths": "failure",
+      "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path": "failure",
+      "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent": "failure",
+      "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope": "failure",
+      "tests/test_julia_reconciliation.py::test_full_build_persists_distinct_qualified_nodes_and_callers": "passed"
+    },
+    "probe": {
+      "python": "3.13.13",
+      "tree_sitter": "0.25.2",
+      "tree_sitter_julia": "0.13.0",
+      "functions": [
+        [
+          "+",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ],
+        [
+          "Base",
+          "Demo",
+          "\\repo\\case.jl"
+        ],
+        [
+          "length",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ],
+        [
+          "run",
+          "Demo.A.B",
+          "\\repo\\case.jl"
+        ],
+        [
+          "show",
+          "Demo",
+          "\\repo\\case.jl"
+        ],
+        [
+          "show",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ]
+      ],
+      "references": [
+        [
+          "\\repo\\case.jl::Demo.A.B.run",
+          "A.B"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.+",
+          "Base"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.length",
+          "Base"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.show",
+          "Base"
+        ]
+      ]
+    },
+    "matched_grammar_control": {
+      "python": "3.12.11",
+      "tree_sitter": "0.26.0",
+      "tree_sitter_julia": "0.13.0",
+      "functions": [
+        [
+          "+",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ],
+        [
+          "Base",
+          "Demo",
+          "\\repo\\case.jl"
+        ],
+        [
+          "length",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ],
+        [
+          "run",
+          "Demo.A.B",
+          "\\repo\\case.jl"
+        ],
+        [
+          "show",
+          "Demo",
+          "\\repo\\case.jl"
+        ],
+        [
+          "show",
+          "Demo.Base",
+          "\\repo\\case.jl"
+        ]
+      ],
+      "references": [
+        [
+          "\\repo\\case.jl::Demo.A.B.run",
+          "A.B"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.+",
+          "Base"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.length",
+          "Base"
+        ],
+        [
+          "\\repo\\case.jl::Demo.Base.show",
+          "Base"
+        ]
+      ]
+    }
+  },
+  "ubuntu": {
+    "cases": {
+      "tests/test_julia_reconciliation.py::test_function_stub_is_a_function": "passed",
+      "tests/test_julia_reconciliation.py::test_malformed_qualified_stub_fails_soft": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:(==)(a, b) = true-==]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function +(a, b)\\n    a\\nend-+-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function (==)(a, b)\\n    true\\nend-==-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:+(a, b)\\n    a\\nend-+-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:(==)(a, b)\\n    true\\nend-==-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function A.B.:+(a, b)\\n    a\\nend-+-A.B-A.B]": "passed",
+      "tests/test_julia_reconciliation.py::test_parameterized_const_only_is_a_type": "passed",
+      "tests/test_julia_reconciliation.py::test_import_alias_records_real_dependency": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities": "passed",
+      "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function": "passed",
+      "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods": "passed",
+      "tests/test_julia_reconciliation.py::test_wrapped_qualified_signature_is_not_a_self_call": "passed",
+      "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope": "passed",
+      "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths": "passed",
+      "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path": "passed",
+      "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent": "passed",
+      "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope": "passed",
+      "tests/test_julia_reconciliation.py::test_full_build_persists_distinct_qualified_nodes_and_callers": "passed"
+    },
+    "probe": {
+      "python": "3.12.14",
+      "tree_sitter": "0.26.0",
+      "tree_sitter_julia": "0.13.0",
+      "functions": [
+        [
+          "+",
+          "Demo.Base",
+          "/repo/case.jl"
+        ],
+        [
+          "Base",
+          "Demo",
+          "/repo/case.jl"
+        ],
+        [
+          "length",
+          "Demo.Base",
+          "/repo/case.jl"
+        ],
+        [
+          "run",
+          "Demo.A.B",
+          "/repo/case.jl"
+        ],
+        [
+          "show",
+          "Demo",
+          "/repo/case.jl"
+        ],
+        [
+          "show",
+          "Demo.Base",
+          "/repo/case.jl"
+        ]
+      ],
+      "references": [
+        [
+          "/repo/case.jl::Demo.A.B.run",
+          "A.B"
+        ],
+        [
+          "/repo/case.jl::Demo.Base.+",
+          "Base"
+        ],
+        [
+          "/repo/case.jl::Demo.Base.length",
+          "Base"
+        ],
+        [
+          "/repo/case.jl::Demo.Base.show",
+          "Base"
+        ]
+      ]
+    }
+  },
+  "red_ids": [
+    "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths",
+    "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent",
+    "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope",
+    "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module",
+    "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup",
+    "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope",
+    "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods",
+    "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions",
+    "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities",
+    "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls",
+    "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path",
+    "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function",
+    "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call"
+  ]
+}

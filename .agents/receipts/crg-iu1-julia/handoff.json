@@ -1,0 +1,24 @@
+{
+  "exit_code": 0,
+  "product_sha": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+  "bead": "crg-iu1",
+  "bead_status": "in_progress",
+  "remaining": 8,
+  "next_group": "tests/test_forget.py::TestMatchFilesToForget",
+  "owner": "mantenedor CRG",
+  "when": "antes do próximo release Windows",
+  "map_sources_verified": true,
+  "memory": "CRG-JULIA-ASSERT-CAMINHO",
+  "paths": {
+    ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-julia.md": "bc658f098888b749f5db64b5044f20179647b303a20f8150e6309a6d4c557711",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-julia.md": "084b3162442c4caf836b50c921d31b976c624553cc3b53623f8007c4eebc7306",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-julia/DEPENDENCY-MAP.md": "5042f9289bddb067b082c0d2116b5be0d2c45ef4d4100fd67674228960644912",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-julia/DEPENDENCY-GRAPH.json": "f82e7324a9703f6191b8c30c97f9fa15a247c19627b5141ae15e0e58e458f3b8",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-julia/DEPENDENCY-GRAPH.html": "19bb31cf1e7fc18c40dbc51dcfef4abd7e45111111e1cf1e91b461e5705edb72",
+    ".agents/MAPAS/INDEX.md": "3a1b3d58c7c4303c83b358303f4b4ca58735302b48aad74445d829722a26da5a",
+    ".agents/ACTIVE.md": "c3049ed1cd8d611d70af69ff156afb85eabc9e029aab10bb6476a4305435320b",
+    ".agents/HANDOFF.md": "1f23f505626db196c9051fe650a2f36bf6d1956e678a16e71eb7f436e3198d13",
+    ".agents/lembranca.md": "15bdcbd4c9d1a66897b7654bf7bbf91e12eb45486f75b9e7f1c174881163f5e6",
+    ".agents/memorias/crg-julia-assert-caminho.md": "d236822f9126e213c825a515e11ac65e629e3c32b7a92a1d9ee4cd470550ebca"
+  }
+}

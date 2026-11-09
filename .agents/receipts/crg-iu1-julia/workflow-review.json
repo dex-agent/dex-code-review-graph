@@ -1,0 +1,56 @@
+{
+  "repo_kind": "project",
+  "searches": {
+    "global": {
+      "source": "global",
+      "result": "Template global presente e com instancia local",
+      "query": "manutencao iterativa com evidencia"
+    },
+    "local": {
+      "source": "local",
+      "result": "Workflow existente cobre baseline, contraprova, CI por SHA e handoff.",
+      "query": "manutencao iterativa CRG"
+    }
+  },
+  "candidates": [
+    {
+      "procedure": "Preservar RED por ID, corrigir expectativas nativas, verificar três contraprovas, medir CI e delta Windows e reconciliar mapas.",
+      "existing_workflow": "recipe",
+      "when": "No próximo corte multiplataforma",
+      "owner": "mantenedor CRG",
+      "name": "Manutencao iterativa CRG",
+      "decision": "reuse",
+      "reason": "O fluxo local cobre a comparação e evita receita duplicada.",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "reuse_trigger": "Falha de teste Windows que depende de identidade de caminho"
+    }
+  ],
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "block_evidence": [
+    "proof"
+  ],
+  "sources": {
+    "recipe": {
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md"
+    },
+    "local": {
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md"
+    },
+    "global": {
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16",
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md"
+    },
+    "proof": {
+      "sha256": "91ea91ee628a9c2c1aecea78e6e5b6f56fed195d914415d5bc9afcf5e3c998e7",
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-julia\\comparison.json"
+    }
+  },
+  "block_id": "crg-iu1-julia-20261109",
+  "reviewed_at": "2026-11-09T06:49:58.2460557Z",
+  "contract": "dex.fechamento.workflow-review.v1"
+}

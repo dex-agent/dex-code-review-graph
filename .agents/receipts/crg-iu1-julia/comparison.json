@@ -1,0 +1,142 @@
+{
+  "exit_code": 0,
+  "sha": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+  "full_windows_3_13": {
+    "exit_code": 1,
+    "baseline": ".agents/receipts/crg-iu1-caminhos/comparison.json",
+    "before_count": 21,
+    "after_count": 8,
+    "removed": [
+      "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths",
+      "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent",
+      "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope",
+      "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module",
+      "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup",
+      "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope",
+      "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods",
+      "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions",
+      "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities",
+      "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls",
+      "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path",
+      "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function",
+      "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call"
+    ],
+    "new": [],
+    "remaining": [
+      "tests/test_cli.py::TestGraphToolExplicitRepoResolution::test_explicit_repo_without_markers_errors_cleanly",
+      "tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge",
+      "tests/test_forget.py::TestMatchFilesToForget::test_exact_absolute_path",
+      "tests/test_forget.py::TestMatchFilesToForget::test_directory_prefix_matches_everything_underneath",
+      "tests/test_forget.py::TestMatchFilesToForget::test_multiple_patterns_are_unioned_and_deduplicated",
+      "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding",
+      "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+      "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+    ],
+    "summary": "8 failed, 2316 passed, 12 skipped, 2 xpassed in 96.86s (0:01:36)",
+    "junit": {
+      "tests": 2338,
+      "errors": 0,
+      "failures": 8,
+      "skipped": 12
+    }
+  },
+  "remote_ci": {
+    "private": true,
+    "id": 42574737872,
+    "head_sha": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+    "html_url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42574737872",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "jobs": [
+      {
+        "id": 129019795510,
+        "name": "schema-sync",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795638,
+        "name": "test (3.12)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795650,
+        "name": "security",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795672,
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795689,
+        "name": "lint",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795697,
+        "name": "test (3.11)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795704,
+        "name": "test (3.10)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795869,
+        "name": "Windows daemon and file handles",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 129019795903,
+        "name": "test (3.13)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "remote_windows_julia": {
+    "head_sha": "9f1f19be7ee97adf2e5477ae40e9299b925d0d2d",
+    "job_id": 129019795869,
+    "step": "Run Julia identity tests",
+    "cases": {
+      "tests/test_julia_reconciliation.py::test_function_stub_is_a_function": "passed",
+      "tests/test_julia_reconciliation.py::test_malformed_qualified_stub_fails_soft": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:+(a, b) = a-+]": "passed",
+      "tests/test_julia_reconciliation.py::test_operator_definition_uses_operator_name[Base.:(==)(a, b) = true-==]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function +(a, b)\\n    a\\nend-+-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function (==)(a, b)\\n    true\\nend-==-None-None]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:+(a, b)\\n    a\\nend-+-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function Base.:(==)(a, b)\\n    true\\nend-==-Base-Base]": "passed",
+      "tests/test_julia_reconciliation.py::test_long_form_operator_definition_uses_operator_identity[function A.B.:+(a, b)\\n    a\\nend-+-A.B-A.B]": "passed",
+      "tests/test_julia_reconciliation.py::test_parameterized_const_only_is_a_type": "passed",
+      "tests/test_julia_reconciliation.py::test_import_alias_records_real_dependency": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_definitions_have_collision_free_identities": "passed",
+      "tests/test_julia_reconciliation.py::test_short_form_body_call_resolves_to_local_function": "passed",
+      "tests/test_julia_reconciliation.py::test_module_scope_call_resolves_within_current_module": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_calls_keep_full_module_and_resolve_collisions": "passed",
+      "tests/test_julia_reconciliation.py::test_qualified_method_body_uses_lexical_scope_for_bare_calls": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_symbols_do_not_collide_between_local_and_qualified_methods": "passed",
+      "tests/test_julia_reconciliation.py::test_wrapped_qualified_signature_is_not_a_self_call": "passed",
+      "tests/test_julia_reconciliation.py::test_wrapped_signature_keeps_evaluated_return_type_call": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup": "passed",
+      "tests/test_julia_reconciliation.py::test_nested_modules_and_functions_keep_complete_scope": "passed",
+      "tests/test_julia_reconciliation.py::test_calls_through_import_aliases_use_real_module_paths": "passed",
+      "tests/test_julia_reconciliation.py::test_selected_import_alias_keeps_multi_segment_module_path": "passed",
+      "tests/test_julia_reconciliation.py::test_enum_variants_use_the_full_lexical_type_parent": "passed",
+      "tests/test_julia_reconciliation.py::test_function_local_testset_and_macros_keep_canonical_scope": "passed",
+      "tests/test_julia_reconciliation.py::test_full_build_persists_distinct_qualified_nodes_and_callers": "passed"
+    }
+  }
+}
