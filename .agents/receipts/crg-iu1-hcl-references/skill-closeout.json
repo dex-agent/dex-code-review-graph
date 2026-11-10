@@ -1,0 +1,62 @@
+[
+  {
+    "contract": "dex.skill.evolution.closeout.validation.v1",
+    "domain_merit_decided": false,
+    "errors": [],
+    "harm_authorized": false,
+    "heuristic_only": true,
+    "human_review_required": true,
+    "readiness_decided": false,
+    "scope_changed": false,
+    "skill": "sprinter",
+    "target_mutated": false,
+    "terminal_state": "no_candidate",
+    "truth_decided": false,
+    "valid": true
+  },
+  {
+    "contract": "dex.skill.evolution.closeout.validation.v1",
+    "domain_merit_decided": false,
+    "errors": [],
+    "harm_authorized": false,
+    "heuristic_only": true,
+    "human_review_required": true,
+    "readiness_decided": false,
+    "scope_changed": false,
+    "skill": "chato",
+    "target_mutated": false,
+    "terminal_state": "no_candidate",
+    "truth_decided": false,
+    "valid": true
+  },
+  {
+    "contract": "dex.skill.evolution.closeout.validation.v1",
+    "domain_merit_decided": false,
+    "errors": [],
+    "harm_authorized": false,
+    "heuristic_only": true,
+    "human_review_required": true,
+    "readiness_decided": false,
+    "scope_changed": false,
+    "skill": "checklist-visual",
+    "target_mutated": false,
+    "terminal_state": "no_candidate",
+    "truth_decided": false,
+    "valid": true
+  },
+  {
+    "contract": "dex.skill.evolution.closeout.validation.v1",
+    "domain_merit_decided": false,
+    "errors": [],
+    "harm_authorized": false,
+    "heuristic_only": true,
+    "human_review_required": true,
+    "readiness_decided": false,
+    "scope_changed": false,
+    "skill": "oraculo-clean-code",
+    "target_mutated": false,
+    "terminal_state": "no_candidate",
+    "truth_decided": false,
+    "valid": true
+  }
+]

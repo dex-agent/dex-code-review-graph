@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-09
 
+- [Referências HCL com caminhos nativos](PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md) — `d6336d2` e CI 9/9. O mantenedor retoma `crg-iu1` pelo teste Spring de eventos homônimos antes do próximo release Windows. Reproduzir nos dois sistemas e verificar no SQLite `CALLS` de alpha para alpha e de beta para beta, com zero cruzamentos. [Saldo por ID](receipts/crg-iu1-hcl-references/comparison.json).
+
 - [Identidade da aresta CONTAINS no dbt](PLAN-TASKS/2026-11-09-crg-iu1-dbt-contains.md) — a CLI e o SQLite comprovaram o vínculo exato nos dois sistemas. Antes do próximo release Windows, o mantenedor retoma `crg-iu1` pelo teste HCL `test_for_expression_references_are_emitted_for_local_binding` e confere as referências a `var.items` e `var.enabled` pelos IDs brutos. [Saldo por ID](receipts/crg-iu1-dbt-contains/comparison.json).
 
 - [Raiz explícita com índice externo](PLAN-TASKS/2026-11-09-crg-iu1-raiz-externa.md) — o caso sem VCS passa em Windows e Ubuntu. O mantenedor retoma `crg-iu1` pelo caso dbt `TestDbtModelParsing::test_contains_edge` antes do próximo release Windows. Reproduzir nos dois sistemas e comparar a identidade da aresta com a representação do caminho. [Saldo por ID](receipts/crg-iu1-raiz-externa/comparison.json).

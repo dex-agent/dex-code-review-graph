@@ -1,0 +1,56 @@
+{
+  "contract": "dex.fechamento.workflow-review.v1",
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "repo_kind": "project",
+  "block_id": "crg-iu1-hcl-references-20261109",
+  "reviewed_at": "2026-11-10T00:28:51.3075402Z",
+  "sources": {
+    "recipe": {
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md"
+    },
+    "local": {
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md"
+    },
+    "global": {
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16",
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md"
+    },
+    "proof": {
+      "sha256": "3c66da870b623676aca3eba8be6056030f7373d417ee77ea0bd3fe6c926150d4",
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-hcl-references\\comparison.json"
+    }
+  },
+  "block_evidence": [
+    "proof"
+  ],
+  "searches": {
+    "local": {
+      "source": "local",
+      "query": "code-review-graph-manutencao-iterativa-com-evidencia",
+      "result": "Receita local aplicada ao HCL"
+    },
+    "global": {
+      "source": "global",
+      "query": "manutencao-iterativa-com-evidencia",
+      "result": "Template global localizado"
+    }
+  },
+  "candidates": [
+    {
+      "decision": "reuse",
+      "name": "Manutenção iterativa CRG",
+      "existing_workflow": "recipe",
+      "reuse_trigger": "Teste de grafo com ID dependente de caminho",
+      "owner": "mantenedor CRG",
+      "when": "Na próxima divergência de identidade entre plataformas",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "reason": "A receita preserva RED, isola a prova e obriga a comparar IDs após a edição.",
+      "procedure": "RED em Windows, CLI e SQLite nos dois sistemas, ajuste da expectativa e veredito."
+    }
+  ]
+}

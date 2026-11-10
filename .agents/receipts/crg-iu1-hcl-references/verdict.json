@@ -1,0 +1,34 @@
+{
+  "flow_id": "flow_20261110002445162_0537_0039",
+  "verdict_id": "vrd_20261110003214812_0559_0068",
+  "status": "pronto_com_ressalvas",
+  "checkout": {
+    "status": "complete",
+    "complete": true,
+    "closure_blockers": []
+  },
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "bead": {
+    "id": "crg-iu1",
+    "status": "in_progress"
+  },
+  "test_sha": "d6336d2ca9d4a4c96c65ffd8fd6996d8f80a31c7",
+  "ci": 42728356329,
+  "evidence_ids": [
+    "evd_20261110002527733_0544_0047",
+    "evd_20261110002559240_0545_0049",
+    "evd_20261110003055798_0557_0064",
+    "evd_20261110003207201_0558_0066",
+    "evd_20261110002617903_0550_0055",
+    "evd_20261110002819407_0555_0061"
+  ],
+  "residual_risks": [
+    "A suíte integral Windows mantém dois IDs históricos em Spring e uninstall, rastreados em crg-iu1.",
+    "A prova SQLite foi feita em índices descartáveis."
+  ],
+  "next_step": "Antes do próximo release Windows, o mantenedor CRG preserva o RED do teste Spring em Windows e Ubuntu e confere no SQLite as arestas CALLS alpha para alpha, beta para beta e zero cruzamentos.",
+  "memory_reused": "CRG-ARESTA-ENDPOINTS-EXATOS"
+}

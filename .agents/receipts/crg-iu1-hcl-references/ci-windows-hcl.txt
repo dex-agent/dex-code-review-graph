@@ -1,0 +1,5 @@
+Windows daemon and file handles	Run HCL parser tests	2026-11-10T00:30:25.8335306Z collecting ... collected 3 items
+Windows daemon and file handles	Run HCL parser tests	2026-11-10T00:30:25.9450754Z tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding PASSED [ 33%]
+Windows daemon and file handles	Run HCL parser tests	2026-11-10T00:30:26.1651384Z tests/test_hcl_parser.py::test_full_build_resolves_terraform_module_scope_and_local_source PASSED [ 66%]
+Windows daemon and file handles	Run HCL parser tests	2026-11-10T00:30:26.2186218Z tests/test_hcl_parser.py::test_non_terraform_hcl_is_recognized_without_inventing_nodes PASSED [100%]
+Windows daemon and file handles	Run HCL parser tests	2026-11-10T00:30:26.2188052Z ============================== 3 passed in 0.65s ==============================

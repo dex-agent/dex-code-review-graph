@@ -1,0 +1,71 @@
+{
+  "headSha": "d6336d2ca9d4a4c96c65ffd8fd6996d8f80a31c7",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42728356329",
+  "attempt": 1,
+  "windows_hcl_step": {
+    "completedAt": "2026-11-10T00:30:26Z",
+    "conclusion": "success",
+    "name": "Run HCL parser tests",
+    "number": 9,
+    "startedAt": "2026-11-10T00:30:24Z",
+    "status": "completed"
+  },
+  "jobs": [
+    {
+      "name": "Windows daemon and file handles",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539714791
+    },
+    {
+      "name": "test (3.11)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715096
+    },
+    {
+      "name": "schema-sync",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715114
+    },
+    {
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715136
+    },
+    {
+      "name": "security",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715176
+    },
+    {
+      "name": "lint",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715181
+    },
+    {
+      "name": "test (3.13)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715198
+    },
+    {
+      "name": "test (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715224
+    },
+    {
+      "name": "test (3.10)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129539715400
+    }
+  ]
+}

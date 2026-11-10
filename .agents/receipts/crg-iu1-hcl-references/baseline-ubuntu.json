@@ -1,0 +1,25 @@
+{
+  "platform": "posix",
+  "raw_references": [
+    [
+      "infra/locals.tf::local.selected",
+      "infra/locals.tf::var.items"
+    ],
+    [
+      "infra/locals.tf::local.selected",
+      "infra/locals.tf::var.enabled"
+    ]
+  ],
+  "old_source_filter_matches": 2,
+  "cli_build_exit": 0,
+  "sqlite_endpoint_symbols": [
+    [
+      "local.selected",
+      "var.enabled"
+    ],
+    [
+      "local.selected",
+      "var.items"
+    ]
+  ]
+}
