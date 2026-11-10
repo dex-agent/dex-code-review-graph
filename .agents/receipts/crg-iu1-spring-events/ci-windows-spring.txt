@@ -1,0 +1,27 @@
+Windows daemon and file handles	Run Spring event tests	﻿2026-11-10T00:45:14.6534468Z ##[group]Run python -m pytest --tb=short -v tests/test_spring_events.py
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6535161Z ^[[36;1mpython -m pytest --tb=short -v tests/test_spring_events.py^[[0m
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6605064Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6605478Z env:
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6605813Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6606358Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6606891Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6607371Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6607845Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:14.6608262Z ##[endgroup]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4024345Z ============================= test session starts =============================
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4025843Z platform win32 -- Python 3.12.10, pytest-8.4.2, pluggy-1.7.0 -- C:\hostedtoolcache\windows\Python\3.12.10\x64\python.exe
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4027173Z cachedir: .pytest_cache
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4027905Z rootdir: D:\a\dex-code-review-graph\dex-code-review-graph
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4028728Z configfile: pyproject.toml
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4029540Z plugins: anyio-4.16.0, platformdirs-4.14.3, asyncio-1.4.1.post1, cov-7.1.0
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.4030923Z asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.6909026Z collecting ... collected 6 items
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.6909626Z 
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.7867553Z tests/test_spring_events.py::test_event_edges_use_package_and_import_qualified_identity PASSED [ 16%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:15.7922181Z tests/test_spring_events.py::test_publish_event_new_expression_uses_qualified_identity PASSED [ 33%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:16.0740743Z tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages PASSED [ 50%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:16.4155951Z tests/test_spring_events.py::test_incremental_listener_change_removes_stale_event_call PASSED [ 66%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:16.7006367Z tests/test_spring_events.py::test_event_query_patterns_return_publishers_and_listeners PASSED [ 83%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:17.2316416Z tests/test_spring_events.py::test_event_query_patterns_respect_max_results_and_report_count PASSED [100%]
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:17.2317670Z 
+Windows daemon and file handles	Run Spring event tests	2026-11-10T00:45:17.2318195Z ============================== 6 passed in 1.80s ==============================

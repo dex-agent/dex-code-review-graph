@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261109-crg-iu1-spring-events — pares Spring, controles negativos e seleção Windows.
+  - [Capacidades](capacidades-crg-20261109-crg-iu1-spring-events.md)
+  - [Decisões históricas](decisoes-crg-20261109-crg-iu1-spring-events.md)
+  - [Dependências](dependencias/crg/20261109-crg-iu1-spring-events/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md)
+
 - 20261109-crg-iu1-hcl-references — IDs nativos das referências HCL e seleção Windows.
   - [Capacidades](capacidades-crg-20261109-crg-iu1-hcl-references.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-iu1-hcl-references.md)

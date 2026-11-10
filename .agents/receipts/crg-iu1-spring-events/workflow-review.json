@@ -1,0 +1,56 @@
+{
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "block_evidence": [
+    "proof"
+  ],
+  "reviewed_at": "2026-11-10T00:48:13.2232308Z",
+  "candidates": [
+    {
+      "name": "Manutenção iterativa CRG",
+      "when": "Na próxima divergência de identidade entre plataformas",
+      "owner": "mantenedor CRG",
+      "existing_workflow": "recipe",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "reason": "RED separado da identidade dos nós e saldo por ID",
+      "decision": "reuse",
+      "procedure": "RED, CLI e SQLite nos dois sistemas, correção da expectativa, CI por SHA e veredito",
+      "reuse_trigger": "Teste de grafo com ID dependente de caminho"
+    }
+  ],
+  "contract": "dex.fechamento.workflow-review.v1",
+  "searches": {
+    "local": {
+      "result": "Receita local aplicada ao Spring",
+      "query": "code-review-graph-manutencao-iterativa-com-evidencia",
+      "source": "local"
+    },
+    "global": {
+      "result": "Template global localizado",
+      "query": "manutencao-iterativa-com-evidencia",
+      "source": "global"
+    }
+  },
+  "sources": {
+    "recipe": {
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md"
+    },
+    "local": {
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497",
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md"
+    },
+    "global": {
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16",
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md"
+    },
+    "proof": {
+      "sha256": "deb204deca1884aa3612361659afea1bb630b121c0f66c598f9037a813c52570",
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-spring-events\\comparison.json"
+    }
+  },
+  "block_id": "crg-iu1-spring-events-20261109",
+  "repo_kind": "project"
+}
