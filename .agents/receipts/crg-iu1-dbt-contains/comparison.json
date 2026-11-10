@@ -1,0 +1,15 @@
+{
+  "baseline": "b7d411cdf4141d169254eb87212a4d3543d94b1e",
+  "baseline_observation": "61ff0da14a7f65250134b90c5a0fa95a60770acf",
+  "test_sha": "b02a4ba519a05dd30c707bcedd6a2b88575cc81e",
+  "removed": [
+    "tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge"
+  ],
+  "remaining": [
+    "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding",
+    "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "new": [],
+  "summary": "3 failed, 2323 passed, 12 skipped, 2 xpassed in 69.91s (0:01:09)"
+}

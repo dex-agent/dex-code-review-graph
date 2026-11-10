@@ -1,0 +1,11 @@
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9241327Z collecting ... collected 9 items
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9338901Z tests/test_dbt_parser.py::TestDbtModelParsing::test_model_node_named_after_file_stem PASSED [ 11%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9406621Z tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge PASSED [ 22%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9418306Z tests/test_dbt_parser.py::TestDbtModelParsing::test_ref_and_source_dependency_edges PASSED [ 33%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9447396Z tests/test_dbt_parser.py::TestDbtModelParsing::test_package_qualified_refs_do_not_collide PASSED [ 44%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9475708Z tests/test_dbt_parser.py::TestDbtModelParsing::test_cte_names_are_not_dependency_edges PASSED [ 55%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:22.9504927Z tests/test_dbt_parser.py::TestDbtModelParsing::test_duplicate_refs_are_deduplicated PASSED [ 66%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:23.0393471Z tests/test_dbt_parser.py::TestDbtModelParsing::test_plain_sql_without_jinja_keeps_ddl_extraction PASSED [ 77%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:23.2765156Z tests/test_dbt_parser.py::test_full_build_links_dbt_models_by_ref PASSED [ 88%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:23.5889910Z tests/test_dbt_parser.py::test_full_build_includes_dbt_model_without_jinja_dependencies PASSED [100%]
+Windows daemon and file handles	Run dbt model tests	2026-11-10T00:15:23.5891700Z ============================== 9 passed in 0.91s ==============================

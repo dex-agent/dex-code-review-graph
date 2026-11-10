@@ -1,0 +1,3 @@
+OK memorias/identidade-de-aresta-se-confirma-pelos-dois-nos-per-dabb096ff0a0.md erros=[]
+OK memorias/crg-julia-assert-caminho.md erros=[]
+BATCH: 2/2 validos

@@ -1,0 +1,30 @@
+{
+  "flow_id": "flow_20261110000815041_0508_0001",
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "bead": "crg-iu1",
+  "bead_status": "in_progress",
+  "dolt_push": "success",
+  "ci_run": 42726303960,
+  "sha": "b02a4ba519a05dd30c707bcedd6a2b88575cc81e",
+  "next_step": "Mantenedor CRG: antes do próximo release Windows, reproduzir test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding nos dois sistemas e comparar as referências a var.items e var.enabled pelos IDs brutos antes de editar o parser.",
+  "memory_validation": "2/2",
+  "file_sha256": {
+    ".agents/ACTIVE.md": "4dfea40508ee040f89eba003237ff46289cd944cc73a65f9feb89b712bf609de",
+    ".agents/HANDOFF.md": "69dba992f325b7ae16a9deea7496a54d9e119bb0be57331208b062199656f9a7",
+    ".agents/PLAN-TASKS/ACTIVE.md": "54f5e614ac7e3979b99597451feb5141b7dc9e8dfebe8ad2046d8d9d226426f2",
+    ".agents/PLAN-TASKS/INDEX.md": "a066500f46b384d5b4068db095e1020c66a6072b4cbada841cad682112358019",
+    ".agents/MAPAS/INDEX.md": "704256a23289b7dfe872b1a287f3f909280a359cafe3d6debd1f10b799387d93",
+    ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-dbt-contains.md": "b0b938b06ef77a0443f188c59d85c21923133805f04f3a3789d4bb9c88a7aa98",
+    ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-dbt-contains.md": "ba393bde34b09943de69a695999991823132c7fb6b94283c6f417fef2976371c",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-dbt-contains/DEPENDENCY-MAP.md": "0fcc08a90d288db95b9b6551202456264f5b3ba395869f1c58cdf7c2e8f64321",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-dbt-contains/DEPENDENCY-GRAPH.json": "f4f7dbc3cd6618f6b5bb9574a7029e53a53f04deb8999a111ec048ce1ce16ff6",
+    ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-dbt-contains/DEPENDENCY-GRAPH.html": "b851317e42e0722b5d40bb405068598e419876d435e6ded5d00929047987a1ae",
+    ".agents/PLAN-TASKS/2026-11-09-crg-iu1-dbt-contains.md": "a01ef2ab5efaa1c6bd44d56abba97c4b7e4490dddb13f0b432724f771e35303a",
+    ".agents/receipts/crg-iu1-dbt-contains/skill-closeout.json": "8b2f140ae57407d5279cc35d788b2df3b78e655875be84652a9e82da1516e320",
+    ".agents/receipts/crg-iu1-dbt-contains/workflow-review.json": "03217fd3ab3fe1cb49a67c3abbff01cb89feb83a3e45f9a210019bf2aa08b130",
+    ".agents/receipts/crg-iu1-dbt-contains/memory-validation.txt": "71119573434376ff3a2d5bbfaf9fe8722b1f94ad815c1a5e1e83be799203b777"
+  }
+}
