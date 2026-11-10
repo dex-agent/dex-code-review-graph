@@ -136,6 +136,9 @@ jobs:
       - name: Run dbt model tests
         run: python -m pytest --tb=short -v tests/test_dbt_parser.py
 
+      - name: Run HCL parser tests
+        run: python -m pytest --tb=short -v tests/test_hcl_parser.py
+
       - name: Run explicit project root tests
         run: >-
           python -m pytest --tb=short -v
