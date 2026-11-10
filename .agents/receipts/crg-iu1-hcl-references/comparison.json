@@ -1,0 +1,14 @@
+{
+  "baseline": "5225e8e14a3e2a003666969ad6440fda1227b518",
+  "baseline_observation": "b02a4ba519a05dd30c707bcedd6a2b88575cc81e",
+  "test_sha": "d6336d2ca9d4a4c96c65ffd8fd6996d8f80a31c7",
+  "removed": [
+    "tests/test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding"
+  ],
+  "remaining": [
+    "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages",
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "new": [],
+  "summary": "2 failed, 2324 passed, 12 skipped, 2 xpassed in 73.30s (0:01:13)"
+}

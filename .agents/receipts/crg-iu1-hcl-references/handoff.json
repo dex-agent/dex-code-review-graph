@@ -1,0 +1,83 @@
+{
+  "sha": "d6336d2ca9d4a4c96c65ffd8fd6996d8f80a31c7",
+  "readback": [
+    {
+      "path": ".agents/ACTIVE.md",
+      "sha256": "e172fa34d5a84924a15d53a7e24cf01e1865eb361d7be60e02fd5909a72e7558"
+    },
+    {
+      "path": ".agents/HANDOFF.md",
+      "sha256": "cc614c092410e9254fd72a28221672491be912fa364b85d7b3c9de9ebe89f3df"
+    },
+    {
+      "path": ".agents/PLAN-TASKS/ACTIVE.md",
+      "sha256": "0dd95cedfe449db4072df6b06d5dd0f2b62450fc939d37d39c1472f8ccb42eb5"
+    },
+    {
+      "path": ".agents/PLAN-TASKS/INDEX.md",
+      "sha256": "58899a629414f216c0c2b879e1f248f7614a17aedad3868b81afabb385d79f4e"
+    },
+    {
+      "path": ".agents/MAPAS/INDEX.md",
+      "sha256": "c77800110ead7acd2903741c8ddaca14e4b7c2c621ff34f996cc45afcd024f14"
+    },
+    {
+      "path": ".agents/PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md",
+      "sha256": "b54bcc01f21af4219c70cf25d2306ec03881e350e24b82a8f41cb0400c7e362e"
+    },
+    {
+      "path": ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-hcl-references.md",
+      "sha256": "2a0c52633c90c0aa41b9f00c2a866e4b7e71ef7f6e9e4d99bd42c421686785df"
+    },
+    {
+      "path": ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-hcl-references.md",
+      "sha256": "7cc18c256173918819e558b3aa22b4b9b34ac4417f490bbb8422d820478cce3b"
+    },
+    {
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-hcl-references/DEPENDENCY-MAP.md",
+      "sha256": "6604fec2d01b6a4e0a017d52581d08d161aa63a1d6fe4a2a1017812d7f51f71a"
+    },
+    {
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-hcl-references/DEPENDENCY-GRAPH.json",
+      "sha256": "cbfdcc110a5b562e45afc1856990980dd80cd7a124a88ea742d2cb3862e6a7b5"
+    },
+    {
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-hcl-references/DEPENDENCY-GRAPH.html",
+      "sha256": "e33a9828b176d95392e4d1760070068a4ca8a9356e8d31380783132bcbc6fd06"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/workflow-review.json",
+      "sha256": "39c998623d4cb0abbcd5c236a9d912b734bdbf58f5ed2aba3d9878b31845aa5c"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/memory-validation.txt",
+      "sha256": "6b32ee78eb13dbc043c6da3459e4bf9db48ee3f9236b0f04adbc85124b42cf0d"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/skill-closeout.json",
+      "sha256": "342bce5053ea7b9b9b50314708934eb9e274e4d6e2cd43981cc0629bf4b72fa8"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/comparison.json",
+      "sha256": "3c66da870b623676aca3eba8be6056030f7373d417ee77ea0bd3fe6c926150d4"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/ci.json",
+      "sha256": "43f8eecd40dd04a248c53121e667308e7cc8b203befb8cd2b0c6d07715169c97"
+    },
+    {
+      "path": ".agents/receipts/crg-iu1-hcl-references/ci-windows-hcl.txt",
+      "sha256": "60904520f17408e1a336e2c9b858281112737bd531f5372ccfeeae015820e202"
+    }
+  ],
+  "bead": {
+    "status": "in_progress",
+    "dolt_push": "confirmed",
+    "id": "crg-iu1"
+  },
+  "ci": 42728356329,
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  }
+}
