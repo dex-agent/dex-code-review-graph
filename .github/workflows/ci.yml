@@ -139,6 +139,9 @@ jobs:
       - name: Run HCL parser tests
         run: python -m pytest --tb=short -v tests/test_hcl_parser.py
 
+      - name: Run Spring event tests
+        run: python -m pytest --tb=short -v tests/test_spring_events.py
+
       - name: Run explicit project root tests
         run: >-
           python -m pytest --tb=short -v
