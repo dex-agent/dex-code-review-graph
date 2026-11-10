@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último corte: [Raiz explícita com índice externo](2026-11-09-crg-iu1-raiz-externa.md) | checklist 5/5 | produto `f145ca8` e CI em `61ff0da` | bead `crg-iu1` com quatro IDs | [veredito](../receipts/crg-iu1-raiz-externa/verdict.json).
+- Último corte: [Identidade da aresta CONTAINS no dbt](2026-11-09-crg-iu1-dbt-contains.md) | checklist 4/4 | CI 9/9 em `b02a4ba` | bead `crg-iu1` com três IDs | [veredito](../receipts/crg-iu1-dbt-contains/verdict.json).
+
+- Anterior: [Raiz explícita com índice externo](2026-11-09-crg-iu1-raiz-externa.md) | checklist 5/5 | produto `f145ca8` e CI em `61ff0da` | [veredito](../receipts/crg-iu1-raiz-externa/verdict.json).
 
 - Anterior: [Seleção exata do forget no Windows](2026-11-09-crg-iu1-forget.md) | checklist 5/5 | produto `aca7f74`.
 

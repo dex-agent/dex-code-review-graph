@@ -1,0 +1,17 @@
+.F.......                                                                [100%]
+================================== FAILURES ===================================
+___________________ TestDbtModelParsing.test_contains_edge ____________________
+
+self = <tests.test_dbt_parser.TestDbtModelParsing object at 0x0000023B722507D0>
+
+    def test_contains_edge(self):
+        contains = [e for e in self.edges if e.kind == "CONTAINS"]
+        targets = {e.target for e in contains}
+>       assert "models/staging/fct_orders.sql::fct_orders" in targets
+E       AssertionError: assert 'models/staging/fct_orders.sql::fct_orders' in {'models\\staging\\fct_orders.sql::fct_orders'}
+
+tests\test_dbt_parser.py:57: AssertionError
+- generated xml file: C:\CodexProjetos\code-review-graph\.agents\receipts\crg-iu1-dbt-contains\red-windows.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_dbt_parser.py::TestDbtModelParsing::test_contains_edge - As...
+1 failed, 8 passed in 0.54s

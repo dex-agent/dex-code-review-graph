@@ -1,0 +1,71 @@
+{
+  "headSha": "b02a4ba519a05dd30c707bcedd6a2b88575cc81e",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/dex-agent/dex-code-review-graph/actions/runs/42726303960",
+  "attempt": 1,
+  "windows_dbt_step": {
+    "completedAt": "2026-11-10T00:15:24Z",
+    "conclusion": "success",
+    "name": "Run dbt model tests",
+    "number": 8,
+    "startedAt": "2026-11-10T00:15:21Z",
+    "status": "completed"
+  },
+  "jobs": [
+    {
+      "name": "schema-sync",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687090
+    },
+    {
+      "name": "lint",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687316
+    },
+    {
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687415
+    },
+    {
+      "name": "test (3.13)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687444
+    },
+    {
+      "name": "Windows daemon and file handles",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687476
+    },
+    {
+      "name": "security",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687542
+    },
+    {
+      "name": "test (3.10)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687616
+    },
+    {
+      "name": "test (3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687684
+    },
+    {
+      "name": "test (3.11)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 129532687686
+    }
+  ]
+}

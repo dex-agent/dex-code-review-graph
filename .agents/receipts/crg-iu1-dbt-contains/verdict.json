@@ -1,0 +1,32 @@
+{
+  "flow_id": "flow_20261110000815041_0508_0001",
+  "verdict_id": "vrd_20261110001747202_0531_0032",
+  "verdict": "pronto_com_ressalvas",
+  "checkout_status": "complete",
+  "closure_blockers": [],
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "bead": "crg-iu1",
+  "test_sha": "b02a4ba519a05dd30c707bcedd6a2b88575cc81e",
+  "ci_run": 42726303960,
+  "evidence_ids": [
+    "evd_20261110001009022_0516_0011",
+    "evd_20261110001014807_0517_0013",
+    "evd_20261110001555200_0529_0028",
+    "evd_20261110001739114_0530_0030",
+    "evd_20261110001036661_0522_0019",
+    "evd_20261110001247022_0527_0025"
+  ],
+  "residual_risks": [
+    "A suíte integral Windows ainda tem três falhas históricas no crg-iu1, em HCL, Spring e uninstall.",
+    "A prova de identidade dbt usa projetos descartáveis. A validação do índice habitual não faz parte deste corte."
+  ],
+  "next_step": "Mantenedor CRG: antes do próximo release Windows, reproduzir test_hcl_parser.py::test_for_expression_references_are_emitted_for_local_binding nos dois sistemas e comparar as referências a var.items e var.enabled pelos IDs brutos antes de editar o parser.",
+  "memory": {
+    "trigger": "CRG-ARESTA-ENDPOINTS-EXATOS",
+    "receipt_id": "84030e9b9b33579610d0bf23",
+    "validation": "2/2"
+  }
+}

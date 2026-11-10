@@ -1,0 +1,56 @@
+{
+  "contract": "dex.fechamento.workflow-review.v1",
+  "repo": "C:\\CodexProjetos\\code-review-graph",
+  "repo_kind": "project",
+  "block_id": "crg-iu1-dbt-contains-20261109",
+  "reviewed_at": "2026-11-10T00:13:18.0941285Z",
+  "sources": {
+    "recipe": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\code-review-graph-manutencao-iterativa-com-evidencia\\WORKFLOW.md",
+      "sha256": "7cf0fdea7c326b3fcb783a047d3f9e4e890e91607b785dee2ab6e6180db88a3b"
+    },
+    "local": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\workflow\\INDEX.md",
+      "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497"
+    },
+    "global": {
+      "path": "C:\\Users\\crsan\\.agents\\workflow\\INDEX.md",
+      "sha256": "d086402cb8d0f9d706283c813437dc3c4dda9233422786101b258fd640081d16"
+    },
+    "proof": {
+      "path": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\crg-iu1-dbt-contains\\comparison.json",
+      "sha256": "22900fdbae08c893f9ce03332f0ca578b82f451811a9a9d8f6c01373b092ba1b"
+    }
+  },
+  "block_evidence": [
+    "proof"
+  ],
+  "searches": {
+    "global": {
+      "result": "Template global localizado",
+      "source": "global",
+      "query": "manutencao-iterativa-com-evidencia"
+    },
+    "local": {
+      "result": "Receita local aplicada ao dbt",
+      "source": "local",
+      "query": "code-review-graph-manutencao-iterativa-com-evidencia"
+    }
+  },
+  "candidates": [
+    {
+      "name": "Manutenção iterativa CRG",
+      "evidence": [
+        "proof",
+        "recipe"
+      ],
+      "decision": "reuse",
+      "reuse_trigger": "Falha Windows em identidade de grafo",
+      "owner": "mantenedor CRG",
+      "existing_workflow": "recipe",
+      "reason": "A receita distingue alteração de produto de fixture, preserva prova e reúne os três mapas.",
+      "procedure": "RED, CLI e SQLite descartável, testes por sistema e veredito.",
+      "when": "Na próxima falha de identidade de aresta por sistema"
+    }
+  ]
+}
