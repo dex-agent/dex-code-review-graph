@@ -99,8 +99,8 @@ def _event_calls(store: GraphStore):
 
 
 def test_event_resolver_does_not_cross_link_same_named_packages(tmp_path: Path) -> None:
-    _write_event_package(tmp_path, "alpha")
-    _write_event_package(tmp_path, "beta")
+    _, alpha_publisher, alpha_listener = _write_event_package(tmp_path, "alpha")
+    _, beta_publisher, beta_listener = _write_event_package(tmp_path, "beta")
     graph_dir = tmp_path / ".code-review-graph"
     graph_dir.mkdir()
 
@@ -110,11 +110,10 @@ def test_event_resolver_does_not_cross_link_same_named_packages(tmp_path: Path) 
 
         assert result["event_resolution"]["calls_emitted"] == 2
         assert len(calls) == 2
-        assert all(
-            ("/alpha/" in row["source_qualified"] and "/alpha/" in row["target_qualified"])
-            or ("/beta/" in row["source_qualified"] and "/beta/" in row["target_qualified"])
-            for row in calls
-        )
+        assert {(row["source_qualified"], row["target_qualified"]) for row in calls} == {
+            (f"{alpha_publisher}::Publisher.publish", f"{alpha_listener}::Listener.on"),
+            (f"{beta_publisher}::Publisher.publish", f"{beta_listener}::Listener.on"),
+        }
         assert store.get_node("event::alpha.SharedEvent") is not None
         assert store.get_node("event::beta.SharedEvent") is not None
 
