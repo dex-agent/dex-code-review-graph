@@ -541,6 +541,9 @@ def test_atomic_config_replace_preserves_file_mode(
     config = fake_repo / ".mcp.json"
     _write_json(config, {"mcpServers": {"code-review-graph": {}, "other": {}}})
     config.chmod(0o640)
+    original_mode = stat.S_IMODE(config.stat().st_mode)
+    if os.name == "posix":
+        assert original_mode == 0o640
 
     report = uninstall.run(
         repo=fake_repo,
@@ -549,7 +552,7 @@ def test_atomic_config_replace_preserves_file_mode(
     )
 
     assert report.errors == []
-    assert stat.S_IMODE(config.stat().st_mode) == 0o640
+    assert stat.S_IMODE(config.stat().st_mode) == original_mode
     assert _read_jsonc(config) == {"mcpServers": {"other": {}}}
 
 
