@@ -1,0 +1,11 @@
+{
+  "new": [],
+  "removed": [
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "remaining": [],
+  "summary": "2326 passed, 12 skipped, 2 xpassed in 78.56s (0:01:18)",
+  "baseline": "95e74414c2d1cc03cdbb40b64dbc0e1fc5edca9f",
+  "baseline_observation": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+  "test_sha": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060"
+}

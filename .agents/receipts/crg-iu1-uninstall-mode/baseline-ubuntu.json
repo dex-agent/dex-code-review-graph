@@ -1,0 +1,17 @@
+{
+  "platform": "Linux",
+  "python": "3.12.14",
+  "requested": "0o640",
+  "initial": "0o644",
+  "after_chmod": "0o640",
+  "after_uninstall": "0o640",
+  "report_errors": 0,
+  "temporary_left": 0,
+  "remaining": {
+    "mcpServers": {
+      "other": {
+        "command": "mine"
+      }
+    }
+  }
+}

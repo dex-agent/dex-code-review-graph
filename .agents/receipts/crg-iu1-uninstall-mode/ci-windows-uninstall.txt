@@ -1,0 +1,67 @@
+Windows daemon and file handles	Run uninstall tests	﻿2026-11-10T01:02:12.0310354Z ##[group]Run python -m pytest --tb=short -v tests/test_uninstall.py
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0311471Z ^[[36;1mpython -m pytest --tb=short -v tests/test_uninstall.py^[[0m
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0416380Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0417163Z env:
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0417513Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0418148Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0418738Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0419266Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0419784Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.0420193Z ##[endgroup]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9360590Z ============================= test session starts =============================
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9362961Z platform win32 -- Python 3.12.10, pytest-8.4.2, pluggy-1.7.0 -- C:\hostedtoolcache\windows\Python\3.12.10\x64\python.exe
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9364706Z cachedir: .pytest_cache
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9365454Z rootdir: D:\a\dex-code-review-graph\dex-code-review-graph
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9366285Z configfile: pyproject.toml
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9367058Z plugins: anyio-4.16.0, platformdirs-4.14.3, asyncio-1.4.1.post1, cov-7.1.0
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:12.9368611Z asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.1403645Z collecting ... collected 46 items
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.1777400Z 
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.6439945Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[codex] PASSED [  2%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.7079154Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[claude] PASSED [  4%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.7880520Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[cursor] PASSED [  6%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.8609068Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[windsurf] PASSED [  8%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:13.9365954Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[zed] PASSED [ 10%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.0139871Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[continue] PASSED [ 13%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.0910337Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[opencode] PASSED [ 15%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.1960266Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[antigravity] PASSED [ 17%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.2642775Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[gemini-cli] PASSED [ 19%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.3427900Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[qwen] PASSED [ 21%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.4117499Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[kiro] PASSED [ 23%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.4890247Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[qoder] PASSED [ 26%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.5674403Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[copilot] PASSED [ 28%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.6417970Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[copilot-cli] PASSED [ 30%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.7349505Z tests/test_uninstall.py::test_uninstall_removes_mcp_entry_for_every_current_platform_spec[codebuddy] PASSED [ 32%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.8137746Z tests/test_uninstall.py::test_platform_inventory_is_derived_not_hard_coded PASSED [ 34%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.9034463Z tests/test_uninstall.py::test_copilot_cli_uninstall_removes_current_and_legacy_entries PASSED [ 36%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:14.9983632Z tests/test_uninstall.py::test_source_pr_legacy_mcp_paths_remain_supported PASSED [ 39%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.0822345Z tests/test_uninstall.py::test_jsonc_comments_trailing_commas_and_https_survive[zed] PASSED [ 41%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.1543165Z tests/test_uninstall.py::test_jsonc_comments_trailing_commas_and_https_survive[opencode] PASSED [ 43%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.2554042Z tests/test_uninstall.py::test_gemini_shared_settings_removes_mcp_and_owned_hooks PASSED [ 45%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.3689196Z tests/test_uninstall.py::test_cursor_shared_hooks_directory_keeps_unrelated_scripts PASSED [ 47%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.4374838Z tests/test_uninstall.py::test_hook_cleanup_handles_owned_entries_and_mixed_nested_groups PASSED [ 50%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.5338240Z tests/test_uninstall.py::test_source_pr_legacy_hook_commands_are_removed_exactly PASSED [ 52%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.6252427Z tests/test_uninstall.py::test_shared_skill_directories_keep_user_files_and_unrelated_skills PASSED [ 54%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.8380583Z tests/test_uninstall.py::test_instruction_inventory_and_git_hook_are_surgical PASSED [ 56%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.9128785Z tests/test_uninstall.py::test_uninstall_cleans_current_and_legacy_copilot_instruction_paths PASSED [ 58%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:15.9792063Z tests/test_uninstall.py::test_modified_instruction_section_is_not_guessed_or_truncated PASSED [ 60%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.1126125Z tests/test_uninstall.py::test_only_installer_owned_gitignore_block_is_removed PASSED [ 63%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.1783596Z tests/test_uninstall.py::test_dry_run_is_meaningful_and_byte_for_byte_read_only PASSED [ 65%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.2414985Z tests/test_uninstall.py::test_failed_atomic_config_write_preserves_original_bytes[fsync] PASSED [ 67%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.3165911Z tests/test_uninstall.py::test_failed_atomic_config_write_preserves_original_bytes[replace] PASSED [ 69%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.4255760Z tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode PASSED [ 71%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.4369522Z tests/test_uninstall.py::test_non_repository_directory_is_refused_without_deleting_data PASSED [ 73%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.5061568Z tests/test_uninstall.py::test_repository_subdirectory_normalises_to_vcs_root PASSED [ 76%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.5836263Z tests/test_uninstall.py::test_symlink_and_out_of_boundary_paths_are_skipped PASSED [ 78%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.7063128Z tests/test_uninstall.py::test_malformed_config_is_unchanged_and_other_cleanup_continues PASSED [ 80%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.7777515Z tests/test_uninstall.py::test_partial_filesystem_failure_is_reported_and_does_not_stop_cleanup PASSED [ 82%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:16.9494154Z tests/test_uninstall.py::test_second_run_is_idempotent PASSED            [ 84%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.0009022Z tests/test_uninstall.py::test_keep_flags_preserve_data_and_user_configuration PASSED [ 86%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.1496306Z tests/test_uninstall.py::test_all_repos_reads_registry_before_removing_user_data PASSED [ 89%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.2970007Z tests/test_uninstall.py::test_cli_dry_run_and_confirmation_are_safe PASSED [ 91%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.3013393Z tests/test_uninstall.py::test_normalise_platform_filter PASSED           [ 93%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.3271117Z tests/test_uninstall.py::test_platform_scoped_unbind_removes_only_target_and_keeps_data PASSED [ 95%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.3472442Z tests/test_uninstall.py::test_platform_scoped_unbind_targets_user_scope_toml PASSED [ 97%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.5580381Z tests/test_uninstall.py::test_cli_uninstall_platform_scopes_to_one_binding PASSED [100%]
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.5582255Z 
+Windows daemon and file handles	Run uninstall tests	2026-11-10T01:02:17.5583092Z ============================= 46 passed in 4.46s ==============================

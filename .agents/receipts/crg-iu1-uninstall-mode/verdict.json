@@ -1,0 +1,35 @@
+{
+  "flow_id": "flow_20261110005352147_0595_0114",
+  "verdict_id": "vrd_20261110010437624_0620_0148",
+  "status": "pronto_com_ressalvas",
+  "checkout": {
+    "status": "complete",
+    "complete": true,
+    "closure_blockers": []
+  },
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "bead": {
+    "id": "crg-iu1",
+    "status": "closed",
+    "dolt_push": "confirmed"
+  },
+  "test_sha": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+  "ci": 42732011439,
+  "evidence_ids": [
+    "evd_20261110005433669_0602_0122",
+    "evd_20261110005453131_0603_0124",
+    "evd_20261110005517485_0604_0126",
+    "evd_20261110010427501_0619_0146",
+    "evd_20261110005533370_0609_0132",
+    "evd_20261110005707952_0614_0138"
+  ],
+  "residual_risks": [
+    "A evidência de modo cobre a configuração gravável em fixture descartável. ACLs e configuração originalmente somente leitura ficam fora do escopo."
+  ],
+  "next_step": "Antes de publicar release Windows, o mantenedor valida o wheel do SHA em instalação Windows limpa e isolada, verifica a versão do executável e prova um smoke da CLI com projeto descartável.",
+  "memory_reused": "CRG-UV-WSL-VENV-ISOLADO",
+  "memory_written": "CRG-UNINSTALL-MODO-EFETIVO"
+}

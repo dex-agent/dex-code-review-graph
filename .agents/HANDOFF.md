@@ -2,6 +2,8 @@
 
 Ultima atualizacao: 2026-11-09
 
+- [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d` e CI 9/9. `crg-iu1` fechado após o saldo integral chegar a zero IDs de falha. Antes de publicar um release Windows, o mantenedor valida o wheel em uma instalação Windows limpa e isolada, conferindo a versão, o executável e um smoke CLI com projeto descartável. [Saldo por ID](receipts/crg-iu1-uninstall-mode/comparison.json) · [Modo efetivo](memorias/crg-uninstall-modo-efetivo.md).
+
 - [Pares exatos de eventos Spring](PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md) — `d22e6d6` e CI 9/9. Antes do próximo release Windows, o mantenedor retoma `crg-iu1` pelo caso uninstall `test_atomic_config_replace_preserves_file_mode`. Medir modo efetivo antes e depois do replace em configuração descartável nos dois sistemas e conferir a preservação do JSON restante. [Saldo por ID](receipts/crg-iu1-spring-events/comparison.json). Para provas WSL, [isolar a venv](memorias/crg-uv-wsl-venv-isolado.md).
 
 - [Referências HCL com caminhos nativos](PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md) — `d6336d2` e CI 9/9. O mantenedor retoma `crg-iu1` pelo teste Spring de eventos homônimos antes do próximo release Windows. Reproduzir nos dois sistemas e verificar no SQLite `CALLS` de alpha para alpha e de beta para beta, com zero cruzamentos. [Saldo por ID](receipts/crg-iu1-hcl-references/comparison.json).

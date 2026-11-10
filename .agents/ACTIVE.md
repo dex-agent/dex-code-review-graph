@@ -1,6 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
 - Ultima atualizacao: 2026-11-09.
+- [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d`, CI 9/9 e uninstall Windows 46/46. A suíte integral Windows zerou as falhas, com 2.326 aprovados. Bead `crg-iu1` fechado. [Veredito](receipts/crg-iu1-uninstall-mode/verdict.json).
 - [Pares exatos de eventos Spring](PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md) — `d22e6d6`, CLI e SQLite confirmam os dois pares, CI 9/9 e Spring Windows 6/6. Resta um ID histórico na suíte integral. [Veredito](receipts/crg-iu1-spring-events/verdict.json).
 - [Referências HCL com caminhos nativos](PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md) — `d6336d2` corrige a expectativa da fixture. CLI e SQLite confirmam as duas arestas pelos IDs. CI 9/9, módulo HCL Windows 3/3 e dois IDs históricos restantes na suíte integral. [Veredito](receipts/crg-iu1-hcl-references/verdict.json).
 - [Identidade da aresta CONTAINS no dbt](PLAN-TASKS/2026-11-09-crg-iu1-dbt-contains.md) — `b02a4ba` corrige a expectativa de caminho nativo e verifica o nó pelo ID bruto. CI 9/9, módulo dbt Windows 9/9. A suíte integral Windows fica com três IDs históricos. [Veredito](receipts/crg-iu1-dbt-contains/verdict.json).

@@ -1,0 +1,17 @@
+{
+  "platform": "Windows",
+  "python": "3.12.11",
+  "requested": "0o640",
+  "initial": "0o666",
+  "after_chmod": "0o666",
+  "after_uninstall": "0o666",
+  "report_errors": 0,
+  "temporary_left": 0,
+  "remaining": {
+    "mcpServers": {
+      "other": {
+        "command": "mine"
+      }
+    }
+  }
+}
