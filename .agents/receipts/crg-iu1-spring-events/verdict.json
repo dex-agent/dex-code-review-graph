@@ -1,0 +1,36 @@
+{
+  "flow_id": "flow_20261110003814125_0565_0075",
+  "verdict_id": "vrd_20261110004827732_0589_0107",
+  "status": "pronto_com_ressalvas",
+  "checkout": {
+    "status": "complete",
+    "complete": true,
+    "closure_blockers": []
+  },
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "bead": {
+    "id": "crg-iu1",
+    "status": "in_progress",
+    "dolt_push": "confirmed"
+  },
+  "test_sha": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+  "ci": 42730177128,
+  "evidence_ids": [
+    "evd_20261110003942120_0572_0083",
+    "evd_20261110004030369_0573_0085",
+    "evd_20261110004555772_0587_0103",
+    "evd_20261110004819161_0588_0105",
+    "evd_20261110004144546_0580_0094",
+    "evd_20261110004336359_0585_0100"
+  ],
+  "residual_risks": [
+    "A suíte integral Windows ainda tem o ID histórico test_atomic_config_replace_preserves_file_mode, rastreado em crg-iu1.",
+    "A prova SQLite se limita à fixture em índices descartáveis."
+  ],
+  "next_step": "Antes do release Windows, o mantenedor CRG preserva o RED de uninstall, mede o modo efetivo imediatamente após chmod e depois de os.replace em Windows e Ubuntu, e confere o JSON restante e os erros.",
+  "memory_reused": "CRG-ARESTA-ENDPOINTS-EXATOS",
+  "memory_written": "CRG-UV-WSL-VENV-ISOLADO"
+}

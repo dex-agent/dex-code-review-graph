@@ -1,0 +1,13 @@
+{
+  "test_sha": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+  "removed": [
+    "tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages"
+  ],
+  "baseline": "2604aed545410d5b126fde54f149363af8b31131",
+  "new": [],
+  "remaining": [
+    "tests/test_uninstall.py::test_atomic_config_replace_preserves_file_mode"
+  ],
+  "summary": "1 failed, 2325 passed, 12 skipped, 2 xpassed in 78.56s (0:01:18)",
+  "baseline_observation": "d6336d2ca9d4a4c96c65ffd8fd6996d8f80a31c7"
+}

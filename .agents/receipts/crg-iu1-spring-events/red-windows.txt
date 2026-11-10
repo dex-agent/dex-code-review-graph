@@ -1,0 +1,11 @@
+..F...                                                                   [100%]
+================================== FAILURES ===================================
+_________ test_event_resolver_does_not_cross_link_same_named_packages _________
+tests\test_spring_events.py:113: in test_event_resolver_does_not_cross_link_same_named_packages
+    assert all(
+E   assert False
+E    +  where False = all(<generator object test_event_resolver_does_not_cross_link_same_named_packages.<locals>.<genexpr> at 0x000002C360C6B5E0>)
+- generated xml file: C:\CodexProjetos\code-review-graph\.agents\receipts\crg-iu1-spring-events\red-windows.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_spring_events.py::test_event_resolver_does_not_cross_link_same_named_packages
+1 failed, 5 passed in 1.09s

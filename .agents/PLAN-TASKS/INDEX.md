@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-iu1-spring-events` | [Pares exatos de eventos Spring na CI Windows](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-iu1-hcl-references` | [Referências HCL com caminhos nativos](2026-11-09-crg-iu1-hcl-references.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.
 
 - `crg-iu1-dbt-contains` | [Identidade da aresta CONTAINS no dbt](2026-11-09-crg-iu1-dbt-contains.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.

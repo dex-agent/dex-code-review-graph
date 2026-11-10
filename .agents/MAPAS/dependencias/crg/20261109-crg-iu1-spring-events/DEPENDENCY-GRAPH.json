@@ -1,0 +1,219 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261109-crg-iu1-spring-events",
+    "observed_at": "2026-11-10T00:47:34.977Z",
+    "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+    "scope": "Identidade Spring e cobertura Windows",
+    "environment": "Windows e Ubuntu",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "excluded": [
+      "Índice habitual",
+      "Uninstall"
+    ],
+    "limits": [
+      "Fixture descartável para a prova SQLite."
+    ],
+    "method": "Git, CLI, SQLite e CI por SHA"
+  },
+  "sources": [
+    {
+      "availability": "available",
+      "id": "resolver",
+      "path": "../../../../../code_review_graph/event_resolver.py",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "resolver",
+      "sha256": "99680cd5f750c11551704b8fef2474c533918d723b3b43e5df7a6f2be1d7af08"
+    },
+    {
+      "availability": "available",
+      "id": "incremental",
+      "path": "../../../../../code_review_graph/incremental.py",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "incremental",
+      "sha256": "a6fc6eaaeaac35e4b04c7af34a31b9365e5c4fa013c95fa125d88938fe5335a9"
+    },
+    {
+      "availability": "available",
+      "id": "store",
+      "path": "../../../../../code_review_graph/graph.py",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "store",
+      "sha256": "e4b3a58495c5cd559c9a1a77f8dfc1e59a547e8a704d8a103a0608d14ad1ee32"
+    },
+    {
+      "availability": "available",
+      "id": "test",
+      "path": "../../../../../tests/test_spring_events.py",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "test",
+      "sha256": "1f91ac90c72857ed2169523b99b013319332033406d7476dfae08a3eefe6a9f6"
+    },
+    {
+      "availability": "available",
+      "id": "workflow",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "workflow",
+      "sha256": "1db65e8975a55a97a87752d4b95da35d64bc7a336c2e5a3152b1af7b11934cde"
+    },
+    {
+      "availability": "available",
+      "id": "win",
+      "path": "../../../../receipts/crg-iu1-spring-events/baseline-windows.json",
+      "revision": "2604aed545410d5b126fde54f149363af8b31131",
+      "anchor": "win",
+      "sha256": "256f69739b9cf415563f576d2166dcd8f9e29360559dc3e62b1fdca306dbda8b"
+    },
+    {
+      "availability": "available",
+      "id": "ubuntu",
+      "path": "../../../../receipts/crg-iu1-spring-events/baseline-ubuntu.json",
+      "revision": "2604aed545410d5b126fde54f149363af8b31131",
+      "anchor": "ubuntu",
+      "sha256": "4b446d89cf282c5271a00798bc50e1f8ee1fb23d795747ca473d4c1e34a410f4"
+    },
+    {
+      "availability": "available",
+      "id": "ci",
+      "path": "../../../../receipts/crg-iu1-spring-events/ci.json",
+      "revision": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631",
+      "anchor": "ci",
+      "sha256": "dcbb78fd4b28f627dac78b1b8e988f6257d409821f3cd35bf9333e64921706de"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI build no projeto Spring",
+      "type": "command",
+      "source_refs": [
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "resolver",
+      "label": "Resolvedor de eventos Spring",
+      "type": "function",
+      "source_refs": [
+        "resolver",
+        "incremental",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "store",
+      "label": "SQLite com os endpoints nativos",
+      "type": "storage",
+      "source_refs": [
+        "store",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "test",
+      "label": "Teste de homônimos Spring",
+      "type": "test",
+      "source_refs": [
+        "test"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "ci",
+      "label": "Passo Spring Windows",
+      "type": "workflow",
+      "source_refs": [
+        "workflow",
+        "ci"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-resolver",
+      "source": "cli",
+      "target": "resolver",
+      "relation": "calls",
+      "condition": "Build completo Java",
+      "source_refs": [
+        "incremental",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "resolver-store",
+      "source": "resolver",
+      "target": "store",
+      "relation": "calls",
+      "condition": "Persistência das arestas CALLS",
+      "source_refs": [
+        "resolver",
+        "store",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "test-resolver",
+      "source": "test",
+      "target": "resolver",
+      "relation": "calls",
+      "condition": "Full build da fixture",
+      "source_refs": [
+        "test",
+        "incremental"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "ci-test",
+      "source": "ci",
+      "target": "test",
+      "relation": "executes",
+      "condition": "Passo Run Spring event tests",
+      "source_refs": [
+        "workflow",
+        "ci"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    }
+  ]
+}

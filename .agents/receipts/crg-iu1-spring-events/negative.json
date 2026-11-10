@@ -1,0 +1,12 @@
+{
+  "crossed": {
+    "rejected": true,
+    "rows": 2,
+    "assertion_line": 113
+  },
+  "missing_beta": {
+    "rejected": true,
+    "rows": 2,
+    "assertion_line": 113
+  }
+}

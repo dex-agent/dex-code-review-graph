@@ -1,0 +1,96 @@
+{
+  "bead": {
+    "dolt_push": "confirmed",
+    "status": "in_progress",
+    "id": "crg-iu1"
+  },
+  "ci": 42730177128,
+  "checklist": {
+    "checked": 4,
+    "total": 4
+  },
+  "readback": [
+    {
+      "sha256": "88c524b0ffaca82b21dae80b16776ba7b74131eadee4b01db6fb3baf5b60113c",
+      "path": ".agents/ACTIVE.md"
+    },
+    {
+      "sha256": "d3123c810de85969695a4af7888c87ee919017d5ad89df9cee1495e126650ac4",
+      "path": ".agents/HANDOFF.md"
+    },
+    {
+      "sha256": "295e48a72126f3f0eee92caca3e036082bf619464c77bdb1271e43606a9a4389",
+      "path": ".agents/PLAN-TASKS/ACTIVE.md"
+    },
+    {
+      "sha256": "a1e249c69e00b363136d7734273cabb43e4bc6e53a9d5294e57dd5e527ee7b4e",
+      "path": ".agents/PLAN-TASKS/INDEX.md"
+    },
+    {
+      "sha256": "a73a429078004055bc7d04acfc89edda3eaf350126f0777ee125659b34d9e530",
+      "path": ".agents/MAPAS/INDEX.md"
+    },
+    {
+      "sha256": "5352187f71294da8b01024dc396ee97d39b080bc8366e7fc054b7e777e0f0532",
+      "path": ".agents/lembranca.md"
+    },
+    {
+      "sha256": "eb5aa632feb1c4966333ff806a5dbcfb4003f447dcfedca728a98ff0c959c4ec",
+      "path": ".agents/memorias/crg-uv-wsl-venv-isolado.md"
+    },
+    {
+      "sha256": "04ef112bb6f74ed3f5c29180acf3d05a97e69c50f55b749e18683c64a36059be",
+      "path": ".agents/PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md"
+    },
+    {
+      "sha256": "d6db0c2e43480d26238ad49c0144845e7dc3a616f7aa72a866e66c0981cbd8bb",
+      "path": ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-spring-events.md"
+    },
+    {
+      "sha256": "231dc595cef7ad6553060ce94455ad426f46adb33ea2c3d9a5b78dc09658e8e9",
+      "path": ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-spring-events.md"
+    },
+    {
+      "sha256": "0f5f7e75d1b93424ead0f5f19b36994fe1ac7786701462a5aa196a1e9f8065a6",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-spring-events/DEPENDENCY-MAP.md"
+    },
+    {
+      "sha256": "d662090ce485df94c443042fe8dcb347f83a70044e58dea3ea845b43945637ec",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-spring-events/DEPENDENCY-GRAPH.json"
+    },
+    {
+      "sha256": "c2f9ecb51ef80810d087d17b59eafa7f47585908b7a12d7b2e6003c38f87c707",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-spring-events/DEPENDENCY-GRAPH.html"
+    },
+    {
+      "sha256": "fe174847f3604052164c3f0d0a7db1ca797eed0c765632532ee348b16c88eaa4",
+      "path": ".agents/receipts/crg-iu1-spring-events/memory-validation.txt"
+    },
+    {
+      "sha256": "63098fc3b65b5f23ae5449ca33b55e6fadc3e36aa67e79b13ab363b33e3ddf43",
+      "path": ".agents/receipts/crg-iu1-spring-events/skill-closeout.json"
+    },
+    {
+      "sha256": "deb204deca1884aa3612361659afea1bb630b121c0f66c598f9037a813c52570",
+      "path": ".agents/receipts/crg-iu1-spring-events/comparison.json"
+    },
+    {
+      "sha256": "dcbb78fd4b28f627dac78b1b8e988f6257d409821f3cd35bf9333e64921706de",
+      "path": ".agents/receipts/crg-iu1-spring-events/ci.json"
+    },
+    {
+      "sha256": "8c959d6560131650e5010771436eeca761a3ac794baaedd9fed4e0909b7c75b8",
+      "path": ".agents/receipts/crg-iu1-spring-events/ci-windows-spring.txt"
+    },
+    {
+      "sha256": "8308a125095d7b9eef5e80ffd14e13eb3e59c9a384bd75a0dc09bf71ddc7b008",
+      "path": ".agents/receipts/crg-iu1-spring-events/workflow-review.json"
+    }
+  ],
+  "environment": {
+    "windows": "recriado a partir do lockfile com extra dev",
+    "recovery": "metadata local em receipts ignorados",
+    "wsl": "ambiente Linux dedicado"
+  },
+  "sha": "d22e6d6a645bcfccfc4f4ed013931f311bcb4631"
+}

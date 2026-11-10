@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último corte: [Referências HCL com caminhos nativos](2026-11-09-crg-iu1-hcl-references.md) | checklist 4/4 | CI 9/9 em `d6336d2` | bead `crg-iu1` com dois IDs | [veredito](../receipts/crg-iu1-hcl-references/verdict.json).
+- Último corte: [Pares exatos de eventos Spring](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4 | CI 9/9 em `d22e6d6` | bead `crg-iu1` com um ID | [veredito](../receipts/crg-iu1-spring-events/verdict.json).
+
+- Anterior: [Referências HCL com caminhos nativos](2026-11-09-crg-iu1-hcl-references.md) | checklist 4/4 | CI 9/9 em `d6336d2` | bead `crg-iu1` com dois IDs | [veredito](../receipts/crg-iu1-hcl-references/verdict.json).
 
 - Anterior: [Identidade da aresta CONTAINS no dbt](2026-11-09-crg-iu1-dbt-contains.md) | checklist 4/4 | CI 9/9 em `b02a4ba` | bead `crg-iu1` com três IDs | [veredito](../receipts/crg-iu1-dbt-contains/verdict.json).
 
