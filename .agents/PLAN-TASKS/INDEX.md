@@ -1,5 +1,7 @@
 # Trilhos
 
+- `crg-iu1-uninstall-mode` | [Preservar o modo efetivo no uninstall](2026-11-09-crg-iu1-uninstall-mode.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.
+
 - `crg-iu1-spring-events` | [Pares exatos de eventos Spring na CI Windows](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.
 
 - `crg-iu1-hcl-references` | [Referências HCL com caminhos nativos](2026-11-09-crg-iu1-hcl-references.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.

@@ -32,3 +32,5 @@
 - CRG-ARESTA-ENDPOINTS-EXATOS: teste de grafo falha só em Windows com caminhos embutidos em nomes qualificados -> [Identidade de aresta se confirma pelos dois nós persistidos](memorias/identidade-de-aresta-se-confirma-pelos-dois-nos-per-dabb096ff0a0.md) [[memorias/identidade-de-aresta-se-confirma-pelos-dois-nos-per-dabb096ff0a0|Identidade de aresta se confirma pelos dois nós persistidos]] #crg/portabilidade #crg/cli ^identidade-de-aresta-se-confirma-pelos-dois-nos-per-dabb096ff0a0
 
 - CRG-UV-WSL-VENV-ISOLADO: rodar uv no WSL em checkout NTFS compartilhado com Windows -> [WSL precisa de ambiente uv próprio no CRG](memorias/crg-uv-wsl-venv-isolado.md) [[memorias/crg-uv-wsl-venv-isolado|WSL precisa de ambiente uv próprio no CRG]] #crg/portabilidade #python/uv #windows/wsl ^crg-uv-wsl-venv-isolado
+
+- CRG-UNINSTALL-MODO-EFETIVO: teste de substituição atômica compara chmod POSIX no Windows -> [Preservação de modo começa pelo estado efetivo da fixture](memorias/crg-uninstall-modo-efetivo.md) [[memorias/crg-uninstall-modo-efetivo|Preservação de modo começa pelo estado efetivo da fixture]] #crg/portabilidade #crg/uninstall #python/chmod ^crg-uninstall-modo-efetivo

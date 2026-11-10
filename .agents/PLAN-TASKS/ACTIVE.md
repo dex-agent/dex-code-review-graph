@@ -1,6 +1,8 @@
 # Trilho ativo
 
-- Último corte: [Pares exatos de eventos Spring](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4 | CI 9/9 em `d22e6d6` | bead `crg-iu1` com um ID | [veredito](../receipts/crg-iu1-spring-events/verdict.json).
+- Último corte: [Modo efetivo no uninstall](2026-11-09-crg-iu1-uninstall-mode.md) | checklist 4/4 | CI 9/9 em `f5fb25d` | bead `crg-iu1` fechado | [veredito](../receipts/crg-iu1-uninstall-mode/verdict.json).
+
+- Anterior: [Pares exatos de eventos Spring](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4 | CI 9/9 em `d22e6d6` | bead `crg-iu1` com um ID | [veredito](../receipts/crg-iu1-spring-events/verdict.json).
 
 - Anterior: [Referências HCL com caminhos nativos](2026-11-09-crg-iu1-hcl-references.md) | checklist 4/4 | CI 9/9 em `d6336d2` | bead `crg-iu1` com dois IDs | [veredito](../receipts/crg-iu1-hcl-references/verdict.json).
 

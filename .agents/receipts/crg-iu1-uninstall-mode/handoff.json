@@ -1,0 +1,91 @@
+{
+  "sha": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+  "bead": {
+    "status": "closed",
+    "dolt_push": "confirmed",
+    "id": "crg-iu1"
+  },
+  "readback": [
+    {
+      "sha256": "4d5d4835030d707e08b3b20bef353833bc803961fa3ae63ab95c9aaf496e060a",
+      "path": ".agents/ACTIVE.md"
+    },
+    {
+      "sha256": "dd66f17f2d759528b060f9a2c7d26a42c5a33faad289ee92e0105de1edd822cc",
+      "path": ".agents/HANDOFF.md"
+    },
+    {
+      "sha256": "c7cfdf2e5e75e4f1fe2ecf2c9102a47d157d08fb9683bbacccc7f8b157936813",
+      "path": ".agents/PLAN-TASKS/ACTIVE.md"
+    },
+    {
+      "sha256": "a8eb351a65a21ecb214351e50a5f641054907b80b2b195741b8e0531aad2a53f",
+      "path": ".agents/PLAN-TASKS/INDEX.md"
+    },
+    {
+      "sha256": "ac3507a3516ca599e5bbae41aff6ec0fca11eb2635f378b144c6d9ee6ac6d432",
+      "path": ".agents/MAPAS/INDEX.md"
+    },
+    {
+      "sha256": "245e4cbca4fccae1a368ccaf924c33b9b4279a71ade89aae2eb113c36663f0bf",
+      "path": ".agents/lembranca.md"
+    },
+    {
+      "sha256": "e275743dc09dc5473010d27253b9d5d2dbf5c373cd5ee8bd84b978b8d0d5d05d",
+      "path": ".agents/memorias/crg-uninstall-modo-efetivo.md"
+    },
+    {
+      "sha256": "91692113e7ca95d016a47f705665946211957b04f1ba6304e4bbd8c91a958b06",
+      "path": ".agents/PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md"
+    },
+    {
+      "sha256": "de9dd6a50b45d0674e82d9b642a28606a6d3f69727a60bf813ab906989f4b40c",
+      "path": ".agents/MAPAS/capacidades-crg-20261109-crg-iu1-uninstall-mode.md"
+    },
+    {
+      "sha256": "e4d70f3ea7d468981da6cdc5133ee9cb80f9200a80bcff615895d71e8bc14435",
+      "path": ".agents/MAPAS/decisoes-crg-20261109-crg-iu1-uninstall-mode.md"
+    },
+    {
+      "sha256": "f304bad1a4a9b256d3de74c3706aeb362ddc27762cf876d341349035b259bad8",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-uninstall-mode/DEPENDENCY-MAP.md"
+    },
+    {
+      "sha256": "bb8f631dddd9b5f80605f01efa25ce361b0cd2d9cee764f93110ce8a76897d57",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-uninstall-mode/DEPENDENCY-GRAPH.json"
+    },
+    {
+      "sha256": "86b6a875f38d8fcb7aba35f0fa1c91a845bd6bd3fda356acdd2b5b2b372649fd",
+      "path": ".agents/MAPAS/dependencias/crg/20261109-crg-iu1-uninstall-mode/DEPENDENCY-GRAPH.html"
+    },
+    {
+      "sha256": "d499fa815470db81f86b60b542663bdfe133fc41279b9af478114274aa21b069",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/memory-validation.txt"
+    },
+    {
+      "sha256": "376e461ac80fa7991a3361c3bce9ad1416c5f791b50b70fdf2b98cfdc687f356",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/skill-closeout.json"
+    },
+    {
+      "sha256": "70301414a8f21dba87443825395c5f2346e66f4fd55c9dbee9d82b8ee64c11b8",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/comparison.json"
+    },
+    {
+      "sha256": "8e683c4f2aeab7d81fe92015528ddea82393e808251101ca0e24561ed57e1a55",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/ci.json"
+    },
+    {
+      "sha256": "805fbbef19d6efc9b84a21438900eecef31ffaf2248b4ad4d3569ae98d7e4ab8",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/ci-windows-uninstall.txt"
+    },
+    {
+      "sha256": "63b9dc5acf840640e53238b9f526557820e29712dceb6ec533ad21591aa3bfba",
+      "path": ".agents/receipts/crg-iu1-uninstall-mode/workflow-review.json"
+    }
+  ],
+  "checklist": {
+    "total": 4,
+    "checked": 4
+  },
+  "ci": 42732011439
+}

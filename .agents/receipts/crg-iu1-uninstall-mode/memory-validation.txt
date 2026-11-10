@@ -1,0 +1,3 @@
+OK memorias/crg-uninstall-modo-efetivo.md erros=[]
+OK memorias/crg-uv-wsl-venv-isolado.md erros=[]
+BATCH: 2/2 validos

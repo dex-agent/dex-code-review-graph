@@ -1,0 +1,200 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261109-crg-iu1-uninstall-mode",
+    "observed_at": "2026-11-10T00:57:44.814Z",
+    "revision": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+    "scope": "Modo efetivo no uninstall e cobertura Windows",
+    "environment": "Windows e Ubuntu",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "excluded": [
+      "ACLs",
+      "Configuração somente leitura como entrada",
+      "Release"
+    ],
+    "limits": [
+      "Fixture descartável em filesystem real."
+    ],
+    "method": "Git, pytest, sonda do modo antes/depois e workflow"
+  },
+  "sources": [
+    {
+      "availability": "available",
+      "id": "writer",
+      "path": "../../../../../code_review_graph/uninstall.py",
+      "revision": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+      "anchor": "writer",
+      "sha256": "6fed584a1e8df2e3ca8f4ca466d95cb1b3bc79f354d4fec0aaf618ac03051315"
+    },
+    {
+      "availability": "available",
+      "id": "cli",
+      "path": "../../../../../code_review_graph/cli.py",
+      "revision": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+      "anchor": "cli",
+      "sha256": "7ddb5f8188a480638d264f7d23d9f96fe0633d7d74767c6820b6f61bcc985d37"
+    },
+    {
+      "availability": "available",
+      "id": "test",
+      "path": "../../../../../tests/test_uninstall.py",
+      "revision": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+      "anchor": "test",
+      "sha256": "481a4876455090651a1ea7c59aee316ed5ea75b7fe97bc7b04f6cda85400c8d3"
+    },
+    {
+      "availability": "available",
+      "id": "workflow",
+      "path": "../../../../../.github/workflows/ci.yml",
+      "revision": "f5fb25d75cf84e38e1730228fcd63ac8c8cf3060",
+      "anchor": "workflow",
+      "sha256": "5a65b30da9d518b959ad66805d299ffc7689ec85139ebc76c6d75e6e4a173700"
+    },
+    {
+      "availability": "available",
+      "id": "win",
+      "path": "../../../../receipts/crg-iu1-uninstall-mode/baseline-windows.json",
+      "revision": "95e74414c2d1cc03cdbb40b64dbc0e1fc5edca9f",
+      "anchor": "win",
+      "sha256": "2b84d03460b7b4636f134d15699a73169c079451a26da639d2ec42c97562f68f"
+    },
+    {
+      "availability": "available",
+      "id": "ubuntu",
+      "path": "../../../../receipts/crg-iu1-uninstall-mode/baseline-ubuntu.json",
+      "revision": "95e74414c2d1cc03cdbb40b64dbc0e1fc5edca9f",
+      "anchor": "ubuntu",
+      "sha256": "0b73bb9294b7061465874818b20309b45704a573fb341d3bcb7c0105b7a340a9"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI uninstall",
+      "type": "command",
+      "source_refs": [
+        "cli",
+        "test"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "writer",
+      "label": "Escrita atômica do uninstall",
+      "type": "function",
+      "source_refs": [
+        "writer",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "file",
+      "label": "Configuração no filesystem",
+      "type": "storage",
+      "source_refs": [
+        "writer",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "test",
+      "label": "Teste do modo efetivo",
+      "type": "test",
+      "source_refs": [
+        "test"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "ci",
+      "label": "Passo uninstall Windows",
+      "type": "workflow",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-writer",
+      "source": "cli",
+      "target": "writer",
+      "relation": "calls",
+      "condition": "Rota uninstall com configuração local",
+      "source_refs": [
+        "cli",
+        "writer",
+        "test"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "writer-file",
+      "source": "writer",
+      "target": "file",
+      "relation": "other",
+      "condition": "Substituição atômica do arquivo gravável",
+      "source_refs": [
+        "writer",
+        "win",
+        "ubuntu"
+      ],
+      "evidence": "observed",
+      "limitation": "Relação de escrita e substituição de arquivo, observada na fixture gravável.",
+      "propagates": true
+    },
+    {
+      "id": "test-writer",
+      "source": "test",
+      "target": "writer",
+      "relation": "calls",
+      "condition": "uninstall.run com fixture temporária",
+      "source_refs": [
+        "test",
+        "writer"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    },
+    {
+      "id": "ci-test",
+      "source": "ci",
+      "target": "test",
+      "relation": "executes",
+      "condition": "Passo Run uninstall tests",
+      "source_refs": [
+        "workflow"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "propagates": true
+    }
+  ]
+}
