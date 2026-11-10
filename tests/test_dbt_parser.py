@@ -6,6 +6,8 @@ from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import CodeParser
 
+DBT_MODEL_PATH = Path("models/staging/fct_orders.sql")
+
 DBT_MODEL = b"""\
 with
 
@@ -39,7 +41,7 @@ class TestDbtModelParsing:
     def setup_method(self):
         self.parser = CodeParser()
         self.nodes, self.edges = self.parser.parse_bytes(
-            Path("models/staging/fct_orders.sql"), DBT_MODEL,
+            DBT_MODEL_PATH, DBT_MODEL,
         )
 
     def test_model_node_named_after_file_stem(self):
@@ -52,9 +54,8 @@ class TestDbtModelParsing:
         assert models[0].language == "sql"
 
     def test_contains_edge(self):
-        contains = [e for e in self.edges if e.kind == "CONTAINS"]
-        targets = {e.target for e in contains}
-        assert "models/staging/fct_orders.sql::fct_orders" in targets
+        endpoints = [(e.source, e.target) for e in self.edges if e.kind == "CONTAINS"]
+        assert endpoints == [(str(DBT_MODEL_PATH), f"{DBT_MODEL_PATH}::fct_orders")]
 
     def test_ref_and_source_dependency_edges(self):
         imports = {e.target for e in self.edges if e.kind == "IMPORTS_FROM"}
@@ -134,11 +135,13 @@ def test_full_build_links_dbt_models_by_ref(tmp_path: Path) -> None:
         assert {"stg_orders", "fct_orders"} <= model_names
 
         fct_file = str(models / "fct_orders.sql")
-        targets = {
-            e.target_qualified
-            for e in store.get_edges_by_source(fct_file)
-            if e.kind == "IMPORTS_FROM"
-        }
+        edges = store.get_edges_by_source(fct_file)
+        contains, = (e for e in edges if e.kind == "CONTAINS")
+        model = store.get_node(contains.target_qualified)
+        assert model is not None
+        assert (model.kind, model.name, model.file_path) == ("Class", "fct_orders", fct_file)
+
+        targets = {e.target_qualified for e in edges if e.kind == "IMPORTS_FROM"}
         assert "stg_orders" in targets
         assert "orders" not in targets  # CTE name must not leak in
     finally:
