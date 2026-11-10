@@ -133,6 +133,9 @@ jobs:
       - name: Run forget path tests
         run: python -m pytest --tb=short -v tests/test_forget.py
 
+      - name: Run dbt model tests
+        run: python -m pytest --tb=short -v tests/test_dbt_parser.py
+
       - name: Run explicit project root tests
         run: >-
           python -m pytest --tb=short -v
