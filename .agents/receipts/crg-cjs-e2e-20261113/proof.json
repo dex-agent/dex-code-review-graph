@@ -1,0 +1,289 @@
+{
+  "result": "passed",
+  "origin_head": "19c00028a666b239b2e8678e401039084ca87bc8",
+  "snapshot_head": "d8ad7a86f7c4c47a3fb97add256e190590739d6b",
+  "wheel_sha256": "6af9f787f1ee37f2c48e0d53bf04dc7dfe22931e51d64f57daa8c144608d5391",
+  "parser_sha256": "d6926988a1d8488bc6fa4a5cb3c5ee93f7ec96ad8addee345e95abb65d4237be",
+  "launcher_sha256": "726f2e96a6ba27b8987fb25028310fd39410144b4c728705db6512995ed4a46b",
+  "inventory_sha256": {
+    "scripts/doctor.cjs": "19055bb069fdecf1b2bfe7d8fde29daadedaf13dc1d40dd2bb5d4063c8196d77",
+    "scripts/install.cjs": "6f34ac38d167a6148f1c74f7508237c4a821abcb568fe9c10c61eecefe8cc896",
+    "scripts/live-read.cjs": "1a83f62d04f896203ce53d4c99ae9e0e0a438e87085320985b7aba453c0777de",
+    "scripts/release.cjs": "bc2de804b2cd0b4e6f8ab029621fc1561aa45d7338a694dd63d7b362172ae489",
+    "scripts/setup.cjs": "fd32f495dd6bb8a008665a7282cdc41f3ee9278689eb6c7eea32cfe42957f17e",
+    "scripts/test.cjs": "b09764e3f44f15128c2d0ff9593c76e40be1ca839f1803a428bba180267ffcd9",
+    "src/cdp.cjs": "f0cd9690ba854666b5611c204d57403e98256ff34c966d7ce4ea71f459d440c0",
+    "src/coordinator.cjs": "0e20318b60c5bbd236e4110a9d49dd98618fe499ce84851b7c3ff934cf233c9b",
+    "src/coordinator.test.cjs": "d0e20e01867488180ea50d69b3ea4b502f2ad2629f37237e3e68488b6e37ac07",
+    "src/core.cjs": "6a436b2d273510148c3df4b137263644a006c1073e0baa68607bc3e81d3cc705",
+    "src/core.test.cjs": "2d1cddf7ea2db5047276374500f2bf25000e4c84b7018d07d78f55f1096c0dc8",
+    "src/dom-contract.cjs": "44e62ed76b483a28a5bef34937f4f7474dd7278f34b2081ce67cc84ab7940281",
+    "src/shadow-ledger.cjs": "a04a74b8ceee44fa59ee4f68c3f4046dbb5b7b0b791d5dcb7ad25a7ef4477169",
+    "src/shadow-ledger.test.cjs": "eff66a74ff8b41614d9b9d28dc871ff3cfd1e46498c90c11625d9eddf338d350",
+    "src/shadow-store.cjs": "0dff97a34658c47c094acf830d865adf698d4d127c4ae74d3bf5039745797f7f",
+    "src/transport.cjs": "a0ceb7944f721eccfc260e42032d7464a6d1f11e4abea097b78650bf6721b82a",
+    "src/transport.test.cjs": "f074c422a695c33e542914e42d2e6b468e3605bf950de7893936312fffad8bc4",
+    "tests/distribution.test.cjs": "39973bf5b0515cfbf3ec19b22cb419b35fd52cc58b419e6b6fef3471116c8f1d",
+    "tests/live-config.test.cjs": "92252a452671a1c2fc26849bc2070f41dfff156bd53a17efbadcbb798563b79c"
+  },
+  "covered_paths": [
+    "scripts/doctor.cjs",
+    "scripts/install.cjs",
+    "scripts/live-read.cjs",
+    "scripts/release.cjs",
+    "scripts/setup.cjs",
+    "scripts/test.cjs",
+    "src/cdp.cjs",
+    "src/coordinator.cjs",
+    "src/coordinator.test.cjs",
+    "src/core.cjs",
+    "src/core.test.cjs",
+    "src/dom-contract.cjs",
+    "src/shadow-ledger.cjs",
+    "src/shadow-ledger.test.cjs",
+    "src/shadow-store.cjs",
+    "src/transport.cjs",
+    "src/transport.test.cjs",
+    "tests/distribution.test.cjs",
+    "tests/live-config.test.cjs"
+  ],
+  "staging_nodes": 0,
+  "import_pairs": [
+    [
+      "scripts/install.cjs",
+      "scripts/release.cjs"
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/cdp.cjs"
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/core.cjs"
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/dom-contract.cjs"
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/transport.cjs"
+    ],
+    [
+      "scripts/test.cjs",
+      "scripts/install.cjs"
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/core.cjs"
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/dom-contract.cjs"
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/shadow-ledger.cjs"
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/shadow-store.cjs"
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/coordinator.cjs"
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/dom-contract.cjs"
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/shadow-ledger.cjs"
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/shadow-store.cjs"
+    ],
+    [
+      "src/core.test.cjs",
+      "src/core.cjs"
+    ],
+    [
+      "src/shadow-ledger.cjs",
+      "src/core.cjs"
+    ],
+    [
+      "src/shadow-ledger.test.cjs",
+      "src/shadow-ledger.cjs"
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/shadow-ledger.cjs"
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/shadow-store.cjs"
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/transport.cjs"
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/install.cjs"
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/release.cjs"
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/setup.cjs"
+    ],
+    [
+      "tests/live-config.test.cjs",
+      "scripts/live-read.cjs"
+    ]
+  ],
+  "changed_paths": [
+    "app.cjs"
+  ],
+  "git_hunk": "@@ -4 +4 @@ const { ghost } = require('./missing.cjs');",
+  "fixture_git_base": "a49d489bdd3a390a9aebe6585d0fdf73c8013132",
+  "fixture_git_head": "6705bc5262bfd65a7f57c9051476456512a27bae",
+  "changed_functions": {
+    "app.cjs": [
+      [
+        "module.exports.start",
+        "app.cjs",
+        4,
+        4
+      ]
+    ],
+    "dep.cjs": []
+  },
+  "unresolved_imports": [
+    "./dep",
+    "./missing.cjs"
+  ],
+  "false_calls_to_js_homonym": 0,
+  "repeat_same_nodes_edges": true,
+  "commands": [
+    {
+      "step": "corpus-build",
+      "args": [
+        "build",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\corpus-index"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "corpus-status",
+      "args": [
+        "status",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\corpus-index",
+        "--json"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "corpus-imports",
+      "args": [
+        "query",
+        "imports_of",
+        "src/coordinator.cjs"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-build",
+      "args": [
+        "build",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture-index"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-status",
+      "args": [
+        "status",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture-index",
+        "--json"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-imports",
+      "args": [
+        "query",
+        "imports_of",
+        "app.cjs"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-update",
+      "args": [
+        "update",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture-index"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-updated-status",
+      "args": [
+        "status",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture-index",
+        "--json"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-callers",
+      "args": [
+        "query",
+        "callers_of",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture\\dep.cjs::run"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "diff-app.cjs",
+      "args": [
+        "detect-changes",
+        "--base",
+        "a49d489bdd3a390a9aebe6585d0fdf73c8013132",
+        "--files",
+        "app.cjs"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "diff-dep.cjs",
+      "args": [
+        "detect-changes",
+        "--base",
+        "a49d489bdd3a390a9aebe6585d0fdf73c8013132",
+        "--files",
+        "dep.cjs"
+      ],
+      "exit": 0
+    },
+    {
+      "step": "fixture-repeat-update",
+      "args": [
+        "update",
+        "--data-dir",
+        "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-e2e-ot685jr3\\fixture-index"
+      ],
+      "exit": 0
+    }
+  ]
+}

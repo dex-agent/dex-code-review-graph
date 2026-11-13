@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- Último corte local: [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) | checklist 4/4 | wheel isolado, 12 comandos com exit 0 e 19/19 | `crg-09r`.
+
 - Último corte local: [Reconhecimento `.cjs`](2026-11-13-crg-cjs.md) | checklist 4/4 | [canário 19/19 e bloqueio da promoção habitual autorizada](../EVIDENCIAS/2026-11-13-crg-cjs.md).
 
 - Último corte: [Modo efetivo no uninstall](2026-11-09-crg-iu1-uninstall-mode.md) | checklist 4/4 | CI 9/9 em `f5fb25d` | bead `crg-iu1` fechado | [veredito](../receipts/crg-iu1-uninstall-mode/verdict.json).

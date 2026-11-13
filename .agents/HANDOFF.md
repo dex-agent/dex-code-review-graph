@@ -1,5 +1,7 @@
 # HANDOFF — retomada curta
 
+- 2026-11-13 — O [E2E da CLI CommonJS](PLAN-TASKS/2026-11-13-crg-cjs-e2e.md) já cobre Git, SQLite, consulta pública, recorte e repetição pelo wheel isolado. A prova que falta para adoção é o canário 19/19 pelo launcher habitual depois de liberar os arquivos em uso.
+
 - 2026-11-13 — A adoção habitual do wheel `.cjs` está autorizada. O mantenedor retoma quando os processos `serve` do Codex liberarem o launcher e o Python da instalação habitual. Verifica o acesso exclusivo, usa o wheel conferido e as [constraints de rollback](receipts/crg-cjs-20261113/rollback-constraints.txt), e confirma o hash e o inventário 19/19 em novo índice pelo executável do PATH. [Bloqueio e canário isolado](EVIDENCIAS/2026-11-13-crg-cjs.md).
 
 Ultima atualizacao: 2026-11-13

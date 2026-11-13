@@ -1,5 +1,7 @@
 # Trilhos
 
+- [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) — `crg-09r`, jornada pública, Git e SQLite.
+
 - [Reconhecer arquivos CommonJS `.cjs`](2026-11-13-crg-cjs.md) — `crg-4t2`, prova nominal no corpus Dex WhatsApp. [Evidências e estado da adoção](../EVIDENCIAS/2026-11-13-crg-cjs.md).
 
 - `crg-iu1-uninstall-mode` | [Preservar o modo efetivo no uninstall](2026-11-09-crg-iu1-uninstall-mode.md) | checklist 4/4, pronto com ressalvas | owner: mantenedor CRG.
