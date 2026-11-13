@@ -1,5 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-13 — [E2E da CLI CommonJS](PLAN-TASKS/2026-11-13-crg-cjs-e2e.md), bead `crg-09r`. Doze comandos saíram 0, incluindo recorte de diff e segunda execução sem duplicação. A adoção habitual segue bloqueada por uso concorrente.
+
 - 2026-11-13 — [Reconhecimento `.cjs`](PLAN-TASKS/2026-11-13-crg-cjs.md), bead `crg-4t2`. A adoção local foi autorizada. Sete processos `serve` do Codex mantêm o launcher e o Python habituais em uso (Windows 32). O wheel isolado repetiu 19/19 caminhos e 24 importações relativas explícitas em um índice novo. [Prova e bloqueio](EVIDENCIAS/2026-11-13-crg-cjs.md).
 
 - Ultima atualizacao: 2026-11-13.
