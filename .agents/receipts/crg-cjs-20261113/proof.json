@@ -1,0 +1,224 @@
+{
+  "source_git_base": "b7f4e5e102a33f31b70bcee8b02b696acf195a5c",
+  "source_diff_sha256": "20832c42368d000af52898c7fe767ae22daa8cb9e13abdca40537c95decfd7b6",
+  "source_parser_sha256": "d6926988a1d8488bc6fa4a5cb3c5ee93f7ec96ad8addee345e95abb65d4237be",
+  "source_tests_sha256": "adc784491cde60bff5e5aef77ad2132596ce8feea47006b1cddbc5a39394a578",
+  "wheel": "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-2fd01d64913147cb913e03cfc4bc831a\\candidate-wheel\\code_review_graph-2.3.7-py3-none-any.whl",
+  "wheel_sha256": "6af9f787f1ee37f2c48e0d53bf04dc7dfe22931e51d64f57daa8c144608d5391",
+  "candidate_parser_sha256": "d6926988a1d8488bc6fa4a5cb3c5ee93f7ec96ad8addee345e95abb65d4237be",
+  "candidate_exe": "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-2fd01d64913147cb913e03cfc4bc831a\\candidate-bin\\code-review-graph.exe",
+  "candidate_exe_sha256": "726f2e96a6ba27b8987fb25028310fd39410144b4c728705db6512995ed4a46b",
+  "habitual_exe": "C:\\Users\\crsan\\.local\\bin\\code-review-graph.exe",
+  "habitual_exe_sha256": "a0a7a6d8ccde94def1ea235dce7a9d369acdc3ba3f53458ab21868c5ce03f9ef",
+  "baseline_corpus_files": 0,
+  "covered_corpus_files": [
+    "scripts/doctor.cjs",
+    "scripts/install.cjs",
+    "scripts/live-read.cjs",
+    "scripts/release.cjs",
+    "scripts/setup.cjs",
+    "scripts/test.cjs",
+    "src/cdp.cjs",
+    "src/coordinator.cjs",
+    "src/coordinator.test.cjs",
+    "src/core.cjs",
+    "src/core.test.cjs",
+    "src/dom-contract.cjs",
+    "src/shadow-ledger.cjs",
+    "src/shadow-ledger.test.cjs",
+    "src/shadow-store.cjs",
+    "src/transport.cjs",
+    "src/transport.test.cjs",
+    "tests/distribution.test.cjs",
+    "tests/live-config.test.cjs"
+  ],
+  "staging_files": 0,
+  "source_bytes_and_git_status_preserved": true,
+  "source_anchors": [
+    {
+      "kind": "IMPORTS_FROM",
+      "source": "src/coordinator.cjs",
+      "target": "src/core.cjs",
+      "lines": [
+        3
+      ]
+    },
+    {
+      "kind": "REFERENCES",
+      "source": "src/coordinator.cjs",
+      "target": "src/coordinator.cjs::resolve",
+      "lines": [
+        17
+      ]
+    }
+  ],
+  "explicit_internal_imports": [
+    [
+      "scripts/install.cjs",
+      "scripts/release.cjs",
+      2
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/cdp.cjs",
+      2
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/core.cjs",
+      2
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/dom-contract.cjs",
+      2
+    ],
+    [
+      "scripts/live-read.cjs",
+      "src/transport.cjs",
+      2
+    ],
+    [
+      "scripts/test.cjs",
+      "scripts/install.cjs",
+      3
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/core.cjs",
+      3
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/dom-contract.cjs",
+      4
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/shadow-ledger.cjs",
+      3
+    ],
+    [
+      "src/coordinator.cjs",
+      "src/shadow-store.cjs",
+      3
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/coordinator.cjs",
+      2
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/dom-contract.cjs",
+      2
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/shadow-ledger.cjs",
+      2
+    ],
+    [
+      "src/coordinator.test.cjs",
+      "src/shadow-store.cjs",
+      2
+    ],
+    [
+      "src/core.test.cjs",
+      "src/core.cjs",
+      3
+    ],
+    [
+      "src/shadow-ledger.cjs",
+      "src/core.cjs",
+      3
+    ],
+    [
+      "src/shadow-ledger.test.cjs",
+      "src/shadow-ledger.cjs",
+      1
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/shadow-ledger.cjs",
+      2
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/shadow-store.cjs",
+      2
+    ],
+    [
+      "src/transport.test.cjs",
+      "src/transport.cjs",
+      2
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/install.cjs",
+      4
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/release.cjs",
+      4
+    ],
+    [
+      "tests/distribution.test.cjs",
+      "scripts/setup.cjs",
+      5
+    ],
+    [
+      "tests/live-config.test.cjs",
+      "scripts/live-read.cjs",
+      2
+    ]
+  ],
+  "fixture_edges": [
+    {
+      "kind": "IMPORTS_FROM",
+      "source": "app.cjs",
+      "target": "dependency.cjs",
+      "lines": [
+        1
+      ]
+    },
+    {
+      "kind": "REFERENCES",
+      "source": "dependency.cjs",
+      "target": "dependency.cjs::run",
+      "lines": [
+        2
+      ]
+    },
+    {
+      "kind": "CALLS",
+      "source": "app.cjs::module.exports.start",
+      "target": "dependency.cjs::run",
+      "lines": [
+        4
+      ]
+    },
+    {
+      "kind": "CALLS",
+      "source": "app.cjs::module.exports.afterUpdate",
+      "target": "dependency.cjs::run",
+      "lines": [
+        7
+      ]
+    }
+  ],
+  "literal_targets": [
+    "./dependency",
+    "./missing.cjs"
+  ],
+  "update": {
+    "update_exit": 0,
+    "status_exit": 0,
+    "head": "dbb80850bef4c64ee617947fc0077ad20c5522ee",
+    "base": "65015512f02b55d3669b9ea0e6187146d86b378c",
+    "changed": [
+      "app.cjs"
+    ]
+  }
+}

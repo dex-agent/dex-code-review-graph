@@ -1,6 +1,8 @@
 # HANDOFF — retomada curta
 
-Ultima atualizacao: 2026-11-09
+- 2026-11-13 — A adoção habitual do wheel `.cjs` está autorizada. O mantenedor retoma quando os processos `serve` do Codex liberarem o launcher e o Python da instalação habitual. Verifica o acesso exclusivo, usa o wheel conferido e as [constraints de rollback](receipts/crg-cjs-20261113/rollback-constraints.txt), e confirma o hash e o inventário 19/19 em novo índice pelo executável do PATH. [Bloqueio e canário isolado](EVIDENCIAS/2026-11-13-crg-cjs.md).
+
+Ultima atualizacao: 2026-11-13
 
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d` e CI 9/9. `crg-iu1` fechado após o saldo integral chegar a zero IDs de falha. Antes de publicar um release Windows, o mantenedor valida o wheel em uma instalação Windows limpa e isolada, conferindo a versão, o executável e um smoke CLI com projeto descartável. [Saldo por ID](receipts/crg-iu1-uninstall-mode/comparison.json) · [Modo efetivo](memorias/crg-uninstall-modo-efetivo.md).
 
