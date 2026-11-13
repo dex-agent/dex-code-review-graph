@@ -34,3 +34,5 @@
 - CRG-UV-WSL-VENV-ISOLADO: rodar uv no WSL em checkout NTFS compartilhado com Windows -> [WSL precisa de ambiente uv próprio no CRG](memorias/crg-uv-wsl-venv-isolado.md) [[memorias/crg-uv-wsl-venv-isolado|WSL precisa de ambiente uv próprio no CRG]] #crg/portabilidade #python/uv #windows/wsl ^crg-uv-wsl-venv-isolado
 
 - CRG-UNINSTALL-MODO-EFETIVO: teste de substituição atômica compara chmod POSIX no Windows -> [Preservação de modo começa pelo estado efetivo da fixture](memorias/crg-uninstall-modo-efetivo.md) [[memorias/crg-uninstall-modo-efetivo|Preservação de modo começa pelo estado efetivo da fixture]] #crg/portabilidade #crg/uninstall #python/chmod ^crg-uninstall-modo-efetivo
+
+- CRG-COBERTURA-NOMINAL-CJS — antes de usar o índice para revisar um corpus CommonJS -> [Cobertura nominal de .cjs no CRG](memorias/crg-cobertura-nominal-cjs.md) [[memorias/crg-cobertura-nominal-cjs|Cobertura nominal de .cjs no CRG]] #crg/commonjs #crg/cobertura ^crg-cobertura-nominal-cjs

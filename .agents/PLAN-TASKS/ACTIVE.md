@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- Último corte local: [Reconhecimento `.cjs`](2026-11-13-crg-cjs.md) | checklist 4/4 | [canário 19/19 e bloqueio da promoção habitual autorizada](../EVIDENCIAS/2026-11-13-crg-cjs.md).
+
 - Último corte: [Modo efetivo no uninstall](2026-11-09-crg-iu1-uninstall-mode.md) | checklist 4/4 | CI 9/9 em `f5fb25d` | bead `crg-iu1` fechado | [veredito](../receipts/crg-iu1-uninstall-mode/verdict.json).
 
 - Anterior: [Pares exatos de eventos Spring](2026-11-09-crg-iu1-spring-events.md) | checklist 4/4 | CI 9/9 em `d22e6d6` | bead `crg-iu1` com um ID | [veredito](../receipts/crg-iu1-spring-events/verdict.json).

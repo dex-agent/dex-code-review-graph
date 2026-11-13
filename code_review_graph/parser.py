@@ -764,6 +764,7 @@ EXTENSION_TO_LANGUAGE: dict[str, str] = {
     ".dart": "dart",
     ".r": "r",  # .lower() in detect_language handles .R → .r
     ".mjs": "javascript",
+    ".cjs": "javascript",
     ".astro": "typescript",
     ".pl": "perl",
     ".pm": "perl",
@@ -13313,10 +13314,11 @@ class CodeParser:
                 if base.is_file():
                     return str(base.resolve())
                 # Try with extensions
-                for ext in extensions:
-                    target = base.with_suffix(ext)
-                    if target.is_file():
-                        return str(target.resolve())
+                if base.suffix.lower() != ".cjs":
+                    for ext in extensions:
+                        target = base.with_suffix(ext)
+                        if target.is_file():
+                            return str(target.resolve())
                 # Try index file in directory
                 if base.is_dir():
                     for ext in extensions:

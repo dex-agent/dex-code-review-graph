@@ -1,6 +1,8 @@
 # ACTIVE — code-review-graph (casa)
 
-- Ultima atualizacao: 2026-11-09.
+- 2026-11-13 — [Reconhecimento `.cjs`](PLAN-TASKS/2026-11-13-crg-cjs.md), bead `crg-4t2`. A adoção local foi autorizada. Sete processos `serve` do Codex mantêm o launcher e o Python habituais em uso (Windows 32). O wheel isolado repetiu 19/19 caminhos e 24 importações relativas explícitas em um índice novo. [Prova e bloqueio](EVIDENCIAS/2026-11-13-crg-cjs.md).
+
+- Ultima atualizacao: 2026-11-13.
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d`, CI 9/9 e uninstall Windows 46/46. A suíte integral Windows zerou as falhas, com 2.326 aprovados. Bead `crg-iu1` fechado. [Veredito](receipts/crg-iu1-uninstall-mode/verdict.json).
 - [Pares exatos de eventos Spring](PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md) — `d22e6d6`, CLI e SQLite confirmam os dois pares, CI 9/9 e Spring Windows 6/6. Resta um ID histórico na suíte integral. [Veredito](receipts/crg-iu1-spring-events/verdict.json).
 - [Referências HCL com caminhos nativos](PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md) — `d6336d2` corrige a expectativa da fixture. CLI e SQLite confirmam as duas arestas pelos IDs. CI 9/9, módulo HCL Windows 3/3 e dois IDs históricos restantes na suíte integral. [Veredito](receipts/crg-iu1-hcl-references/verdict.json).

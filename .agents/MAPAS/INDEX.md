@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261113-crg-cjs — inventário Dex WhatsApp, resolução explícita e wheel local.
+  - [Capacidades](capacidades-crg-20261113-crg-cjs.md)
+  - [Decisões](decisoes-crg-20261113-crg-cjs.md)
+  - [Dependências](dependencias/crg/20261113-crg-cjs/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-13-crg-cjs.md)
+
 - 20261109-crg-iu1-uninstall-mode — modo efetivo no uninstall e cobertura Windows.
   - [Capacidades](capacidades-crg-20261109-crg-iu1-uninstall-mode.md)
   - [Decisões históricas](decisoes-crg-20261109-crg-iu1-uninstall-mode.md)
