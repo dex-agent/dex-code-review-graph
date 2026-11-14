@@ -162,3 +162,7 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 /.agents/receipts/crg-cjs-runtime-20261113/*
 !/.agents/receipts/crg-cjs-runtime-20261113/adopt-path-install.txt
 !/.agents/receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json
+!/.agents/receipts/CRG-PILOTO-ADAPTER-20261114/
+/.agents/receipts/CRG-PILOTO-ADAPTER-20261114/*
+!/.agents/receipts/CRG-PILOTO-ADAPTER-20261114/LAUDO.md
+!/.agents/receipts/CRG-PILOTO-ADAPTER-20261114/INDEX.md
