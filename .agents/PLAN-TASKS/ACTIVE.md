@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- [Piloto do wheel em segundo Windows](2026-11-14-crg-piloto-segundo-windows.md) | `crg-b1w` | ensaio comprovado, execução externa aguardando host.
+
 - Último corte local: [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) | checklist 4/4 | wheel isolado, 12 comandos com exit 0 e 19/19 | `crg-09r`.
 
 - Adoção concluída: [Reconhecimento `.cjs`](2026-11-13-crg-cjs.md) | checklist 6/6 | [19/19 e 21/21 pelo PATH](../receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json).

@@ -1,5 +1,7 @@
 # Trilhos
 
+- [Piloto do wheel em segundo Windows](2026-11-14-crg-piloto-segundo-windows.md) — `crg-b1w`, prova de portabilidade.
+
 - [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) — `crg-09r`, jornada pública, Git e SQLite.
 
 - [Reconhecer arquivos CommonJS `.cjs`](2026-11-13-crg-cjs.md) — `crg-4t2`, prova nominal no corpus Dex WhatsApp. [Evidências e estado da adoção](../EVIDENCIAS/2026-11-13-crg-cjs.md).
