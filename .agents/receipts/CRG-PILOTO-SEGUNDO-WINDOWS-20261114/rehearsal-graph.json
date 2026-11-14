@@ -1,0 +1,87 @@
+{
+  "host": "PREDATOR",
+  "windows": "10.0.26300",
+  "rehearsal": true,
+  "git_head": "eb7d95b11b29fa02384323b9e6bae063a40493dc",
+  "wheel_sha256": "7f2f9b60802b253739c6851ee7d84e3b970a5cd9636eab800e831f72b7e051a0",
+  "parser_sha256": "2ca0223c0ef234be3fc4558fb0453c1445b188250d2431a54aac585b50a30115",
+  "launcher": "C:\\Users\\crsan\\.local\\bin\\code-review-graph.exe",
+  "launcher_sha256": "a0a7a6d8ccde94def1ea235dce7a9d369acdc3ba3f53458ab21868c5ce03f9ef",
+  "quick_check": [
+    [
+      "ok"
+    ]
+  ],
+  "index": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\CRG-PILOTO-SEGUNDO-WINDOWS-20261114\\rehearsal-final\\index\\graph.db",
+  "status": {
+    "nodes": 218,
+    "edges": 1829,
+    "files": 25,
+    "languages": [
+      "javascript",
+      "powershell"
+    ],
+    "last_updated": "2026-11-14T16:37:13",
+    "vcs": "git",
+    "built_on_branch": "HEAD",
+    "built_at_commit": "eb7d95b11b29fa02384323b9e6bae063a40493dc",
+    "current_branch": "HEAD",
+    "current_sha": "eb7d95b11b29fa02384323b9e6bae063a40493dc",
+    "svn_branch": null,
+    "svn_revision": null
+  },
+  "git_cjs": [
+    "scripts/doctor.cjs",
+    "scripts/install.cjs",
+    "scripts/live-read.cjs",
+    "scripts/release.cjs",
+    "scripts/setup.cjs",
+    "scripts/start.cjs",
+    "scripts/test.cjs",
+    "src/cdp.cjs",
+    "src/coordinator.cjs",
+    "src/coordinator.test.cjs",
+    "src/core.cjs",
+    "src/core.test.cjs",
+    "src/dom-contract.cjs",
+    "src/shadow-ledger.cjs",
+    "src/shadow-ledger.test.cjs",
+    "src/shadow-store.cjs",
+    "src/transport.cjs",
+    "src/transport.test.cjs",
+    "tests/distribution.test.cjs",
+    "tests/live-config.test.cjs",
+    "tests/start.test.cjs"
+  ],
+  "sqlite_cjs": [
+    "scripts/doctor.cjs",
+    "scripts/install.cjs",
+    "scripts/live-read.cjs",
+    "scripts/release.cjs",
+    "scripts/setup.cjs",
+    "scripts/start.cjs",
+    "scripts/test.cjs",
+    "src/cdp.cjs",
+    "src/coordinator.cjs",
+    "src/coordinator.test.cjs",
+    "src/core.cjs",
+    "src/core.test.cjs",
+    "src/dom-contract.cjs",
+    "src/shadow-ledger.cjs",
+    "src/shadow-ledger.test.cjs",
+    "src/shadow-store.cjs",
+    "src/transport.cjs",
+    "src/transport.test.cjs",
+    "tests/distribution.test.cjs",
+    "tests/live-config.test.cjs",
+    "tests/start.test.cjs"
+  ],
+  "tested_by_cli": [
+    "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\CRG-PILOTO-SEGUNDO-WINDOWS-20261114\\rehearsal-final\\dex-whatsapp\\tests\\distribution.test.cjs::test:release excludes private data and installer rejects existing/adulterated destination@L4"
+  ],
+  "tested_by_sql": {
+    "source": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\CRG-PILOTO-SEGUNDO-WINDOWS-20261114\\rehearsal-final\\dex-whatsapp\\scripts\\install.cjs::install",
+    "target": "C:\\CodexProjetos\\code-review-graph\\.agents\\receipts\\CRG-PILOTO-SEGUNDO-WINDOWS-20261114\\rehearsal-final\\dex-whatsapp\\tests\\distribution.test.cjs::test:release excludes private data and installer rejects existing/adulterated destination@L4",
+    "line": 4
+  }
+}
