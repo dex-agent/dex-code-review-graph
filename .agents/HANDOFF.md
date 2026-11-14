@@ -1,5 +1,7 @@
 # HANDOFF — retomada curta
 
+- 2026-11-14 — Piloto do adapter concluído (flow `flow_20261114231445529_0771_0001`): o wheel candidato `8fd3127c` destravou revisão real — canário Dex WhatsApp `eb7d95b` 73/73 + `TESTED_BY` direto linha 4 nas duas vias; `detect-changes` do diff `5356307` com precisão/recall efetivos 100% contra gabarito independente; ambiente isolado com egress zero (cache HF 89=89, habitual intocada). Achado: "21/21" do LEIA-ME é defasado (real 72/72 rehearsal / 73/73 piloto; 2 ocorrências no kit). Promoção a rota permanente aguarda GO do dono. [Laudo](receipts/CRG-PILOTO-ADAPTER-20261114/LAUDO.md).
+
 - 2026-11-14 — O índice persistente do Dex WhatsApp foi reconstruído e promovido. A CLI habitual confirma um TESTED_BY direto de `install`. O backup passou no ensaio de restauração. [Recibo](receipts/CRG-INDICE-PERSISTENTE-20261114/INDEX.md).
 
 - 2026-11-14 — [Testes CommonJS](PLAN-TASKS/2026-11-14-crg-commonjs-tests.md). Dois REDs preservados, uma associação direta de `install` comprovada e recorte `--files` conferido. O wheel do teste está isolado. Para promoção futura, usar a rota de rollback da adoção anterior depois do GO do dono. [Recibo](receipts/crg-commonjs-tests-20261114/INDEX.md).

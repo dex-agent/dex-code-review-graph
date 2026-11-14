@@ -1,5 +1,7 @@
 # Trilhos
 
+- [Piloto do adapter em revisão real](2026-11-14-crg-piloto-adapter-revisao-real.md) — `crg-piloto-adapter-revisao-real-20261114`, canário oraculado Dex WhatsApp + revisão medida do diff 5356307.
+
 - [CRG-PACOTE-SEGUNDO-WINDOWS-20261114](2026-11-14-crg-pacote-segundo-windows.md) — `crg-7ob`, kit offline com fixture sintética e rollback.
 
 - [CRG-GATES-UPSTREAM-20261114](2026-11-14-crg-gates-upstream.md) — `crg-885`, comparação de wheels e verificação de merge.
