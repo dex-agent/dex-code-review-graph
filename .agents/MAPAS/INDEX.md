@@ -1,5 +1,11 @@
 # Mapas do Code Review Graph
 
+- 20261114-crg-cjs-path — adoção da CLI habitual, com 19/19 e 21/21.
+  - [Capacidades](capacidades-crg-20261114-crg-cjs-path.md)
+  - [Decisões](decisoes-crg-20261114-crg-cjs-path.md)
+  - [Dependências](dependencias/crg/20261114-crg-cjs-path/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-13-crg-cjs.md#continuação-da-adoção-habitual)
+
 - 20261113-crg-cjs — inventário Dex WhatsApp, resolução explícita e wheel local.
   - [Capacidades](capacidades-crg-20261113-crg-cjs.md)
   - [Decisões](decisoes-crg-20261113-crg-cjs.md)

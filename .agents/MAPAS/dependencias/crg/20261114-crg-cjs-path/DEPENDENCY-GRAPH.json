@@ -1,0 +1,121 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261114-crg-cjs-path",
+    "observed_at": "2026-11-14T11:30:53.045565-03:00",
+    "revision": "201f3c0a9627b282fc7eba4e03646179c3ddd7a3",
+    "scope": "Adoção local do wheel e cobertura de arquivos .cjs",
+    "environment": "Windows, CLI habitual no PATH",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "excluded": [
+      "Rebuild do índice persistente",
+      "Reexecução da suíte"
+    ],
+    "limits": [
+      "Snapshots dos .cjs de dois commits do Dex WhatsApp em bancos descartáveis."
+    ],
+    "method": "uv tool install, hash do parser, Git, CLI e SQLite"
+  },
+  "sources": [
+    {
+      "id": "cli",
+      "path": "../../../../../code_review_graph/cli.py",
+      "anchor": "build/update",
+      "revision": "b7f4e5e + diff sha256:20832c42368d000af52898c7fe767ae22daa8cb9e13abdca40537c95decfd7b6",
+      "sha256": "7ddb5f8188a480638d264f7d23d9f96fe0633d7d74767c6820b6f61bcc985d37",
+      "availability": "available"
+    },
+    {
+      "id": "parser",
+      "path": "../../../../../code_review_graph/parser.py",
+      "anchor": "detect_language e _resolve_module_to_file",
+      "revision": "b7f4e5e + diff sha256:20832c42368d000af52898c7fe767ae22daa8cb9e13abdca40537c95decfd7b6",
+      "sha256": "d6926988a1d8488bc6fa4a5cb3c5ee93f7ec96ad8addee345e95abb65d4237be",
+      "availability": "available"
+    },
+    {
+      "id": "adoption",
+      "path": "../../../../receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json",
+      "anchor": "parser_sha256 e validation",
+      "revision": "201f3c0a9627b282fc7eba4e03646179c3ddd7a3",
+      "sha256": "4e7962e2f591ad82edb614b216aae472f8e6f24a86fff38c19ef4b04609afa12",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI do PATH (build e status)",
+      "type": "command",
+      "source_refs": [
+        "adoption",
+        "cli"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "parser",
+      "label": "Parser JavaScript e resolvedor",
+      "type": "function",
+      "source_refs": [
+        "adoption",
+        "parser"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    },
+    {
+      "id": "sqlite",
+      "label": "Índice SQLite descartável",
+      "type": "storage",
+      "source_refs": [
+        "adoption",
+        "cli"
+      ],
+      "evidence": "observed",
+      "limitation": "",
+      "owner": "mantenedor CRG",
+      "external": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-parser",
+      "source": "cli",
+      "target": "parser",
+      "relation": "calls",
+      "condition": "Build de snapshot .cjs",
+      "source_refs": [
+        "adoption",
+        "cli",
+        "parser"
+      ],
+      "evidence": "observed",
+      "limitation": "Hash do parser instalado coincide com o wheel.",
+      "propagates": true
+    },
+    {
+      "id": "cli-sqlite",
+      "source": "cli",
+      "target": "sqlite",
+      "relation": "other",
+      "condition": "Build e status de cada snapshot",
+      "source_refs": [
+        "adoption",
+        "cli"
+      ],
+      "evidence": "observed",
+      "limitation": "Igualdade nominal com Git: 19/19 e 21/21. Bancos novos.",
+      "propagates": true
+    }
+  ]
+}

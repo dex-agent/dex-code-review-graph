@@ -4,8 +4,8 @@ description: "Regras de decisao e procedimentos deste projeto - projecao gerada 
 type: playbook
 generated_by: "tools/playbook/generate-playbook.py"
 authority: derived_projection
-sources_revision: "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f"
-sent_revision: "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f"
+sources_revision: "sha256:eacb1fdb0fd6a87d5ed0fb80f83fa343323ca6d148d1e43c5df6f3ff0add29ef"
+sent_revision: "sha256:eacb1fdb0fd6a87d5ed0fb80f83fa343323ca6d148d1e43c5df6f3ff0add29ef"
 do_not_edit: true
 ---
 # Playbook - code-review-graph
@@ -31,8 +31,8 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
   - `.agents/ACTIVE.md`
   - `.agents/HANDOFF.md`
   - `.agents/PLAN-TASKS/ACTIVE.md`
-- Fonte: `AGENTS.md#L147-L155`
-- Selo: `pb-8572b9fc`
+- Fonte: `AGENTS.md#L120-L128`
+- Selo: `pb-056851b6`
 
 ## Runbook <-> Playbook (procedimentos)
 
@@ -46,7 +46,7 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 
 | caminho | sha256 | Enviado? |
 | --- | --- | --- |
-| `AGENTS.md` | `c9ed3751d23b307949a86f006de4b7a29c3dce31d2871b7fbf855e2a1db9e515` | sim |
+| `AGENTS.md` | `116c6d202fff66a7b600bb01975dc3b5f661d3f8ddafa99bc2e440795afdf32c` | sim |
 | `.agents/napkin.md` | `c9a5048699f7b1d24cf0591c110919b2e5b0d3d4d976ff58bb66f3ef2327afa0` | sim |
 | `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md` | `c17e9297ebcb43f01558f95fc11c84eb2fc8f33171dbe4d0cd2df16ab12a7e05` | sim |
 
@@ -62,8 +62,8 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 - Non-Interactive Shell Commands -> `AGENTS.md#L15` (sem token de localizador)
 - Beads Issue Tracker -> `AGENTS.md#L40` (sem token de localizador)
 - Session Completion -> `AGENTS.md#L59` (sem token de localizador)
-- MCP Tools: code-review-graph -> `AGENTS.md#L87` (sem token de localizador)
-- Graphify local -> `AGENTS.md#L125` (sem token de localizador)
-- Continuidade local (leitura obrigatória antes de trabalho não trivial) -> `AGENTS.md#L140` (sem token de localizador)
+- CLI: code-review-graph -> `AGENTS.md#L86` (sem token de localizador)
+- Graphify local -> `AGENTS.md#L98` (sem token de localizador)
+- Continuidade local (leitura obrigatória antes de trabalho não trivial) -> `AGENTS.md#L113` (sem token de localizador)
 - Regras -> `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L3` (sem token de localizador)
 - Limites -> `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L27` (sem token de localizador)

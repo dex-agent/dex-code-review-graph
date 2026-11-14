@@ -158,3 +158,7 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/crg-indice-persistente/proof-association.json
 !/.agents/receipts/crg-indice-persistente/dependencies-input.json
 !/.agents/receipts/repo-privado-created.json
+!/.agents/receipts/crg-cjs-runtime-20261113/
+/.agents/receipts/crg-cjs-runtime-20261113/*
+!/.agents/receipts/crg-cjs-runtime-20261113/adopt-path-install.txt
+!/.agents/receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json
