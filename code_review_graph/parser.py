@@ -1215,6 +1215,7 @@ _TEST_FILE_PATTERNS = [
     re.compile(r".*_test\.py$"),
     re.compile(r".*\.test\.[jt]sx?$"),
     re.compile(r".*\.spec\.[jt]sx?$"),
+    re.compile(r".*\.(?:test|spec)\.cjs$", re.IGNORECASE),
     re.compile(r".*_test\.go$"),
     re.compile(r".*_test\.dart$"),
     re.compile(r"test[_-].*\.[rR]$"),
@@ -1826,7 +1827,11 @@ def _is_test_function(
     """
     if any(p.search(name) for p in _TEST_PATTERNS):
         return True
-    if name in _TEST_RUNNER_NAMES and _is_test_file(file_path, repo_root):
+    if (
+        name in _TEST_RUNNER_NAMES
+        and not file_path.lower().endswith(".cjs")
+        and _is_test_file(file_path, repo_root)
+    ):
         return True
     if decorators and any(d in _TEST_ANNOTATIONS for d in decorators):
         return True
@@ -10425,6 +10430,12 @@ class CodeParser:
             effective_call_name = (
                 self._get_base_call_name(child, source) or call_name
             )
+        if (
+            language == "javascript"
+            and file_path.lower().endswith(".cjs")
+            and self._is_test_file(file_path)
+        ):
+            effective_call_name = self._commonjs_test_runner(child, source)
 
         # Special handling: test runner calls in test files -> Test nodes
         if (
@@ -10602,6 +10613,128 @@ class CodeParser:
             ))
 
         return False
+
+    def _commonjs_test_runner(self, call, source: bytes) -> Optional[str]:
+        callee = call.child_by_field_name("function")
+        if callee is None:
+            return None
+        if callee.type == "member_expression":
+            if self._get_base_call_name(call, source) is None:
+                return None
+            callee = callee.child_by_field_name("object")
+        if callee is None or callee.type != "identifier":
+            return None
+        binding = self._commonjs_binding(call, callee.text)
+        if binding is None:
+            # Mocha and Jest also expose test runners as globals.
+            name = callee.text.decode("utf-8", errors="replace")
+            return name if name in _TEST_RUNNER_NAMES else None
+        value = binding.child_by_field_name("value")
+        if (
+            value is None
+            or value.type != "call_expression"
+            or value.end_byte > call.start_byte
+        ):
+            return None
+        module = self._js_static_module_target(value)
+        if module not in ("node:test", "mocha", "@jest/globals", "vitest"):
+            return None
+        if self._commonjs_binding(value, b"require") is not None:
+            return None
+        pattern = binding.child_by_field_name("name")
+        if module == "node:test" and pattern.type == "identifier":
+            return "test"
+        return self._js_test_runner_export(pattern, callee.text)
+
+    @staticmethod
+    def _js_test_runner_export(pattern, local_name: bytes) -> Optional[str]:
+        if pattern.type == "object_pattern":
+            for field in pattern.named_children:
+                exported = field
+                local = field
+                if field.type == "pair_pattern":
+                    exported = field.child_by_field_name("key")
+                    local = field.child_by_field_name("value")
+                if local is None or exported is None or local.text != local_name:
+                    continue
+                name = exported.text.decode("utf-8", errors="replace")
+                if name in _TEST_RUNNER_NAMES:
+                    return name
+        return None
+
+    _JS_FUNCTION_SCOPES = frozenset({
+        "function_declaration", "function_expression", "arrow_function",
+        "generator_function", "generator_function_declaration", "method_definition",
+    })
+    _JS_BLOCK_SCOPES = frozenset({
+        "program", "statement_block", "switch_body", "for_statement", "for_in_statement",
+    })
+
+    @classmethod
+    def _commonjs_binding(cls, node, name: bytes):
+        """Find the nearest declaration of a CommonJS identifier in its AST."""
+        scope = node.parent
+        while scope is not None:
+            function_scope = scope.type in cls._JS_FUNCTION_SCOPES
+            if function_scope or scope.type == "catch_clause":
+                fields = ("parameter", "parameters", "name") if function_scope else ("parameter",)
+                for field in fields:
+                    if cls._js_pattern_binds(scope.child_by_field_name(field), name):
+                        return scope
+            if function_scope or scope.type in cls._JS_BLOCK_SCOPES:
+                binding = cls._js_scope_binding(
+                    scope, name, include_var=function_scope or scope.type == "program",
+                )
+                if binding is not None:
+                    return binding
+            scope = scope.parent
+        return None
+
+    @classmethod
+    def _js_scope_binding(cls, scope, name: bytes, *, include_var: bool):
+        pending = [(child, True) for child in reversed(scope.named_children)]
+        while pending:
+            node, same_block = pending.pop()
+            if node.type in cls._JS_FUNCTION_SCOPES or node.type in ("class", "class_declaration"):
+                if same_block and node.type.endswith("_declaration"):
+                    if cls._js_pattern_binds(node.child_by_field_name("name"), name):
+                        return node
+                continue
+            if (node.type == "variable_declaration" and include_var) or (
+                node.type == "lexical_declaration" and same_block
+            ):
+                for declarator in node.named_children:
+                    if cls._js_pattern_binds(declarator.child_by_field_name("name"), name):
+                        return declarator
+                continue
+            if include_var and node.type == "for_in_statement":
+                kind = node.child_by_field_name("kind")
+                if kind is not None and kind.type == "var":
+                    if cls._js_pattern_binds(node.child_by_field_name("left"), name):
+                        return node
+            in_block = same_block and node.type not in cls._JS_BLOCK_SCOPES
+            if include_var or in_block:
+                pending.extend((child, in_block) for child in reversed(node.named_children))
+        if scope.type == "for_in_statement" and scope.child_by_field_name("kind"):
+            if cls._js_pattern_binds(scope.child_by_field_name("left"), name):
+                return scope
+        return None
+
+    @classmethod
+    def _js_pattern_binds(cls, pattern, name: bytes) -> bool:
+        if pattern is None:
+            return False
+        if pattern.type in ("identifier", "shorthand_property_identifier_pattern"):
+            return pattern.text == name
+        if pattern.type == "pair_pattern":
+            return cls._js_pattern_binds(pattern.child_by_field_name("value"), name)
+        if pattern.type in ("assignment_pattern", "object_assignment_pattern"):
+            return cls._js_pattern_binds(pattern.child_by_field_name("left"), name)
+        return pattern.type in {
+            "array_pattern", "object_pattern", "rest_pattern", "formal_parameters",
+        } and any(
+            cls._js_pattern_binds(child, name) for child in pattern.named_children
+        )
 
     @staticmethod
     def _get_js_member_call_name(node) -> Optional[str]:

@@ -136,3 +136,101 @@ def test_empty_and_argumentless_require_are_ignored(tmp_path):
         "const empty = require('');\nconst missing = require();\n",
     )
     assert _imports(edges) == []
+
+
+@pytest.mark.parametrize("suffix", [".test.cjs", ".spec.cjs", ".TEST.CJS"])
+def test_commonjs_test_suffix_outside_test_directory(tmp_path, suffix):
+    path = tmp_path / "src" / f"core{suffix}"
+    nodes, _ = CodeParser(tmp_path).parse_bytes(
+        path, b"const test = require('node:test');\ntest('core', () => {});\n",
+    )
+
+    assert [(node.kind, node.is_test) for node in nodes if node.kind == "File"] == [
+        ("File", True),
+    ]
+    assert [node.name for node in nodes if node.kind == "Test"] == ["test:core@L2"]
+
+
+def test_commonjs_node_test_alias_in_test_directory(tmp_path):
+    path = tmp_path / "tests" / "distribution.test.cjs"
+    nodes, edges = CodeParser(tmp_path).parse_bytes(
+        path,
+        b"const t = require('node:test'), assert = require('node:assert/strict');\n"
+        b"t('install', () => install());\n",
+    )
+
+    assert [node.name for node in nodes if node.kind == "Test"] == ["test:install@L2"]
+    assert any(
+        edge.kind == "TESTED_BY" and edge.source == "install"
+        and edge.target == f"{path}::test:install@L2"
+        for edge in edges
+    )
+
+
+@pytest.mark.parametrize("shadow", [
+    "function helper(t) { t('shadow', () => wrong()); }",
+    "function helper({t}) { t('shadow', () => wrong()); }",
+    "{ const t = other; t('shadow', () => wrong()); }",
+    "function helper() { t('shadow', () => wrong()); if (flag) { var t = other; } }",
+    "try {} catch (t) { t('shadow', () => wrong()); }",
+    "function helper() { function t() {} t('shadow', () => wrong()); }",
+    "for (const t of runners) { t('shadow', () => wrong()); }",
+    "function helper() { t('shadow', () => wrong()); for (var t of runners) {} }",
+    "switch (kind) { case 1: const t = other; t('shadow', () => wrong()); }",
+])
+def test_commonjs_node_test_alias_respects_shadowing(tmp_path, shadow):
+    path = tmp_path / "tests" / "distribution.test.cjs"
+    nodes, edges = CodeParser(tmp_path).parse_bytes(
+        path,
+        ("const t = require('node:test');\n"
+         f"{shadow}\n"
+         "t('install', () => install());\n").encode(),
+    )
+
+    assert [node.name for node in nodes if node.kind == "Test"] == ["test:install@L3"]
+    assert not any(edge.kind == "TESTED_BY" and edge.source == "wrong" for edge in edges)
+
+
+def test_commonjs_local_test_function_is_not_a_runner(tmp_path):
+    path = tmp_path / "tests" / "distribution.test.cjs"
+    nodes, edges = CodeParser(tmp_path).parse_bytes(
+        path, b"function test(name, callback) { callback(); }\ntest('local', () => wrong());\n",
+    )
+
+    assert not any(node.kind == "Test" for node in nodes)
+    assert not any(edge.kind == "TESTED_BY" and edge.source == "wrong" for edge in edges)
+
+
+def test_commonjs_destructured_node_test_alias_and_modifier(tmp_path):
+    path = tmp_path / "src" / "distribution.spec.cjs"
+    nodes, _ = CodeParser(tmp_path).parse_bytes(
+        path,
+        b"const {test: t, mock} = require('node:test');\n"
+        b"t.only('install', () => install());\n"
+        b"mock('not a runner', () => wrong());\n",
+    )
+
+    assert [node.name for node in nodes if node.kind == "Test"] == ["test:install@L2"]
+
+
+def test_commonjs_shadowed_require_does_not_create_a_node_test_alias(tmp_path):
+    path = tmp_path / "src" / "distribution.test.cjs"
+    nodes, _ = CodeParser(tmp_path).parse_bytes(
+        path,
+        b"function configure(require) {\n"
+        b"  const t = require('node:test');\n"
+        b"  t('fake', () => wrong());\n"
+        b"}\n",
+    )
+
+    assert not any(node.kind == "Test" for node in nodes)
+
+
+@pytest.mark.parametrize("module", ["mocha", "@jest/globals", "vitest"])
+def test_commonjs_runner_with_named_framework_import(tmp_path, module):
+    nodes, _ = CodeParser(tmp_path).parse_bytes(
+        tmp_path / "tests" / "framework.test.cjs",
+        f"const {{it}} = require('{module}');\nit('works', () => {{}});\n".encode(),
+    )
+
+    assert [node.name for node in nodes if node.kind == "Test"] == ["it:works@L2"]

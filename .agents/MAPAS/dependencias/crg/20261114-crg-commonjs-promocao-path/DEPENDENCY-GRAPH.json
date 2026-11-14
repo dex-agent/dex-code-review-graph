@@ -1,0 +1,143 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261114-crg-commonjs-promocao-path",
+    "observed_at": "2026-11-14T14:30:34.1993866-03:00",
+    "revision": "56986f7 + wheel SHA-256 7f2f9b60802b253739c6851ee7d84e3b970a5cd9636eab800e831f72b7e051a0",
+    "scope": "CLI habitual e banco descartável do Dex WhatsApp",
+    "environment": "Windows local",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "method": "Hash, uv, executável do PATH, Git e consulta SQL",
+    "excluded": [
+      "Adoção no banco persistente"
+    ],
+    "limits": [
+      "Snapshot por Git no commit eb7d95b."
+    ]
+  },
+  "sources": [
+    {
+      "id": "accept",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/crg-commonjs-path-20261114/acceptance.json",
+      "anchor": "tested_by",
+      "revision": "56986f7 + wheel SHA-256 7f2f9b60802b253739c6851ee7d84e3b970a5cd9636eab800e831f72b7e051a0",
+      "sha256": "949fab8eebc4b870573621c0f5441a3cd4e4b15f023083b3718d67bd05ade7bb",
+      "availability": "available"
+    },
+    {
+      "id": "promotion",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/crg-commonjs-path-20261114/promotion.json",
+      "anchor": "installed_parser_sha256",
+      "revision": "56986f7 + wheel SHA-256 7f2f9b60802b253739c6851ee7d84e3b970a5cd9636eab800e831f72b7e051a0",
+      "sha256": "44a22db86097bc3f383aa5470716b72e239c401343e6e8d27c0954ca348a2687",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "code-review-graph.exe do PATH",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promotion"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "package",
+      "label": "Wheel promovido no uv",
+      "type": "artifact",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promotion"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "sqlite",
+      "label": "Banco descartável do Dex WhatsApp",
+      "type": "database",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "accept"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "distribution",
+      "label": "distribution.test.cjs:4",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "accept"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "install",
+      "label": "scripts/install.cjs::install",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "accept"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "launch",
+      "source": "cli",
+      "target": "package",
+      "relation": "executes",
+      "condition": "resolução habitual do uv",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "promotion"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "query",
+      "source": "cli",
+      "target": "sqlite",
+      "relation": "consumes_contract",
+      "condition": "build e tests_for com CRG_DATA_DIR temporário",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "accept"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "calls",
+      "source": "distribution",
+      "target": "install",
+      "relation": "calls",
+      "condition": "chamada no callback de distribuição",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "accept"
+      ],
+      "limitation": ""
+    }
+  ]
+}

@@ -85,6 +85,9 @@ bd close <id>         # Complete work
 
 ## CLI: code-review-graph
 
+**TRACKER-LOCAL** — leia [.agents/TRACKER/INDEX.md](.agents/TRACKER/INDEX.md)
+na retomada para encontrar issues locais abertas.
+
 Use o executável do PATH para consultar o grafo. Antes da consulta, aplique
 o [check de frescor](.agents/GATILHOS-VIVOS.md#staleness-artefatos-derivados).
 Use `detect-changes` para revisar diffs, `impact` para rastrear efeitos e

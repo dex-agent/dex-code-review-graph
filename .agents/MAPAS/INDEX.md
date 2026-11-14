@@ -1,5 +1,27 @@
 # Mapas do Code Review Graph
 
+- 20261114-crg-gates-upstream — comparação com 2.4.0 e verificação local de merges.
+  - [Capacidades](capacidades-crg-20261114-crg-gates-upstream.md)
+  - [Decisões](decisoes-crg-20261114-crg-gates-upstream.md)
+  - [Dependências](dependencias/crg/20261114-crg-gates-upstream/DEPENDENCY-MAP.md)
+
+- 20261114-crg-indice-persistente-dex-whatsapp — rebuild e adoção do SQLite persistente do Dex WhatsApp.
+  - [Capacidades](capacidades-crg-20261114-crg-indice-persistente-dex-whatsapp.md)
+  - [Decisões](decisoes-crg-20261114-crg-indice-persistente-dex-whatsapp.md)
+  - [Dependências](dependencias/crg/20261114-crg-indice-persistente-dex-whatsapp/DEPENDENCY-MAP.md)
+
+- 20261114-crg-commonjs-promocao-path — promoção da CLI ao PATH com rollback e vínculo de install.
+  - [Capacidades](capacidades-crg-20261114-crg-commonjs-promocao-path.md)
+  - [Decisões](decisoes-crg-20261114-crg-commonjs-promocao-path.md)
+  - [Dependências](dependencias/crg/20261114-crg-commonjs-promocao-path/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-14-crg-commonjs-promocao-path.md)
+
+- 20261114-crg-commonjs-tests — testes CommonJS, vínculo direto de install e recorte do diff real.
+  - [Capacidades](capacidades-crg-20261114-crg-commonjs-tests.md)
+  - [Decisões](decisoes-crg-20261114-crg-commonjs-tests.md)
+  - [Dependências](dependencias/crg/20261114-crg-commonjs-tests/DEPENDENCY-MAP.md)
+  - [Trilho](../PLAN-TASKS/2026-11-14-crg-commonjs-tests.md)
+
 - 20261114-crg-cjs-path — adoção da CLI habitual, com 19/19 e 21/21.
   - [Capacidades](capacidades-crg-20261114-crg-cjs-path.md)
   - [Decisões](decisoes-crg-20261114-crg-cjs-path.md)

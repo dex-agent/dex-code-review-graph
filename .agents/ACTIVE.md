@@ -1,5 +1,11 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-14 — [Índice persistente Dex WhatsApp adotado](PLAN-TASKS/2026-11-14-crg-indice-persistente-dex-whatsapp.md). 21/21 caminhos e hashes CommonJS, um TESTED_BY direto de install. [Recibo e rollback](receipts/CRG-INDICE-PERSISTENTE-20261114/INDEX.md).
+
+- 2026-11-14 — [CLI CommonJS promovida ao PATH](PLAN-TASKS/2026-11-14-crg-commonjs-promocao-path.md), `crg-bv2`. Uma associação direta de `install`, comprovada em banco descartável. [Recibo e rollback](receipts/crg-commonjs-path-20261114/INDEX.md).
+
+- 2026-11-14 — [Testes CommonJS](PLAN-TASKS/2026-11-14-crg-commonjs-tests.md), `crg-6bf`. Índices descartáveis em `eb7d95b` do Dex WhatsApp. A CLI corrigida reconhece 7/7 arquivos de teste e o SQLite confirma `TESTED_BY` direto de `install`. [Prova](receipts/crg-commonjs-tests-20261114/proof.json).
+
 - 2026-11-14 — Wheel CommonJS adotado na CLI do PATH. Hash do parser conferido, 19/19 no commit original e 21/21 no atual do Dex WhatsApp em bancos novos. Rollback preservado. [Veredito](receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json).
 
 - 2026-11-13 — [Reconhecimento `.cjs`](PLAN-TASKS/2026-11-13-crg-cjs.md), bead `crg-4t2`, e [E2E da CLI](PLAN-TASKS/2026-11-13-crg-cjs-e2e.md), bead `crg-09r`. O wheel isolado confirmou 19/19 caminhos e 24 importações internas. [Evidências](EVIDENCIAS/2026-11-13-crg-cjs.md).

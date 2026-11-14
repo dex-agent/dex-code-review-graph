@@ -1,0 +1,120 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261114-crg-commonjs-tests",
+    "observed_at": "2026-11-14T14:13:52.8005364-03:00",
+    "revision": "56986f7 + parser SHA-256 2ca0223c0ef234be3fc4558fb0453c1445b188250d2431a54aac585b50a30115",
+    "scope": "Reconhecimento de testes CommonJS e relação direta no diff real",
+    "environment": "Windows, CLI e SQLite isolados",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "method": "Snapshot do Git, wheel, CLI e consulta SQL read-only",
+    "excluded": [
+      "Promoção ao PATH habitual",
+      "Rebuild do índice persistente"
+    ],
+    "limits": [
+      "Relação estrutural no commit eb7d95b do Dex WhatsApp."
+    ]
+  },
+  "sources": [
+    {
+      "id": "parser",
+      "path": "C:/CodexProjetos/code-review-graph/code_review_graph/parser.py",
+      "anchor": "_commonjs_test_runner",
+      "revision": "56986f7 + parser SHA-256 2ca0223c0ef234be3fc4558fb0453c1445b188250d2431a54aac585b50a30115",
+      "sha256": "2ca0223c0ef234be3fc4558fb0453c1445b188250d2431a54aac585b50a30115",
+      "availability": "available"
+    },
+    {
+      "id": "proof",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/crg-commonjs-tests-20261114/proof.json",
+      "anchor": "after_direct",
+      "revision": "56986f7 + parser SHA-256 2ca0223c0ef234be3fc4558fb0453c1445b188250d2431a54aac585b50a30115",
+      "sha256": "758a5ee321978e29cbecfdc06c25692bdbd0dec13868bf99d7ad9d4ba306670d",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI build e query",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "parser",
+      "label": "Extração de teste CommonJS",
+      "type": "module",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "parser"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "test",
+      "label": "distribution.test.cjs:4",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "install",
+      "label": "scripts/install.cjs::install",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "build-parser",
+      "source": "cli",
+      "target": "parser",
+      "relation": "executes",
+      "condition": "build de fonte JavaScript .cjs",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "parser",
+        "proof"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "distribution-install",
+      "source": "test",
+      "target": "install",
+      "relation": "calls",
+      "condition": "callback do teste de distribuição",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "proof"
+      ],
+      "limitation": "SQLite espelha a chamada em TESTED_BY no sentido install → teste."
+    }
+  ]
+}

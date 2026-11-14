@@ -374,6 +374,31 @@ code-review-graph mcp                          # Alias for serve
 Use absolute paths or paths relative to the repository root. In JSON mode,
 a scoped query with no matching changes returns empty results and zero risk.
 
+### Check a proposed merge locally
+
+```bash
+code-review-graph merge-check --repo . --base BASE_SHA --ours OURS_SHA \
+  --theirs THEIRS_SHA --test-failure-exit 1 -- python -m pytest
+```
+
+Supply an ancestor common to both commits, a trusted suite command and the
+exit code that runner reserves for failed tests. Git must support
+`merge-tree --write-tree --merge-base`. CRG computes the merge and runs the suite
+from the root of separate disposable checkouts of the base, both commits and
+the merged tree. Make the suite's dependencies available before invoking it.
+For `detect-changes --brief` and `update --brief`, redirected output uses UTF-8.
+
+The JSON includes Git's merge result, CRG's impact and test candidates, and the
+exit code, stdout and stderr for each suite run. Exit `0` means the declared
+suite passed. Exit `1` distinguishes `text_conflict` and `regression` through the
+`outcome` field. A regression requires three passing pre-merge runs and a
+failure with the declared test-failure code on the merged tree. Exit `2` means
+an input, execution or pre-merge suite failure prevented that conclusion.
+Graph gaps, unindexed files and truncation appear under `graph.coverage`.
+Graph coverage measures associations and the suite measures behavior under
+its own assertions. The command runs the declared executable with your user
+permissions inside a local disposable checkout.
+
 ## Standalone Daemon CLI (`crg-daemon`)
 
 The `crg-daemon` command is included with every `code-review-graph` installation — no

@@ -1,6 +1,16 @@
 # Trilhos
 
+- [CRG-PACOTE-SEGUNDO-WINDOWS-20261114](2026-11-14-crg-pacote-segundo-windows.md) — `crg-7ob`, kit offline com fixture sintética e rollback.
+
+- [CRG-GATES-UPSTREAM-20261114](2026-11-14-crg-gates-upstream.md) — `crg-885`, comparação de wheels e verificação de merge.
+
 - [Piloto do wheel em segundo Windows](2026-11-14-crg-piloto-segundo-windows.md) — `crg-b1w`, prova de portabilidade.
+
+- [CRG-INDICE-PERSISTENTE-20261114](2026-11-14-crg-indice-persistente-dex-whatsapp.md) — `crg-ead`.
+
+- [Promover testes CommonJS à CLI habitual](2026-11-14-crg-commonjs-promocao-path.md) — `crg-bv2`.
+
+- [Reconhecer testes CommonJS](2026-11-14-crg-commonjs-tests.md) — `crg-6bf`, associação direta em índice isolado.
 
 - [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) — `crg-09r`, jornada pública, Git e SQLite.
 

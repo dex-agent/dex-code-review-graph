@@ -1,6 +1,16 @@
 # Trilho ativo
 
+- [CRG-PACOTE-SEGUNDO-WINDOWS-20261114](2026-11-14-crg-pacote-segundo-windows.md) | `crg-7ob` | ZIP ensaiado no PREDATOR.
+
+- [CRG-GATES-UPSTREAM-20261114](2026-11-14-crg-gates-upstream.md) | `crg-885` | comparação e merge-check comprovados localmente, sem promoção.
+
 - [Piloto do wheel em segundo Windows](2026-11-14-crg-piloto-segundo-windows.md) | `crg-b1w` | ensaio comprovado, execução externa aguardando host.
+
+- [CRG-INDICE-PERSISTENTE-20261114](2026-11-14-crg-indice-persistente-dex-whatsapp.md) | `crg-ead` | [Prova habitual](../receipts/CRG-INDICE-PERSISTENTE-20261114/promotion.json).
+
+- [Promover testes CommonJS à CLI habitual](2026-11-14-crg-commonjs-promocao-path.md) | `crg-bv2` | [Aceite](../receipts/crg-commonjs-path-20261114/acceptance.json).
+
+- [Reconhecer testes CommonJS](2026-11-14-crg-commonjs-tests.md) | `crg-6bf` | [Evidências](../receipts/crg-commonjs-tests-20261114/INDEX.md).
 
 - Último corte local: [E2E da CLI CommonJS](2026-11-13-crg-cjs-e2e.md) | checklist 4/4 | wheel isolado, 12 comandos com exit 0 e 19/19 | `crg-09r`.
 
