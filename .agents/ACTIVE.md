@@ -1,5 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-14 — [Piloto do adapter em revisão real](PLAN-TASKS/2026-11-14-crg-piloto-adapter-revisao-real.md) CONCLUÍDO. Canário `eb7d95b` 73/73 com `TESTED_BY` direto :4 (CLI+SQLite idênticos); revisão do diff `5356307` com TP=32/FN=0-real/FP=0-real; egress zero (cache HF 89=89). Flow `flow_20261114231445529_0771_0001`. [Laudo](receipts/CRG-PILOTO-ADAPTER-20261114/LAUDO.md).
+
 - 2026-11-14 — [Índice persistente Dex WhatsApp adotado](PLAN-TASKS/2026-11-14-crg-indice-persistente-dex-whatsapp.md). 21/21 caminhos e hashes CommonJS, um TESTED_BY direto de install. [Recibo e rollback](receipts/CRG-INDICE-PERSISTENTE-20261114/INDEX.md).
 
 - 2026-11-14 — [CLI CommonJS promovida ao PATH](PLAN-TASKS/2026-11-14-crg-commonjs-promocao-path.md), `crg-bv2`. Uma associação direta de `install`, comprovada em banco descartável. [Recibo e rollback](receipts/crg-commonjs-path-20261114/INDEX.md).
