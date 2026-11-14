@@ -1,10 +1,10 @@
 # HANDOFF — retomada curta
 
-- 2026-11-13 — O [E2E da CLI CommonJS](PLAN-TASKS/2026-11-13-crg-cjs-e2e.md) já cobre Git, SQLite, consulta pública, recorte e repetição pelo wheel isolado. A prova que falta para adoção é o canário 19/19 pelo launcher habitual depois de liberar os arquivos em uso.
+- 2026-11-14 — Adoção da CLI CommonJS concluída. O reinício do Codex liberou os executáveis após a remoção do cadastro MCP. O wheel foi instalado offline pelo `uv`, com versões de dependências preservadas. O launcher do PATH comprovou 19/19 no commit original e 21/21 no atual, em bancos novos. [Veredito](receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json) · [Trilho](PLAN-TASKS/2026-11-13-crg-cjs.md).
 
-- 2026-11-13 — A adoção habitual do wheel `.cjs` está autorizada. O mantenedor retoma quando os processos `serve` do Codex liberarem o launcher e o Python da instalação habitual. Verifica o acesso exclusivo, usa o wheel conferido e as [constraints de rollback](receipts/crg-cjs-20261113/rollback-constraints.txt), e confirma o hash e o inventário 19/19 em novo índice pelo executável do PATH. [Bloqueio e canário isolado](EVIDENCIAS/2026-11-13-crg-cjs.md).
+- Na próxima consulta a um índice persistente, o mantenedor verifica o [frescor](GATILHOS-VIVOS.md#staleness-artefatos-derivados). Os bancos desta adoção são descartáveis. [Rollback ensaiado](receipts/crg-cjs-20261113/rollback.json).
 
-Ultima atualizacao: 2026-11-13
+Ultima atualizacao: 2026-11-14
 
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d` e CI 9/9. `crg-iu1` fechado após o saldo integral chegar a zero IDs de falha. Antes de publicar um release Windows, o mantenedor valida o wheel em uma instalação Windows limpa e isolada, conferindo a versão, o executável e um smoke CLI com projeto descartável. [Saldo por ID](receipts/crg-iu1-uninstall-mode/comparison.json) · [Modo efetivo](memorias/crg-uninstall-modo-efetivo.md).
 
@@ -54,7 +54,7 @@ Ultima atualizacao: 2026-11-13
 3. Runtime: `bd` 1.1.2, `code-review-graph` 2.3.7 (uv tool), MCP
    `dex_ppirtv` workspace-local (bundle V2, `bundle_configured`), CRG allowlist
    25 tools; handshakes provados por stdio.
-4. Debitos atuais: [PENDENTES](PENDENTES.md). Historico `.ppirtv` preservado como prova local e excluido da publicacao. As tools MCP estao expostas nesta sessao. O runtime CRG ainda usa a instalacao anterior ao patch.
+4. Debitos atuais: [PENDENTES](PENDENTES.md). Historico `.ppirtv` preservado como prova local e excluido da publicacao. O CRG usa a CLI habitual atualizada pelo wheel; o cadastro MCP do CRG foi removido.
 5. Segurança: não repetir valores de chaves; rotacionar `experimental_bearer_token`
    do provider DeepSeek (exposto em leitura do config global).
 

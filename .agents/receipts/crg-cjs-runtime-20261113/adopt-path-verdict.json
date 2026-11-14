@@ -1,0 +1,111 @@
+{
+  "result": "passed",
+  "measured_at": "2026-11-14T11:30:53.045565-03:00",
+  "launcher": "C:\\Users\\crsan\\.local\\bin\\code-review-graph.exe",
+  "launcher_sha256": "a0a7a6d8ccde94def1ea235dce7a9d369acdc3ba3f53458ab21868c5ce03f9ef",
+  "parser": "C:\\Users\\crsan\\AppData\\Roaming\\uv\\tools\\code-review-graph\\Lib\\site-packages\\code_review_graph\\parser.py",
+  "parser_sha256": "d6926988a1d8488bc6fa4a5cb3c5ee93f7ec96ad8addee345e95abb65d4237be",
+  "wheel_sha256": "6af9f787f1ee37f2c48e0d53bf04dc7dfe22931e51d64f57daa8c144608d5391",
+  "installed_packages": 126,
+  "dependency_versions_preserved": true,
+  "rollback_constraints_sha256": "c3cb0d1904e43c08b85429363ae2f5b44c209534826b77c4daabbac2ed91e995",
+  "validation": {
+    "historical": {
+      "source_git_sha": "19c00028a666b239b2e8678e401039084ca87bc8",
+      "snapshot_git_sha": "a56de82787c0ca02425d4b8310a974dcd5568fb8",
+      "indexed_git_sha": "a56de82787c0ca02425d4b8310a974dcd5568fb8",
+      "expected": 19,
+      "indexed": 19,
+      "missing": [],
+      "unexpected": [],
+      "files": {
+        "scripts/doctor.cjs": "19055bb069fdecf1b2bfe7d8fde29daadedaf13dc1d40dd2bb5d4063c8196d77",
+        "scripts/install.cjs": "6f34ac38d167a6148f1c74f7508237c4a821abcb568fe9c10c61eecefe8cc896",
+        "scripts/live-read.cjs": "1a83f62d04f896203ce53d4c99ae9e0e0a438e87085320985b7aba453c0777de",
+        "scripts/release.cjs": "bc2de804b2cd0b4e6f8ab029621fc1561aa45d7338a694dd63d7b362172ae489",
+        "scripts/setup.cjs": "fd32f495dd6bb8a008665a7282cdc41f3ee9278689eb6c7eea32cfe42957f17e",
+        "scripts/test.cjs": "b09764e3f44f15128c2d0ff9593c76e40be1ca839f1803a428bba180267ffcd9",
+        "src/cdp.cjs": "f0cd9690ba854666b5611c204d57403e98256ff34c966d7ce4ea71f459d440c0",
+        "src/coordinator.cjs": "a2480e9ef70876bb323bc46a7b03681e9f119d1b5cd1fb3bc29ae42bd82475e8",
+        "src/coordinator.test.cjs": "d0e20e01867488180ea50d69b3ea4b502f2ad2629f37237e3e68488b6e37ac07",
+        "src/core.cjs": "a671f92ba86961db36ea231cf8ce8a8d9db42917b4e518e9d98cfb0d18bb8955",
+        "src/core.test.cjs": "2d1cddf7ea2db5047276374500f2bf25000e4c84b7018d07d78f55f1096c0dc8",
+        "src/dom-contract.cjs": "44e62ed76b483a28a5bef34937f4f7474dd7278f34b2081ce67cc84ab7940281",
+        "src/shadow-ledger.cjs": "020bb4ade643d86c8d32e787e0768556cde5775aa9f7c7633006ab8bfd065be1",
+        "src/shadow-ledger.test.cjs": "eff66a74ff8b41614d9b9d28dc871ff3cfd1e46498c90c11625d9eddf338d350",
+        "src/shadow-store.cjs": "728179d323812785d1e8f1b975c2f8d890ed9e82fef97ad8597f08d04ee19dbd",
+        "src/transport.cjs": "04b186b57a07682de4a19f0091098ebca00ad12a2c72932442401d6b67016eb3",
+        "src/transport.test.cjs": "311714c08393ad42a26dd1607e7de3ca821025fc059c4675b73c0ae8f4c51cf4",
+        "tests/distribution.test.cjs": "39973bf5b0515cfbf3ec19b22cb419b35fd52cc58b419e6b6fef3471116c8f1d",
+        "tests/live-config.test.cjs": "92252a452671a1c2fc26849bc2070f41dfff156bd53a17efbadcbb798563b79c"
+      },
+      "index": "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-path-iewh3xfk\\historical-index\\graph.db",
+      "sqlite_quick_check": "ok",
+      "commands": [
+        {
+          "command": [
+            "build"
+          ],
+          "exit": 0
+        },
+        {
+          "command": [
+            "status",
+            "--json"
+          ],
+          "exit": 0
+        }
+      ]
+    },
+    "current": {
+      "source_git_sha": "eb7d95b11b29fa02384323b9e6bae063a40493dc",
+      "snapshot_git_sha": "011fb55737ae2ea6f2ed3c8779684eb4f5bb653f",
+      "indexed_git_sha": "011fb55737ae2ea6f2ed3c8779684eb4f5bb653f",
+      "expected": 21,
+      "indexed": 21,
+      "missing": [],
+      "unexpected": [],
+      "files": {
+        "scripts/doctor.cjs": "19055bb069fdecf1b2bfe7d8fde29daadedaf13dc1d40dd2bb5d4063c8196d77",
+        "scripts/install.cjs": "88fe1e9969756b749587a45e951394c5d003267a27ecbb3e04555c7d78cdf2b6",
+        "scripts/live-read.cjs": "1a83f62d04f896203ce53d4c99ae9e0e0a438e87085320985b7aba453c0777de",
+        "scripts/release.cjs": "bdb928a5450e0694c62de5a29c24ef09372f87a2ece263e218adc14826391eba",
+        "scripts/setup.cjs": "fd32f495dd6bb8a008665a7282cdc41f3ee9278689eb6c7eea32cfe42957f17e",
+        "scripts/start.cjs": "7dcaec667b0f0bdb84281195de9254be33b33024e9b9d5de171168bf1042eae9",
+        "scripts/test.cjs": "b09764e3f44f15128c2d0ff9593c76e40be1ca839f1803a428bba180267ffcd9",
+        "src/cdp.cjs": "f0cd9690ba854666b5611c204d57403e98256ff34c966d7ce4ea71f459d440c0",
+        "src/coordinator.cjs": "a2480e9ef70876bb323bc46a7b03681e9f119d1b5cd1fb3bc29ae42bd82475e8",
+        "src/coordinator.test.cjs": "d0e20e01867488180ea50d69b3ea4b502f2ad2629f37237e3e68488b6e37ac07",
+        "src/core.cjs": "a671f92ba86961db36ea231cf8ce8a8d9db42917b4e518e9d98cfb0d18bb8955",
+        "src/core.test.cjs": "2d1cddf7ea2db5047276374500f2bf25000e4c84b7018d07d78f55f1096c0dc8",
+        "src/dom-contract.cjs": "44e62ed76b483a28a5bef34937f4f7474dd7278f34b2081ce67cc84ab7940281",
+        "src/shadow-ledger.cjs": "020bb4ade643d86c8d32e787e0768556cde5775aa9f7c7633006ab8bfd065be1",
+        "src/shadow-ledger.test.cjs": "eff66a74ff8b41614d9b9d28dc871ff3cfd1e46498c90c11625d9eddf338d350",
+        "src/shadow-store.cjs": "728179d323812785d1e8f1b975c2f8d890ed9e82fef97ad8597f08d04ee19dbd",
+        "src/transport.cjs": "04b186b57a07682de4a19f0091098ebca00ad12a2c72932442401d6b67016eb3",
+        "src/transport.test.cjs": "311714c08393ad42a26dd1607e7de3ca821025fc059c4675b73c0ae8f4c51cf4",
+        "tests/distribution.test.cjs": "39973bf5b0515cfbf3ec19b22cb419b35fd52cc58b419e6b6fef3471116c8f1d",
+        "tests/live-config.test.cjs": "92252a452671a1c2fc26849bc2070f41dfff156bd53a17efbadcbb798563b79c",
+        "tests/start.test.cjs": "483d228aef7d0effdf133367fff8b3e1d4011a178ea52b985acd575de8e01094"
+      },
+      "index": "C:\\Users\\crsan\\AppData\\Local\\Temp\\crg-cjs-path-iewh3xfk\\current-index\\graph.db",
+      "sqlite_quick_check": "ok",
+      "commands": [
+        {
+          "command": [
+            "build"
+          ],
+          "exit": 0
+        },
+        {
+          "command": [
+            "status",
+            "--json"
+          ],
+          "exit": 0
+        }
+      ]
+    }
+  },
+  "source_head_status_and_stage_preserved": true
+}

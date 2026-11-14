@@ -3,11 +3,11 @@
   "generated_by": "tools/playbook/generate-playbook.py",
   "authority": "derived_projection",
   "repo_name": "code-review-graph",
-  "sources_revision": "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f",
-  "sent_revision": "sha256:ae3676b07efcd7702e1fa081e3e95527202eccf7d12087edf52548d1c9b5a62f",
+  "sources_revision": "sha256:eacb1fdb0fd6a87d5ed0fb80f83fa343323ca6d148d1e43c5df6f3ff0add29ef",
+  "sent_revision": "sha256:eacb1fdb0fd6a87d5ed0fb80f83fa343323ca6d148d1e43c5df6f3ff0add29ef",
   "rules": [
     {
-      "seal": "pb-8572b9fc",
+      "seal": "pb-056851b6",
       "locator": "PENDENTES-LEDGER",
       "title": "Leitura obrigatoria (bootstrap)",
       "gatilho": "5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)",
@@ -18,7 +18,7 @@
         "`.agents/HANDOFF.md`",
         "`.agents/PLAN-TASKS/ACTIVE.md`"
       ],
-      "fonte": "AGENTS.md#L147-L155"
+      "fonte": "AGENTS.md#L120-L128"
     }
   ],
   "mesa": {
@@ -47,16 +47,16 @@
       "ancora": "AGENTS.md#L59"
     },
     {
-      "titulo": "MCP Tools: code-review-graph",
-      "ancora": "AGENTS.md#L87"
+      "titulo": "CLI: code-review-graph",
+      "ancora": "AGENTS.md#L86"
     },
     {
       "titulo": "Graphify local",
-      "ancora": "AGENTS.md#L125"
+      "ancora": "AGENTS.md#L98"
     },
     {
       "titulo": "Continuidade local (leitura obrigatória antes de trabalho não trivial)",
-      "ancora": "AGENTS.md#L140"
+      "ancora": "AGENTS.md#L113"
     },
     {
       "titulo": "Regras",
@@ -70,7 +70,7 @@
   "fontes": [
     {
       "caminho": "AGENTS.md",
-      "sha256": "c9ed3751d23b307949a86f006de4b7a29c3dce31d2871b7fbf855e2a1db9e515",
+      "sha256": "116c6d202fff66a7b600bb01975dc3b5f661d3f8ddafa99bc2e440795afdf32c",
       "enviado": true
     },
     {
