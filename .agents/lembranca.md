@@ -36,3 +36,7 @@
 - CRG-UNINSTALL-MODO-EFETIVO: teste de substituição atômica compara chmod POSIX no Windows -> [Preservação de modo começa pelo estado efetivo da fixture](memorias/crg-uninstall-modo-efetivo.md) [[memorias/crg-uninstall-modo-efetivo|Preservação de modo começa pelo estado efetivo da fixture]] #crg/portabilidade #crg/uninstall #python/chmod ^crg-uninstall-modo-efetivo
 
 - CRG-COBERTURA-NOMINAL-CJS — antes de usar o índice para revisar um corpus CommonJS -> [Cobertura nominal de .cjs no CRG](memorias/crg-cobertura-nominal-cjs.md) [[memorias/crg-cobertura-nominal-cjs|Cobertura nominal de .cjs no CRG]] #crg/commonjs #crg/cobertura ^crg-cobertura-nominal-cjs
+
+- CRG-NODE-TEST-LEXICAL: antes de ler Untested em .test.cjs ou .spec.cjs, confronte o binding lexical e o TESTED_BY qualificado. -> [CRG CommonJS: prova lexical de node:test e associação direta](memorias/crg-commonjs-prova-lexical-de-node-test-e-associaca-a956887e0c23.md) [[memorias/crg-commonjs-prova-lexical-de-node-test-e-associaca-a956887e0c23|CRG CommonJS: prova lexical de node:test e associação direta]] #crg/commonjs #crg/testes ^crg-commonjs-prova-lexical-de-node-test-e-associaca-a956887e0c23
+
+- CRG-MERGE-CHECK-ZERO-LACUNAS: merge-tree limpo e zero gaps precedem a prova na suíte declarada -> [Merge textual limpo e zero lacunas exigem suíte no resultado combinado](memorias/merge-limpo-zero-lacunas-suite.md) [[memorias/merge-limpo-zero-lacunas-suite|Merge textual limpo e zero lacunas exigem suíte no resultado combinado]] #crg/merge-check #testes/regressao ^merge-limpo-zero-lacunas-suite

@@ -1,0 +1,143 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261114-crg-indice-persistente-dex-whatsapp",
+    "observed_at": "2026-11-14T15:05:56.5195316-03:00",
+    "revision": "Dex WhatsApp eb7d95b + hashes do checkout no recibo baseline",
+    "scope": "Adoção do SQLite persistente do Dex WhatsApp",
+    "environment": "Windows, CLI habitual do PATH",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "method": "SQLite backup, exclusão, Git e tests_for",
+    "excluded": [
+      "Alterações de código e Git"
+    ],
+    "limits": [
+      "Estados do checkout observados na sessão."
+    ]
+  },
+  "sources": [
+    {
+      "id": "promote",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/CRG-INDICE-PERSISTENTE-20261114/promotion.json",
+      "anchor": "matching_edges",
+      "revision": "Dex WhatsApp eb7d95b + hashes do checkout no recibo baseline",
+      "sha256": "30174fce56ff623619656ad39b7c8d2afc479984d3c11d6b4e65f818403cf2ab",
+      "availability": "available"
+    },
+    {
+      "id": "backup",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/CRG-INDICE-PERSISTENTE-20261114/backup.json",
+      "anchor": "restoration_reopened",
+      "revision": "Dex WhatsApp eb7d95b + hashes do checkout no recibo baseline",
+      "sha256": "2ebf0a87945c9559144f72a168fac2a4b79bfcaf9f04353e3b1beec4f5bd501c",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI do PATH",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promote"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "live",
+      "label": "SQLite persistente",
+      "type": "database",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promote"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "backup",
+      "label": "Backup SQLite",
+      "type": "database",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "backup"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "test",
+      "label": "distribution.test.cjs:4",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promote"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "install",
+      "label": "scripts/install.cjs::install",
+      "type": "function",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "promote"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "read",
+      "source": "cli",
+      "target": "live",
+      "relation": "consumes_contract",
+      "condition": "tests_for",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "promote"
+      ],
+      "limitation": ""
+    },
+    {
+      "id": "seed",
+      "source": "live",
+      "target": "backup",
+      "relation": "other",
+      "condition": "rollback da adoção",
+      "propagates": false,
+      "evidence": "observed",
+      "source_refs": [
+        "backup"
+      ],
+      "limitation": "Backup usado para restabelecer a imagem anterior."
+    },
+    {
+      "id": "call",
+      "source": "test",
+      "target": "install",
+      "relation": "calls",
+      "condition": "callback de distribuição",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "promote"
+      ],
+      "limitation": ""
+    }
+  ]
+}

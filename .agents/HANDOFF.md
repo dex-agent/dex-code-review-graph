@@ -1,5 +1,9 @@
 # HANDOFF — retomada curta
 
+- 2026-11-14 — O índice persistente do Dex WhatsApp foi reconstruído e promovido. A CLI habitual confirma um TESTED_BY direto de `install`. O backup passou no ensaio de restauração. [Recibo](receipts/CRG-INDICE-PERSISTENTE-20261114/INDEX.md).
+
+- 2026-11-14 — [Testes CommonJS](PLAN-TASKS/2026-11-14-crg-commonjs-tests.md). Dois REDs preservados, uma associação direta de `install` comprovada e recorte `--files` conferido. O wheel do teste está isolado. Para promoção futura, usar a rota de rollback da adoção anterior depois do GO do dono. [Recibo](receipts/crg-commonjs-tests-20261114/INDEX.md).
+
 - 2026-11-14 — Adoção da CLI CommonJS concluída. O reinício do Codex liberou os executáveis após a remoção do cadastro MCP. O wheel foi instalado offline pelo `uv`, com versões de dependências preservadas. O launcher do PATH comprovou 19/19 no commit original e 21/21 no atual, em bancos novos. [Veredito](receipts/crg-cjs-runtime-20261113/adopt-path-verdict.json) · [Trilho](PLAN-TASKS/2026-11-13-crg-cjs.md).
 
 - Na próxima consulta a um índice persistente, o mantenedor verifica o [frescor](GATILHOS-VIVOS.md#staleness-artefatos-derivados). Os bancos desta adoção são descartáveis. [Rollback ensaiado](receipts/crg-cjs-20261113/rollback.json).

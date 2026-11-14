@@ -14,6 +14,8 @@ Usage:
     code-review-graph visualize
     code-review-graph wiki
     code-review-graph detect-changes [--base BASE] [--files PATH ...] [--brief]
+    code-review-graph merge-check --base BASE --ours OURS --theirs THEIRS
+                                 --test-failure-exit N -- SUITE ...
     code-review-graph register <path> [--alias name]
     code-review-graph unregister <path_or_alias>
     code-review-graph repos
@@ -96,6 +98,16 @@ def _supports_color() -> bool:
     if not hasattr(sys.stdout, "isatty"):
         return False
     return sys.stdout.isatty()
+
+
+def _configure_brief_stdout() -> None:
+    encoding = getattr(sys.stdout, "encoding", None)
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if encoding and encoding.lower().replace("-", "") != "utf8" and reconfigure:
+        try:
+            reconfigure(encoding="utf-8")
+        except (OSError, ValueError):
+            pass
 
 
 def _print_banner() -> None:
@@ -1023,6 +1035,17 @@ def main() -> None:
              "`pip install tiktoken`.",
     )
 
+    merge_cmd = sub.add_parser(
+        "merge-check", help="Check a three-way merge with a suite in disposable checkouts",
+    )
+    merge_cmd.add_argument("--repo", type=Path, default=Path.cwd(), help="Source Git repository")
+    merge_cmd.add_argument("--base", required=True, help="Explicit common ancestor commit")
+    merge_cmd.add_argument("--ours", required=True, help="First commit")
+    merge_cmd.add_argument("--theirs", required=True, help="Second commit")
+    merge_cmd.add_argument("--test-failure-exit", type=int, required=True,
+                           help="Suite exit code reserved for failed tests")
+    merge_cmd.add_argument("suite", nargs=argparse.REMAINDER, metavar="-- SUITE")
+
     # enrich (Claude Code PreToolUse hook; reads one JSON object from stdin)
     sub.add_parser("enrich", help="Enrich hook input with graph context")
 
@@ -1296,6 +1319,15 @@ def main() -> None:
     if not args.command:
         _print_banner()
         return
+
+    if args.command == "merge-check":
+        from .merge_check import EXIT_CODES, check_merge
+
+        suite = args.suite[1:] if args.suite[:1] == ["--"] else []
+        result = check_merge(args.repo, args.base, args.ours, args.theirs,
+                             suite, args.test_failure_exit)
+        print(json.dumps(result, indent=2))
+        raise SystemExit(EXIT_CODES[result["outcome"]])
 
     if (
         args.command == "refactor"
@@ -1593,6 +1625,8 @@ def main() -> None:
 
     if args.command in ("update", "detect-changes"):
         # update and detect-changes require git for diffing
+        if args.brief:
+            _configure_brief_stdout()
         repo_root = Path(args.repo) if args.repo else find_repo_root()
         if not repo_root:
             logging.error(

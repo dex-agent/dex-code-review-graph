@@ -1,0 +1,146 @@
+{
+  "schema": "dex.dependency-map.v1",
+  "directed": true,
+  "multigraph": true,
+  "graph": {
+    "object_id": "crg",
+    "snapshot_id": "20261114-crg-gates-upstream",
+    "observed_at": "2026-11-14T17:01:03.5276021-03:00",
+    "revision": "a2a72f1 + wheel local 8fd3127cb2e28d4f195f9c8a535efe3d89f0209610fd259c2e0b23957e8adb2c",
+    "scope": "Merge local declarado, impacto, candidatos e suíte",
+    "environment": "Windows, Git 2.54, wheel descartável",
+    "coverage": "partial",
+    "evidence_level": "observed",
+    "method": "Receipts CLI e código do fluxo",
+    "excluded": [
+      "CI e índice habitual"
+    ],
+    "limits": [
+      "Fixture sintética e suíte declarada"
+    ]
+  },
+  "sources": [
+    {
+      "id": "implementation",
+      "path": "C:/CodexProjetos/code-review-graph/code_review_graph/merge_check.py",
+      "anchor": "_check",
+      "revision": "a2a72f1 + wheel local 8fd3127cb2e28d4f195f9c8a535efe3d89f0209610fd259c2e0b23957e8adb2c",
+      "sha256": "61a84f62ca7b03f32cbfc19126e9ad2a242b5f2de2b04336ce349cdd6ec28ef3",
+      "availability": "available"
+    },
+    {
+      "id": "analysis",
+      "path": "C:/CodexProjetos/code-review-graph/code_review_graph/changes.py",
+      "anchor": "analyze_changes",
+      "revision": "a2a72f1 + wheel local 8fd3127cb2e28d4f195f9c8a535efe3d89f0209610fd259c2e0b23957e8adb2c",
+      "sha256": "36e31380c85153573291cd8640a09cc187fff0a290f85a77dd22816efae6de8e",
+      "availability": "available"
+    },
+    {
+      "id": "proof",
+      "path": "C:/CodexProjetos/code-review-graph/.agents/receipts/CRG-GATES-UPSTREAM-20261114/merge-semantic.json",
+      "anchor": "outcome",
+      "revision": "a2a72f1 + wheel local 8fd3127cb2e28d4f195f9c8a535efe3d89f0209610fd259c2e0b23957e8adb2c",
+      "sha256": "0159f6bbd33ea010b5a1fb24cdf6cc4cfd0ac84dd8d195df6fb16f6365488c7b",
+      "availability": "available"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI merge-check",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "git",
+      "label": "Git merge-tree",
+      "type": "command",
+      "owner": "mantenedor CRG",
+      "external": true,
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "crg",
+      "label": "CRG análise de mudanças",
+      "type": "module",
+      "owner": "mantenedor CRG",
+      "external": false,
+      "source_refs": [
+        "analysis",
+        "implementation"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    },
+    {
+      "id": "suite",
+      "label": "Suíte declarada",
+      "type": "test",
+      "owner": "mantenedor CRG",
+      "external": true,
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "evidence": "observed",
+      "limitation": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": "cli-git",
+      "source": "cli",
+      "target": "git",
+      "relation": "executes",
+      "condition": "base e dois commits válidos",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "limitation": "exit 1 classifica conflito textual"
+    },
+    {
+      "id": "cli-crg",
+      "source": "cli",
+      "target": "crg",
+      "relation": "executes",
+      "condition": "merge textual limpo",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "limitation": "cobertura e risco informativos"
+    },
+    {
+      "id": "cli-suite",
+      "source": "cli",
+      "target": "suite",
+      "relation": "executes",
+      "condition": "merge textual limpo",
+      "propagates": true,
+      "evidence": "observed",
+      "source_refs": [
+        "implementation",
+        "proof"
+      ],
+      "limitation": "baseline e lados passam antes do teste do merge"
+    }
+  ]
+}
