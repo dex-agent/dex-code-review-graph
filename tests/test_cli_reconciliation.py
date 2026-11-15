@@ -29,7 +29,7 @@ from code_review_graph import cli
     ],
 )
 def test_quiet_build_and_update_suppress_summary_and_info_logs(
-    command, result, capsys, caplog,
+    command, result, capsys, caplog, tmp_path,
 ):
     """``--quiet`` must silence progress logs as well as the final summary."""
 
@@ -37,7 +37,7 @@ def test_quiet_build_and_update_suppress_summary_and_info_logs(
         logging.getLogger("code_review_graph.test_progress").info("parsing progress")
         return result
 
-    argv = ["code-review-graph", command, "--repo", "repo-root", "--quiet"]
+    argv = ["code-review-graph", command, "--repo", str(tmp_path), "--quiet"]
     with caplog.at_level(logging.INFO):
         with patch.object(sys, "argv", argv):
             with patch("code_review_graph.graph.GraphStore", return_value=MagicMock()):
@@ -103,6 +103,9 @@ def test_status_json_is_the_only_stdout_and_includes_current_sha(capsys):
         "current_sha": "current-sha",
         "svn_branch": None,
         "svn_revision": None,
+        # Freshness metadata cannot express "half built": this reports
+        # whether the last build finished its post-processing.
+        "build_incomplete": False,
     }
     assert output.count("\n") == 1
 
@@ -129,6 +132,218 @@ def test_status_quiet_prints_nothing(capsys):
                     cli.main()
 
     assert capsys.readouterr().out == ""
+
+
+def test_status_missing_graph_exits_without_creating_data_tree(
+    tmp_path, monkeypatch, capsys,
+):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    data_dir = tmp_path / "missing-data"
+    monkeypatch.setenv("CRG_DATA_DIR", str(data_dir))
+    argv = ["code-review-graph", "status", "--repo", str(repo)]
+
+    with patch.object(sys, "argv", argv):
+        with pytest.raises(SystemExit) as exc_info:
+            cli.main()
+
+    assert exc_info.value.code == 1
+    assert "No graph found" in capsys.readouterr().err
+    assert not data_dir.exists()
+
+
+@pytest.mark.parametrize(
+    "command",
+    ["status", "detect-changes", "visualize", "wiki", "watch"],
+)
+def test_read_only_commands_missing_graph_do_not_create_empty_db(
+    command, tmp_path, monkeypatch, capsys,
+):
+    """#803: read-only consumers must not poison a repo with empty graph.db."""
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    # detect-changes requires a real git worktree for root discovery.
+    if command == "detect-changes":
+        import subprocess
+
+        subprocess.run(
+            ["git", "-C", str(repo), "init", "-q"],
+            check=True,
+            capture_output=True,
+            stdin=subprocess.DEVNULL,
+            timeout=30,
+        )
+    data_dir = tmp_path / "missing-data"
+    monkeypatch.setenv("CRG_DATA_DIR", str(data_dir))
+    monkeypatch.delenv("CRG_HOME", raising=False)
+    argv = ["code-review-graph", command, "--repo", str(repo)]
+
+    with patch(
+        "code_review_graph.registry.default_registry_path",
+        return_value=tmp_path / "missing-registry.json",
+    ):
+        with patch.object(sys, "argv", argv):
+            with pytest.raises(SystemExit) as exc_info:
+                cli.main()
+
+    assert exc_info.value.code == 1
+    err = capsys.readouterr().err
+    assert "No graph found" in err
+    assert not data_dir.exists()
+    assert not (repo / ".code-review-graph").exists()
+
+
+@pytest.mark.parametrize("command", ["visualize", "wiki", "watch", "status"])
+def test_read_only_commands_data_dir_option_is_read_only(
+    command, tmp_path, monkeypatch, capsys,
+):
+    """Explicit --data-dir must not create dirs/registry when the graph is missing."""
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    data_dir = tmp_path / "explicit-data"
+    registry_path = tmp_path / "registry" / "registry.json"
+    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+    argv = [
+        "code-review-graph",
+        command,
+        "--repo",
+        str(repo),
+        "--data-dir",
+        str(data_dir),
+    ]
+
+    with patch(
+        "code_review_graph.registry.default_registry_path",
+        return_value=registry_path,
+    ):
+        with patch.object(sys, "argv", argv):
+            with pytest.raises(SystemExit) as exc_info:
+                cli.main()
+
+    assert exc_info.value.code == 1
+    assert "No graph found" in capsys.readouterr().err
+    assert not data_dir.exists()
+    assert not registry_path.exists()
+
+
+def test_status_preserves_legacy_graph_migration(tmp_path, monkeypatch, capsys):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    legacy_db = repo / ".code-review-graph.db"
+    with code_review_graph.graph.GraphStore(legacy_db):
+        pass
+    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+    argv = ["code-review-graph", "status", "--repo", str(repo)]
+
+    with patch(
+        "code_review_graph.registry.default_registry_path",
+        return_value=tmp_path / "missing-registry.json",
+    ):
+        with patch.object(sys, "argv", argv):
+            cli.main()
+
+    assert "Nodes: 0" in capsys.readouterr().out
+    assert not legacy_db.exists()
+    assert (repo / ".code-review-graph" / "graph.db").exists()
+
+
+def test_status_external_data_dir_does_not_migrate_unrelated_legacy_graph(
+    tmp_path, monkeypatch, capsys,
+):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    legacy_db = repo / ".code-review-graph.db"
+    with code_review_graph.graph.GraphStore(legacy_db):
+        pass
+    data_dir = tmp_path / "external-data"
+    monkeypatch.setenv("CRG_DATA_DIR", str(data_dir))
+    argv = ["code-review-graph", "status", "--repo", str(repo)]
+
+    with patch.object(sys, "argv", argv):
+        with pytest.raises(SystemExit) as exc_info:
+            cli.main()
+
+    assert exc_info.value.code == 1
+    assert "No graph found" in capsys.readouterr().err
+    assert legacy_db.exists()
+    assert not data_dir.exists()
+
+
+def test_status_data_dir_option_is_read_only(tmp_path, monkeypatch, capsys):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    data_dir = tmp_path / "explicit-data"
+    registry_path = tmp_path / "registry" / "registry.json"
+    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+    argv = [
+        "code-review-graph",
+        "status",
+        "--repo",
+        str(repo),
+        "--data-dir",
+        str(data_dir),
+    ]
+
+    with patch(
+        "code_review_graph.registry.default_registry_path",
+        return_value=registry_path,
+    ):
+        with patch.object(sys, "argv", argv):
+            with pytest.raises(SystemExit) as exc_info:
+                cli.main()
+
+    assert exc_info.value.code == 1
+    assert "No graph found" in capsys.readouterr().err
+    assert not data_dir.exists()
+    assert not registry_path.exists()
+
+    with code_review_graph.graph.GraphStore(data_dir / "graph.db"):
+        pass
+    with patch(
+        "code_review_graph.registry.default_registry_path",
+        return_value=registry_path,
+    ):
+        with patch.object(sys, "argv", argv):
+            cli.main()
+
+    assert "Nodes: 0" in capsys.readouterr().out
+    assert not registry_path.exists()
+
+
+def test_status_default_data_dir_override_does_not_migrate_legacy_graph(
+    tmp_path, monkeypatch, capsys,
+):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    legacy_db = repo / ".code-review-graph.db"
+    with code_review_graph.graph.GraphStore(legacy_db):
+        pass
+    data_dir = repo / ".code-review-graph"
+    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+    argv = [
+        "code-review-graph",
+        "status",
+        "--repo",
+        str(repo),
+        "--data-dir",
+        str(data_dir),
+    ]
+
+    with patch.object(sys, "argv", argv):
+        with pytest.raises(SystemExit) as exc_info:
+            cli.main()
+
+    assert exc_info.value.code == 1
+    assert "No graph found" in capsys.readouterr().err
+    assert legacy_db.exists()
+    assert not data_dir.exists()
 
 
 def test_enrich_command_reads_stdin_and_respects_external_data_dir(
@@ -271,7 +486,8 @@ def test_dead_code_missing_graph_exits_nonzero(tmp_path, monkeypatch, capsys):
     repo = tmp_path / "repo"
     repo.mkdir()
     (repo / ".git").mkdir()
-    monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "missing-data"))
+    data_dir = tmp_path / "missing-data"
+    monkeypatch.setenv("CRG_DATA_DIR", str(data_dir))
     argv = ["code-review-graph", "dead-code", "--repo", str(repo)]
 
     with patch.object(sys, "argv", argv):
@@ -280,3 +496,4 @@ def test_dead_code_missing_graph_exits_nonzero(tmp_path, monkeypatch, capsys):
 
     assert exc_info.value.code == 1
     assert "No graph found" in capsys.readouterr().err
+    assert not data_dir.exists()

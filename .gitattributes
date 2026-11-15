@@ -1,3 +1,5 @@
+# Keep the vendored renderer byte-identical to its pinned SRI digest on Windows.
+code_review_graph/assets/d3.v7.min.js -text
 # Preserve raw regression receipts byte-for-byte, including captured whitespace.
 .agents/receipts/** -text -whitespace
 # Historical project records may end with a blank line.

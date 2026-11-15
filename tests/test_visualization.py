@@ -1,9 +1,13 @@
 """Tests for graph visualization export."""
 
+import base64
+import hashlib
 import json
+import re
 import shutil
 import subprocess
 from html.parser import HTMLParser
+from importlib import resources
 
 import pytest
 
@@ -147,7 +151,8 @@ def store_with_data(tmp_path):
     store.upsert_edge(contains_edge)
     store.upsert_edge(calls_edge)
     store.commit()
-    return store
+    yield store
+    store.close()
 
 
 def test_export_graph_data(store_with_data):
@@ -208,6 +213,53 @@ def test_export_json_failure_preserves_existing_file(
     assert list(tmp_path.glob(".graph.json.*.tmp")) == []
 
 
+def _slugs_the_old_way(nodes: list[dict]) -> dict[str, str]:
+    """The slug loop as it was: right, but it scanned every slug per step."""
+    from code_review_graph.exports import _obsidian_slug
+
+    slugs: dict[str, str] = {}
+    for n in nodes:
+        slug = _obsidian_slug(n.get("name", n["qualified_name"]))
+        base_slug, counter = slug, 1
+        while slug in slugs.values():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+        slugs[n["qualified_name"]] = slug
+    return slugs
+
+
+def test_obsidian_slugs_match_the_old_collision_rule():
+    """Same names, same order, same slugs as before the loop was made linear."""
+    from code_review_graph.exports import _obsidian_slugs
+
+    names = [
+        "Report", "report", "report-1", "RE_PORT", "report", "re port",
+        "report-1", "report!", "", "unnamed", "!!!", "report-2", "Report",
+    ]
+    nodes = [{"qualified_name": f"m.py::n{i}", "name": nm} for i, nm in enumerate(names)]
+    nodes.append({"qualified_name": "m.py::no_name"})
+    slugs = _obsidian_slugs(nodes)
+    assert slugs == _slugs_the_old_way(nodes)
+    assert len(set(slugs.values())) == len(nodes)
+
+
+def test_obsidian_slugs_stay_linear_when_many_names_collide():
+    """Twenty thousand ``__init__`` methods once meant billions of compares."""
+    import time
+
+    from code_review_graph.exports import _obsidian_slugs
+
+    n = 20_000
+    nodes = [{"qualified_name": f"m{i}.py::C.__init__", "name": "__init__"} for i in range(n)]
+    started = time.perf_counter()
+    slugs = _obsidian_slugs(nodes)
+    elapsed = time.perf_counter() - started
+    assert len(set(slugs.values())) == n
+    assert slugs["m0.py::C.__init__"] == "init"
+    assert slugs[f"m{n - 1}.py::C.__init__"] == f"init-{n - 1}"
+    assert elapsed < 5, f"{n} colliding slugs took {elapsed:.2f}s; looks quadratic"
+
+
 def test_generate_html(store_with_data, tmp_path):
     from code_review_graph.visualization import generate_html
 
@@ -216,11 +268,132 @@ def test_generate_html(store_with_data, tmp_path):
     assert output_path.exists()
     content = output_path.read_text()
     script_sources, _inline_scripts = _extract_scripts(content)
-    assert script_sources == ["https://d3js.org/d3.v7.min.js"]
+    assert script_sources == [_D3_FILENAME]
     assert "auth.py" in content
     assert "AuthService" in content
     assert "<!DOCTYPE html>" in content
     assert "</html>" in content
+
+
+# Pinned D3 contract for the visualization templates (issue #475): the page
+# must load D3 from a same-origin vendored file so `visualize --serve` works
+# on offline/filtered networks, while keeping SRI integrity verification.
+_D3_FILENAME = "d3.v7.min.js"
+_D3_CDN_URL = "https://d3js.org/d3.v7.min.js"
+_D3_SRI_HASH = "sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i"
+
+
+def _sha384_sri(data: bytes) -> str:
+    return "sha384-" + base64.b64encode(hashlib.sha384(data).digest()).decode()
+
+
+@pytest.mark.parametrize("vis_mode", ["full", "community"])
+def test_generated_html_loads_d3_same_origin_with_sri(store_with_data, tmp_path, vis_mode):
+    """Regression test for #475: `visualize --serve` must not depend on the
+    d3js.org CDN being reachable. The generated page loads a vendored,
+    same-origin D3 file (with the SRI hash intact) and only falls back to
+    the CDN — still SRI-pinned with crossorigin — if the local copy fails."""
+    from code_review_graph.visualization import generate_html
+
+    output_path = tmp_path / "graph.html"
+    generate_html(store_with_data, output_path, mode=vis_mode)
+    content = output_path.read_text()
+
+    script_sources, inline_scripts = _extract_scripts(content)
+    # Same-origin, offline-first D3 reference — no external host required.
+    assert script_sources == [_D3_FILENAME]
+
+    # The local script tag keeps SRI integrity verification.
+    local_tag = re.search(r"<script src=\"d3\.v7\.min\.js\"[^>]*>", content)
+    assert local_tag is not None
+    assert f'integrity="{_D3_SRI_HASH}"' in local_tag.group(0)
+
+    # CDN fallback (only used when the local asset is missing) keeps the
+    # security invariant: SRI hash AND crossorigin on the d3js.org tag.
+    fallback = [s for s in inline_scripts if _D3_CDN_URL in s]
+    assert len(fallback) == 1
+    assert f'integrity="{_D3_SRI_HASH}"' in fallback[0]
+    assert 'crossorigin="anonymous"' in fallback[0]
+
+    # The vendored asset is written next to the HTML, i.e. inside the
+    # directory `visualize --serve` exposes, so GET /d3.v7.min.js succeeds.
+    asset = tmp_path / _D3_FILENAME
+    assert asset.exists()
+    assert _sha384_sri(asset.read_bytes()) == _D3_SRI_HASH
+
+
+def test_bundled_d3_asset_is_packaged_and_pinned():
+    """The pinned D3 build ships inside the Python package so generated
+    visualizations work without network access (issue #475)."""
+    asset = resources.files("code_review_graph") / "assets" / _D3_FILENAME
+    data = asset.read_bytes()
+    assert data.startswith(b"// https://d3js.org v7")
+    assert _sha384_sri(data) == _D3_SRI_HASH
+
+
+@pytest.mark.parametrize("vis_mode", ["full", "community"])
+def test_graph_data_containing_script_sentinel_is_not_expanded(tmp_path, vis_mode, request):
+    """Repo content must never be run through the __D3_SCRIPTS__ substitution.
+
+    The template placeholders are substituted scripts-first, data-last: a node
+    literally named __D3_SCRIPTS__ (valid in Python) would otherwise be
+    rewritten into <script> markup inside the graphData script, truncating it
+    and promoting the remaining repo-derived JSON to live HTML.
+    """
+    from code_review_graph.visualization import generate_html
+
+    store = GraphStore(tmp_path / "test.db")
+    request.addfinalizer(store.close)
+    store.upsert_node(
+        NodeInfo(
+            kind="File", name="evil.py", file_path="src/evil.py",
+            line_start=1, line_end=10, language="python", parent_name=None,
+            params=None, return_type=None, modifiers=None, is_test=False,
+            extra={},
+        )
+    )
+    store.upsert_node(
+        NodeInfo(
+            kind="Function", name="__D3_SCRIPTS__", file_path="src/evil.py",
+            line_start=2, line_end=4, language="python", parent_name=None,
+            params=None, return_type=None, modifiers=None, is_test=False,
+            extra={},
+        )
+    )
+    store.upsert_node(
+        NodeInfo(
+            kind="Function", name="<img src=x onerror=alert(1)>",
+            file_path="src/evil.py", line_start=6, line_end=8,
+            language="python", parent_name=None, params=None,
+            return_type=None, modifiers=None, is_test=False, extra={},
+        )
+    )
+
+    output_path = tmp_path / "graph.html"
+    generate_html(store, output_path, mode=vis_mode)
+    content = output_path.read_text()
+
+    script_sources, inline_scripts = _extract_scripts(content)
+    # Exactly the vendored D3 reference — no injected external script tags.
+    assert script_sources == [_D3_FILENAME]
+    data_scripts = [s for s in inline_scripts if "graphData" in s]
+    assert data_scripts, "graphData script missing — data script was truncated"
+    for script in data_scripts:
+        assert "<script" not in script
+    # The parser must not see repo-derived markup as real elements.
+    class _TagCollector(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=False)
+            self.tags: set[str] = set()
+
+        def handle_starttag(
+            self, tag: str, attrs: list[tuple[str, str | None]]
+        ) -> None:
+            self.tags.add(tag)
+
+    collector = _TagCollector()
+    collector.feed(content)
+    assert "img" not in collector.tags
 
 
 def test_script_extraction_handles_case_insensitive_html_tags():
@@ -235,7 +408,7 @@ def test_script_extraction_handles_case_insensitive_html_tags():
     assert inline_scripts == ["const responsive = 1 < 2;"]
 
 
-def test_cpp_include_resolution(tmp_path):
+def test_cpp_include_resolution(tmp_path, request):
     """IMPORTS_FROM edges with bare C++ include paths should resolve to File nodes
     stored under absolute paths — previously these were dropped, leaving the
     graph almost entirely disconnected for C/C++ projects."""
@@ -243,6 +416,7 @@ def test_cpp_include_resolution(tmp_path):
 
     db_path = tmp_path / "test.db"
     store = GraphStore(db_path)
+    request.addfinalizer(store.close)
 
     def _file(name, path, lang="cpp"):
         return NodeInfo(
@@ -312,15 +486,36 @@ def test_export_includes_communities(store_with_data):
 
 
 def test_generate_html_includes_all_edge_types(store_with_data, tmp_path):
-    """Generated HTML should define colors and legend entries for all 7 edge types."""
+    """Generated HTML should define colors and legend entries for graph edge types."""
     from code_review_graph.visualization import generate_html
 
     output_path = tmp_path / "graph.html"
     generate_html(store_with_data, output_path)
     content = output_path.read_text()
     for edge_kind in ["CALLS", "IMPORTS_FROM", "INHERITS", "CONTAINS",
-                       "IMPLEMENTS", "TESTED_BY", "DEPENDS_ON"]:
+                       "IMPLEMENTS", "TESTED_BY", "DEPENDS_ON", "REFERENCES"]:
         assert edge_kind in content, f"Edge type {edge_kind} missing from HTML"
+
+
+def test_generate_html_includes_yaml_path_visuals(store_with_data, tmp_path):
+    from code_review_graph.visualization import generate_html
+
+    full_path = tmp_path / "full.html"
+    community_path = tmp_path / "community.html"
+    generate_html(store_with_data, full_path, mode="full")
+    generate_html(store_with_data, community_path, mode="community")
+
+    full = full_path.read_text()
+    community = community_path.read_text()
+    assert "YamlPath" in full
+    assert 'data-kind="YamlPath"' in full
+    assert 'data-kind="DocSection"' in full
+    assert 'DocSection: "#e3b341"' in community
+    assert 'data-kind="JsonPath"' in full
+    assert 'JsonPath: "#a371f7"' in community
+    assert 'data-edge-kind="REFERENCES"' in full
+    assert "YamlPath" in community
+    assert 'REFERENCES: "#39c5cf"' in community
 
 
 def test_generate_html_includes_interactive_features(store_with_data, tmp_path):
@@ -494,6 +689,74 @@ def test_generate_html_includes_focus_visible(store_with_data, tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# Full-page script: community filter, detail panel, keyboard focus (crg-nf8.1).
+# tests/test_visualization_browser.py drives the same fixes in Chromium.
+# ---------------------------------------------------------------------------
+
+
+def _full_page_script(store, tmp_path) -> str:
+    from code_review_graph.visualization import generate_html
+
+    output_path = tmp_path / "graph.html"
+    generate_html(store, output_path, mode="full")
+    _, inline_scripts = _extract_scripts(output_path.read_text())
+    return next(s for s in inline_scripts if "function updateNodes(" in s)
+
+
+def _js_block(script: str, marker: str) -> str:
+    """Return *marker* through the brace that closes the first ``{`` after it."""
+    start = script.index(marker)
+    depth = 0
+    for i in range(script.index("{", start), len(script)):
+        if script[i] == "{":
+            depth += 1
+        elif script[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return script[start:i + 1]
+    raise AssertionError(f"no closing brace after {marker!r}")
+
+
+def test_edges_of_a_hidden_community_are_not_drawn(store_with_data, tmp_path):
+    """An edge with an end in a hidden community would point at nothing."""
+    script = _full_page_script(store_with_data, tmp_path)
+    assert "inHiddenCommunity(n)" in _js_block(script, "function updateLinks(")
+    # Nodes drawn again later (a File expanded) obey the filter as well.
+    assert "inHiddenCommunity(d)" in _js_block(script, "function updateNodes(")
+
+
+def test_community_filter_drives_label_visibility(store_with_data, tmp_path):
+    """Labels obey the filter on every redraw, so clearing it brings them back."""
+    script = _full_page_script(store_with_data, tmp_path)
+    assert "inHiddenCommunity(d)" in _js_block(script, "function updateLabelVisibility(")
+    assert "updateLabelVisibility()" in _js_block(script, "function applyCommunityFilter(")
+    # Colours off hides the checkboxes, so it must clear the filter too.
+    toggle = _js_block(script, 'getElementById("btn-community").addEventListener')
+    assert "applyCommunityFilter()" in toggle
+
+
+def test_every_way_to_close_the_detail_panel_brings_back_the_legend(
+    store_with_data, tmp_path,
+):
+    """Opening the panel hides the legend; Escape once forgot to show it again."""
+    script = _full_page_script(store_with_data, tmp_path)
+    close = _js_block(script, "function closeDetailPanel(")
+    assert 'getElementById("legend").style.display = ""' in close
+    # Nothing else closes the panel, so no path can skip the legend.
+    assert script.count('detailPanel.classList.remove("visible")') == 1
+    assert 'detailPanel.classList.remove("visible")' in close
+
+
+def test_keyboard_focus_places_the_tooltip_by_the_node(store_with_data, tmp_path):
+    """A FocusEvent has no pageX/pageY, so the tooltip used to land at NaN."""
+    script = _full_page_script(store_with_data, tmp_path)
+    focus = _js_block(script, '.on("focus", function(ev, d)')
+    assert "showTooltip(ev" not in focus
+    assert "showTooltip(tooltipAnchor(this), d)" in focus
+    assert "getBoundingClientRect()" in _js_block(script, "function tooltipAnchor(")
+
+
+# ---------------------------------------------------------------------------
 # Phase 9: Visualization Aggregation
 # ---------------------------------------------------------------------------
 
@@ -602,7 +865,8 @@ def large_store(tmp_path):
         )
 
     store.commit()
-    return store
+    yield store
+    store.close()
 
 
 def test_community_mode_fewer_nodes(large_store, tmp_path):
@@ -660,6 +924,61 @@ def test_file_mode_aggregation(large_store, tmp_path):
     assert agg["mode"] == "file"
 
 
+class _CountingList(list):
+    """A list that counts how many times it is walked."""
+
+    def __init__(self, items):
+        super().__init__(items)
+        self.walks = 0
+
+    def __iter__(self):
+        self.walks += 1
+        return super().__iter__()
+
+
+def _file_mode_node(qn, kind, fp, cid):
+    return {
+        "qualified_name": qn, "kind": kind, "file_path": fp,
+        "language": "python", "community_id": cid,
+    }
+
+
+def test_file_mode_keeps_the_first_community_found_in_each_file():
+    """Each file takes the community of its first node that has one."""
+    from code_review_graph.visualization import _aggregate_file
+
+    nodes = [
+        _file_mode_node("a.py", "File", "a.py", None),
+        _file_mode_node("a.py::f1", "Function", "a.py", None),
+        _file_mode_node("a.py::f2", "Function", "a.py", 7),
+        _file_mode_node("a.py::f3", "Function", "a.py", 3),
+        _file_mode_node("b.py", "File", "b.py", 5),
+        _file_mode_node("b.py::g", "Function", "b.py", 2),
+        _file_mode_node("c.py::h", "Function", "c.py", None),
+        _file_mode_node("d.py::k", "Function", "d.py", 0),
+    ]
+    agg = _aggregate_file({"nodes": nodes, "edges": [], "stats": {}})
+    by_file = {n["qualified_name"]: n for n in agg["nodes"]}
+    assert {fp: n["community_id"] for fp, n in by_file.items()} == {
+        "a.py": 7, "b.py": 5, "c.py": None, "d.py": 0,
+    }
+    assert {fp: n["symbol_count"] for fp, n in by_file.items()} == {
+        "a.py": 3, "b.py": 1, "c.py": 1, "d.py": 1,
+    }
+
+
+def test_file_mode_walks_the_nodes_once():
+    """Finding each file's community once scanned every node per file."""
+    from code_review_graph.visualization import _aggregate_file
+
+    nodes = _CountingList(
+        _file_mode_node(f"m{i}.py::f", "Function", f"m{i}.py", i) for i in range(200)
+    )
+    agg = _aggregate_file({"nodes": nodes, "edges": [], "stats": {}})
+    assert len(agg["nodes"]) == 200
+    assert nodes.walks == 1
+
+
 def test_auto_mode_switches_at_threshold(large_store, tmp_path):
     """Auto mode should switch to community when nodes exceed threshold."""
     from code_review_graph.visualization import generate_html
@@ -679,6 +998,118 @@ def test_auto_mode_switches_at_threshold(large_store, tmp_path):
     # Aggregated template has btn-back and community_details
     assert "btn-back" in content2
     assert "community_details" in content2
+
+
+def test_auto_mode_switches_on_edge_count(large_store, tmp_path):
+    """Auto mode must switch to an aggregated view when edges exceed the cap.
+
+    Regression for issue #609: node count under the limit but edge count
+    over it must not fall through to the full force-layout template.
+    """
+    from code_review_graph.visualization import generate_html
+
+    # Under both limits -> full template
+    output_full = tmp_path / "auto_under_both.html"
+    generate_html(
+        large_store, output_full, mode="auto",
+        max_full_nodes=100000, max_full_edges=100000,
+    )
+    content_full = output_full.read_text()
+    assert "btn-community" in content_full
+    assert "flow-select" in content_full
+
+    # Under the node limit but over the edge limit -> aggregated template
+    output_agg = tmp_path / "auto_over_edges.html"
+    generate_html(
+        large_store, output_agg, mode="auto",
+        max_full_nodes=100000, max_full_edges=1,
+    )
+    content_agg = output_agg.read_text()
+    assert "btn-back" in content_agg
+    assert "community_details" in content_agg
+
+
+def test_auto_mode_decision_at_issue_609_boundary():
+    """The reported 2792-node/17488-edge graph must pick an aggregated view.
+
+    Regression for issue #609 using the exact reported boundary against the
+    shipped defaults, without building a 17k-edge store.
+    """
+    from code_review_graph.visualization import (
+        DEFAULT_MAX_FULL_EDGES,
+        DEFAULT_MAX_FULL_NODES,
+        _resolve_auto_mode,
+    )
+
+    # Shipped defaults: node cap unchanged, edge cap derived from it
+    assert DEFAULT_MAX_FULL_NODES == 3000
+    assert DEFAULT_MAX_FULL_EDGES == 3 * DEFAULT_MAX_FULL_NODES
+
+    # A graph under both caps stays in full mode
+    assert _resolve_auto_mode(
+        node_count=2792, edge_count=8000,
+        max_full_nodes=DEFAULT_MAX_FULL_NODES,
+        max_full_edges=DEFAULT_MAX_FULL_EDGES,
+        has_communities=True,
+    ) == "full"
+
+    # The exact graph from issue #609: 2792 nodes (under), 17488 edges (over)
+    assert _resolve_auto_mode(
+        node_count=2792, edge_count=17488,
+        max_full_nodes=DEFAULT_MAX_FULL_NODES,
+        max_full_edges=DEFAULT_MAX_FULL_EDGES,
+        has_communities=True,
+    ) == "community"
+
+    # Node count over the cap still switches (pre-existing behavior)
+    assert _resolve_auto_mode(
+        node_count=3001, edge_count=100,
+        max_full_nodes=DEFAULT_MAX_FULL_NODES,
+        max_full_edges=DEFAULT_MAX_FULL_EDGES,
+        has_communities=True,
+    ) == "community"
+
+    # Without community data the aggregated view falls back to file mode
+    assert _resolve_auto_mode(
+        node_count=2792, edge_count=17488,
+        max_full_nodes=DEFAULT_MAX_FULL_NODES,
+        max_full_edges=DEFAULT_MAX_FULL_EDGES,
+        has_communities=False,
+    ) == "file"
+
+
+def test_generate_html_defaults_match_constants():
+    """generate_html defaults must stay wired to the documented constants."""
+    import inspect
+
+    from code_review_graph.visualization import (
+        DEFAULT_MAX_FULL_EDGES,
+        DEFAULT_MAX_FULL_NODES,
+        generate_html,
+    )
+
+    sig = inspect.signature(generate_html)
+    assert sig.parameters["max_full_nodes"].default == DEFAULT_MAX_FULL_NODES
+    assert sig.parameters["max_full_edges"].default == DEFAULT_MAX_FULL_EDGES
+
+
+def test_auto_mode_falls_back_to_file_without_communities(
+    store_with_data, tmp_path
+):
+    """Auto-switch without community data must aggregate by file, not lump
+    everything into a single 'Uncategorized' community super-node."""
+    from code_review_graph.visualization import generate_html
+
+    output_path = tmp_path / "auto_no_communities.html"
+    generate_html(
+        store_with_data, output_path, mode="auto",
+        max_full_nodes=1, max_full_edges=100000,
+    )
+    content = output_path.read_text()
+    # Aggregated template, file mode data
+    assert "btn-back" in content
+    assert '"mode": "file"' in content
+    assert '"mode": "community"' not in content
 
 
 def test_community_mode_html_generation(large_store, tmp_path):
