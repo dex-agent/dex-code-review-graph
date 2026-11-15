@@ -50,10 +50,14 @@ de forma independente.
 
 ## Ressalvas
 
-- Suíte: números finais e classificação A/B no [c04-suite.txt](c04-suite.txt)
-  (baseline upstream puro na mesma máquina; falhas comuns = ambientais).
+- Suíte FINAL: 407 failed / 7.712 passed / 4 xfailed — A/B provou zero regressões
+  merge-causadas (36 curadas/classificadas; detalhe no [c04-suite.txt](c04-suite.txt));
+  as 407 são a classe ambiental Windows (watcher/teardown) presente no upstream puro.
+- composer-alias PHP: xfail strict + issue `crg-lum` (interação psr-4 × import_map);
+  identidade de classe comprovada pelas variantes scoped/phpunit/windows-import.
+- `_sum_signals` sem testes: issue `crg-41c` (gap herdado do upstream).
 - Repositório ainda sem superfície toolsbook (`dex.toolsbook.v2`) — pendência
-  registrada no ledger; entrada da ferramenta fica neste LAUDO interinamente.
+  `PEND-2026-11-15-TOOLSBOOK` no ledger; entrada da ferramenta fica neste LAUDO interinamente.
 - Promoção do wheel `2.4.0+dex.1` ao PATH = decisão posterior do dono (substitui a
   pendência do 2.4.0-oficial em aberto desde 2026-11-14).
 - Testes que invocam via subprocess CLI não geram TESTED_BY (semântica: a aresta
