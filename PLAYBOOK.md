@@ -4,8 +4,8 @@ description: "Regras de decisao e procedimentos deste projeto - projecao gerada 
 type: playbook
 generated_by: "tools/playbook/generate-playbook.py"
 authority: derived_projection
-sources_revision: "sha256:42d981043c3aa33a4143939c864b7c2242feb91578e7579d91a5fbba56154f1a"
-sent_revision: "sha256:42d981043c3aa33a4143939c864b7c2242feb91578e7579d91a5fbba56154f1a"
+sources_revision: "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8"
+sent_revision: "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8"
 do_not_edit: true
 ---
 # Playbook - code-review-graph
@@ -46,7 +46,7 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 
 | caminho | sha256 | Enviado? |
 | --- | --- | --- |
-| `AGENTS.md` | `855e46c0757c923978ae26d876b29efd9b3adce53b7700e3d8f79535b612a7f1` | sim |
+| `AGENTS.md` | `1a16cde7723bb4f8616abf18e80f87f3d4684f451517227ce4bf0caf1a6d4365` | sim |
 | `.agents/napkin.md` | `28961d68eaff55794e2cd81379eefb03585cfb8650fd19ed2898cfe94a4c4f3a` | sim |
 | `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md` | `c17e9297ebcb43f01558f95fc11c84eb2fc8f33171dbe4d0cd2df16ab12a7e05` | sim |
 

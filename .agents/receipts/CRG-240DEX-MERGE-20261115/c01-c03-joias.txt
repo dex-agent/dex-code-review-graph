@@ -1,0 +1,6 @@
+=== C-01: merge commit e pais ===
+732b76098903d179c344f5c986a51ecbf3e3f677 pais: 17d35d47f1f347e2eec54a962f0459c54980d04d 7ba9d17ab6fd281026b914d8da4c0dc98d013474
+
+=== C-02/C-03: joias no cli.py ===
+2
+3

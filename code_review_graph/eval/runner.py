@@ -19,6 +19,7 @@ from code_review_graph.eval.benchmarks import (
     build_performance,
     flow_completeness,
     impact_accuracy,
+    incremental_fidelity,
     multi_hop_retrieval,
     search_quality,
     token_efficiency,
@@ -34,6 +35,7 @@ BENCHMARK_REGISTRY = {
     "build_performance": build_performance.run,
     "multi_hop_retrieval": multi_hop_retrieval.run,
     "agent_baseline": agent_baseline.run,
+    "incremental_fidelity": incremental_fidelity.run,
 }
 
 CONFIGS_DIR = Path(__file__).parent / "configs"
@@ -43,7 +45,7 @@ DEFAULT_REPOS = Path("evaluate/test_repos")
 
 def _require_yaml():
     if yaml is None:
-        raise ImportError("pyyaml is required: pip install code-review-graph[eval]")
+        raise ImportError('pyyaml is required: pip install "code-review-graph[eval]"')
 
 
 def _validate_config(config: object, path: Path) -> dict:
@@ -64,7 +66,7 @@ def load_config(name: str) -> dict:
     """Load a single benchmark config by name."""
     _require_yaml()
     path = CONFIGS_DIR / f"{name}.yaml"
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return _validate_config(yaml.safe_load(f), path)
 
 
@@ -73,9 +75,40 @@ def load_all_configs() -> list[dict]:
     _require_yaml()
     configs = []
     for p in sorted(CONFIGS_DIR.glob("*.yaml")):
-        with open(p) as f:
+        with open(p, encoding="utf-8") as f:
             configs.append(_validate_config(yaml.safe_load(f), p))
     return configs
+
+
+def _assert_standalone_repo(repo_path: Path) -> None:
+    """Refuse to run git commands against a dir that is not its own repository.
+
+    ``evaluate/test_repos/`` sits inside this project's own checkout. If a
+    target directory exists but is not a git repository in its own right --
+    an empty dir, a half-finished clone, or one whose ``.git`` points
+    elsewhere -- then ``git -C <dir> ...`` silently walks up to the enclosing
+    repository. The subsequent ``git checkout <pinned sha>`` then rewrites the
+    developer's working tree instead of the test repo, discarding uncommitted
+    work and resetting tracked files to an old commit.
+    """
+    proc = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=str(repo_path),
+        capture_output=True,
+        text=True,
+    )
+    toplevel = (
+        Path(proc.stdout.strip()).resolve() if proc.returncode == 0 and proc.stdout.strip()
+        else None
+    )
+    if toplevel != repo_path.resolve():
+        raise RuntimeError(
+            f"{repo_path} exists but is not a standalone git repository "
+            f"(git resolves it to {toplevel or 'no repository'}). Refusing to "
+            f"fetch or check out there, because those commands would operate on "
+            f"the enclosing repository instead. Remove {repo_path} and re-run to "
+            f"get a clean clone."
+        )
 
 
 def clone_or_update(config: dict, repos_dir: Path | None = None) -> Path:
@@ -95,6 +128,7 @@ def clone_or_update(config: dict, repos_dir: Path | None = None) -> Path:
     repo_path = repos_dir / config["name"]
 
     if repo_path.exists():
+        _assert_standalone_repo(repo_path)
         proc = subprocess.run(
             ["git", "fetch", "--all", "--tags"],
             cwd=str(repo_path),
@@ -139,7 +173,7 @@ def write_csv(results: list[dict], path: Path) -> None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = list(results[0].keys())
-    with open(path, "w", newline="") as f:
+    with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(results)

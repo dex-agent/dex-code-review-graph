@@ -4,13 +4,15 @@ Supports multiple providers:
 1. Local (sentence-transformers) - Private, fast, offline.
 2. Google Gemini - High-quality, cloud-based. Requires explicit opt-in.
 3. MiniMax (embo-01) - High-quality 1536-dim cloud embeddings. Requires MINIMAX_API_KEY.
-4. OpenAI-compatible - Any endpoint speaking OpenAI /v1/embeddings (real OpenAI,
-   Azure OpenAI, self-hosted gateways like new-api / LiteLLM / vLLM / LocalAI / Ollama).
+4. OpenAI-compatible - Any endpoint speaking OpenAI /v1/embeddings (OpenAI,
+   Azure OpenAI or one you run yourself).
+5. Voyage AI - Code retrieval embeddings via the Voyage embeddings API.
 """
 
 from __future__ import annotations
 
 import hashlib
+import heapq
 import logging
 import os
 import re
@@ -25,6 +27,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from . import __version__ as _crg_version
+from .constants import release_os_memory
 from .graph import GraphNode, GraphStore, node_to_dict
 
 logger = logging.getLogger(__name__)
@@ -80,6 +83,13 @@ LOCAL_DEFAULT_MODEL = "all-MiniLM-L6-v2"
 # torch DLL / OpenMP init runs inside an executor thread).
 _MODEL_CACHE: dict[str, Any] = {}
 _MODEL_INIT_LOCK = threading.RLock()
+
+
+def clear_model_cache() -> None:
+    """Release cached sentence-transformer models and return memory to OS."""
+    with _MODEL_INIT_LOCK:
+        _MODEL_CACHE.clear()
+    release_os_memory()
 
 
 def prewarm_local_embeddings(model_name: str | None = None) -> None:
@@ -149,7 +159,7 @@ class LocalEmbeddingProvider(EmbeddingProvider):
             except ImportError:
                 raise ImportError(
                     "sentence-transformers not installed. "
-                    "Run: pip install code-review-graph[embeddings]"
+                    "Run: pip install \"code-review-graph[embeddings]\""
                 )
 
             # Publish only a fully constructed model. Failed attempts leave
@@ -187,8 +197,8 @@ class GoogleEmbeddingProvider(EmbeddingProvider):
             self._dimension: int | None = None
         except ImportError:
             raise ImportError(
-                "google-generativeai not installed. "
-                "Run: pip install code-review-graph[google-embeddings]"
+                "google-genai not installed. "
+                "Run: pip install \"code-review-graph[google-embeddings]\""
             )
 
     def embed(self, texts: list[str]) -> list[list[float]]:
@@ -360,7 +370,7 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
     Works with any endpoint that speaks the OpenAI ``/v1/embeddings`` schema:
     - Real OpenAI API (``https://api.openai.com/v1``)
     - Azure OpenAI
-    - Self-hosted gateways: new-api, LiteLLM, vLLM, LocalAI, Ollama (openai mode)
+    - Any endpoint you run yourself that speaks the same schema
 
     Provider identity in ``name`` includes both the model and the endpoint
     host (``openai:{model}@{host}``), so switching base URL while keeping the
@@ -625,7 +635,204 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
         return f"openai:{self._model}@{self._host_key}"
 
 
-CLOUD_PROVIDERS = {"google", "minimax", "openai"}
+class VoyageEmbeddingProvider(EmbeddingProvider):
+    """Voyage AI embedding provider.
+
+    Uses Voyage's embeddings API with document/query input types so indexed
+    source-derived node text and search queries are embedded with the task hint
+    Voyage expects. Provider identity includes model, dimension, dtype, and
+    endpoint to avoid mixing incompatible vector spaces.
+    """
+
+    _DEFAULT_BASE_URL = "https://api.voyageai.com/v1"
+    _DEFAULT_MODEL = "voyage-code-3"
+    _DEFAULT_DIMENSION = 1024
+    _DEFAULT_OUTPUT_DTYPE = "float"
+    _DEFAULT_BATCH_SIZE = 100
+
+    def __init__(
+        self,
+        api_key: str,
+        base_url: str | None = None,
+        model: str | None = None,
+        output_dimension: int | None = None,
+        output_dtype: str | None = None,
+        timeout: int = 120,
+        batch_size: int | None = None,
+        min_interval_sec: float = 0.0,
+    ) -> None:
+        self._api_key = api_key
+        self._base_url = (base_url or self._DEFAULT_BASE_URL).rstrip("/")
+        self._model = model or self._DEFAULT_MODEL
+        self._output_dimension = output_dimension or self._DEFAULT_DIMENSION
+        self._output_dtype = output_dtype or self._DEFAULT_OUTPUT_DTYPE
+        self._timeout = timeout
+        self._batch_size = batch_size or self._DEFAULT_BATCH_SIZE
+        self._min_interval_sec = max(0.0, min_interval_sec)
+        self._last_request_at = 0.0
+        self._host_key = OpenAIEmbeddingProvider._make_host_key(self._base_url)
+
+    def _wait_for_rate_limit_slot(self) -> None:
+        if self._min_interval_sec <= 0:
+            return
+        now = time.monotonic()
+        if self._last_request_at > 0:
+            wait = self._min_interval_sec - (now - self._last_request_at)
+            if wait > 0:
+                time.sleep(wait)
+                now = time.monotonic()
+        self._last_request_at = now
+
+    def _call_api(self, texts: list[str], input_type: str) -> list[list[float]]:
+        import http.client
+        import json as _json
+        import socket
+        import ssl
+        import urllib.error
+        import urllib.request
+
+        body: dict[str, Any] = {
+            "model": self._model,
+            "input": texts,
+            "input_type": input_type,
+            "output_dimension": self._output_dimension,
+            "output_dtype": self._output_dtype,
+        }
+
+        payload = _json.dumps(body).encode("utf-8")
+        req = urllib.request.Request(
+            f"{self._base_url}/embeddings",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self._api_key}",
+                "User-Agent": _USER_AGENT,
+                "Accept": "application/json",
+            },
+        )
+
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                _ssl_ctx = ssl.create_default_context()
+                try:
+                    self._wait_for_rate_limit_slot()
+                    with urllib.request.urlopen(  # nosec B310
+                        req, timeout=self._timeout, context=_ssl_ctx,
+                    ) as resp:
+                        raw = resp.read().decode("utf-8")
+                except urllib.error.HTTPError as http_err:
+                    if http_err.code == 429 or 500 <= http_err.code < 600:
+                        raise
+                    try:
+                        err_body = http_err.read().decode("utf-8", errors="replace")
+                    except Exception:
+                        err_body = ""
+                    err_msg = err_body or str(http_err)
+                    try:
+                        parsed = _json.loads(err_body)
+                        if isinstance(parsed, dict) and "error" in parsed:
+                            err_obj = parsed["error"]
+                            err_msg = (
+                                err_obj.get("message", err_msg)
+                                if isinstance(err_obj, dict) else str(err_obj)
+                            )
+                    except Exception:  # nosec B110
+                        pass
+                    raise RuntimeError(
+                        f"Voyage API HTTP {http_err.code}: {err_msg}"
+                    ) from http_err
+
+                response = _json.loads(raw)
+
+                if "error" in response:
+                    err = response["error"]
+                    msg = err.get("message", "unknown") if isinstance(err, dict) else str(err)
+                    raise RuntimeError(f"Voyage API error: {msg}")
+
+                data = response.get("data", [])
+                if not data:
+                    raise RuntimeError("Voyage API returned empty data")
+
+                any_has_index = any("index" in item for item in data)
+                all_int_index = all(
+                    isinstance(item.get("index"), int) for item in data
+                )
+                if all_int_index:
+                    expected = set(range(len(texts)))
+                    indices = [int(item["index"]) for item in data]
+                    if len(set(indices)) != len(indices) or set(indices) != expected:
+                        raise RuntimeError(
+                            "Voyage API returned malformed indices "
+                            f"(got {indices}, expected permutation of "
+                            f"0..{len(texts) - 1}) — refusing to misalign vectors."
+                        )
+                    data = sorted(data, key=lambda item: int(item["index"]))
+                elif not any_has_index:
+                    if len(data) != len(texts):
+                        raise RuntimeError(
+                            f"Voyage API returned {len(data)} embeddings for "
+                            f"{len(texts)} inputs with no index field — "
+                            "refusing to misalign vectors."
+                        )
+                else:
+                    raise RuntimeError(
+                        "Voyage API returned mixed indexed/unindexed data — "
+                        "refusing to misalign vectors."
+                    )
+
+                return [item["embedding"] for item in data]
+
+            except Exception as e:
+                is_retryable = False
+                if isinstance(e, urllib.error.HTTPError):
+                    is_retryable = e.code == 429 or 500 <= e.code < 600
+                elif isinstance(e, (
+                    urllib.error.URLError,
+                    socket.timeout,
+                    TimeoutError,
+                    ConnectionError,
+                    ssl.SSLError,
+                    http.client.IncompleteRead,
+                    http.client.BadStatusLine,
+                    http.client.RemoteDisconnected,
+                )):
+                    is_retryable = True
+                if not is_retryable or attempt == max_retries - 1:
+                    raise
+                wait = 2 ** attempt
+                logger.warning(
+                    "Voyage embeddings API error (attempt %d/%d), retrying in %ds: %s",
+                    attempt + 1, max_retries, wait, e,
+                )
+                time.sleep(wait)
+
+        return []  # unreachable
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        if not texts:
+            return []
+        results: list[list[float]] = []
+        for i in range(0, len(texts), self._batch_size):
+            results.extend(self._call_api(texts[i:i + self._batch_size], "document"))
+        return results
+
+    def embed_query(self, text: str) -> list[float]:
+        return self._call_api([text], "query")[0]
+
+    @property
+    def dimension(self) -> int:
+        return self._output_dimension
+
+    @property
+    def name(self) -> str:
+        return (
+            f"voyage:{self._model}:dim{self._output_dimension}:"
+            f"{self._output_dtype}@{self._host_key}"
+        )
+
+
+CLOUD_PROVIDERS = {"google", "minimax", "openai", "voyage"}
 
 
 def _is_localhost_url(url: str) -> bool:
@@ -668,7 +875,7 @@ def _warn_cloud_egress(provider_name: str) -> None:
     )
 
 
-_VALID_PROVIDERS = {"local", "openai", "google", "minimax"}
+_VALID_PROVIDERS = {"local", "openai", "google", "minimax", "voyage"}
 
 
 def get_provider(
@@ -678,17 +885,18 @@ def get_provider(
     """Get an embedding provider by name.
 
     Args:
-        provider: Provider name. One of "local", "google", "minimax", "openai",
-                  or None. When omitted, configured OpenAI-compatible
-                  credentials select OpenAI; otherwise the local provider is
-                  used. Names are case-insensitive and surrounding whitespace
-                  is ignored; unknown names raise ValueError instead of
-                  silently falling back to the local provider.
-                  Google requires GOOGLE_API_KEY env var and explicit opt-in.
-                  MiniMax requires MINIMAX_API_KEY env var and explicit opt-in.
-                  OpenAI requires CRG_OPENAI_API_KEY + CRG_OPENAI_BASE_URL +
-                  CRG_OPENAI_MODEL env vars (or the ``model`` arg). The egress
-                  warning is skipped when the base URL points to localhost.
+        provider: Provider name. One of "local", "google", "minimax",
+                  "openai", "voyage", or None. When omitted, configured
+                  OpenAI-compatible credentials select OpenAI; otherwise the
+                  local provider is used. Names are case-insensitive and
+                  surrounding whitespace is ignored; unknown names raise
+                  ValueError instead of silently falling back to the local
+                  provider. Google requires GOOGLE_API_KEY env var and explicit
+                  opt-in. MiniMax requires MINIMAX_API_KEY env var and explicit
+                  opt-in. Voyage requires VOYAGE_API_KEY. OpenAI requires
+                  CRG_OPENAI_API_KEY + CRG_OPENAI_BASE_URL + CRG_OPENAI_MODEL
+                  env vars (or the ``model`` arg). The egress warning is
+                  skipped when the base URL points to localhost.
                   Cloud providers emit a one-time stderr warning before use
                   unless ``CRG_ACCEPT_CLOUD_EMBEDDINGS=1`` is set. See: #174
         model: Model name/path to use. For local provider this is any
@@ -696,6 +904,7 @@ def get_provider(
                CRG_EMBEDDING_MODEL env var, then to all-MiniLM-L6-v2.
                For Google provider this is a Gemini model ID.
                For OpenAI provider this overrides CRG_OPENAI_MODEL.
+               For Voyage provider this overrides CRG_VOYAGE_MODEL.
 
     Raises:
         ValueError: If the provider name is not one of the known providers,
@@ -705,7 +914,7 @@ def get_provider(
     if name and name not in _VALID_PROVIDERS:
         raise ValueError(
             f"Unknown embedding provider '{name}'. "
-            "Valid: local, openai, google, minimax"
+            "Valid: local, openai, google, minimax, voyage"
         )
 
     # When no explicit provider is given but OpenAI-compatible env vars are
@@ -758,6 +967,44 @@ def get_provider(
             )
         _warn_cloud_egress("minimax")
         return MiniMaxEmbeddingProvider(api_key=api_key)
+
+    if name == "voyage":
+        api_key = os.environ.get("VOYAGE_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "VOYAGE_API_KEY environment variable is required for "
+                "the Voyage embedding provider."
+            )
+        base_url = (
+            os.environ.get("CRG_VOYAGE_BASE_URL")
+            or VoyageEmbeddingProvider._DEFAULT_BASE_URL
+        )
+        resolved_model = (
+            model
+            or os.environ.get("CRG_VOYAGE_MODEL")
+            or VoyageEmbeddingProvider._DEFAULT_MODEL
+        )
+        dim_env = os.environ.get("CRG_VOYAGE_OUTPUT_DIMENSION")
+        output_dimension = int(dim_env) if dim_env else VoyageEmbeddingProvider._DEFAULT_DIMENSION
+        output_dtype = (
+            os.environ.get("CRG_VOYAGE_OUTPUT_DTYPE")
+            or VoyageEmbeddingProvider._DEFAULT_OUTPUT_DTYPE
+        )
+        batch_env = os.environ.get("CRG_VOYAGE_BATCH_SIZE")
+        batch_size = int(batch_env) if batch_env else None
+        min_interval_env = os.environ.get("CRG_VOYAGE_MIN_INTERVAL_SEC")
+        min_interval_sec = float(min_interval_env) if min_interval_env else 0.0
+        if not _is_localhost_url(base_url):
+            _warn_cloud_egress("voyage")
+        return VoyageEmbeddingProvider(
+            api_key=api_key,
+            base_url=base_url,
+            model=resolved_model,
+            output_dimension=output_dimension,
+            output_dtype=output_dtype,
+            batch_size=batch_size,
+            min_interval_sec=min_interval_sec,
+        )
 
     if name == "google":
         api_key = os.environ.get("GOOGLE_API_KEY")
@@ -829,6 +1076,39 @@ def _cosine_similarity(a: list[float], b: list[float]) -> float:
     if norm_a == 0 or norm_b == 0:
         return 0.0
     return dot / (norm_a * norm_b)
+
+
+# Rows scored per numpy step: the fetchmany() size of the search, and the
+# slice of a cached matrix converted to float64 at a time.
+_SEARCH_CHUNK_ROWS = 500
+
+
+def _decode_rows(blobs: list[bytes], dims: int) -> Any:
+    """Stack vector blobs of *dims* components into a float32 matrix (needs numpy)."""
+    import numpy as np
+
+    return np.frombuffer(b"".join(blobs), dtype=np.float32).reshape(len(blobs), dims)
+
+
+def _row_norms(matrix: Any) -> Any:
+    """Each row's norm in float64, with ``inf`` for a zero row (needs numpy).
+
+    ``inf`` turns the division in :func:`_cosine_scores` into 0.0 for a zero
+    vector, which is what :func:`_cosine_similarity` returns for it.
+    """
+    import numpy as np
+
+    rows = matrix.astype(np.float64)
+    norms = np.sqrt(np.einsum("ij,ij->i", rows, rows))
+    norms[norms == 0.0] = np.inf
+    return norms
+
+
+def _cosine_scores(matrix: Any, norms: Any, query: Any, query_norm: float) -> Any:
+    """Cosine of each float32 row of *matrix* with *query*, in float64."""
+    import numpy as np
+
+    return (matrix.astype(np.float64) @ query) / (norms * query_norm)
 
 
 _IDENTIFIER_SPLIT_RE = re.compile(r"([a-z])([A-Z])|[_./\-]+")
@@ -933,7 +1213,11 @@ class EmbeddingStore:
             isolation_level=None,
         )
         self._conn.row_factory = sqlite3.Row
+        self._conn.execute("PRAGMA cache_size=-2000")
         self._conn.executescript(_EMBEDDINGS_SCHEMA)
+        # The file this connection holds open. If graph.db is later replaced,
+        # the connection keeps reading the old file; see _cached_vectors().
+        self._conn_file_id = self._file_identity(self.db_path)
 
         # Migration for existing DBs missing the provider column
         try:
@@ -953,6 +1237,10 @@ class EmbeddingStore:
         self.close()
 
     def close(self) -> None:
+        try:
+            self._conn.execute("PRAGMA shrink_memory")
+        except sqlite3.Error:
+            pass
         self._conn.close()
 
     def embed_nodes(self, nodes: list[GraphNode], batch_size: int = 64) -> int:
@@ -984,36 +1272,35 @@ class EmbeddingStore:
         if not to_embed:
             return 0
 
-        # Encode in batches
-        texts = [t for _, t, _ in to_embed]
-        vectors = self.provider.embed(texts)
+        embedded = 0
+        for i in range(0, len(to_embed), batch_size):
+            batch = to_embed[i:i + batch_size]
+            texts = [t for _, t, _ in batch]
+            vectors = self.provider.embed(texts)
 
-        for (node, _text, text_hash), vec in zip(to_embed, vectors):
-            blob = _encode_vector(vec)
-            self._conn.execute(
-                """INSERT OR REPLACE INTO embeddings (qualified_name, vector, text_hash, provider)
-                   VALUES (?, ?, ?, ?)""",
-                (node.qualified_name, blob, text_hash, provider_name),
-            )
+            for (node, _text, text_hash), vec in zip(batch, vectors):
+                blob = _encode_vector(vec)
+                self._conn.execute(
+                    """
+                    INSERT OR REPLACE INTO embeddings
+                        (qualified_name, vector, text_hash, provider)
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    (node.qualified_name, blob, text_hash, provider_name),
+                )
+                embedded += 1
 
-        self._conn.commit()
-        return len(to_embed)
+            self._conn.commit()
 
-    def search(self, query: str, limit: int = 20) -> list[tuple[str, float]]:
-        """Search for nodes by semantic similarity."""
-        if not self.provider:
-            return []
+        return embedded
 
-        provider_name = self.provider.name
-        query_vec = self.provider.embed_query(query)
-
-        # Process in chunks, only matching current provider
-        scored: list[tuple[str, float]] = []
-        cursor = self._conn.execute(
-            "SELECT qualified_name, vector FROM embeddings WHERE provider = ?",
-            (provider_name,),
-        )
-        chunk_size = 500
+    @staticmethod
+    def _iter_scores(
+        cursor: sqlite3.Cursor,
+        query_vec: list[float],
+        chunk_size: int = 500,
+    ):
+        """Stream (qualified_name, similarity) pairs from a cursor in chunks."""
         while True:
             rows = cursor.fetchmany(chunk_size)
             if not rows:
@@ -1021,10 +1308,237 @@ class EmbeddingStore:
             for row in rows:
                 vec = _decode_vector(row["vector"])
                 sim = _cosine_similarity(query_vec, vec)
-                scored.append((row["qualified_name"], sim))
+                yield (row["qualified_name"], sim)
 
-        scored.sort(key=lambda x: x[1], reverse=True)
-        return scored[:limit]
+    def search(self, query: str, limit: int = 20) -> list[tuple[str, float]]:
+        """Search for nodes by semantic similarity.
+
+        Every stored vector of the current provider is scored against the
+        query. With numpy installed (the ``embeddings`` extra pulls it in),
+        each chunk of rows is scored with one matrix-vector product instead of
+        a Python loop over every component of every row, which took tens of
+        seconds per search over tens of thousands of high-dimensional vectors.
+        Without numpy, :meth:`_search_pure_python` runs that loop instead.
+
+        Both return the same ranking: a vector whose dimensionality differs
+        from the query's, or whose norm is zero, scores 0.0, and equal scores
+        keep the order the rows were read in.
+
+        With ``CRG_VECTOR_CACHE=1`` the decoded vectors stay in memory between
+        searches instead of being read back from SQLite every time; see
+        :meth:`_cached_vectors`. The ranking is the same either way.
+        """
+        if not self.provider:
+            return []
+
+        provider_name = self.provider.name
+        query_vec = self.provider.embed_query(query)
+
+        try:
+            import numpy as np
+        except ImportError:
+            return self._search_pure_python(query_vec, provider_name, limit)
+
+        # float64, like the loop's Python floats: the stored components are
+        # float32, so every product is exact and only the summation order
+        # differs between the two paths.
+        query_arr = np.asarray(query_vec, dtype=np.float64)
+        dims = int(query_arr.shape[0])
+        query_norm = float(np.sqrt(query_arr @ query_arr))
+
+        cached = self._cached_vectors(provider_name, dims)
+        if cached is None:
+            names, all_scores = self._stream_scores(provider_name, query_arr, query_norm)
+        else:
+            names, rows, matrix, norms = cached
+            all_scores = np.zeros(len(names))
+            if query_norm:
+                for start in range(0, len(rows), _SEARCH_CHUNK_ROWS):
+                    end = start + _SEARCH_CHUNK_ROWS
+                    all_scores[rows[start:end]] = _cosine_scores(
+                        matrix[start:end], norms[start:end], query_arr, query_norm,
+                    )
+
+        if not names:
+            return []
+        # Stable, like list.sort(reverse=True): equal scores keep read order.
+        order = np.argsort(-all_scores, kind="stable")[:limit]
+        return [(names[i], float(all_scores[i])) for i in order]
+
+    def _stream_scores(
+        self, provider_name: str, query_arr: Any, query_norm: float,
+    ) -> tuple[list[str], Any]:
+        """Score the stored vectors chunk by chunk, keeping none of them."""
+        import numpy as np
+
+        dims = int(query_arr.shape[0])
+        blob_size = dims * 4  # float32 components, see _encode_vector
+        names: list[str] = []
+        chunk_scores: list[Any] = []
+        cursor = self._conn.execute(
+            "SELECT qualified_name, vector FROM embeddings WHERE provider = ?",
+            (provider_name,),
+        )
+        while True:
+            rows = cursor.fetchmany(_SEARCH_CHUNK_ROWS)
+            if not rows:
+                break
+            scores = np.zeros(len(rows))
+            same_dims = [i for i, row in enumerate(rows) if len(row["vector"]) == blob_size]
+            if same_dims and query_norm:
+                matrix = _decode_rows([rows[i]["vector"] for i in same_dims], dims)
+                scores[same_dims] = _cosine_scores(
+                    matrix, _row_norms(matrix), query_arr, query_norm,
+                )
+            names.extend(row["qualified_name"] for row in rows)
+            chunk_scores.append(scores)
+        return names, np.concatenate(chunk_scores) if chunk_scores else np.zeros(0)
+
+    # Opt-in (CRG_VECTOR_CACHE=1) cache of decoded vectors, shared by every
+    # store of the process: _embedding_search() opens and closes a store per
+    # query, so a cache kept on the instance would never be hit twice.
+    # (database, provider, dims) -> (token, names, rows, matrix, norms), with
+    # the least recently used entry first.
+    _vector_cache: dict[tuple[str, str, int], tuple[Any, ...]] = {}
+    # database -> (file identity, connection that only reads data_version)
+    _vector_cache_watchers: dict[str, tuple[tuple[int, int], sqlite3.Connection]] = {}
+    _vector_cache_lock = threading.Lock()
+    _VECTOR_CACHE_MAX_ENTRIES = 4
+
+    def _cached_vectors(self, provider_name: str, dims: int) -> tuple[Any, ...] | None:
+        """``(names, rows, matrix, norms)`` from the process-wide cache, or None.
+
+        *names* lists every stored vector of *provider_name* in read order,
+        *rows* the positions in *names* of those with *dims* components,
+        *matrix* their float32 components and *norms* their norms (``inf`` for
+        a zero vector).
+
+        None, and the caller reads SQLite instead, unless ``CRG_VECTOR_CACHE``
+        is ``1``. Also None for a database that is not a file, while this
+        connection holds an uncommitted transaction whose rows only it can
+        see, and when the file at this path is no longer the one this
+        connection has open, since its rows would then be cached as the new
+        file's.
+
+        An entry is valid while ``PRAGMA data_version`` on a long-lived
+        watcher connection stays put. That value moves whenever any other
+        connection commits, this store's included. It is read before the rows,
+        so a commit that races the load costs one extra reload, never a stale
+        answer. The watcher stays open while its database has a cached entry.
+        On Windows that means ``graph.db`` cannot be deleted or replaced
+        while it is open; :meth:`clear_vector_cache` releases it.
+        """
+        if os.environ.get("CRG_VECTOR_CACHE", "").strip() != "1":
+            return None
+        if self._conn.in_transaction:
+            return None
+        path = str(self.db_path)
+        if path == ":memory:" or not os.path.isfile(path):
+            return None
+        db = os.path.normcase(os.path.realpath(path))
+
+        cls = EmbeddingStore
+        with cls._vector_cache_lock:
+            try:
+                token = cls._vector_cache_token(db)
+            except (sqlite3.Error, OSError) as exc:
+                logger.warning("Vector cache unavailable for %s: %s", db, exc)
+                return None
+            if token[0] != self._conn_file_id:
+                return None
+
+            key = (db, provider_name, dims)
+            entry = cls._vector_cache.pop(key, None)
+            if entry is not None and entry[0] != token:
+                entry = None  # release the stale matrix before decoding a new one
+            if entry is None:
+                entry = (token, *self._load_vectors(provider_name, dims))
+            cls._vector_cache[key] = entry  # most recently used goes last
+
+            while len(cls._vector_cache) > cls._VECTOR_CACHE_MAX_ENTRIES:
+                evicted = next(iter(cls._vector_cache))
+                del cls._vector_cache[evicted]
+                if all(other[0] != evicted[0] for other in cls._vector_cache):
+                    cls._close_vector_cache_watcher(evicted[0])
+            return entry[1:]
+
+    def _load_vectors(self, provider_name: str, dims: int) -> tuple[Any, ...]:
+        """Decode every stored vector of *provider_name* for the cache."""
+        import numpy as np
+
+        blob_size = dims * 4
+        names: list[str] = []
+        rows: list[int] = []
+        blobs: list[bytes] = []
+        for name, blob in self._conn.execute(
+            "SELECT qualified_name, vector FROM embeddings WHERE provider = ?",
+            (provider_name,),
+        ):
+            if len(blob) == blob_size:
+                rows.append(len(names))
+                blobs.append(blob)
+            names.append(name)
+
+        matrix = _decode_rows(blobs, dims)
+        norms = np.concatenate([
+            _row_norms(matrix[start:start + _SEARCH_CHUNK_ROWS])
+            for start in range(0, len(blobs), _SEARCH_CHUNK_ROWS)
+        ]) if blobs else np.zeros(0)
+        return names, np.asarray(rows, dtype=np.intp), matrix, norms
+
+    @staticmethod
+    def _file_identity(path: str | Path) -> tuple[int, int] | None:
+        """(device, inode) of *path*, or None if it cannot be read."""
+        try:
+            stat = os.stat(path)
+        except OSError:
+            return None
+        return stat.st_dev, stat.st_ino
+
+    @classmethod
+    def _vector_cache_token(cls, db: str) -> tuple[tuple[int, int], int]:
+        """(file identity, data_version) of *db*. The caller holds the lock."""
+        stat = os.stat(db)
+        file_id = (stat.st_dev, stat.st_ino)
+        watcher = cls._vector_cache_watchers.get(db)
+        if watcher is None or watcher[0] != file_id:
+            # A replaced file gets a fresh watcher: data_version only compares
+            # commits seen by one connection on one file.
+            cls._close_vector_cache_watcher(db)
+            watcher = (file_id, sqlite3.connect(db, timeout=30, check_same_thread=False))
+            cls._vector_cache_watchers[db] = watcher
+        # fetchall() runs the statement to completion: one left open would pin
+        # a read snapshot and freeze data_version on this connection.
+        return file_id, watcher[1].execute("PRAGMA data_version").fetchall()[0][0]
+
+    @classmethod
+    def _close_vector_cache_watcher(cls, db: str) -> None:
+        watcher = cls._vector_cache_watchers.pop(db, None)
+        if watcher is not None:
+            watcher[1].close()
+
+    @classmethod
+    def clear_vector_cache(cls) -> None:
+        """Drop every cached matrix and close the connections that watch them."""
+        with cls._vector_cache_lock:
+            cls._vector_cache.clear()
+            for db in list(cls._vector_cache_watchers):
+                cls._close_vector_cache_watcher(db)
+
+    def _search_pure_python(
+        self, query_vec: list[float], provider_name: str, limit: int,
+    ) -> list[tuple[str, float]]:
+        """Score every stored vector one component at a time (no numpy)."""
+        # Process in chunks, only matching current provider
+        cursor = self._conn.execute(
+            "SELECT qualified_name, vector FROM embeddings WHERE provider = ?",
+            (provider_name,),
+        )
+        return heapq.nlargest(
+            limit,
+            self._iter_scores(cursor, query_vec),
+            key=lambda x: x[1],
+        )
 
     def remove_node(self, qualified_name: str) -> None:
         self._conn.execute(
@@ -1065,12 +1579,36 @@ def embed_all_nodes(graph_store: GraphStore, embedding_store: EmbeddingStore) ->
     if not embedding_store.available:
         return 0
 
-    all_files = graph_store.get_all_files()
-    all_nodes: list[GraphNode] = []
-    for f in all_files:
-        all_nodes.extend(graph_store.get_nodes_by_file(f))
-
+    # Legacy stores may hold paths that normalized file lookups cannot reach.
+    all_nodes = graph_store.get_all_nodes(exclude_files=True)
     return embedding_store.embed_nodes(all_nodes)
+
+
+# Reported by build and post-process paths when an explicit refresh finds no
+# vectors, so a caller who asked for a refresh learns that nothing was embedded.
+REFRESH_SKIPPED_WARNING = (
+    "Embedding refresh skipped: this graph has no embeddings yet. Run "
+    "`code-review-graph embed` (MCP: embed_graph_tool) once with the same "
+    "provider and model to create them."
+)
+
+
+def has_embeddings(graph_store: GraphStore) -> bool:
+    """True when the graph database holds at least one stored vector.
+
+    Reads the schema first, so the check never creates the ``embeddings``
+    table and never resolves a provider.
+    """
+    has_table = graph_store._conn.execute(
+        "SELECT 1 FROM sqlite_master "
+        "WHERE type = 'table' AND name = 'embeddings'",
+    ).fetchone()
+    if has_table is None:
+        return False
+    has_rows = graph_store._conn.execute(
+        "SELECT 1 FROM embeddings LIMIT 1",
+    ).fetchone()
+    return has_rows is not None
 
 
 def refresh_embeddings(
@@ -1083,8 +1621,9 @@ def refresh_embeddings(
 
     This function is deliberately not called by default build paths.  Callers
     must supply both provider and model explicitly.  A graph with no existing
-    vectors returns before provider resolution, so routine builds cannot load
-    a local model, contact a cloud service, or incur API cost.
+    vectors returns ``None`` before provider resolution, so routine builds
+    cannot load a local model, contact a cloud service, or incur API cost;
+    the build paths report that case with ``REFRESH_SKIPPED_WARNING``.
 
     Existing vectors must all use the identity resolved from the requested
     provider/model (including the endpoint for OpenAI-compatible providers).
@@ -1097,16 +1636,7 @@ def refresh_embeddings(
             "Embedding refresh requires an explicit provider and model.",
         )
 
-    has_table = graph_store._conn.execute(
-        "SELECT 1 FROM sqlite_master "
-        "WHERE type = 'table' AND name = 'embeddings'",
-    ).fetchone()
-    if has_table is None:
-        return None
-    has_rows = graph_store._conn.execute(
-        "SELECT 1 FROM embeddings LIMIT 1",
-    ).fetchone()
-    if has_rows is None:
+    if not has_embeddings(graph_store):
         return None
     try:
         rows = graph_store._conn.execute(
@@ -1146,9 +1676,7 @@ def refresh_embeddings(
             )
 
         purged = embedding_store.purge_orphans()
-        all_nodes: list[GraphNode] = []
-        for file_path in graph_store.get_all_files():
-            all_nodes.extend(graph_store.get_nodes_by_file(file_path))
+        all_nodes = graph_store.get_all_nodes(exclude_files=True)
         embedded = embedding_store.embed_nodes(all_nodes)
         return {"embedded": embedded, "purged": purged}
     finally:

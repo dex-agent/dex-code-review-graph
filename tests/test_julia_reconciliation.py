@@ -8,12 +8,10 @@ from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import CodeParser
 
-_FIXTURE_PATH = Path("/repo/case.jl")
-
 
 def _parse(source: str):
     return CodeParser().parse_bytes(
-        _FIXTURE_PATH,
+        Path("/repo/case.jl"),
         source.encode("utf-8"),
     )
 
@@ -137,7 +135,7 @@ def test_qualified_definitions_have_collision_free_identities():
         if edge.kind == "REFERENCES" and edge.extra.get("julia_qualified_def")
     ]
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::Demo.Base.show" and edge.target == "Base"
+        edge.source == "/repo/case.jl::Demo.Base.show" and edge.target == "Base"
         for edge in qualifier_refs
     )
 
@@ -147,8 +145,8 @@ def test_short_form_body_call_resolves_to_local_function():
 
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.delegate"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.greet"
+        and edge.source == "/repo/case.jl::Demo.delegate"
+        and edge.target == "/repo/case.jl::Demo.greet"
         for edge in edges
     )
 
@@ -158,8 +156,8 @@ def test_module_scope_call_resolves_within_current_module():
 
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.initialize"
+        and edge.source == "/repo/case.jl::Demo"
+        and edge.target == "/repo/case.jl::Demo.initialize"
         for edge in edges
     )
 
@@ -181,8 +179,8 @@ def test_qualified_calls_keep_full_module_and_resolve_collisions():
 
     calls = [edge for edge in edges if edge.kind == "CALLS"]
     targets = {edge.target for edge in calls}
-    assert f"{_FIXTURE_PATH}::Demo.run" in targets
-    assert f"{_FIXTURE_PATH}::Demo.A.B.run" in targets
+    assert "/repo/case.jl::Demo.run" in targets
+    assert "/repo/case.jl::Demo.A.B.run" in targets
     assert "LinearAlgebra.BLAS.gemv" in targets
     assert any(
         edge.target == "LinearAlgebra.BLAS.gemv"
@@ -208,11 +206,11 @@ def test_qualified_method_body_uses_lexical_scope_for_bare_calls():
         edge.target
         for edge in edges
         if edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.Base.show"
+        and edge.source == "/repo/case.jl::Demo.Base.show"
     }
     assert targets == {
-        f"{_FIXTURE_PATH}::Demo.helper",
-        f"{_FIXTURE_PATH}::Demo.Base.helper",
+        "/repo/case.jl::Demo.helper",
+        "/repo/case.jl::Demo.Base.helper",
     }
 
 
@@ -240,13 +238,13 @@ def test_nested_symbols_do_not_collide_between_local_and_qualified_methods():
     }
     calls = [edge for edge in edges if edge.kind == "CALLS"]
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::Demo.show"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.show.inner"
+        edge.source == "/repo/case.jl::Demo.show"
+        and edge.target == "/repo/case.jl::Demo.show.inner"
         for edge in calls
     )
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::Demo.Base.show"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.Base.show.inner"
+        edge.source == "/repo/case.jl::Demo.Base.show"
+        and edge.target == "/repo/case.jl::Demo.Base.show.inner"
         for edge in calls
     )
 
@@ -272,10 +270,10 @@ def test_wrapped_signature_keeps_evaluated_return_type_call():
     )
 
     calls = [edge for edge in edges if edge.kind == "CALLS"]
-    assert not any(edge.target == f"{_FIXTURE_PATH}::f" for edge in calls)
+    assert not any(edge.target == "/repo/case.jl::f" for edge in calls)
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::f"
-        and edge.target == f"{_FIXTURE_PATH}::g"
+        edge.source == "/repo/case.jl::f"
+        and edge.target == "/repo/case.jl::g"
         for edge in calls
     )
 
@@ -297,14 +295,14 @@ def test_nested_function_in_qualified_method_keeps_identity_and_lexical_lookup()
     assert inner.parent_name == "Demo.Base.show"
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.Base.show.inner"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.helper"
+        and edge.source == "/repo/case.jl::Demo.Base.show.inner"
+        and edge.target == "/repo/case.jl::Demo.helper"
         for edge in edges
     )
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.Base.show"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.Base.show.inner"
+        and edge.source == "/repo/case.jl::Demo.Base.show"
+        and edge.target == "/repo/case.jl::Demo.Base.show.inner"
         for edge in edges
     )
 
@@ -334,14 +332,14 @@ def test_nested_modules_and_functions_keep_complete_scope():
     assert ("leaf", "Outer.Inner.wrapper") in identities
     assert any(
         edge.kind == "CONTAINS"
-        and edge.source == f"{_FIXTURE_PATH}::Outer"
-        and edge.target == f"{_FIXTURE_PATH}::Outer.Inner"
+        and edge.source == "/repo/case.jl::Outer"
+        and edge.target == "/repo/case.jl::Outer.Inner"
         for edge in edges
     )
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Outer.Inner.wrapper.leaf"
-        and edge.target == f"{_FIXTURE_PATH}::Outer.Inner.f"
+        and edge.source == "/repo/case.jl::Outer.Inner.wrapper.leaf"
+        and edge.target == "/repo/case.jl::Outer.Inner.f"
         for edge in edges
     )
 
@@ -366,14 +364,14 @@ def test_calls_through_import_aliases_use_real_module_paths():
 
     calls = [edge for edge in edges if edge.kind == "CALLS"]
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::Demo.caller"
+        edge.source == "/repo/case.jl::Demo.caller"
         and edge.target == "DataFrames.transform"
         and edge.extra.get("julia_call_module") == "DataFrames"
         for edge in calls
     )
     assert any(edge.target == "Tables.AbstractColumns" for edge in calls)
     assert any(
-        edge.source == f"{_FIXTURE_PATH}::Other.caller"
+        edge.source == "/repo/case.jl::Other.caller"
         and edge.target == "OtherFrames.transform"
         and edge.extra.get("julia_call_module") == "OtherFrames"
         for edge in calls
@@ -390,7 +388,7 @@ def test_selected_import_alias_keeps_multi_segment_module_path():
 
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.f"
+        and edge.source == "/repo/case.jl::Demo.f"
         and edge.target == "Foo.Bar.thing"
         for edge in edges
     )
@@ -407,8 +405,8 @@ def test_enum_variants_use_the_full_lexical_type_parent():
     assert (variant.name, variant.parent_name) == ("RED", "Demo.Color")
     assert any(
         edge.kind == "CONTAINS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.Color"
-        and edge.target == f"{_FIXTURE_PATH}::Demo.Color.RED"
+        and edge.source == "/repo/case.jl::Demo.Color"
+        and edge.target == "/repo/case.jl::Demo.Color.RED"
         for edge in edges
     )
 
@@ -441,12 +439,12 @@ def test_function_local_testset_and_macros_keep_canonical_scope():
     assert any(
         edge.kind == "CALLS"
         and edge.source == testset_qn
-        and edge.target == f"{_FIXTURE_PATH}::Demo.subject"
+        and edge.target == "/repo/case.jl::Demo.subject"
         for edge in edges
     )
     assert any(
         edge.kind == "CALLS"
-        and edge.source == f"{_FIXTURE_PATH}::Demo.wrapper"
+        and edge.source == "/repo/case.jl::Demo.wrapper"
         and edge.target == "@inline"
         for edge in edges
     )
@@ -470,9 +468,9 @@ def test_full_build_persists_distinct_qualified_nodes_and_callers(tmp_path):
     store = GraphStore(tmp_path / "graph.db")
     try:
         result = full_build(tmp_path, store)
-        local_qn = f"{source_path}::Demo.show"
-        base_qn = f"{source_path}::Demo.Base.show"
-        alias_qn = f"{source_path}::Demo.FloatVec"
+        local_qn = f"{source_path.as_posix()}::Demo.show"
+        base_qn = f"{source_path.as_posix()}::Demo.Base.show"
+        alias_qn = f"{source_path.as_posix()}::Demo.FloatVec"
 
         local_node = store.get_node(local_qn)
         base_node = store.get_node(base_qn)
@@ -483,8 +481,9 @@ def test_full_build_persists_distinct_qualified_nodes_and_callers(tmp_path):
         assert store.get_node(alias_qn) is not None
 
         callers = store.get_edges_by_target(base_qn)
+        invoke_qn = f"{source_path.as_posix()}::Demo.invoke"
         assert any(
-            edge.kind == "CALLS" and edge.source_qualified == f"{source_path}::Demo.invoke"
+            edge.kind == "CALLS" and edge.source_qualified == invoke_qn
             for edge in callers
         )
         assert result["errors"] == []
