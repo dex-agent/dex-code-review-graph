@@ -24,15 +24,15 @@ locals {
     nodes, edges = CodeParser().parse_bytes(path, source)
 
     assert any(node.name == "local.selected" for node in nodes)
-    local_qn = f"{path}::local.selected"
+    local_qn = "infra/locals.tf::local.selected"
     targets = {
         edge.target
         for edge in edges
         if edge.kind == "REFERENCES" and edge.source == local_qn
     }
     assert targets == {
-        f"{path}::var.items",
-        f"{path}::var.enabled",
+        "infra/locals.tf::var.items",
+        "infra/locals.tf::var.enabled",
     }
 
 
@@ -73,23 +73,23 @@ module "network" {
     try:
         result = full_build(tmp_path, store)
 
-        resource_qn = f"{tmp_path / 'main.tf'}::resource.example_server.web"
+        resource_qn = f"{(tmp_path / 'main.tf').as_posix()}::resource.example_server.web"
         reference_targets = {
             edge.target_qualified
             for edge in store.get_edges_by_source(resource_qn)
             if edge.kind == "REFERENCES"
         }
         assert reference_targets == {
-            f"{tmp_path / 'variables.tf'}::var.names",
-            f"{tmp_path / 'variables.tf'}::local.tags",
+            f"{(tmp_path / 'variables.tf').as_posix()}::var.names",
+            f"{(tmp_path / 'variables.tf').as_posix()}::local.tags",
         }
 
-        local_qn = f"{tmp_path / 'variables.tf'}::local.tags"
+        local_qn = f"{(tmp_path / 'variables.tf').as_posix()}::local.tags"
         assert {
             edge.target_qualified
             for edge in store.get_edges_by_source(local_qn)
             if edge.kind == "REFERENCES"
-        } == {f"{tmp_path / 'variables.tf'}::var.region"}
+        } == {f"{(tmp_path / 'variables.tf').as_posix()}::var.region"}
 
         module_imports = [
             edge
@@ -97,7 +97,7 @@ module "network" {
             if edge.kind == "IMPORTS_FROM"
         ]
         assert len(module_imports) == 1
-        assert module_imports[0].target_qualified == str(module_dir / "main.tf")
+        assert module_imports[0].target_qualified == (module_dir / "main.tf").as_posix()
         assert result["hcl_resolution"]["references_resolved"] == 2
         assert result["hcl_resolution"]["imports_resolved"] == 1
     finally:

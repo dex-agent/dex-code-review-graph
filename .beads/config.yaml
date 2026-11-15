@@ -73,6 +73,9 @@ sync:
 #   git-push: false    # Disable git push (export locally only)
 
 #   git-repo: ""       # Separate git repo for backups (default: project repo)
+# This is a public repository: back up locally only, never push tracker data.
+backup:
+  git-push: false
 
 # Integration settings (access with 'bd config get/set')
 

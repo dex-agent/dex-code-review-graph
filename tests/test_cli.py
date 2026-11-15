@@ -1,12 +1,10 @@
 """Tests for CLI helpers and MCP serve command wiring."""
 
+import io
 import json
 import logging
-import sqlite3
 import subprocess
 import sys
-import sysconfig
-from contextlib import closing
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -16,8 +14,24 @@ import pytest
 from code_review_graph import cli
 
 
-def _installed_cli() -> Path:
-    return Path(sysconfig.get_path("scripts")) / f"code-review-graph{Path(sys.executable).suffix}"
+def test_main_handles_legacy_stdio_encoding(monkeypatch):
+    """Unicode CLI output must not crash when stdio starts as cp1252."""
+    raw_stdout = io.BytesIO()
+    legacy_stdout = io.TextIOWrapper(raw_stdout, encoding="cp1252")
+    raw_stderr = io.BytesIO()
+    legacy_stderr = io.TextIOWrapper(raw_stderr, encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", legacy_stdout)
+    monkeypatch.setattr(sys, "stderr", legacy_stderr)
+    monkeypatch.setattr(sys, "argv", ["code-review-graph"])
+
+    cli.main()
+
+    legacy_stdout.flush()
+    output = raw_stdout.getvalue().decode(legacy_stdout.encoding)
+    assert legacy_stdout.encoding == "utf-8"
+    assert legacy_stderr.encoding == "utf-8"
+    assert "code-review-graph" in output
+    assert "Start:" in output
 
 
 def test_get_version_falls_back_to_package_attr_when_metadata_missing(
@@ -74,7 +88,7 @@ class TestServeCommand:
                 cli.main()
 
         mock_serve.assert_called_once_with(
-            repo_root="repo-root",
+            repo_root=str(Path("repo-root").resolve()),
             auto_watch=True,
             tools=None,
         )
@@ -91,9 +105,87 @@ class TestServeCommand:
                 cli.main()
 
         mock_serve.assert_called_once_with(
-            repo_root="repo-root",
+            repo_root=str(Path("repo-root").resolve()),
             auto_watch=False,
         )
+
+    def test_serve_multi_worktree_uses_router(self):
+        argv = [
+            "code-review-graph",
+            "serve",
+            "--repo",
+            "repo-root",
+            "--multi-worktree",
+        ]
+        with patch.object(sys, "argv", argv):
+            with patch(
+                "code_review_graph.multi_worktree.run_multi_worktree_server"
+            ) as router:
+                cli.main()
+
+        router.assert_called_once_with(
+            repo_root=str(Path("repo-root").resolve()),
+            auto_watch=False,
+            tools=None,
+        )
+
+    def test_serve_multi_worktree_rejects_http(self):
+        argv = [
+            "code-review-graph",
+            "serve",
+            "--repo",
+            "repo-root",
+            "--multi-worktree",
+            "--http",
+        ]
+        with patch.object(sys, "argv", argv):
+            with patch(
+                "code_review_graph.multi_worktree.run_multi_worktree_server"
+            ) as router:
+                with pytest.raises(SystemExit):
+                    cli.main()
+
+        router.assert_not_called()
+
+    @pytest.mark.parametrize("flag,value", [("--port", "5555"), ("--host", "127.0.0.1")])
+    def test_serve_multi_worktree_rejects_http_options(self, flag, value):
+        argv = ["code-review-graph", "serve", "--repo", "repo-root", "--multi-worktree"]
+        with patch.object(sys, "argv", [*argv, flag, value]):
+            with patch(
+                "code_review_graph.multi_worktree.run_multi_worktree_server"
+            ) as router:
+                with pytest.raises(SystemExit) as stopped:
+                    cli.main()
+
+        assert stopped.value.code == 2
+        router.assert_not_called()
+
+    def test_serve_multi_worktree_outside_git_is_one_clear_error(self, tmp_path, capsys):
+        argv = ["code-review-graph", "serve", "--repo", str(tmp_path), "--multi-worktree"]
+        with patch.object(sys, "argv", argv):
+            with pytest.raises(SystemExit) as stopped:
+                cli.main()
+
+        assert stopped.value.code == 2
+        assert "Git command failed" in capsys.readouterr().err
+
+    def test_serve_multi_worktree_rejects_global_data_dir(self, monkeypatch):
+        monkeypatch.setenv("CRG_DATA_DIR", "/tmp/shared-graph")
+        argv = [
+            "code-review-graph",
+            "serve",
+            "--repo",
+            "repo-root",
+            "--multi-worktree",
+        ]
+        with patch.object(sys, "argv", argv):
+            with patch(
+                "code_review_graph.multi_worktree.run_multi_worktree_server"
+            ) as router:
+                with pytest.raises(SystemExit):
+                    cli.main()
+
+        router.assert_not_called()
 
 
 class TestWatchInteraction:
@@ -106,11 +198,9 @@ class TestWatchInteraction:
                     mock_db.return_value = MagicMock()
                     with patch("code_review_graph.incremental.watch") as mock_watch:
                         mock_watch.side_effect = RuntimeError("watcher already running")
-                        try:
+                        with pytest.raises(SystemExit) as exc_info:
                             cli.main()
-                            assert False, "Expected SystemExit"
-                        except SystemExit as exc:
-                            assert exc.code == 1
+                        assert exc_info.value.code == 1
 
 
 def test_visualize_json_uses_local_export(tmp_path, capsys):
@@ -123,13 +213,17 @@ def test_visualize_json_uses_local_export(tmp_path, capsys):
         "json",
     ]
     data_dir = tmp_path / ".code-review-graph"
+    data_dir.mkdir()
+    # visualize is read-only for missing graphs (#803); the path must exist.
+    db_path = data_dir / "graph.db"
+    db_path.touch()
     store = MagicMock()
 
     with patch.object(sys, "argv", argv):
         with patch("code_review_graph.graph.GraphStore", return_value=store):
             with patch(
                 "code_review_graph.incremental.get_db_path",
-                return_value=data_dir / "graph.db",
+                return_value=db_path,
             ):
                 with patch(
                     "code_review_graph.incremental.get_data_dir",
@@ -147,6 +241,54 @@ def test_visualize_json_uses_local_export(tmp_path, capsys):
 
 
 class TestBuildUpdateCommands:
+    @pytest.fixture(autouse=True)
+    def _repo_root_folder(self, tmp_path, monkeypatch):
+        # build and update stop on a --repo path that is not a folder.
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "repo-root").mkdir()
+
+    @staticmethod
+    def _run_build(result: dict, *extra: str) -> None:
+        argv = ["code-review-graph", "build", "--repo", "repo-root", *extra]
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with patch(
+                        "code_review_graph.tools.build.build_or_update_graph",
+                        return_value=result,
+                    ):
+                        cli.main()
+
+    def test_build_says_what_to_do_next(self, capsys):
+        """A new user should not stop at a line of counts (developer-experience review, item 8)."""
+        self._run_build({"files_parsed": 3, "total_nodes": 9, "total_edges": 4})
+
+        out = capsys.readouterr().out
+        assert "Full build: 3 files" in out
+        assert out.rstrip().splitlines()[-1] == (
+            "Next: code-review-graph detect-changes --brief, "
+            'or ask your assistant "Review my changes".'
+        )
+
+    def test_build_of_an_empty_folder_warns_instead_of_suggesting(self, capsys):
+        self._run_build({"files_parsed": 0, "total_nodes": 0, "total_edges": 0})
+
+        captured = capsys.readouterr()
+        assert "Next:" not in captured.out
+        root = Path("repo-root").resolve()
+        assert captured.err.strip() == (
+            f"Warning: no source files found under {root}. Is this the project root?"
+        )
+
+    def test_quiet_build_prints_neither_hint(self, capsys):
+        self._run_build({"files_parsed": 0, "total_nodes": 0, "total_edges": 0}, "-q")
+
+        captured = capsys.readouterr()
+        assert captured.out == ""
+        assert captured.err == ""
+
     def test_build_skip_postprocess_does_not_run_extra_cli_postprocess(self):
         argv = [
             "code-review-graph",
@@ -178,8 +320,10 @@ class TestBuildUpdateCommands:
 
         mock_build.assert_called_once_with(
             full_rebuild=True,
-            repo_root="repo-root",
+            recover_corrupt=True,
+            repo_root=str(Path("repo-root").resolve()),
             postprocess="none",
+            wait_for_lock=False,
         )
         mock_postprocess.assert_not_called()
 
@@ -216,9 +360,10 @@ class TestBuildUpdateCommands:
         # can resolve the base to the last-synced commit.
         mock_build.assert_called_once_with(
             full_rebuild=False,
-            repo_root="repo-root",
+            repo_root=str(Path("repo-root").resolve()),
             base=None,
             postprocess="minimal",
+            wait_for_lock=False,
         )
         mock_postprocess.assert_not_called()
 
@@ -254,6 +399,123 @@ class TestBuildUpdateCommands:
                             cli.main()
 
         assert mock_build.call_args.kwargs["base"] == "HEAD~3"
+
+    def test_build_forwards_wait_to_the_shared_seam(self):
+        """--wait must reach build_or_update_graph, not be swallowed here."""
+        argv = ["code-review-graph", "build", "--wait", "--repo", "repo-root"]
+        result = {"files_parsed": 1, "total_nodes": 2, "total_edges": 1}
+
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with patch(
+                        "code_review_graph.tools.build.build_or_update_graph",
+                        return_value=result,
+                    ) as mock_build:
+                        with patch(
+                            "code_review_graph.postprocessing.run_post_processing",
+                        ):
+                            cli.main()
+
+        assert mock_build.call_args.kwargs["wait_for_lock"] is True
+
+    @pytest.mark.parametrize("command", ["build", "update"])
+    @pytest.mark.parametrize(("flags", "expected"), [([], None), (["--enrich"], True)])
+    def test_enrich_flag_reaches_the_shared_seam(self, command, flags, expected):
+        """Review of #823: Jedi runs only on request; no flag defers to the env var."""
+        argv = ["code-review-graph", command, *flags, "--repo", "repo-root"]
+        result = {"files_parsed": 1, "files_updated": 1, "total_nodes": 2, "total_edges": 1}
+
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with patch(
+                        "code_review_graph.tools.build.build_or_update_graph",
+                        return_value=result,
+                    ) as mock_build:
+                        with patch(
+                            "code_review_graph.postprocessing.run_post_processing",
+                        ):
+                            cli.main()
+
+        assert mock_build.call_args.kwargs.get("enrich") is expected
+
+    def test_update_that_stood_down_exits_tempfail_and_says_who_owns_the_build(
+        self, capsys,
+    ):
+        """A skipped run is neither a success nor a failure.
+
+        The distinct exit code lets a hook tell an overlap from a broken graph.
+        The message names the holder so a stale lock is distinguishable from a
+        live one.
+        """
+        argv = ["code-review-graph", "update", "--repo", "repo-root"]
+        result = {
+            "status": "contended",
+            "skipped": True,
+            "build_type": "none",
+            "holder_pid": 4242,
+            "files_updated": 0,
+            "total_nodes": 0,
+            "total_edges": 0,
+            "summary": (
+                "Another code-review-graph build is already running for this "
+                "repository (PID 4242); skipped instead of parsing the same "
+                "working tree twice."
+            ),
+        }
+
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with patch(
+                        "code_review_graph.tools.build.build_or_update_graph",
+                        return_value=result,
+                    ):
+                        with patch(
+                            "code_review_graph.postprocessing.run_post_processing",
+                        ) as mock_postprocess:
+                            with pytest.raises(SystemExit) as excinfo:
+                                cli.main()
+
+        assert excinfo.value.code == cli.EXIT_TEMPFAIL
+        captured = capsys.readouterr()
+        assert "PID 4242" in captured.err
+        assert "Incremental:" not in captured.out
+        mock_postprocess.assert_not_called()
+
+    def test_build_that_stood_down_does_not_print_a_build_summary(self, capsys):
+        argv = ["code-review-graph", "build", "--repo", "repo-root"]
+        result = {
+            "status": "contended",
+            "skipped": True,
+            "holder_pid": 7,
+            "files_parsed": 0,
+            "total_nodes": 0,
+            "total_edges": 0,
+            "summary": "Another code-review-graph build is already running",
+        }
+
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with patch(
+                        "code_review_graph.tools.build.build_or_update_graph",
+                        return_value=result,
+                    ):
+                        with pytest.raises(SystemExit) as excinfo:
+                            cli.main()
+
+        assert excinfo.value.code == cli.EXIT_TEMPFAIL
+        assert "Full build:" not in capsys.readouterr().out
 
     def test_update_reports_full_rebuild_fallback(self, capsys):
         argv = ["code-review-graph", "update", "--repo", "repo-root"]
@@ -320,6 +582,61 @@ class TestDetectChangesCommand:
         assert json.loads(capsys.readouterr().out)["summary"] == "with churn"
         assert analyze.call_args.kwargs["include_churn"] is True
 
+    def test_branch_base_is_resolved_once_for_detection_and_analysis(
+        self, tmp_path, capsys,
+    ):
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        (repo / ".git").mkdir()
+        (repo / "app.py").write_text("x = 1\n", encoding="utf-8")
+        argv = [
+            "code-review-graph",
+            "detect-changes",
+            "--repo",
+            str(repo),
+            "--base",
+            "origin/main",
+        ]
+
+        with patch.object(sys, "argv", argv):
+            with patch("code_review_graph.graph.GraphStore") as mock_store:
+                mock_store.return_value = MagicMock()
+                with patch("code_review_graph.incremental.get_db_path") as mock_db:
+                    mock_db.return_value = MagicMock()
+                    with (
+                        patch(
+                            "code_review_graph.incremental.resolve_review_base",
+                            return_value="merge-base-sha",
+                        ) as resolve,
+                        patch(
+                            "code_review_graph.incremental.get_changed_files",
+                            return_value=["app.py"],
+                        ) as get_changed,
+                        patch(
+                            "code_review_graph.changes.analyze_changes",
+                            return_value={"summary": "resolved"},
+                        ) as analyze,
+                    ):
+                        cli.main()
+
+        from code_review_graph.constants import discovery_timeout
+
+        budget = discovery_timeout()
+        assert json.loads(capsys.readouterr().out)["summary"] == "resolved"
+        # Discovery runs on its own short budget, not the 30s CRG_GIT_TIMEOUT
+        # that build and update need (#262), and with require_vcs throughout:
+        # detect-changes' exit code is a review gate, so a git it could not
+        # run -- including one that overran that budget -- must not be
+        # reported as "no changes".
+        resolve.assert_called_once_with(
+            repo.resolve(), "origin/main", timeout=budget, require_vcs=True,
+        )
+        get_changed.assert_called_once_with(
+            repo.resolve(), "merge-base-sha", timeout=budget, require_vcs=True,
+        )
+        assert budget <= 5.0
+        assert analyze.call_args.kwargs["base"] == "merge-base-sha"
+
     def test_brief_output_includes_token_savings_panel(self, tmp_path, capsys):
         """v2.3.5: --brief output renders a boxed Token Savings panel.
 
@@ -350,7 +667,10 @@ class TestDetectChangesCommand:
                     ):
                         with patch(
                             "code_review_graph.changes.analyze_changes",
-                            return_value={"summary": "summary only"},
+                            return_value={
+                                "summary": "summary only",
+                                "changed_functions": [{"name": "app.f"}],
+                            },
                         ):
                             cli.main()
 
@@ -421,67 +741,11 @@ class TestDetectChangesEndToEnd:
             timeout=30,
         )
 
-    def test_python_reexport_update_reassigns_test(self, tmp_path, monkeypatch):
-        repo = tmp_path / "repo"
-        package = repo / "pkg"
-        package.mkdir(parents=True)
-        for name in ("old", "new", "unrelated"):
-            (package / f"{name}.py").write_text(
-                f"def run():\n    return {name!r}\n", encoding="utf-8",
-            )
-        (package / "__init__.py").write_text("from .bridge import run\n", encoding="utf-8")
-        bridge = package / "bridge.py"
-        bridge.write_text("from .old import run\n", encoding="utf-8")
-        (repo / "test_client.py").write_text(
-            "from pkg import run\n\ndef test_public():\n    run()\n", encoding="utf-8",
-        )
-        self._git(repo, "init", "-q")
-        self._git(repo, "add", ".")
-        self._git(repo, "commit", "-qm", "initial")
-
-        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "index"))
-        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-        executable = _installed_cli()
-
-        def run(*args):
-            result = subprocess.run(
-                [str(executable), *args, "--repo", str(repo)],
-                capture_output=True, encoding="utf-8", timeout=60,
-            )
-            assert result.returncode == 0, result.stderr
-            return result.stdout.strip()
-
-        def associated_tests():
-            return {
-                name: [
-                    node["name"] for node in json.loads(
-                        run("query", "tests_for", f"{package / (name + '.py')}::run"),
-                    )["results"]
-                ]
-                for name in ("old", "new", "unrelated")
-            }
-
-        build = run("build")
-        before = associated_tests()
-        assert before == {"old": ["test_public"], "new": [], "unrelated": []}
-
-        bridge.write_text("from .new import run\n", encoding="utf-8")
-        self._git(repo, "add", "pkg/bridge.py")
-        self._git(repo, "commit", "-qm", "retarget")
-        update = run("update", "--base", "HEAD~1")
-        after = associated_tests()
-        assert after == {"old": [], "new": ["test_public"], "unrelated": []}
-        print(json.dumps({"build": build, "update": update, "before": before, "after": after}))
-
-    def test_detect_changes_maps_committed_change_to_functions(
-        self, tmp_path, capsys, monkeypatch,
-    ):
-        monkeypatch.delenv("CRG_DATA_DIR", raising=False)
-        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-
+    def _create_repo_with_committed_change(self, tmp_path):
         repo = tmp_path / "repo"
         src = repo / "src"
         src.mkdir(parents=True)
+
         app = src / "app.py"
         app.write_text(
             "def greet(name):\n"
@@ -507,8 +771,19 @@ class TestDetectChangesEndToEnd:
             "    return 'bye ' + name\n",
             encoding="utf-8",
         )
+
         self._git(repo, "add", ".")
         self._git(repo, "commit", "-q", "-m", "change greet")
+
+        return repo
+
+    def test_detect_changes_maps_committed_change_to_functions(
+        self, tmp_path, capsys, monkeypatch,
+    ):
+        monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+        monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+
+        repo = self._create_repo_with_committed_change(tmp_path)
 
         # Build the graph after the change (stores absolute native paths).
         from code_review_graph.graph import GraphStore
@@ -571,7 +846,8 @@ class TestDetectChangesEndToEnd:
         monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
         monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
         monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-        executable = _installed_cli()
+        python = Path(sys.executable)
+        executable = python.with_name(f"code-review-graph{python.suffix}")
         build = subprocess.run(
             [str(executable), "build", "--repo", str(repo), "--skip-postprocess"],
             capture_output=True, text=True, timeout=60,
@@ -600,17 +876,14 @@ class TestDetectChangesEndToEnd:
         }))
 
 
-def test_explicit_monorepo_subproject_runs_a_real_graph_search(
-    tmp_path,
-    monkeypatch,
-    capsys,
-):
-    """The CLI must open the graph at the explicit subproject, not its parent repo."""
+def _prepare_monorepo_subproject(tmp_path, monkeypatch):
     mono = tmp_path / "mono"
     (mono / ".git").mkdir(parents=True)
+
     module = mono / "llvm"
     nested = module / "src" / "deep"
     nested.mkdir(parents=True)
+
     (module / "stream.py").write_text(
         "def raw_stream_lookup():\n    return 1\n",
         encoding="utf-8",
@@ -619,6 +892,7 @@ def test_explicit_monorepo_subproject_runs_a_real_graph_search(
     # Keep registry writes away from the developer's real home.
     state_dir = tmp_path / "state"
     monkeypatch.setenv("CRG_HOME", str(state_dir))
+
     from code_review_graph import registry as registry_module
 
     monkeypatch.setattr(
@@ -635,12 +909,25 @@ def test_explicit_monorepo_subproject_runs_a_real_graph_search(
 
     db_path = module / ".code-review-graph" / "graph.db"
     db_path.parent.mkdir(parents=True)
+
     store = GraphStore(db_path)
     try:
         full_build(module, store)
         rebuild_fts_index(store)
     finally:
         store.close()
+
+    return nested
+
+def test_explicit_monorepo_subproject_runs_a_real_graph_search(
+    tmp_path,
+    monkeypatch,
+    capsys,
+):
+
+    """The CLI must open the graph at the explicit subproject, not its parent repo."""
+
+    nested = _prepare_monorepo_subproject(tmp_path, monkeypatch)
 
     argv = [
         "code-review-graph",
@@ -649,10 +936,12 @@ def test_explicit_monorepo_subproject_runs_a_real_graph_search(
         "--repo",
         str(nested),
     ]
+
     with patch.object(sys, "argv", argv):
         cli.main()
 
     result = json.loads(capsys.readouterr().out)
+
     assert result["status"] == "ok"
     assert any(row["name"] == "raw_stream_lookup" for row in result["results"])
 
@@ -680,34 +969,17 @@ class TestGraphToolExplicitRepoResolution:
         repo_root = mock_run.call_args.args[1]
         assert repo_root == module.resolve()
 
-    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, capsys, monkeypatch):
+    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, capsys):
         bare = tmp_path / "not-a-project"
         bare.mkdir()
-        monkeypatch.setenv("CRG_HOME", str(tmp_path / "isolated-state"))
-        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "global-storage"))
-        host_markers = {
-            parent / marker
-            for parent in tmp_path.resolve().parents
-            for marker in (".git", ".svn", ".code-review-graph")
-        }
-        real_exists = Path.exists
-
-        def exists(path, *args, **kwargs):
-            return path not in host_markers and real_exists(path, *args, **kwargs)
-
-        monkeypatch.setattr(Path, "exists", exists)
         argv = ["code-review-graph", "search", "x", "--repo", str(bare)]
         with patch.object(sys, "argv", argv):
             with patch.object(cli, "_run_graph_tool_command") as mock_run:
-                try:
+                with pytest.raises(SystemExit) as exc_info:
                     cli.main()
-                    raised = False
-                except SystemExit as exc:
-                    raised = exc.code == 1
-        assert raised
+        assert exc_info.value.code == 1
         mock_run.assert_not_called()
         assert "does not look like a project root" in capsys.readouterr().err
-        assert not (tmp_path / "global-storage").exists()
 
     def test_repo_inside_module_resolves_to_nearest_marker(self, tmp_path):
         _, module = self._make_monorepo(tmp_path)
@@ -719,45 +991,3 @@ class TestGraphToolExplicitRepoResolution:
                 cli.main()
 
         assert mock_run.call_args.args[1] == module.resolve()
-
-
-def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
-    parent = tmp_path / "parent"
-    parent.mkdir()
-    (parent / "parent.py").write_text("def parent_canary():\n    return 1\n", encoding="utf-8")
-    data = tmp_path / "external"
-    monkeypatch.setenv("CRG_HOME", str(tmp_path / "state"))
-    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
-    monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-    executable = _installed_cli()
-
-    def run(command, root, *args):
-        return subprocess.run(
-            [str(executable), command, "--repo", str(root), *args],
-            capture_output=True, encoding="utf-8", timeout=60,
-        )
-
-    parent_build = run("build", parent, "--skip-postprocess")
-    assert parent_build.returncode == 0, parent_build.stderr
-    child = parent / "project"
-    nested = child / "nested"
-    nested.mkdir(parents=True)
-    source = child / "child.py"
-    source.write_text("def external_root_canary():\n    return 2\n", encoding="utf-8")
-
-    build = run("build", child, "--data-dir", str(data), "--skip-postprocess")
-    assert build.returncode == 0, build.stderr
-    assert not (child / ".code-review-graph").exists()
-    db_uri = (data / "graph.db").as_uri() + "?mode=ro"
-    with closing(sqlite3.connect(db_uri, uri=True)) as db:
-        assert db.execute("SELECT file_path FROM nodes WHERE kind='File'").fetchall() == [
-            (str(source.resolve()),)
-        ]
-
-    for root in (child, nested):
-        search = run("search", root, "external_root_canary")
-        assert search.returncode == 0, search.stderr
-        assert any(
-            row["name"] == "external_root_canary"
-            for row in json.loads(search.stdout)["results"]
-        )

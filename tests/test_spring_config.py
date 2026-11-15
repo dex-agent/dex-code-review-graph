@@ -50,7 +50,9 @@ def test_only_conventional_spring_files_are_classified(tmp_path: Path) -> None:
     assert parser.detect_language(tmp_path / "app.properties") is None
     assert parser.detect_language(tmp_path / "workflow.yml") == "yaml"
 
-    assert parser.parse_bytes(tmp_path / "workflow.yml", YAML_SOURCE) == ([], [])
+    workflow_nodes, _ = parser.parse_bytes(tmp_path / "workflow.yml", YAML_SOURCE)
+    assert any(node.kind == "YamlPath" for node in workflow_nodes)
+    assert not any(node.kind == "ConfigProperty" for node in workflow_nodes)
     assert parser.parse_bytes(tmp_path / "app.properties", PROPERTIES_SOURCE) == ([], [])
 
 
@@ -70,8 +72,13 @@ def test_non_spring_application_yaml_is_not_indexed_as_config(tmp_path: Path) ->
     github_actions = b"name: CI\non: [push]\njobs:\n  test:\n    runs-on: ubuntu-latest\n"
     kubernetes = b"apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: api\n"
 
-    assert parser.parse_bytes(tmp_path / "application.yml", github_actions) == ([], [])
-    assert parser.parse_bytes(tmp_path / "application.yaml", kubernetes) == ([], [])
+    for filename, source in (
+        ("application.yml", github_actions),
+        ("application.yaml", kubernetes),
+    ):
+        nodes, _ = parser.parse_bytes(tmp_path / filename, source)
+        assert any(node.kind == "YamlPath" for node in nodes)
+        assert not any(node.kind == "ConfigProperty" for node in nodes)
 
 
 def test_ansible_content_wins_even_without_ansible_path(tmp_path: Path) -> None:
@@ -133,7 +140,7 @@ def test_java_config_annotations_emit_key_only_dependencies(tmp_path: Path) -> N
         "config:payment.gateway.url",
         "config:payment.apiToken",
     }
-    assert {edge.source for edge in config_edges} == {f"{path}::KafkaSettings"}
+    assert {edge.source for edge in config_edges} == {f"{path.as_posix()}::KafkaSettings"}
     serialized_metadata = json.dumps([edge.extra for edge in config_edges])
     assert "do-not-store-this-default" not in serialized_metadata
 

@@ -1,0 +1,9 @@
+=== C-06/C-07: canario ecossistema real (AprendizadoConsultado) ===
+Build descartavel (CRG_DATA_DIR externo): 14714 arquivos, 300802 nos, 431323 arestas.
+schema_version: 15 | nos kind=Test: 1341 | arestas TESTED_BY: 9141.
+Query ecossistema (run helper chamado diretamente por testes):
+  tests_for(tests/agile/test_theme.py::run) -> 3 resultados:
+  test_goldset, test_negative_probes_honest, test_query_validates_pdf_per_book.
+Query no repo CRG mesclado: tests_for(_parse_unified_diff) -> 11 resultados (TestChanges.*).
+Nota semantica: testes que invocam por subprocess CLI (padrao do ecossistema)
+nao geram TESTED_BY — sem defeito; a aresta exige CALL direto no codigo.
