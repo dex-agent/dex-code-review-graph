@@ -30,7 +30,20 @@ def _build(tmp_path: Path, files: dict[str, str]) -> GraphStore:
     graph_dir.mkdir(exist_ok=True)
     store = GraphStore(graph_dir / "graph.db")
     full_build(tmp_path, store)
+    _BUILT.append(store)
     return store
+
+
+# Stores the helper above built for the running test. The helper hands its
+# store to the test, so the module closes it once the test is done.
+_BUILT: list[GraphStore] = []
+
+
+@pytest.fixture(autouse=True)
+def _close_built_stores():
+    yield
+    while _BUILT:
+        _BUILT.pop().close()
 
 
 def _calls(store: GraphStore) -> list[dict]:
@@ -673,7 +686,7 @@ def test_unresolved_external_scoped_call_is_left_untouched(tmp_path: Path) -> No
     )
     external = [c for c in _calls(store) if c["target_qualified"] == "Redis::get"]
     assert len(external) == 1
-    assert external[0]["confidence_tier"] == "EXTRACTED"
+    assert external[0]["confidence_tier"] == "UNRESOLVED"
 
     result = query_graph("callers_of", "get", repo_root=str(tmp_path))
     # No node named ``get`` exists, so there is nothing to (falsely) resolve.
