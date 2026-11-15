@@ -1,0 +1,3 @@
+=== C-08: detect-changes --files cobertura ===
+cobertos: 35 | intersecao com gabarito: 35 | precisao de escopo: 35/35
+risk_score: 0.85 | parseavel: OK

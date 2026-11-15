@@ -17333,7 +17333,7 @@ class CodeParser:
         if (
             language == "javascript"
             and file_path.lower().endswith(".cjs")
-            and self._is_test_file(file_path)
+            and self._is_test_path(file_path)
         ):
             effective_call_name = self._commonjs_test_runner(child, source)
 

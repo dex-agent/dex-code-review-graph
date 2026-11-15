@@ -17,7 +17,7 @@
 {
   "schema": "dex.pendencias.v2",
   "repo": "code-review-graph",
-  "updated_at": "2026-11-08",
+  "updated_at": "2026-11-15",
   "itens": [
     {
       "id": "CRG-CREDENCIAL-BACKUP",
@@ -108,6 +108,18 @@
       "criado_em": "2026-11-08",
       "concluida_em": "2026-11-08",
       "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "PEND-2026-11-15-TOOLSBOOK",
+      "titulo": "Bootstrap do toolsbook do repo (dex.toolsbook.v2) com entrada CRG 2.4.0+dex.1",
+      "contexto": "Corte 2.4.0-dex fechou sem livro de ferramentas no repo; criar superficie meia-boca violaria o schema da casa",
+      "owner": "mantenedor CRG",
+      "origem": "Trilho 2026-11-15-crg-240-dex-merge (closure gate)",
+      "estado": "aberta",
+      "supercedido_por": null,
+      "criado_em": "2026-11-15",
+      "concluida_em": null,
+      "atualizado_em": "2026-11-15"
     }
   ]
 }

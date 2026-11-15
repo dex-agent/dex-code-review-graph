@@ -477,6 +477,15 @@ def resolve_scoped_calls(store: GraphStore, repo_root: Path | None = None) -> di
                 continue
             if len(candidates) == 1:
                 new_target, via = candidates[0], "single_match"
+                if (
+                    not needs_enclosing
+                    and not has_php_receiver
+                    and not backed(
+                        new_target, row["file_path"], class_name,
+                        resolution_target.partition("::")[0], language,
+                    )
+                ):
+                    continue
             else:
                 new_target = disambiguate(candidates, row["file_path"], class_name, language)
                 if new_target is None:
