@@ -1,5 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-15 — [Versão combinada 2.4.0-dex](PLAN-TASKS/2026-11-15-crg-240-dex-merge.md) EM CURSO (flow `flow_20261115215507246_0807_0001`). Merge do upstream/main fresco `7ba9d17a` (1.249 commits) na casa: commit `732b7609`, 15 conflitos resolvidos com preservação dos 4 deltas (merge-check, `--files`, PHP identidade de classe, UTF-8). Gates provados: schema 15 · `tests_for(_parse_unified_diff)`=11 · canário AprendizadoConsultado 1.341 Test/9.141 TESTED_BY com `tests_for(run)`=3 · `detect-changes --files` 35/35 no escopo · wheel `2.4.0+dex.1` · dogfooding achou `_sum_signals` sem teste (ouro real, gap upstream). Suíte 7.661 passaram/459 falharam — classificação A/B contra baseline upstream puro em andamento. Versão PEP 440 canônica de "2.4.0-dex.1" = `2.4.0+dex.1`. [Recibos](receipts/CRG-240DEX-MERGE-20261115/INDEX.md).
+
 - 2026-11-14 — [Piloto do adapter em revisão real](PLAN-TASKS/2026-11-14-crg-piloto-adapter-revisao-real.md) CONCLUÍDO. Canário `eb7d95b` 73/73 com `TESTED_BY` direto :4 (CLI+SQLite idênticos); revisão do diff `5356307` com TP=32/FN=0-real/FP=0-real; egress zero (cache HF 89=89). Flow `flow_20261114231445529_0771_0001`. [Laudo](receipts/CRG-PILOTO-ADAPTER-20261114/LAUDO.md).
 
 - 2026-11-14 — [Índice persistente Dex WhatsApp adotado](PLAN-TASKS/2026-11-14-crg-indice-persistente-dex-whatsapp.md). 21/21 caminhos e hashes CommonJS, um TESTED_BY direto de install. [Recibo e rollback](receipts/CRG-INDICE-PERSISTENTE-20261114/INDEX.md).

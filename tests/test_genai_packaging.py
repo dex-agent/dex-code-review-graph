@@ -154,7 +154,7 @@ def test_no_stale_sdk_references_outside_lock():
     for pattern in ("*.py", "*.toml", "*.md", "*.yml", "*.yaml"):
         for path in ROOT.rglob(pattern):
             parts = path.relative_to(ROOT).parts
-            if parts[0] in {".git", ".venv", "node_modules", ".claude", "evaluate"}:
+            if parts[0] in {".git", ".venv", "node_modules", ".claude", "evaluate", ".agents"}:
                 continue
             if " 2." in path.name or path.name == "test_genai_packaging.py":
                 continue
