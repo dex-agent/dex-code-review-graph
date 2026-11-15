@@ -1,0 +1,17 @@
+=== C-04: suite A/B — merged 2.4.0-dex vs upstream puro (mesma maquina) ===
+Primeiro run merged: 458 failed / 7661 passed / 1181 skipped (632s).
+Baseline upstream puro: 381+ F ao crashar com access violation no ~96% (rc=0xC0000005).
+Pareamento por ID (458 no baseline, -v por arquivo):
+  - 366 ambientais (falham nos dois lados)
+  - 36 merge-causadas -> TODAS curadas ou classificadas no commit seguinte:
+    _is_test_path (cluster julia/cjs), .gitignore platforms (10), __version__/READMEs (2),
+    backed() restaurado (2), testes portabilidade casa -> upstream POSIX (julia/dbt/spring/hcl),
+    php casa as_posix (3), genai skip .agents (1), receipts rastreados reabertos 161->0 (1),
+    composer-alias xfail strict + issue crg-lum (1)
+Run FINAL merged pos-curas: 407 failed / 7712 passed / 1181 skipped / 4 xfailed (504s).
+Intersecao final x lista merge-causada: 1 (watch polling) -> provado AMBIENTAL:
+  classe TestRealObserver inteira = 3 failed / 4 passed em AMBOS os lados (63s cada).
+dbt/hcl full_build: ambientais (falham no baseline em 0.34s, colecao/dependencia).
+VEREDITO: zero regressoes merge-causadas; 407 restantes = classe ambiental do Windows
+(watcher/teardown), presente no upstream puro.
+Logs completos: Temp/suite-240dex-full.log, suite-upstream-baseline.log, suite-240dex-final.log.
