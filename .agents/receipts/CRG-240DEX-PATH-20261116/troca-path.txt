@@ -1,0 +1,13 @@
+=== troca do PATH: 2.4.0-oficial -> 2.4.0+dex.1 (2026-11-16) ===
+estado anterior: code-review-graph 2.4.0 (uv tool, PyPI, instalado 2026-11-14 20:12 sem recibo da casa)
+
+=== comando ===
+uv tool install --force "C:/CodexProjetos/code-review-graph/dist-240dex/code_review_graph-2.4.0+dex.1-py3-none-any.whl"
+saida: Installed 2 executables: code-review-graph, crg-daemon (exit 0; janela conferida sem processos serve travadores)
+
+=== provas (executavel do PATH) ===
+C-01: code-review-graph --version -> code-review-graph 2.4.0+dex.1
+C-02a: detect-changes --help expoe: [--files PATH [PATH ...]]
+C-02b: merge-check --help lista subcomando (exit 0)
+C-03: build descartavel fixture (2 arquivos) -> schema_version 15
+e2e: query tests_for soma -> status ok, result_count 1
