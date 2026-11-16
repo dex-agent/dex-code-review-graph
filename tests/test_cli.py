@@ -812,9 +812,11 @@ class TestDetectChangesEndToEnd:
         assert result["changed_functions"]
         assert savings["saved_percent"] < 100
 
-    @pytest.mark.parametrize("change_a", [True, False], ids=["A-and-B", "B-only"])
+    @pytest.mark.parametrize(
+        "scenario", ["A-and-B", "B-only", "A-and-deletion-in-B"],
+    )
     @pytest.mark.parametrize("filename", ["a.py", "a espaço.py"], ids=["plain", "space-utf8"])
-    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, change_a, filename):
+    def test_detect_changes_file_scope(self, tmp_path, monkeypatch, scenario, filename):
         repo = tmp_path / "repo"
         src = repo / "src"
         src.mkdir(parents=True)
@@ -823,12 +825,16 @@ class TestDetectChangesEndToEnd:
         selected = f"src/{filename}"
         a.write_text("def a():\n    return 1\n\ndef untouched():\n    return 0\n")
         b.write_text("def b():\n    return 1\n")
+        deletes_b = scenario == "A-and-deletion-in-B"
+        if deletes_b:
+            b.write_text("def removed():\n    return 0\n\ndef b():\n    return 1\n")
         self._git(repo, "init", "-q")
         self._git(repo, "add", ".")
         self._git(repo, "commit", "-q", "-m", "baseline")
+        change_a = scenario != "B-only"
         if change_a:
             a.write_text("def a():\n    return 2\n\ndef untouched():\n    return 0\n")
-        b.write_text("def b():\n    return 2\n")
+        b.write_text(f"def b():\n    return {1 if deletes_b else 2}\n")
 
         git_files = subprocess.check_output(
             ["git", "-C", str(repo), "diff", "--name-only", "-z", "HEAD", "--"],
@@ -844,7 +850,9 @@ class TestDetectChangesEndToEnd:
             assert "@@ -2 +2 @@ def a():" in git_scope
 
         monkeypatch.setenv("CRG_HOME", str(tmp_path / "crg-home"))
-        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "crg-data"))
+        data_dir = tmp_path / "crg-data"
+        assert not data_dir.exists()
+        monkeypatch.setenv("CRG_DATA_DIR", str(data_dir))
         monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
         python = Path(sys.executable)
         executable = python.with_name(f"code-review-graph{python.suffix}")
@@ -853,6 +861,7 @@ class TestDetectChangesEndToEnd:
             capture_output=True, text=True, timeout=60,
         )
         assert build.returncode == 0, build.stderr
+        assert (data_dir / "graph.db").is_file()
         run = subprocess.run(
             [str(executable), "detect-changes", "--repo", str(repo),
              "--base", "HEAD", "--files", f"./{selected}"],
@@ -865,15 +874,28 @@ class TestDetectChangesEndToEnd:
             Path(node["file_path"]).relative_to(repo).as_posix()
             for node in result["changed_functions"]
         ]
+        print(json.dumps({
+            "scenario": scenario,
+            "git_files": git_files, "git_scoped_patch": git_scope,
+            "json_functions": names, "json_files": files, "json_risk": result["risk_score"],
+            "json_removed": [node["name"] for node in result["removed_symbols"]],
+        }))
+        assert result["removed_symbols"] == []
         assert names == (["a"] if git_scope else [])
         assert files == ([selected] if git_scope else [])
         if not git_scope:
             assert result["test_gaps"] == result["affected_flows"] == []
             assert result["risk_score"] == 0
-        print(json.dumps({
-            "git_files": git_files, "git_scoped_patch": git_scope,
-            "json_functions": names, "json_files": files, "json_risk": result["risk_score"],
-        }))
+        if deletes_b:
+            control = subprocess.run(
+                [str(executable), "detect-changes", "--repo", str(repo),
+                 "--base", "HEAD", "--files", "src/b.py"],
+                capture_output=True, encoding="utf-8", timeout=30,
+            )
+            assert control.returncode == 0, control.stderr
+            assert [node["name"] for node in json.loads(control.stdout)["removed_symbols"]] == [
+                "removed",
+            ]
 
 
 def _prepare_monorepo_subproject(tmp_path, monkeypatch):

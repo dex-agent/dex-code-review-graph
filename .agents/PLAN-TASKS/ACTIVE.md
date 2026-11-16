@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- [Recorte na CLI combinada](2026-11-16-crg-m19-recorte-cli.md) | `crg-m19` | concluído, 99 testes na suíte focada.
+
 - [Piloto do adapter em revisão real](2026-11-14-crg-piloto-adapter-revisao-real.md) | `crg-piloto-adapter-revisao-real-20261114` | em execução: canário Dex WhatsApp `eb7d95b` via bundle + revisão medida do diff `5356307`.
 
 - [CRG-PACOTE-SEGUNDO-WINDOWS-20261114](2026-11-14-crg-pacote-segundo-windows.md) | `crg-7ob` | ZIP ensaiado no PREDATOR.

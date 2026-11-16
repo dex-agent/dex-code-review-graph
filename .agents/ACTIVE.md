@@ -1,5 +1,7 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-16 — [Recorte da CLI corrigido](PLAN-TASKS/2026-11-16-crg-m19-recorte-cli.md), `crg-m19`. Filtro único para faixas e deleções, 6/6 pelo executável e 99/99 na suíte focada em Windows. [Provas](receipts/CRG-M19-20261116/INDEX.md).
+
 - 2026-11-16 — [Troca do PATH 2.4.0+dex.1](PLAN-TASKS/2026-11-16-crg-240dex-path-troca.md) CONCLUÍDA (ordem "troca" do dono). PATH agora executa o wheel combinado: `--version` 2.4.0+dex.1, `--files` ✓, `merge-check` ✓, banco novo schema 15 ✓, e2e `tests_for(soma)`=1 ✓. Primeira abertura de índice schema-9 migra para 15 (projetos reconstroem). [Recibo e rollback](receipts/CRG-240DEX-PATH-20261116/INDEX.md).
 
 - 2026-11-15 — [Versão combinada 2.4.0-dex](PLAN-TASKS/2026-11-15-crg-240-dex-merge.md) CONCLUÍDA (flow `flow_20261115215507246_0807_0001`, verdict `vrd_20261115233016729_0849_0001` pronto_com_ressalvas). Merge do upstream/main fresco `7ba9d17a` (1.249 commits): commit `732b7609` + curas A/B `24195945`, main pushed `3ddf2c8b`. Zero regressão merge-causada (36 curadas/classificadas; 407 ambientais Windows presentes no upstream puro). Issues abertas: `crg-41c` (`_sum_signals` sem teste), `crg-lum` (composer-alias xfail). [Recibos](receipts/CRG-240DEX-MERGE-20261115/INDEX.md).

@@ -1,5 +1,7 @@
 # Mapas do Code Review Graph
 
+- 20261116-crg-m19 — [Capacidades, decisões e dependências comprovadas do recorte](../receipts/CRG-M19-20261116/INDEX.md#mapas-do-corte).
+
 - 20261114-crg-gates-upstream — comparação com 2.4.0 e verificação local de merges.
   - [Capacidades](capacidades-crg-20261114-crg-gates-upstream.md)
   - [Decisões](decisoes-crg-20261114-crg-gates-upstream.md)
