@@ -1,5 +1,7 @@
 # HANDOFF — retomada curta
 
+- 2026-11-16 — `crg-m19` corrigido em cima de `54efb64c`. [RED, GREEN e suíte](receipts/CRG-M19-20261116/INDEX.md). Para promover o wheel de teste, siga o gate de consumidores do AGENTS e use o rollback documentado na troca anterior.
+
 - 2026-11-16 — PATH promoveu o wheel combinado `2.4.0+dex.1` (ordem "troca"). Executável do PATH com as joias da casa; banco novo schema 15; primeira abertura de índice schema-9 MIGRA para 15 (projetos reconstroem; Dex WhatsApp descartável). [Recibo e rotas de rollback](receipts/CRG-240DEX-PATH-20261116/INDEX.md) (rota A: PyPI 2.4.0; rota B: wheel casa 2.3.7 schema 9).
 
 - 2026-11-15 — [Versão combinada 2.4.0-dex](PLAN-TASKS/2026-11-15-crg-240-dex-merge.md) CONCLUÍDA na `main` (merge `732b7609` de upstream/main `7ba9d17a` + curas `24195945` + fechamento `4155b870`, push `3ddf2c8b`; verdict `vrd_20261115233016729_0849_0001` pronto_com_ressalvas). Regra de retomada: refs locais do upstream podem ser FANTASMA — comparar sempre via clone/fetch fresco. Regra de resolução: `git apply -3` pode deixar marcadores dizendo "cleanly" — vacina: grep `<<<<<<<` + compileall após toda resolução. [Recibos](receipts/CRG-240DEX-MERGE-20261115/INDEX.md).

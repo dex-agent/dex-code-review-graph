@@ -468,6 +468,16 @@ class DiffRanges(dict):
             },
         )
 
+    def restricted_to(self, paths: set[str], root: Path) -> DiffRanges:
+        """Keep only the selected paths without changing the caller's keys."""
+        def in_scope(path: str) -> bool:
+            return normalize_file_path(root / path) in paths
+
+        return DiffRanges(
+            {path: ranges for path, ranges in self.items() if in_scope(path)},
+            {path: held for path, held in self.deletions.items() if in_scope(path)},
+        )
+
 
 def _parse_unified_diff(diff_text: str) -> DiffRanges:
     """Parse unified diff output into file -> line-range mappings.
@@ -1570,6 +1580,14 @@ def analyze_changes(
             normalize_file_path(_root / fp) for fp in changed_files
         ]
 
+    # An empty restriction of a known diff is still a line-level result.
+    has_diff_ranges = bool(changed_ranges)
+    if changed_ranges:
+        if not isinstance(changed_ranges, DiffRanges):
+            changed_ranges = DiffRanges(changed_ranges)
+        root = Path(repo_root) if repo_root is not None else Path()
+        changed_ranges = changed_ranges.restricted_to(set(changed_files), root)
+
     # Computed before the mapping: removed symbols are scored as it runs.
     churn_counts, churn_status = review_churn_counts(repo_root, include_churn)
 
@@ -1600,20 +1618,20 @@ def analyze_changes(
             if node.qualified_name not in seen_qns:
                 seen_qns.add(node.qualified_name)
                 changed_nodes.append(node)
-    elif changed_ranges:
-        changed_nodes = map_changes_to_nodes(store, changed_ranges)
+    elif has_diff_ranges:
+        changed_nodes = map_changes_to_nodes(store, changed_ranges or {})
     else:
         # Fallback: all nodes in changed files.
         changed_nodes = []
         for fp in changed_files:
             changed_nodes.extend(store.get_nodes_by_file(fp))
 
-    if changed_ranges and repo_root is not None:
+    if has_diff_ranges and repo_root is not None:
         # A file Git does not track has no lines in the diff, so with other
         # files' lines in hand a brand-new file used to drop out of the
         # review. All of it is new, so all of it counts as changed.
         seen_new = {node.qualified_name for node in changed_nodes}
-        for fp in _new_files_without_ranges(repo_root, changed_files, changed_ranges):
+        for fp in _new_files_without_ranges(repo_root, changed_files, changed_ranges or {}):
             for node in store.get_nodes_by_file(fp):
                 if node.qualified_name not in seen_new:
                     seen_new.add(node.qualified_name)
