@@ -4,8 +4,8 @@ description: "Regras de decisao e procedimentos deste projeto - projecao gerada 
 type: playbook
 generated_by: "tools/playbook/generate-playbook.py"
 authority: derived_projection
-sources_revision: "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8"
-sent_revision: "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8"
+sources_revision: "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71"
+sent_revision: "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71"
 do_not_edit: true
 ---
 # Playbook - code-review-graph
@@ -21,6 +21,14 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 
 ## Regras de decisao (plaquinhas)
 
+### CLI: code-review-graph
+
+- Localizador: `CRG-BUMP-CONSUMIDORES`
+- Gatilho: o [check de frescor](.agents/GATILHOS-VIVOS.md#staleness-artefatos-derivados).
+- Extrato: **GATE DE CONSUMIDORES NO BUMP** (localizador `CRG-BUMP-CONSUMIDORES`): toda
+- Fonte: `AGENTS.md#L86-L109`
+- Selo: `pb-a8bd4dc6`
+
 ### Leitura obrigatoria (bootstrap)
 
 - Localizador: `PENDENTES-LEDGER`
@@ -31,8 +39,8 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
   - `.agents/ACTIVE.md`
   - `.agents/HANDOFF.md`
   - `.agents/PLAN-TASKS/ACTIVE.md`
-- Fonte: `AGENTS.md#L123-L131`
-- Selo: `pb-5756ab4e`
+- Fonte: `AGENTS.md#L132-L140`
+- Selo: `pb-457239ee`
 
 ## Runbook <-> Playbook (procedimentos)
 
@@ -46,7 +54,7 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 
 | caminho | sha256 | Enviado? |
 | --- | --- | --- |
-| `AGENTS.md` | `1a16cde7723bb4f8616abf18e80f87f3d4684f451517227ce4bf0caf1a6d4365` | sim |
+| `AGENTS.md` | `368b9562794709ef756d94c749cef6522b030ea7cb436d13c62894817fd52842` | sim |
 | `.agents/napkin.md` | `28961d68eaff55794e2cd81379eefb03585cfb8650fd19ed2898cfe94a4c4f3a` | sim |
 | `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md` | `c17e9297ebcb43f01558f95fc11c84eb2fc8f33171dbe4d0cd2df16ab12a7e05` | sim |
 
@@ -62,8 +70,7 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 - Non-Interactive Shell Commands -> `AGENTS.md#L15` (sem token de localizador)
 - Beads Issue Tracker -> `AGENTS.md#L40` (sem token de localizador)
 - Session Completion -> `AGENTS.md#L59` (sem token de localizador)
-- CLI: code-review-graph -> `AGENTS.md#L86` (sem token de localizador)
-- Graphify local -> `AGENTS.md#L101` (sem token de localizador)
-- Continuidade local (leitura obrigatória antes de trabalho não trivial) -> `AGENTS.md#L116` (sem token de localizador)
+- Graphify local -> `AGENTS.md#L110` (sem token de localizador)
+- Continuidade local (leitura obrigatória antes de trabalho não trivial) -> `AGENTS.md#L125` (sem token de localizador)
 - Regras -> `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L3` (sem token de localizador)
 - Limites -> `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L27` (sem token de localizador)
