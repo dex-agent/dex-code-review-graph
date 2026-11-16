@@ -4,6 +4,10 @@ Base Git `54efb64c7470002a66a9b8b974d75d2bd6a35ba1`. Windows, Python 3.13.13.
 Cada execução da CLI fez build em banco novo com `CRG_DATA_DIR` separado.
 O teste usa o executável instalado na venv e confere os símbolos com o patch Git.
 
+O commit `c6146110` foi confirmado em `origin/main`. O flow
+`flow_20261116181924488_0001_0001` terminou com o veredito
+`vrd_20261116182752984_0027_0001` (`pronto_com_ressalvas`).
+
 | Artefato | SHA-256 |
 | --- | --- |
 | Wheel da base | `93a5d18b8b649b3c34c494d29f34dc4ce30c48c13d0d6a2e8cf482feedc6344f` |
