@@ -194,6 +194,11 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/CRG-240DEX-MERGE-20261115/er07-wheel.txt
 !/.agents/receipts/CRG-240DEX-MERGE-20261115/c04-suite.txt
 !/.agents/receipts/CRG-240DEX-MERGE-20261115/c06-canario.txt
+!/.agents/receipts/CRG-240DEX-PATH-20261116/
+/.agents/receipts/CRG-240DEX-PATH-20261116/*
+!/.agents/receipts/CRG-240DEX-PATH-20261116/INDEX.md
+!/.agents/receipts/CRG-240DEX-PATH-20261116/ROLLBACK.md
+!/.agents/receipts/CRG-240DEX-PATH-20261116/troca-path.txt
 
 # Tracked curated receipts must not stay ignored (upstream hygiene test
 # test_install_outputs_are_ignored.py::test_no_tracked_file_is_ignored).

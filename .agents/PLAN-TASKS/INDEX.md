@@ -1,5 +1,7 @@
 # Trilhos
 
+- [Troca do PATH 2.4.0+dex.1](2026-11-16-crg-240dex-path-troca.md) — `crg-240dex-path-troca-20261116`, ordem "troca": wheel combinado promovido ao PATH com receipt e rollback.
+
 - [Versão combinada 2.4.0-dex](2026-11-15-crg-240-dex-merge.md) — `crg-240-dex-merge-20261115`, merge do upstream/main fresco `7ba9d17a` preservando os 4 deltas da casa; wheel `2.4.0+dex.1`.
 
 - [Piloto do adapter em revisão real](2026-11-14-crg-piloto-adapter-revisao-real.md) — `crg-piloto-adapter-revisao-real-20261114`, canário oraculado Dex WhatsApp + revisão medida do diff 5356307.
