@@ -3,11 +3,20 @@
   "generated_by": "tools/playbook/generate-playbook.py",
   "authority": "derived_projection",
   "repo_name": "code-review-graph",
-  "sources_revision": "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8",
-  "sent_revision": "sha256:de7568462e371bf2986ce97ef81106e1f6993621833fa58cf9761a06da05b1c8",
+  "sources_revision": "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71",
+  "sent_revision": "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71",
   "rules": [
     {
-      "seal": "pb-5756ab4e",
+      "seal": "pb-a8bd4dc6",
+      "locator": "CRG-BUMP-CONSUMIDORES",
+      "title": "CLI: code-review-graph",
+      "gatilho": "o [check de frescor](.agents/GATILHOS-VIVOS.md#staleness-artefatos-derivados).",
+      "extrato": "**GATE DE CONSUMIDORES NO BUMP** (localizador `CRG-BUMP-CONSUMIDORES`): toda",
+      "rotas": [],
+      "fonte": "AGENTS.md#L86-L109"
+    },
+    {
+      "seal": "pb-457239ee",
       "locator": "PENDENTES-LEDGER",
       "title": "Leitura obrigatoria (bootstrap)",
       "gatilho": "5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)",
@@ -18,7 +27,7 @@
         "`.agents/HANDOFF.md`",
         "`.agents/PLAN-TASKS/ACTIVE.md`"
       ],
-      "fonte": "AGENTS.md#L123-L131"
+      "fonte": "AGENTS.md#L132-L140"
     }
   ],
   "mesa": {
@@ -47,16 +56,12 @@
       "ancora": "AGENTS.md#L59"
     },
     {
-      "titulo": "CLI: code-review-graph",
-      "ancora": "AGENTS.md#L86"
-    },
-    {
       "titulo": "Graphify local",
-      "ancora": "AGENTS.md#L101"
+      "ancora": "AGENTS.md#L110"
     },
     {
       "titulo": "Continuidade local (leitura obrigatória antes de trabalho não trivial)",
-      "ancora": "AGENTS.md#L116"
+      "ancora": "AGENTS.md#L125"
     },
     {
       "titulo": "Regras",
@@ -70,7 +75,7 @@
   "fontes": [
     {
       "caminho": "AGENTS.md",
-      "sha256": "1a16cde7723bb4f8616abf18e80f87f3d4684f451517227ce4bf0caf1a6d4365",
+      "sha256": "368b9562794709ef756d94c749cef6522b030ea7cb436d13c62894817fd52842",
       "enviado": true
     },
     {

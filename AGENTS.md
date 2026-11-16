@@ -85,6 +85,15 @@ bd close <id>         # Complete work
 
 ## CLI: code-review-graph
 
+**GATE DE CONSUMIDORES NO BUMP** (localizador `CRG-BUMP-CONSUMIDORES`): toda
+troca de versão do executável (PATH/wheel/release) confere, NA MESMA SESSÃO,
+os consumidores documentais da casa e roda barata-scan da classe "fatos
+stale pós-bump": skills `code-review-graph` e `code-review-graph-delphi-feeder`
+(comandos ensinados × `--help` do exe novo; schema citado × schema real),
+mais `rg -l "code-review-graph" ~/.agents/skills` para vizinhos. Skill stale
+vira item no TRACKER com evidência. Vacina nascida do bump 2.4.0+dex.1
+(2026-11-16), que deixou as duas skills desatualizadas por uma sessão.
+
 **TRACKER-LOCAL** — leia [.agents/TRACKER/INDEX.md](.agents/TRACKER/INDEX.md)
 na retomada para encontrar issues locais abertas.
 
