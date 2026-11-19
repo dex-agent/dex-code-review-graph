@@ -1,0 +1,57 @@
+{
+ "contract": "dex.fechamento.workflow-review.v1",
+ "repo": "code-review-graph",
+ "repo_kind": "project",
+ "block_id": "fecha-ciclo-auditoria-0005-20261119",
+ "reviewed_at": "2026-11-19T18:20:14+00:00",
+ "sources": {
+  "trilho-0005": {
+   "path": ".agents/PLAN-TASKS/2026-11-19-bloco-0005-auditoria.md",
+   "sha256": "7df2eb667fcce898195c3197a9a795a48704d2f10a8a731eff29d9840b2d9232"
+  },
+  "tracker-0005": {
+   "path": ".agents/TRACKER/issues/0005-dependencia-dependabot-orfaos.md",
+   "sha256": "435c01ce63ac343636b7c5676434b8160ceeae96a7e41b0573596da60be9c713"
+  },
+  "pendentes": {
+   "path": ".agents/PENDENTES.md",
+   "sha256": "10225c861f932ad08bd2da9dfafcf6c015c0e46bcac6a3e8aad259f3a5ec4c9a"
+  },
+  "index-global": {
+   "path": "C:/Users/Administrator/.agents/workflow/INDEX.md",
+   "sha256": "09f6e84cb15247536a360ee6770a7c21e3a7d608434ebd8f60fabbf268d625b3"
+  }
+ },
+ "block_evidence": [
+  "trilho-0005",
+  "tracker-0005",
+  "pendentes"
+ ],
+ "searches": {
+  "global": {
+   "source": "index-global",
+   "query": "dependabot|fork|automação órfã|github",
+   "result": "2 vizinhos (Fechamento de corte; Auditar fronteiras de decisão) — nenhum cobre fechamento de automação herdada de fork com receipts por mutação"
+  },
+  "local": {
+   "source": null,
+   "query": "dependabot|fork",
+   "result": "sem .agents/WORKFLOWS no repo (INDEX ausente)"
+  }
+ },
+ "candidates": [
+  {
+   "name": "Fechamento de automação órfã de fork (dependabot/alerts/publish/CODEOWNERS) com receipts por mutação",
+   "procedure": "ls-remote da branch-alvo do yml herdado → selar política (fork acompanha upstream por merge manual) → mutações gh com receipt por passo (pr close+razão, rm yml, PUT alerts 204, workflow disable, CODEOWNERS) → TRACKER fechado com tabela de receipts → PENDENTES para dívida revelada (vulns herdadas)",
+   "evidence": [
+    "trilho-0005",
+    "tracker-0005"
+   ],
+   "reuse_trigger": "fechar ou auditar automação herdada em fork da casa (dependabot zumbi, alerts OFF, publish latente, CODEOWNERS ausente)",
+   "decision": "create",
+   "reason": "parte read-only já coberta pela memória do prompt de auditoria (github-auditoria-repo-online-prompt); o PROCEDIMENTO de mutação com receipts por passo não tem WORKFLOW.md equivalente nos INDEXs consultados",
+   "owner": "dex-criar-workflow-contexto-atual",
+   "when": "próximo bloco de auditoria/fechamento de fork da casa"
+  }
+ ]
+}
