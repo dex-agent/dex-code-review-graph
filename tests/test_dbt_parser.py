@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from code_review_graph.constants import normalize_file_path
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import CodeParser
@@ -133,7 +134,7 @@ def test_full_build_links_dbt_models_by_ref(tmp_path: Path) -> None:
         model_names = {n.name for n in store.get_nodes_by_kind(["Class"])}
         assert {"stg_orders", "fct_orders"} <= model_names
 
-        fct_file = str(models / "fct_orders.sql")
+        fct_file = normalize_file_path(models / "fct_orders.sql")
         targets = {
             e.target_qualified
             for e in store.get_edges_by_source(fct_file)

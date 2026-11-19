@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from code_review_graph.constants import normalize_file_path
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import CodeParser
@@ -93,7 +94,9 @@ module "network" {
 
         module_imports = [
             edge
-            for edge in store.get_edges_by_source(str(tmp_path / "main.tf"))
+            for edge in store.get_edges_by_source(
+                normalize_file_path(tmp_path / "main.tf")
+            )
             if edge.kind == "IMPORTS_FROM"
         ]
         assert len(module_imports) == 1
