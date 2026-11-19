@@ -4,8 +4,8 @@ description: "Regras de decisao e procedimentos deste projeto - projecao gerada 
 type: playbook
 generated_by: "tools/playbook/generate-playbook.py"
 authority: derived_projection
-sources_revision: "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71"
-sent_revision: "sha256:c2c6902266a51dcdc6073e34722b569294b79e0c9f0e8b9e73414df4665eee71"
+sources_revision: "sha256:360dd2a624f1dcdf60db7420bf88a39df1cfad92b9a3ad2ed4758d04e2e9d102"
+sent_revision: "sha256:360dd2a624f1dcdf60db7420bf88a39df1cfad92b9a3ad2ed4758d04e2e9d102"
 do_not_edit: true
 ---
 # Playbook - code-review-graph
@@ -55,7 +55,7 @@ Destinatario do projeto: `--check-sent` valida as fontes enviadas neste clone.
 | caminho | sha256 | Enviado? |
 | --- | --- | --- |
 | `AGENTS.md` | `368b9562794709ef756d94c749cef6522b030ea7cb436d13c62894817fd52842` | sim |
-| `.agents/napkin.md` | `28961d68eaff55794e2cd81379eefb03585cfb8650fd19ed2898cfe94a4c4f3a` | sim |
+| `.agents/napkin.md` | `69af251c8c9b0e01ba3b15b4a323511bca4eb0fc5986651077069a298c00bb81` | sim |
 | `workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md` | `c17e9297ebcb43f01558f95fc11c84eb2fc8f33171dbe4d0cd2df16ab12a7e05` | sim |
 
 ## Superficie enviada vs local

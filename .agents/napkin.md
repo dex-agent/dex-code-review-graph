@@ -33,3 +33,18 @@ disso:`.
   beads abertos com motivo, reportar; push git/`bd dolt push` somente com
   autorização (perfil conservador).
 
+- [CI-CAMADAS-OCULTAS] Job de CI falhou e a cura subiu -> Faça em vez disso:
+  inventariar o job INTEIRO no `.github/workflows/ci.yml` ANTES do push —
+  steps de um job param no 1º erro, então cada cura revela a camada seguinte
+  (pago 2x em 2026-11-19: forget/dbt/hcl e depois o teste f145ca80 morto);
+  conferir cada node-id citado no workflow contra o repo (`rg` no tests/) e,
+  se um commit "sumir" num merge, lembrar que `git log -S` é CEGO a
+  remoções em resolução de merge — usar `git branch --contains <sha>` +
+  `git show <sha> -- <arquivo>` + `git apply -3` para recuperar.
+- [HARNESS-PYTHON-I] Prova in-process do parser/build -> Faça em vez disso:
+  `python -c` SEM `-I` — o modo isolado não carrega os language-packs e o
+  parser morre em silêncio devolvendo "0 nodes" (falso-negativo de
+  INSTRUMENTO medido em 2026-11-19; o produto estava são). Exe de teste
+  e2e: `shutil.which("code-review-graph")`, nunca
+  `python.with_name(...)` (o script mora em Scripts/, não ao lado do
+  interpretador).
