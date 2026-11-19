@@ -15,6 +15,7 @@ from unittest.mock import patch
 import pytest
 
 from code_review_graph import cli
+from code_review_graph.constants import normalize_file_path
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import get_db_path
 from code_review_graph.parser import NodeInfo
@@ -27,9 +28,11 @@ class TestMatchFilesToForget:
     @pytest.fixture(autouse=True)
     def native_paths(self, tmp_path: Path) -> None:
         self.root = tmp_path.resolve()
-        self.auth = str(self.root / "pkg" / "auth.py")
-        self.views = str(self.root / "pkg" / "views.py")
-        self.main = str(self.root / "main.py")
+        # Graph identity is forward-slash on every OS (normalize_file_path,
+        # #774), so the matcher and the store speak the canonical spelling.
+        self.auth = normalize_file_path(self.root / "pkg" / "auth.py")
+        self.views = normalize_file_path(self.root / "pkg" / "views.py")
+        self.main = normalize_file_path(self.root / "main.py")
         self.stored = [self.auth, self.views, self.main]
 
     def test_exact_relative_path(self):
@@ -91,9 +94,9 @@ def seeded_repo(tmp_path: Path) -> tuple[Path, dict[str, str]]:
     """A repo whose graph tracks three parsed files across two packages."""
     repo_root = tmp_path.resolve()
     files = {
-        "auth": str(repo_root / "pkg" / "auth.py"),
-        "views": str(repo_root / "pkg" / "views.py"),
-        "main": str(repo_root / "main.py"),
+        "auth": normalize_file_path(repo_root / "pkg" / "auth.py"),
+        "views": normalize_file_path(repo_root / "pkg" / "views.py"),
+        "main": normalize_file_path(repo_root / "main.py"),
     }
     store = GraphStore(get_db_path(repo_root))
     _seed_file(store, files["auth"], "authenticate")
@@ -151,8 +154,8 @@ def test_forget_directory_uses_filesystem_case_identity(seeded_repo):
     package = repo_root / "pkg"
     package.mkdir()
     requested = repo_root / "PKG"
-    neighbor = str(repo_root / "pkg_extra" / "keep.py")
-    distinct = str(requested / "other.py")
+    neighbor = normalize_file_path(repo_root / "pkg_extra" / "keep.py")
+    distinct = normalize_file_path(requested / "other.py")
 
     store = GraphStore(get_db_path(repo_root))
     try:

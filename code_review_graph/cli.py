@@ -347,25 +347,34 @@ def _match_files_to_forget(
         absolute = expanded if expanded.is_absolute() else root / expanded
         absolute_str = os.path.normpath(str(absolute))
         dir_prefix = absolute_str.rstrip(os.sep) + os.sep
+        # Filesystem case identity: on case-insensitive platforms (Windows,
+        # macOS) ``forget PKG`` must drop ``pkg/`` — the directory the user
+        # named is the one the filesystem resolves. ``os.path.normcase`` is
+        # that platform's answer (identity on Linux, so case stays strict
+        # there). It also unifies separators, so canonical forward-slash
+        # stored paths compare cleanly.
+        case_absolute = os.path.normcase(absolute_str)
+        case_prefix = os.path.normcase(dir_prefix)
 
         for stored_path in stored:
             normalised = os.path.normpath(stored_path)
+            case_stored = os.path.normcase(normalised)
             try:
                 relative = os.path.relpath(normalised, str(root))
             except ValueError:
                 relative = None
 
             # Exact match against the absolute or the repo-relative form.
-            if normalised == absolute_str:
+            if case_stored == case_absolute:
                 matched.add(stored_path)
                 continue
-            if relative is not None and os.path.normpath(relative) == os.path.normpath(
-                pattern
-            ):
+            if relative is not None and os.path.normcase(
+                os.path.normpath(relative)
+            ) == os.path.normcase(os.path.normpath(pattern)):
                 matched.add(stored_path)
                 continue
             # Every file underneath a named directory.
-            if normalised.startswith(dir_prefix):
+            if case_stored.startswith(case_prefix):
                 matched.add(stored_path)
                 continue
             # Glob patterns, matched against both the absolute and relative form.
