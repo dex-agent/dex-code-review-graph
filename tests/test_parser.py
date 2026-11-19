@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from code_review_graph.constants import normalize_file_path
 from code_review_graph.graph import GraphStore
 from code_review_graph.incremental import full_build
 from code_review_graph.parser import (
@@ -48,7 +49,9 @@ def test_phpunit_path_scope(tmp_path, checkout, relative, expected):
     nodes, edges = CodeParser(repo_root=root).parse_bytes(path, source)
 
     method = next(node for node in nodes if node.name == "testProductionHelper")
-    assert method.file_path == str(path)
+    # Graph identity is forward-slash on every OS (normalize_file_path, #774);
+    # ``str(path)`` would be backslash-native on Windows.
+    assert method.file_path == normalize_file_path(path)
     assert (method.kind, method.is_test) == (("Test", True) if expected else ("Function", False))
     assert any(edge.kind == "TESTED_BY" for edge in edges) is expected
 
@@ -99,8 +102,8 @@ def test_python_explicit_reexport(tmp_path, exports, target_file, target_name):
 
     _, edges = CodeParser(repo_root=tmp_path).parse_file(test_file)
 
-    caller = f"{test_file.resolve()}::test_public"
-    target = f"{(package / target_file).resolve()}::{target_name}"
+    caller = f"{normalize_file_path(test_file.resolve())}::test_public"
+    target = f"{normalize_file_path((package / target_file).resolve())}::{target_name}"
     assert [
         edge.target for edge in edges if edge.kind == "CALLS" and edge.source == caller
     ] == [target]

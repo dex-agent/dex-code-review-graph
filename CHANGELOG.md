@@ -171,6 +171,12 @@
 - A call that could mean several functions now stores them in sorted order, so
   the same code gives the same graph whatever order its files are read in.
 
+## [2.4.0+dex.1] - 2026-11-19
+
+Dex local edition: combined build of upstream 2.4.0 (7ba9d17a) with the house
+patches — `detect-changes --files` scoping, the `merge-check` three-way
+pre-merge gate and install support for the house AI tools.
+
 ## [2.4.0] - 2026-11-10
 
 Two new platforms, MiMo Code and DeepSeek Harness, so `install` now supports

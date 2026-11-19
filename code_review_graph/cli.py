@@ -184,6 +184,7 @@ _BANNER_GROUPS: tuple[tuple[str, tuple[tuple[str, str], ...]], ...] = (
         ("impact", "Show what a change can reach"),
         ("dead-code", "Find code that nothing calls or tests"),
         ("refactor", "Preview a rename, dead code or suggestions"),
+        ("merge-check", "Check a merge against the graph before committing"),
     )),
     ("Explore", (
         ("query", "Callers, callees, imports, tests and more"),
