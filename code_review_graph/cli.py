@@ -1297,11 +1297,14 @@ def _ensure_project_marker(repo_root: Path) -> None:
     """Let a plain directory pass tool validation, without opening graph.db.
 
     ``build``, ``update`` and ``postprocess`` all accept one, and each now
-    reaches the tools before anything has created the data directory.
+    reaches the tools before anything has created the data directory. A
+    repository registered with an external index (``--data-dir`` recorded in
+    the registry) is already a project root, so no local marker is created
+    for it — the relocation keeps the working tree clean.
     """
-    if repo_root.is_dir() and not any(
-        (repo_root / marker).exists() for marker in (".git", ".svn", ".code-review-graph")
-    ):
+    from .tools._common import _has_project_identity
+
+    if repo_root.is_dir() and not _has_project_identity(repo_root):
         from .incremental import _create_data_dir
         _create_data_dir(repo_root / ".code-review-graph")
 
