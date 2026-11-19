@@ -48,3 +48,18 @@ disso:`.
   e2e: `shutil.which("code-review-graph")`, nunca
   `python.with_name(...)` (o script mora em Scripts/, não ao lado do
   interpretador).
+
+## [TRACKER-LOCAL-ONLY] (2026-11-19, bloco 0005)
+
+`.agents/TRACKER/` é **local-only** (0 arquivos tracked; casou .gitignore):
+`git add .agents/TRACKER` recusa (exit 1) mesmo para arquivos já editados.
+**Faça em vez disso:** commitar apenas `.agents/PLAN-TASKS/*.md` (negado no
+gitignore) — o título "docs(tracker)" do 41738e63 só versionou o Trilho.
+Confirmação: `git ls-files .agents/TRACKER | wc -l` = 0.
+
+## [GHCACHE-PR-LIST] (2026-11-19, bloco 0005)
+
+`gh pr list --state open` logo após `gh pr close` em lote pode devolver
+contagem STALE (mostrou "1 aberto" com 5 fechados) — cache da API, não reopen
+do bot. **Faça em vez disso:** re-listar (a 2ª chamada veio vazia) antes de
+concluir "o bot reabriu".
