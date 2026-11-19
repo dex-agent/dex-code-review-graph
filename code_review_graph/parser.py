@@ -1821,7 +1821,6 @@ _TEST_DIR_PATTERNS = [
     re.compile(_SEP + r"tests[\\/]"),
     re.compile(_SEP + r"__tests__[\\/]"),
     re.compile(_SEP + r"e2e[_-]?tests?[\\/]"),
-    re.compile(_SEP + r"testthat[\\/]"),
     # Ruby RSpec.  The directory name alone is not evidence: "spec/" and
     # "specs/" just as often hold design documents or generated API specs,
     # which are production artefacts.  Require a Ruby source file under it.
@@ -1850,8 +1849,9 @@ _TEST_NAME_PATTERNS = [
     re.compile(r"^test_.*\.py$"),
     re.compile(r"_test\.py$"),
     re.compile(r"^conftest\.py$"),
-    # JavaScript / TypeScript.
-    re.compile(r"\.(?:test|spec)\.[cm]?[jt]sx?$"),
+    # JavaScript / TypeScript. Case-insensitive: a test file keeps its
+    # meaning when the checkout spells the suffix ".TEST.CJS".
+    re.compile(r"\.(?:test|spec)\.[cm]?[jt]sx?$", re.IGNORECASE),
     # Storybook CSF files demonstrate components; they are not production callers.
     _STORYBOOK_FILE_RE,
     # Go.
@@ -16934,6 +16934,13 @@ class CodeParser:
             decorators = tuple(deco_list)
 
         is_test = _is_test_function(name, file_path, decorators, repo_root=self._repo_root)
+        # A JavaScript ``function test(...)`` declaration inside a test file
+        # is a local helper, not a test: the Test node belongs to the *call*,
+        # and the commonjs runner check only marks calls whose ``test``
+        # binding comes from a runner require — a name this file defines is
+        # never the imported runner.
+        if language == "javascript" and name in _TEST_RUNNER_NAMES:
+            is_test = False
         # PowerShell's Test-* verb and DSC Test() methods are production
         # declarations unless the containing file is test code.
         if language == "powershell":
@@ -20228,6 +20235,18 @@ class CodeParser:
                             ] = module_name
                 continue
 
+            # Python top-level rebindings re-export their own value: the
+            # module, not the import origin, is the public source of the name.
+            if language == "python":
+                if node_type == "assignment":
+                    left = child.child_by_field_name("left")
+                    if left is not None and left.type == "identifier":
+                        defined_names.add(
+                            left.text.decode("utf-8", errors="replace")
+                        )
+                elif node_type == "match_statement":
+                    self._collect_python_match_captures(child, defined_names)
+
             # Collect defined function/class names
             if target_type in func_types or target_type in class_types:
                 name = self._get_name(target, language,
@@ -20260,6 +20279,24 @@ class CodeParser:
             )
 
         return import_map, defined_names
+
+    @staticmethod
+    def _collect_python_match_captures(match_node, defined_names: set[str]) -> None:
+        """Add names bound by ``match`` capture patterns to *defined_names*.
+
+        ``case [*run]:`` rebinds ``run``, so the module itself is the public
+        origin of that name — not whichever import brought a ``run`` in.
+        """
+        def visit(node) -> None:
+            for sub in node.children:
+                if sub.type in ("splat_pattern", "case_pattern", "capture_pattern"):
+                    for leaf in sub.children:
+                        if leaf.type == "identifier":
+                            defined_names.add(
+                                leaf.text.decode("utf-8", errors="replace")
+                            )
+                visit(sub)
+        visit(match_node)
 
     def _collect_julia_scoped_import_names(
         self,
@@ -20295,6 +20332,89 @@ class CodeParser:
             self._collect_julia_scoped_import_names(
                 child, source, import_map, current_scope,
             )
+
+    def _python_alias_chain_origin(
+        self,
+        module_file: str,
+        symbol_name: str,
+        resolving: frozenset[str],
+    ) -> Optional[tuple[str, str]]:
+        """The ``(file, name)`` a renamed re-export chain lands on.
+
+        Each hop follows the name the NEXT file imports (``bridge`` imports
+        ``run`` as ``execute``, so the chain continues under ``run``), and the
+        chain ends at a file that defines its current name. Returns ``None``
+        when the chain never lands on a definition or cycles.
+        """
+        current_file, current_name = module_file, symbol_name
+        seen: set[tuple[str, str]] = set()
+        while (current_file, current_name) not in seen:
+            seen.add((current_file, current_name))
+            try:
+                module_path = Path(current_file)
+                source = module_path.read_bytes()
+                parser = self._get_parser("python")
+                if parser is None:
+                    return None
+                tree = parser.parse(source)  # type: ignore[union-attr]
+            except (OSError, PermissionError):
+                return None
+            normalized = normalize_file_path(module_path)
+            hop_imports, defined_names = self._collect_file_scope(
+                tree.root_node, "python", source, normalized,
+            )
+            if current_name in defined_names:
+                return current_file, current_name
+            if current_file in resolving:
+                return None
+            module = hop_imports.get(current_name)
+            if module is None:
+                return None
+            next_name = hop_imports.get(
+                f"{_JS_IMPORT_ORIGINAL_PREFIX_KEY}{current_name}", current_name,
+            )
+            origin = self._python_import_origin(module, normalized)
+            if origin is None or origin == current_file:
+                return None
+            current_file, current_name = origin, next_name
+        return None
+
+    def _collect_python_conditional_star_origins(
+        self,
+        root,
+        file_path: str,
+        resolving: frozenset[str],
+        origins: dict[str, str],
+    ) -> None:
+        """Record names a wildcard import inside a nested block may rebind.
+
+        A top-level ``from .other import *`` is a real re-export; under
+        ``if flag:`` it only *may* run, so a name it also provides has an
+        ambiguous origin. ``_read_python_star_exports`` keeps such names on
+        the module itself instead of trusting the explicit import's origin.
+        """
+
+        def visit(node, nested: bool) -> None:
+            for child in node.children:
+                if child.type == "import_from_statement":
+                    if nested and any(
+                        part.type == "wildcard_import" for part in child.children
+                    ):
+                        module_node = child.child_by_field_name("module_name")
+                        if module_node is not None:
+                            module = module_node.text.decode(
+                                "utf-8", errors="replace"
+                            )
+                            resolved = self._python_import_origin(module, file_path)
+                            if resolved is not None and resolved not in resolving:
+                                for name, origin in self._get_python_star_exports(
+                                    resolved, resolving,
+                                ).items():
+                                    origins.setdefault(name, origin)
+                    continue
+                visit(child, True)
+
+        visit(root, False)
 
     def _expand_python_star_imports(
         self,
@@ -20392,18 +20512,42 @@ class CodeParser:
             self._expand_python_star_imports(
                 tree.root_node, resolved_module, origins, next_resolving,
             )
+            conditional_star: dict[str, str] = {}
+            self._collect_python_conditional_star_origins(
+                tree.root_node, resolved_module, next_resolving, conditional_star,
+            )
             for name, module in import_map.items():
-                if f"{_JS_IMPORT_ORIGINAL_PREFIX_KEY}{name}" in import_map:
-                    # `from .impl import charge as pay` exports `pay`, but the
-                    # origin file defines `charge`; an origin keyed by file
-                    # alone would send `pkg.pay` to an unrelated `impl.pay`.
-                    # Keep the name on this module, where it stays unresolved.
-                    origins[name] = resolved_module
+                original_key = f"{_JS_IMPORT_ORIGINAL_PREFIX_KEY}{name}"
+                if original_key in import_map:
+                    # `from .bridge import execute as run` publishes ``run``
+                    # but the definition sits under ``execute``. Follow the
+                    # chain under each file's ORIGINAL name; the origin only
+                    # supports the public name when the chain lands on a file
+                    # that defines that same public name (an ``impl.pay``
+                    # unrelated to the exported ``pay`` must not receive the
+                    # call). Otherwise the name stays on this module.
+                    origin_file = self._python_import_origin(module, resolved_module)
+                    pair = (
+                        self._python_alias_chain_origin(
+                            origin_file, import_map[original_key], next_resolving,
+                        )
+                        if origin_file is not None
+                        else None
+                    )
+                    origins[name] = pair[0] if pair and pair[1] == name else resolved_module
                     continue
                 # A relative import stores its already-resolved file here,
                 # an absolute one a dotted module name; both must work.
                 origin = self._python_import_origin(module, resolved_module)
-                if origin is not None:
+                if origin is None:
+                    continue
+                if conditional_star.get(name, origin) != origin:
+                    # A wildcard import under a nested block (`if flag:
+                    # from .other import *`) may rebind the name at runtime;
+                    # the static origin is ambiguous, so this module is the
+                    # public answer.
+                    origins[name] = resolved_module
+                else:
                     origins[name] = origin
             for name in defined_names:
                 origins[name] = resolved_module
@@ -22879,7 +23023,12 @@ class CodeParser:
             symbol_name = _nested_import_chain(module, resolved, symbol_name)
         return self._qualify(symbol_name, resolved, None)
 
-    def _python_reexport_origin(self, module_file: str, symbol_name: str) -> str:
+    def _python_reexport_origin(
+        self,
+        module_file: str,
+        symbol_name: str,
+        resolving: frozenset[str] = frozenset(),
+    ) -> str:
         """Follow a package's re-exports to the file that defines *symbol_name*.
 
         ``from .tools import query_graph`` resolves to ``tools/__init__.py``,
@@ -22889,16 +23038,23 @@ class CodeParser:
         export map already knows where each name came from; reuse it. Returns
         *module_file* unchanged when the name is defined there, when the
         origin is outside the repository, or when the module cannot be read.
+        A re-export cycle (``a`` re-exports from ``b``, ``b`` re-exports from
+        ``a``) resolves to the entry module: that is where the import
+        statement says the public name lives.
         """
         if not module_file.endswith(".py"):
             return module_file
         # The same (module, symbol) pair is asked for once per call site, and
         # the answer costs a resolve + stat + lock even on a cache hit inside
-        # `_get_python_star_exports`. Remember it here instead.
+        # `_get_python_star_exports`. Remember it here instead. The key IS the
+        # entry module, so a cycle's answer (the entry) is never served to a
+        # different caller.
         cache_key = f"{module_file}::{symbol_name}"
         cached = self._python_reexport_cache.get(cache_key)
         if cached is not None:
             return cached
+        if module_file in resolving:
+            return module_file
         # A repository path can be a symlink to a file elsewhere; only a file
         # that really lives inside the repository is read.
         try:
@@ -22911,7 +23067,21 @@ class CodeParser:
             and self._path_is_within(real_path, self._import_repo_boundary(module_file))
             else None
         )
-        result = origin if origin and origin != module_file else module_file
+        if not origin or origin == module_file:
+            result = module_file
+        else:
+            entry = module_file
+            current = origin
+            seen = {module_file}
+            while current not in seen:
+                seen.add(current)
+                hop = self._get_python_star_exports(current).get(symbol_name)
+                if not hop or hop == current:
+                    break  # defined there (or unknown): the public name lives there
+                current = hop
+            else:
+                current = entry  # cycle: stay at the module the import named
+            result = current
         if len(self._python_reexport_cache) >= self._MODULE_CACHE_MAX:
             self._python_reexport_cache.clear()
         self._python_reexport_cache[cache_key] = result

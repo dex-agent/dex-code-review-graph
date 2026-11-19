@@ -1,6 +1,6 @@
 # User Guide
 
-Applies to code-review-graph 2.4.0.
+Applies to code-review-graph 2.4.0+dex.1.
 
 ## Installation
 

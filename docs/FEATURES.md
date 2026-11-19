@@ -2,7 +2,13 @@
 
 Release highlights by version. The full changelog is in [CHANGELOG.md](../CHANGELOG.md).
 
-## v2.4.0 (Current)
+## v2.4.0+dex.1 (Current)
+
+- **Dex local edition**: combined build of upstream 2.4.0 with the house
+  patches — `detect-changes --files` scoping, the `merge-check` three-way
+  pre-merge gate and install support for the house AI tools.
+
+## v2.4.0
 - **Two new platforms, 18 in all**: `install --platform mimo` for MiMo Code (#688) and `install --platform dsh` for DeepSeek Harness (#1101). Install keeps the comments and other entries in their config files, and `uninstall` takes the entry out again.
 - **More file types**: HTML pages (inline scripts, `<script src>` imports, `onclick` calls), XSLT stylesheets, Liquid templates, JSON and plain YAML (key paths and value types, never values), Oracle PL/SQL, Robot Framework, and `.cjs` and `.kts` files, which every build used to skip. Translation files keep only a file node, so they no longer flood the graph.
 - **Calls the graph could not check no longer look real**: an edge never keeps a qualified name that has no node (#984), and `CALLS`, `REFERENCES` and `TESTED_BY` edges carry a `confidence_tier` (`EXTRACTED`, `INFERRED`, `AMBIGUOUS` or `UNRESOLVED`). On ripgrep, 729 invented call targets went to 0. `callers_of`, `callees_of` and `references_to` say when part of an answer is only name matches.

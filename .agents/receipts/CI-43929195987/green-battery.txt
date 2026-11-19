@@ -1,0 +1,43 @@
+# GREEN battery — cura do CI vermelho (bloco 2026-11-19, Trilho cura-ci-vermelho)
+
+## Classes curadas (RED provado antes, GREEN depois)
+
+| Classe | Teste(s) do run 43929195987 | Cura |
+|---|---|---|
+| C1 version pins | test_documentation::test_release_version_is_current... (×5 jobs) | docs/GITHUB_ACTION.md 3 pins + USAGE/FEATURES/CHANGELOG/bug_report.yml → 2.4.0+dex.1 |
+| C2 banner | test_cli_help::test_banner_lists_every_command... (×5) | cli.py _BANNER_GROUPS + merge-check (grupo Review) |
+| C3 tracked-ignored | test_install_outputs::test_no_tracked_file_is_ignored (×5) | .gitignore: negação do dir CRG-M19-20261116 (padrão irmão CRG-240DEX) |
+| C4 formato canônico×nativo (Windows) | test_parser::test_phpunit_path_scope (6/6, job Windows) | TESTE alinhado ao contrato #774: normalize_file_path(path) — o parser é forward-slash por identidade de grafo |
+| C5 testthat solto | test_parser::test_test_directory_components[r-suffix] (×6) | parser.py: pattern `testthat/` sem âncora removido (convenção R `tests/testthat/` já coberta por `/tests/`) |
+| C6 sufixo case-insensitive | test_commonjs::test_commonjs_test_suffix_outside_test_directory[.TEST.CJS] (×5) | _TEST_NAME_PATTERNS JS com re.IGNORECASE |
+| C7a reexport — shadowed/capture | test_parser::test_python_explicit_reexport[shadowed|capture] | _collect_file_scope: assignments top-level + capturas de match contam como defined (módulo = origem pública) |
+| C7b reexport — cycle | [cycle] | _python_reexport_origin: follow com seen; ciclo devolve o módulo de entrada |
+| C7c reexport — conditional-star | [conditional-star] | wildcard em bloco aninhado = ambiguidade → origem = o próprio módulo |
+| C7d reexport — aliased-chain | [aliased-chain] | _python_alias_chain_origin: cadeia portando o NOME original; só apoia o nome público quando termina nele (vacina do alias_shims) |
+| C8 commonjs runner-local | test_commonjs::test_commonjs_local_test_function_is_not_a_runner (×5) | declaração JS `function test()` em arquivo de teste NÃO é Test (runner é import, nunca definido) |
+
+## Provas
+
+1. Bateria final das classes: `65 passed in 2.73s` (reexport 6 params + commonjs 2 + documentation + banner + install + alias_shims + star_imports).
+2. Paridade de regressão (2 rodadas, parser.py com/sem edits) em
+   test_parser + dead_code_edge_evidence + dead_code_query_scaling +
+   storybook_dead_code + js_wrapped_functions + unbound_call_targets:
+   com edits 22 failed / baseline 28 failed → `comm -13` exclusivos meus = **0**;
+   6 curados do baseline (phpunit 6/6).
+3. Vizinhos do resolver (relative_imports + incremental_reexport_regression +
+   rename_imports + alias_shims + python_star_imports): 12 failed = baseline
+   exata (Windows-only pré-existentes; ubuntu passa).
+4. ruff check (gate do CI): `All checks passed!` em parser.py/cli.py/test_parser.py.
+5. mypy (gate do CI, flags idênticas): 12 erros em 6 arquivos — **0** em
+   parser.py/cli.py (os 12 são Windows-env pré-existentes: killpg/SIGKILL/EventLoopPolicy).
+
+## Ressalvas
+
+- Suíte local Windows: 375 failed pré-edit (formato C:\ vs C:/ espalhado + 21
+  ERROR browser ambientais) — vermelho local Windows não é o veredito; o
+  closure gate do Trilho é CI verde no runner (ubuntu), onde essas classes de
+  formato não existem.
+- C4 recalibrado na evidência: a hipótese original ("cura no produtor de
+  file_path") foi REFUTADA pela docstring do contrato #774 em
+  constants.py::normalize_file_path — o produtor está certo; o teste
+  upstream contradizia o contrato no Windows.

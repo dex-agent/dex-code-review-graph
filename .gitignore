@@ -199,6 +199,16 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/CRG-240DEX-PATH-20261116/INDEX.md
 !/.agents/receipts/CRG-240DEX-PATH-20261116/ROLLBACK.md
 !/.agents/receipts/CRG-240DEX-PATH-20261116/troca-path.txt
+!/.agents/receipts/CRG-M19-20261116/
+/.agents/receipts/CRG-M19-20261116/*
+!/.agents/receipts/CRG-M19-20261116/INDEX.md
+!/.agents/receipts/CRG-M19-20261116/red.txt
+!/.agents/receipts/CRG-M19-20261116/green.txt
+!/.agents/receipts/CI-43929195987/
+/.agents/receipts/CI-43929195987/*
+!/.agents/receipts/CI-43929195987/log-failed.txt
+!/.agents/receipts/CI-43929195987/red-suite-local.txt
+!/.agents/receipts/CI-43929195987/green-battery.txt
 
 # Tracked curated receipts must not stay ignored (upstream hygiene test
 # test_install_outputs_are_ignored.py::test_no_tracked_file_is_ignored).
