@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: 'RASCUNHO'
+status: 'CONCLUIDO'
 owner: 'sessao:zcode (GO do dono via quiz: cura do CI agora — recomendado oraculo-solid)'
 date: '2026-11-19'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -127,5 +127,5 @@ execution_prompt: |
 - [x] A-01 — base alinhada (behind 2 resolvido, uv.lock limpo) — HEAD 2fababd5 == origin/main
 - [x] A-02 — log-failed baixado, classes contadas — 17 FAILED distintos (12 asserts path-separator; receipt log-failed.txt 5544 linhas)
 - [x] A-03 — RED local + cura no chokepoint + suite verde — 8 classes curadas (C1-C8, tabela em receipts/CI-43929195987/green-battery.txt): 65 passed na bateria; paridade 2-rodadas = 0 regressões exclusivas (22 vs 28 baseline); ruff/mypy limpos nos tocados. RESSALVA: C4 recalibrado na evidência — o chokepoint é o TESTE (contrato #774 forward-slash), não o produtor; C7 virou resolver de reexport (5 edges: alias-chain/shadowed/capture/cycle/conditional-star) + C8 declaração runner JS.
-- [ ] A-04 — push + CI verde no main (run ID)
-- [ ] A-05 — TRACKER classes + tag seca + fechamento
+- [x] A-04 — push + CI verde no main (run ID) — 4 levas até o verde: 71f5fae7 (C1-C8) → 19669fa2 (camada oculta C9-C10: steps do job Windows param no 1º erro; matcher forget ganha normcase) → af2210c6 (camada 3 C11: merge 3ddf2c8b engolira fix+teste f145ca80) → 9ca592aa (marker honra registro externo + exe via which). RUN VERDE: 44517837083 (22/22 jobs ✓)
+- [x] A-05 — TRACKER classes + tag seca + fechamento — ISSUE-LOCAL-0004 (fechado, 11 classes) + 0005 (dependabot, aberto aguardando GO) + INDEX; tag seca v2.4.0+dex.1 no commit verde
