@@ -217,3 +217,5 @@ local após publicar o corte. A ajuda do script confirma os argumentos.
 
 | TRACKER-LOCAL-ONLY | sessão do projeto | commitar fechamento de issue do TRACKER | commitar só PLAN-TASKS; TRACKER é local-only (`git ls-files .agents/TRACKER` = 0) | .agents/napkin.md#TRACKER-LOCAL-ONLY |
 | GHCACHE-PR-LIST | sessão do projeto | `gh pr list` logo após close em lote mostra "1 aberto" | re-listar antes de concluir reopen; cache da API devolve stale | .agents/napkin.md#GHCACHE-PR-LIST |
+
+| FECHAMENTO-SCAN-ARMADILHAS | sessão do projeto | montar workflow-review.json ou ler exit do scan de fechamento | repo=path absoluto; INDEX local=workflow/INDEX.md raiz (com sha real); exit sem pipe | .agents/napkin.md#FECHAMENTO-SCAN-ARMADILHAS |

@@ -63,3 +63,18 @@ Confirmação: `git ls-files .agents/TRACKER | wc -l` = 0.
 contagem STALE (mostrou "1 aberto" com 5 fechados) — cache da API, não reopen
 do bot. **Faça em vez disso:** re-listar (a 2ª chamada veio vazia) antes de
 concluir "o bot reabriu".
+
+## [FECHAMENTO-SCAN-ARMADILHAS] (2026-11-19, garimpo do ciclo)
+
+Três armadilhas do `scan-fechamento.py --workflow-review` pagas ao vivo:
+(1) campo `repo` da avaliação resolve como PATH (`Path(repo).resolve()`) —
+"code-review-graph" (nome) diverge; usar caminho absoluto do repo;
+(2) INDEX local de workflows para `repo_kind: project` mora em
+`workflow/INDEX.md` NA RAIZ do repo (fonte workflow_review.py l.157) — e
+NESTE repo ele EXISTE (1 receita); declarar sha256 REAL, não null de
+"ausente"; `sha256: null` só passa para índice comprovadamente ausente;
+(3) medir exit de `cmd | tail` dá o exit do tail — rodar o scan sem pipe
+(ou separado) para o número real.
+**Faça em vez disso:** gerar workflow-review.json APÓS todas as mutações das
+fontes citadas (hash muda junto); conferir `rg -n "local_root" workflow_review.py`
+antes de declarar caminho de INDEX.
