@@ -20,6 +20,10 @@
   "index-global": {
    "path": "C:/Users/Administrator/.agents/workflow/INDEX.md",
    "sha256": "09f6e84cb15247536a360ee6770a7c21e3a7d608434ebd8f60fabbf268d625b3"
+  },
+  "workflows-local": {
+   "path": "C:/CodexProjetos/code-review-graph/workflow/INDEX.md",
+   "sha256": null
   }
  },
  "block_evidence": [
@@ -34,9 +38,9 @@
    "result": "2 vizinhos (Fechamento de corte; Auditar fronteiras de decisão) — nenhum cobre fechamento de automação herdada de fork com receipts por mutação"
   },
   "local": {
-   "source": null,
-   "query": "dependabot|fork",
-   "result": "sem .agents/WORKFLOWS no repo (INDEX ausente)"
+   "source": "workflows-local",
+   "query": "dependabot|fork|automação órfã",
+   "result": "INDEX local ausente (workflow/INDEX.md não existe no repo) — busca global cobriu; nenhum equivalente"
   }
  },
  "candidates": [
