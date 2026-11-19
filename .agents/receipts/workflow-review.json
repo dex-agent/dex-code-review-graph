@@ -1,6 +1,6 @@
 {
  "contract": "dex.fechamento.workflow-review.v1",
- "repo": "code-review-graph",
+ "repo": "C:/CodexProjetos/code-review-graph",
  "repo_kind": "project",
  "block_id": "fecha-ciclo-auditoria-0005-20261119",
  "reviewed_at": "2026-11-19T18:20:14+00:00",
@@ -15,7 +15,7 @@
   },
   "pendentes": {
    "path": ".agents/PENDENTES.md",
-   "sha256": "10225c861f932ad08bd2da9dfafcf6c015c0e46bcac6a3e8aad259f3a5ec4c9a"
+   "sha256": "8e3e30393cc50adfe97c12f61706b7a86b9b59458d3ae73e413651da93824d72"
   },
   "index-global": {
    "path": "C:/Users/Administrator/.agents/workflow/INDEX.md",

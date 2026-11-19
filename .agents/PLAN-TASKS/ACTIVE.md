@@ -1,5 +1,9 @@
 # Trilho ativo
 
+- [Bloco 0005: fecha o ciclo da auditoria](2026-11-19-bloco-0005-auditoria.md) | `fecha-ciclo-auditoria-0005-20261119` | concluído: 4 mutações com receipt (PRs dependabot, yml removido, alerts ON, publish off, CODEOWNERS).
+
+- [Cura do CI vermelho crônico](2026-11-19-cura-ci-vermelho.md) | `cura-ci-vermelho-20261119` | concluído: 13 classes em 6 levas, runs verdes 44517837083 + 44529405896, tag seca v2.4.0+dex.1.
+
 - [Recorte na CLI combinada](2026-11-16-crg-m19-recorte-cli.md) | `crg-m19` | concluído, 99 testes na suíte focada.
 
 - [Piloto do adapter em revisão real](2026-11-14-crg-piloto-adapter-revisao-real.md) | `crg-piloto-adapter-revisao-real-20261114` | em execução: canário Dex WhatsApp `eb7d95b` via bundle + revisão medida do diff `5356307`.

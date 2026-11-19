@@ -1,5 +1,7 @@
 # HANDOFF — retomada curta
 
+- 2026-11-19 — Ciclo da auditoria FECHADO: CI re-verde (44529405896), ISSUE-LOCAL-0004 (13 classes) e 0005 (automação órfã) fechados; main 100% verde em todos os runs do dia. Política do fork: acompanhar upstream por merge manual; publish.yml disabled até política de release. Pendências novas no [PENDENTES](PENDENTES.md): 137 vulns herdadas (CRG-VULNS-HERDADAS), flow PPIRTV 0711 órfão (CRG-FLOW-PPIRTV-ORFAO), drift beads×TRACKER no AGENTS (CRG-AGENTS-BEADS-DRIFT). Reversibilidade do 0005: `gh pr reopen`, restore do yml, `gh workflow enable`, `gh api -X DELETE .../vulnerability-alerts`.
+
 - 2026-11-16 — `crg-m19` corrigido em cima de `54efb64c`. [RED, GREEN e suíte](receipts/CRG-M19-20261116/INDEX.md). Para promover o wheel de teste, siga o gate de consumidores do AGENTS e use o rollback documentado na troca anterior.
 
 - 2026-11-16 — PATH promoveu o wheel combinado `2.4.0+dex.1` (ordem "troca"). Executável do PATH com as joias da casa; banco novo schema 15; primeira abertura de índice schema-9 MIGRA para 15 (projetos reconstroem; Dex WhatsApp descartável). [Recibo e rotas de rollback](receipts/CRG-240DEX-PATH-20261116/INDEX.md) (rota A: PyPI 2.4.0; rota B: wheel casa 2.3.7 schema 9).
@@ -16,7 +18,7 @@
 
 - Na próxima consulta a um índice persistente, o mantenedor verifica o [frescor](GATILHOS-VIVOS.md#staleness-artefatos-derivados). Os bancos desta adoção são descartáveis. [Rollback ensaiado](receipts/crg-cjs-20261113/rollback.json).
 
-Ultima atualizacao: 2026-11-16
+Ultima atualizacao: 2026-11-19
 
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d` e CI 9/9. `crg-iu1` fechado após o saldo integral chegar a zero IDs de falha. Antes de publicar um release Windows, o mantenedor valida o wheel em uma instalação Windows limpa e isolada, conferindo a versão, o executável e um smoke CLI com projeto descartável. [Saldo por ID](receipts/crg-iu1-uninstall-mode/comparison.json) · [Modo efetivo](memorias/crg-uninstall-modo-efetivo.md).
 

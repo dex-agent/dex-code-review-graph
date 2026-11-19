@@ -1,5 +1,11 @@
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-19 — [Cura do CI vermelho](PLAN-TASKS/2026-11-19-cura-ci-vermelho.md) CONCLUÍDA: 13 classes em 6 levas, runs verdes 44517837083 (22/22) + re-verde 44529405896; tag seca `v2.4.0+dex.1` (virou input da suíte released_shapes — 5ª forma de ocultação: skip condicional). [Bateria](receipts/CI-43929195987/green-battery.txt).
+
+- 2026-11-19 — [Bloco 0005](PLAN-TASKS/2026-11-19-bloco-0005-auditoria.md) CONCLUÍDO (GO do dono): 5 PRs dependabot fechados, `dependabot.yml` removido (branch staging FANTASMA), alerts ON (137 vulns herdadas visíveis — pendência CRG-VULNS-HERDADAS), publish `disabled_manually`, CODEOWNERS. Ciclo do laudo da auditoria 100% pago.
+
+- 2026-11-19 — Garimpo do fechamento: flow PPIRTV `0711` órfão confirmado (pendente CRG-FLOW-PPIRTV-ORFAO), espelhos dex de 240dex+grafo-registry pagos, nota citável `DEPENDABOT-ALERTS-INDEPENDENTES-DO-YML` publicada.
+
 - 2026-11-16 — [Recorte da CLI corrigido](PLAN-TASKS/2026-11-16-crg-m19-recorte-cli.md), `crg-m19`. Filtro único para faixas e deleções, 6/6 pelo executável e 99/99 na suíte focada em Windows. [Provas](receipts/CRG-M19-20261116/INDEX.md).
 
 - 2026-11-16 — [Troca do PATH 2.4.0+dex.1](PLAN-TASKS/2026-11-16-crg-240dex-path-troca.md) CONCLUÍDA (ordem "troca" do dono). PATH agora executa o wheel combinado: `--version` 2.4.0+dex.1, `--files` ✓, `merge-check` ✓, banco novo schema 15 ✓, e2e `tests_for(soma)`=1 ✓. Primeira abertura de índice schema-9 migra para 15 (projetos reconstroem). [Recibo e rollback](receipts/CRG-240DEX-PATH-20261116/INDEX.md).
@@ -18,7 +24,7 @@
 
 - 2026-11-13 — [Reconhecimento `.cjs`](PLAN-TASKS/2026-11-13-crg-cjs.md), bead `crg-4t2`, e [E2E da CLI](PLAN-TASKS/2026-11-13-crg-cjs-e2e.md), bead `crg-09r`. O wheel isolado confirmou 19/19 caminhos e 24 importações internas. [Evidências](EVIDENCIAS/2026-11-13-crg-cjs.md).
 
-- Ultima atualizacao: 2026-11-14.
+- Ultima atualizacao: 2026-11-19.
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d`, CI 9/9 e uninstall Windows 46/46. A suíte integral Windows zerou as falhas, com 2.326 aprovados. Bead `crg-iu1` fechado. [Veredito](receipts/crg-iu1-uninstall-mode/verdict.json).
 - [Pares exatos de eventos Spring](PLAN-TASKS/2026-11-09-crg-iu1-spring-events.md) — `d22e6d6`, CLI e SQLite confirmam os dois pares, CI 9/9 e Spring Windows 6/6. Resta um ID histórico na suíte integral. [Veredito](receipts/crg-iu1-spring-events/verdict.json).
 - [Referências HCL com caminhos nativos](PLAN-TASKS/2026-11-09-crg-iu1-hcl-references.md) — `d6336d2` corrige a expectativa da fixture. CLI e SQLite confirmam as duas arestas pelos IDs. CI 9/9, módulo HCL Windows 3/3 e dois IDs históricos restantes na suíte integral. [Veredito](receipts/crg-iu1-hcl-references/verdict.json).
