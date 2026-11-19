@@ -3,6 +3,7 @@
 import io
 import json
 import logging
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -14,6 +15,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from code_review_graph import cli
+from code_review_graph.constants import normalize_file_path
 
 
 def test_main_handles_legacy_stdio_encoding(monkeypatch):
@@ -1039,8 +1041,14 @@ def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
     monkeypatch.setenv("CRG_HOME", str(tmp_path / "state"))
     monkeypatch.delenv("CRG_DATA_DIR", raising=False)
     monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
-    python = Path(sys.executable)
-    executable = python.with_name(f"code-review-graph{python.suffix}")
+    # ``pip install -e`` puts the console script on PATH (venv bin/, or
+    # Scripts/ on Windows), which is not always the interpreter's own
+    # directory — a system Python never has it beside the executable.
+    executable = shutil.which("code-review-graph") or str(
+        Path(sys.executable).with_name(
+            f"code-review-graph{Path(sys.executable).suffix}"
+        )
+    )
 
     def run(command, root, *args):
         return subprocess.run(
@@ -1061,8 +1069,9 @@ def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
     assert not (child / ".code-review-graph").exists()
     db_uri = (data / "graph.db").as_uri() + "?mode=ro"
     with closing(sqlite3.connect(db_uri, uri=True)) as db:
+        # Graph identity is forward-slash on every OS (normalize_file_path).
         assert db.execute("SELECT file_path FROM nodes WHERE kind='File'").fetchall() == [
-            (str(source.resolve()),)
+            (normalize_file_path(source.resolve()),)
         ]
 
     for root in (child, nested):
