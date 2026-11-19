@@ -17,7 +17,7 @@
 {
   "schema": "dex.pendencias.v2",
   "repo": "code-review-graph",
-  "updated_at": "2026-11-15",
+  "updated_at": "2026-11-19",
   "itens": [
     {
       "id": "CRG-CREDENCIAL-BACKUP",
@@ -115,11 +115,56 @@
       "contexto": "Corte 2.4.0-dex fechou sem livro de ferramentas no repo; criar superficie meia-boca violaria o schema da casa",
       "owner": "mantenedor CRG",
       "origem": "Trilho 2026-11-15-crg-240-dex-merge (closure gate)",
-      "estado": "aberta",
+      "status": "aberta",
       "supercedido_por": null,
       "criado_em": "2026-11-15",
       "concluida_em": null,
       "atualizado_em": "2026-11-15"
+    },
+    {
+      "id": "CRG-VULNS-HERDADAS",
+      "titulo": "Política para 137 vulnerabilidades herdadas do lockfile upstream (8 critical, 57 high, 62 moderate, 10 low)",
+      "status": "aberta",
+      "nivel": "P2",
+      "quando": "Ao definir política própria de dependências; hoje a política é acompanhar upstream por merge manual (ISSUE-LOCAL-0005)",
+      "data_limite": null,
+      "owner": "dono",
+      "prova": "push 187cf778 imprimiu o inventário; gh api repos/dex-agent/dex-code-review-graph/dependabot/alerts",
+      "motivo": "Alerts ligados em 2026-11-19 revelaram dívida invisível até então",
+      "supercedido_por": null,
+      "criado_em": "2026-11-19",
+      "concluida_em": null,
+      "atualizado_em": null
+    },
+    {
+      "id": "CRG-FLOW-PPIRTV-ORFAO",
+      "titulo": "Flow PPIRTV 20261114193314577_0711 zumbi: active/0-done/sem verdict há 5 dias com trabalho real já pago",
+      "status": "aberta",
+      "nivel": "P3",
+      "quando": "No próximo fechamento PPIRTV ou descarte consciente (goal_verdict ou archive)",
+      "data_limite": null,
+      "owner": "sessao-do-projeto",
+      "prova": ".ppirtv/flows/flow_20261114193314577_0711_0108.json (status=active, verdict ausente) vs memória reconhecimento-code-review-graph (ensaio ZIP 2º Windows VERDE 2026-11-14)",
+      "motivo": "Contradição contrato×execução: flow diz 0/3, realidade diz concluído",
+      "supercedido_por": null,
+      "criado_em": "2026-11-19",
+      "concluida_em": null,
+      "atualizado_em": null
+    },
+    {
+      "id": "CRG-AGENTS-BEADS-DRIFT",
+      "titulo": "AGENTS local manda \"bd for ALL task tracking\" (boilerplate beads do fork) mas a casa opera TRACKER local + Trilhos SPT",
+      "status": "aberta",
+      "nivel": "P3",
+      "quando": "Na próxima edição do AGENTS.md do projeto",
+      "data_limite": null,
+      "owner": "dono",
+      "prova": "AGENTS.md (bloco Beads Issue Tracker) vs .agents/TRACKER/INDEX.md + PLAN-TASKS",
+      "motivo": "Hierarquia resolve (global>projeto), mas o texto local ensina errado para janela fria",
+      "supercedido_por": null,
+      "criado_em": "2026-11-19",
+      "concluida_em": null,
+      "atualizado_em": null
     }
   ]
 }
