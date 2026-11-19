@@ -17,3 +17,7 @@ Bloco GO 2026-11-19 (Trilho cura-ci-vermelho): CI do fork dex-agent/dex-code-rev
 [Voltar às lembranças](../lembranca.md) [[lembranca|Lembranças]]
 
 ^cura-do-ci-vermelho-cronico-do-crg-11-classes-em-4-245705d61c79-content
+
+## Re-verde selado (2026-11-19)
+
+Run 44529405896 (leva 6, fb76a964): completed success — classe 12/13 fechada com re-verde confirmado (watch exit 0 + gh run view). Recaida: tag seca virou input da suite test_released_shapes (5a forma de ocucao: skip condicional com 0 tags); armadilha: 33 tags upstream locais = falsa premissa, reproducao fiel do runner = git clone --depth 1 --branch <tag>.
