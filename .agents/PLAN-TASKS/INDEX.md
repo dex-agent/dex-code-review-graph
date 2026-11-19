@@ -64,3 +64,5 @@
 - `replicar-code-review-graph-casa` | status: `concluido_com_ressalvas` | owner: `validador-pronto` | arquivo: `.agents/PLAN-TASKS/2026-07-31-replicar-code-review-graph-casa.md`
 - `piloto-amplo-code-review-graph` | status: `concluido_com_ressalvas` | owner: `validador-pronto` | arquivo: `.agents/PLAN-TASKS/2026-07-28-piloto-amplo-code-review-graph.md`
 - `integrar-code-review-graph-global` | status: `concluido_com_ressalvas` | owner: `validador-pronto` | arquivo: `.agents/PLAN-TASKS/2026-07-28-integrar-code-review-graph-global.md`
+- `cura-ci-vermelho-20261119` | status: `CONCLUIDO` (6 levas/13 classes, runs verdes 44517837083+44529405896) | owner: sessao:zcode | [Trilho](2026-11-19-cura-ci-vermelho.md)
+- `fecha-ciclo-auditoria-0005-20261119` | status: `CONCLUIDO` (4 mutações com receipt, ISSUE-LOCAL-0005 fechado) | owner: sessao:zcode | [Trilho](2026-11-19-bloco-0005-auditoria.md)
