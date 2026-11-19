@@ -165,6 +165,21 @@
       "criado_em": "2026-11-19",
       "concluida_em": null,
       "atualizado_em": null
+    },
+    {
+      "id": "CRG-TEMP-RELOCAR",
+      "titulo": ".agents/TEMP com 1842 arq/260.4MB acumulados — relocar por classe (nada é apagado)",
+      "status": "aberta",
+      "nivel": "P3",
+      "quando": "Corte próprio de garimpo de TEMP (bloco dedicado); apontado pelo fechamento 2026-11-19",
+      "data_limite": null,
+      "owner": "sessao-do-projeto",
+      "prova": "scan fechamento superficie TEMP/TMP (receipt fechamento-20261119.json)",
+      "motivo": "Dívida antiga pré-bloco; garimpo antes de qualquer remoção",
+      "supercedido_por": null,
+      "criado_em": "2026-11-19",
+      "concluida_em": null,
+      "atualizado_em": null
     }
   ]
 }
