@@ -3,8 +3,10 @@
 import io
 import json
 import logging
+import sqlite3
 import subprocess
 import sys
+from contextlib import closing
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -991,9 +993,22 @@ class TestGraphToolExplicitRepoResolution:
         repo_root = mock_run.call_args.args[1]
         assert repo_root == module.resolve()
 
-    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, capsys):
+    def test_explicit_repo_without_markers_errors_cleanly(self, tmp_path, monkeypatch, capsys):
         bare = tmp_path / "not-a-project"
         bare.mkdir()
+        monkeypatch.setenv("CRG_HOME", str(tmp_path / "isolated-state"))
+        monkeypatch.setenv("CRG_DATA_DIR", str(tmp_path / "global-storage"))
+        host_markers = {
+            parent / marker
+            for parent in tmp_path.resolve().parents
+            for marker in (".git", ".svn", ".code-review-graph")
+        }
+        real_exists = Path.exists
+
+        def exists(path, *args, **kwargs):
+            return path not in host_markers and real_exists(path, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "exists", exists)
         argv = ["code-review-graph", "search", "x", "--repo", str(bare)]
         with patch.object(sys, "argv", argv):
             with patch.object(cli, "_run_graph_tool_command") as mock_run:
@@ -1002,6 +1017,7 @@ class TestGraphToolExplicitRepoResolution:
         assert exc_info.value.code == 1
         mock_run.assert_not_called()
         assert "does not look like a project root" in capsys.readouterr().err
+        assert not (tmp_path / "global-storage").exists()
 
     def test_repo_inside_module_resolves_to_nearest_marker(self, tmp_path):
         _, module = self._make_monorepo(tmp_path)
@@ -1013,3 +1029,46 @@ class TestGraphToolExplicitRepoResolution:
                 cli.main()
 
         assert mock_run.call_args.args[1] == module.resolve()
+
+
+def test_explicit_markerless_repo_with_external_index(tmp_path, monkeypatch):
+    parent = tmp_path / "parent"
+    parent.mkdir()
+    (parent / "parent.py").write_text("def parent_canary():\n    return 1\n", encoding="utf-8")
+    data = tmp_path / "external"
+    monkeypatch.setenv("CRG_HOME", str(tmp_path / "state"))
+    monkeypatch.delenv("CRG_DATA_DIR", raising=False)
+    monkeypatch.delenv("CRG_REPO_ROOT", raising=False)
+    python = Path(sys.executable)
+    executable = python.with_name(f"code-review-graph{python.suffix}")
+
+    def run(command, root, *args):
+        return subprocess.run(
+            [str(executable), command, "--repo", str(root), *args],
+            capture_output=True, encoding="utf-8", timeout=60,
+        )
+
+    parent_build = run("build", parent, "--skip-postprocess")
+    assert parent_build.returncode == 0, parent_build.stderr
+    child = parent / "project"
+    nested = child / "nested"
+    nested.mkdir(parents=True)
+    source = child / "child.py"
+    source.write_text("def external_root_canary():\n    return 2\n", encoding="utf-8")
+
+    build = run("build", child, "--data-dir", str(data), "--skip-postprocess")
+    assert build.returncode == 0, build.stderr
+    assert not (child / ".code-review-graph").exists()
+    db_uri = (data / "graph.db").as_uri() + "?mode=ro"
+    with closing(sqlite3.connect(db_uri, uri=True)) as db:
+        assert db.execute("SELECT file_path FROM nodes WHERE kind='File'").fetchall() == [
+            (str(source.resolve()),)
+        ]
+
+    for root in (child, nested):
+        search = run("search", root, "external_root_canary")
+        assert search.returncode == 0, search.stderr
+        assert any(
+            row["name"] == "external_root_canary"
+            for row in json.loads(search.stdout)["results"]
+        )
