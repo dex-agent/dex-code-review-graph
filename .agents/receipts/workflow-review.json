@@ -23,7 +23,7 @@
   },
   "workflows-local": {
    "path": "C:/CodexProjetos/code-review-graph/workflow/INDEX.md",
-   "sha256": null
+   "sha256": "efaaad02d5e43fe32d91398d495391dbc22cccb1dd3ef50366f7b8d4ef289497"
   }
  },
  "block_evidence": [
@@ -39,8 +39,8 @@
   },
   "local": {
    "source": "workflows-local",
-   "query": "dependabot|fork|automação órfã",
-   "result": "INDEX local ausente (workflow/INDEX.md não existe no repo) — busca global cobriu; nenhum equivalente"
+   "query": "dependabot|fork|automação órfã|github",
+   "result": "1 workflow local (code-review-graph-manutencao-iterativa-com-evidencia) — não cobre fechamento de automação herdada de fork"
   }
  },
  "candidates": [
