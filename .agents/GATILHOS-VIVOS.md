@@ -214,3 +214,6 @@ local após publicar o corte. A ajuda do script confirma os argumentos.
   autorização -> fonte: `bd prime` + AGENTS.md do projeto.
 - [BD-REMEMBER] conhecimento persistente do tracker -> `bd remember "<insight>"`
   (store próprio do beads, separado do dex-memoria) -> fonte: `bd prime`.
+
+| TRACKER-LOCAL-ONLY | sessão do projeto | commitar fechamento de issue do TRACKER | commitar só PLAN-TASKS; TRACKER é local-only (`git ls-files .agents/TRACKER` = 0) | .agents/napkin.md#TRACKER-LOCAL-ONLY |
+| GHCACHE-PR-LIST | sessão do projeto | `gh pr list` logo após close em lote mostra "1 aberto" | re-listar antes de concluir reopen; cache da API devolve stale | .agents/napkin.md#GHCACHE-PR-LIST |
