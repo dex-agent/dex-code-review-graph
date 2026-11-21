@@ -219,3 +219,5 @@ local após publicar o corte. A ajuda do script confirma os argumentos.
 | GHCACHE-PR-LIST | sessão do projeto | `gh pr list` logo após close em lote mostra "1 aberto" | re-listar antes de concluir reopen; cache da API devolve stale | .agents/napkin.md#GHCACHE-PR-LIST |
 
 | FECHAMENTO-SCAN-ARMADILHAS | sessão do projeto | montar workflow-review.json ou ler exit do scan de fechamento | repo=path absoluto; INDEX local=workflow/INDEX.md raiz (com sha real); exit sem pipe | .agents/napkin.md#FECHAMENTO-SCAN-ARMADILHAS |
+
+| DEX-AUDIO-MOTOR-CONTRATO-NOVO | sessão do projeto | enviar áudio da burrinha/dex-pai | motor.py enviar --uso dex-pai --texto-arquivo (a ponte .ps1 está SUPERSEDED; exigir message_id) | .agents/napkin.md#DEX-AUDIO-MOTOR-CONTRATO-NOVO |

@@ -78,3 +78,14 @@ NESTE repo ele EXISTE (1 receita); declarar sha256 REAL, não null de
 **Faça em vez disso:** gerar workflow-review.json APÓS todas as mutações das
 fontes citadas (hash muda junto); conferir `rg -n "local_root" workflow_review.py`
 antes de declarar caminho de INDEX.
+
+## [DEX-AUDIO-MOTOR-CONTRATO-NOVO] (2026-11-21, bloco rewrite)
+
+A skill `dex-audio` MUDOU de contrato: a rota viva é
+`python -B <REGISTRY>/dex-audio-motor/scripts/motor.py enviar --uso dex-pai --texto-arquivo <resumo.txt> --idempotency-key <chave>`
+(recibo JSON com message_id; erros tipados 1-4). A ponte antiga
+`~/.dex-agent/skills/dex-agent-audio-summary/scripts/send-dex-agent-audio-summary.ps1`
+está **SUPERSEDED** — chamar o .ps1 antigo abre PowerShell e morre sem JSON
+(pago 2× em 2026-11-21 sem recibo até ler o SKILL.md do motor).
+**Faça em vez disso:** `motor.py resolver --uso dex-pai` para conferir o
+contato; `motor.py enviar` para entregar; exigir `message_id` no JSON.
