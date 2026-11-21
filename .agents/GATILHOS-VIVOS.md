@@ -221,3 +221,5 @@ local após publicar o corte. A ajuda do script confirma os argumentos.
 | FECHAMENTO-SCAN-ARMADILHAS | sessão do projeto | montar workflow-review.json ou ler exit do scan de fechamento | repo=path absoluto; INDEX local=workflow/INDEX.md raiz (com sha real); exit sem pipe | .agents/napkin.md#FECHAMENTO-SCAN-ARMADILHAS |
 
 | DEX-AUDIO-MOTOR-CONTRATO-NOVO | sessão do projeto | enviar áudio da burrinha/dex-pai | motor.py enviar --uso dex-pai --texto-arquivo (a ponte .ps1 está SUPERSEDED; exigir message_id) | .agents/napkin.md#DEX-AUDIO-MOTOR-CONTRATO-NOVO |
+
+| ULTIMO-PUSH-EXIGE-WATCH | sessão do projeto | push final de fechamento de bloco | watch (background) do run + veredito no fechamento; add -f de receipt exige negação .gitignore | .agents/napkin.md#ULTIMO-PUSH-EXIGE-WATCH |

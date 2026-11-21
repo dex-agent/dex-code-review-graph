@@ -89,3 +89,11 @@ está **SUPERSEDED** — chamar o .ps1 antigo abre PowerShell e morre sem JSON
 (pago 2× em 2026-11-21 sem recibo até ler o SKILL.md do motor).
 **Faça em vez disso:** `motor.py resolver --uso dex-pai` para conferir o
 contato; `motor.py enviar` para entregar; exigir `message_id` no JSON.
+
+## [ULTIMO-PUSH-EXIGE-WATCH] (2026-11-21, classe 14 do CI)
+
+O push FINAL de um fechamento de bloco também gera run de CI — fechar sem
+vigiar o run dele deixou um vermelho 2 dias invisível (44628482990, 11-19).
+**Faça em vez disso:** todo push que encerra bloco entra com watch
+(background) e o veredito entra no fechamento; vermelho ⇒ classe triada pela
+régua, sem esperar o dono perguntar.
