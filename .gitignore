@@ -457,5 +457,12 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 !/.agents/receipts/crg-x6m/reproduce.py
 !/.agents/receipts/crg-x6m/verdict.json
 
+# Rewrite de identidade 2026-11-21 + avaliacao workflow-review do fechamento
+# (classe C3: receipt tracked exige negacao; add -f sem negacao = CI vermelho)
+!/.agents/receipts/rewrite-20261121/
+/.agents/receipts/rewrite-20261121/*
+!/.agents/receipts/rewrite-20261121/crg-commit-map.txt
+!/.agents/receipts/workflow-review.json
+
 # Local wheel build output (2.4.0-dex evidence stays in receipts)
 dist-240dex/
