@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: 'ATIVO'
+status: 'CONCLUIDO'
 owner: 'sessao:zcode (decisao do dono via quiz: "Reescrever tudo")'
 date: '2026-11-21'
 workspace: 'C:/CodexProjetos/code-review-graph + C:/Users/Administrator/.agents/skills (registry)'
@@ -100,7 +100,9 @@ execution_prompt: |
 # Identidade git dex-agent — reescrita com mapa preservado
 
 ## Checklist visual
-- [ ] A-01 — pre-condições OK (status/worktrees/filter-repo)
-- [ ] A-02 — CRG reescrito + pushed + tag
-- [ ] A-03 — registry reescrito + pushed
-- [ ] A-04 — verificação remota + mapas commitados + avisos
+- [x] A-01 — pre-condições OK (status/worktrees/filter-repo)
+- [x] A-02 — CRG reescrito + pushed + tag
+- [x] A-03 — registry reescrito + pushed
+- [x] A-04 — verificação remota + mapas commitados + avisos
+
+> FECHADO 2026-11-21: config global dex-agent@proton.me; CRG reescrito (2238 mapas, main 350aaf3e->b9da3d8d, tag v2.4.0+dex.1 9ca592aa->ddbc4a0d, upstream intocado — tag v2.4.0 intacta); registry reescrito (496 mapas, 02e720de->8053bbfa + 2 commits a-frente de janela paralela incluidos); verificacao gh api 5/5 dex-agent em ambos; mapas commitados como receipt (.agents/receipts/rewrite-20261121/ nos 2 repos); lembranca da janela paralela restaurado do backup pos-rewrite; CI do push forcado 44952868734 vigiado (watch). Hashes antigos continuam consultaveis pelos commit-maps.
