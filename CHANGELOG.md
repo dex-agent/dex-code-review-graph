@@ -171,6 +171,22 @@
 - A call that could mean several functions now stores them in sorted order, so
   the same code gives the same graph whatever order its files are read in.
 
+## [2.4.0+dex.3] - 2026-11-22
+
+Discoverability: `build`, `update` and `forget` `--help` now state that files
+matching `.code-review-graphignore` (gitignore syntax, repository root) are
+excluded from indexing, pointing at `docs/USAGE.md#ignore-patterns`. A real
+consumer hunted for an exclusion flag in every `--help`, found nothing and
+nearly reimplemented a language filter the tool already had
+(ISSUE-LOCAL-0003).
+
+## [2.4.0+dex.2] - 2026-11-21
+
+House patch: `merge-check` resolves the suite executable with
+`shutil.which` (PATH + PATHEXT), so `merge-check -- npm test` delivers its
+verdict on Windows instead of dying with `WinError 2` on `npm.cmd`
+(ISSUE-LOCAL-0006).
+
 ## [2.4.0+dex.1] - 2026-11-19
 
 Dex local edition: combined build of upstream 2.4.0 (7ba9d17a) with the house

@@ -78,6 +78,14 @@ _GITIGNORE_HELP = (
     "to a marked block in .gitignore. Off by default; uninstall removes the block"
 )
 
+# ISSUE-LOCAL-0003: the exclusion file works but was invisible on the CLI
+# surface where users look — a real consumer hunted for an --exclude flag in
+# every --help, found nothing, and nearly reimplemented a language filter.
+_GRAPHIGNORE_NOTE = (
+    "Files matching .code-review-graphignore (gitignore syntax, repository "
+    "root) are excluded from indexing; see docs/USAGE.md#ignore-patterns"
+)
+
 
 class _EmbeddingRefreshKwargs(TypedDict, total=False):
     embedding_provider: str
@@ -1927,7 +1935,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     # build
-    build_cmd = sub.add_parser("build", help="Full graph build (re-parse all files)")
+    build_cmd = sub.add_parser(
+        "build",
+        help="Full graph build (re-parse all files)",
+        description=_GRAPHIGNORE_NOTE,
+    )
     build_cmd.add_argument("--repo", default=None, help="Repository root (auto-detected)")
     build_cmd.add_argument("-q", "--quiet", action="store_true", help="Suppress output")
     build_cmd.add_argument(
@@ -1963,7 +1975,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     # update
-    update_cmd = sub.add_parser("update", help="Incremental update (only changed files)")
+    update_cmd = sub.add_parser(
+        "update",
+        help="Incremental update (only changed files)",
+        description=_GRAPHIGNORE_NOTE,
+    )
     update_cmd.add_argument(
         "--base",
         default=None,
@@ -2140,6 +2156,7 @@ def build_parser() -> argparse.ArgumentParser:
     forget_cmd = sub.add_parser(
         "forget",
         help="Remove already-parsed files from the graph without a full rebuild",
+        description=_GRAPHIGNORE_NOTE,
     )
     forget_cmd.add_argument(
         "paths",

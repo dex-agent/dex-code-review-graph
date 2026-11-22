@@ -132,3 +132,18 @@ def test_help_uses_british_spelling(monkeypatch, capsys):
     joined = "\n".join(texts)
     for american in ("Analyze", "visualization", "daemonizing"):
         assert american not in joined
+
+
+def test_indexing_help_mentions_graphignore():
+    """ISSUE-LOCAL-0003: the exclusion file must be discoverable where users look.
+
+    A real consumer (registry with 698 skills) hunted for an --exclude flag in
+    every relevant --help, found nothing, and nearly reimplemented a language
+    filter — the capability already existed as .code-review-graphignore.
+    """
+    commands = _commands()
+    for name in ("build", "update", "forget"):
+        help_text = commands[name].format_help()
+        assert ".code-review-graphignore" in help_text, (
+            f"{name} --help must mention the exclusion file"
+        )

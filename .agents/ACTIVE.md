@@ -1,6 +1,8 @@
 - 2026-11-21 — [ISSUE-LOCAL-0006 WinError 2](PLAN-TASKS/2026-11-21-issue0006-winerror2-spawn-npm.md) CONCLUÍDA: merge-check com suíte npm no Windows agora devolve veredito (resolve_suite_command no chokepoint _run_suite; fork `2.4.0+dex.2` no PATH via uv tool; RED0006/GREEN0006/PATH0006/GREEN-REAL-CRG no dex-memoria; pytest 8 passed; commit `6aa3cb23`; receipt `receipts/CRG-0006-WINERROR2-20261121.md`). Irmão `tail -f` do daemon_cli registrado fora do corte.
 # ACTIVE — code-review-graph (casa)
 
+- 2026-11-22 — [ISSUE-LOCAL-0003 graphignore no --help](PLAN-TASKS/2026-11-22-issue0003-graphignore-no-help.md) CONCLUÍDA (GO-CONTINUO lote #2): build/update/forget --help agora declaram a exclusão `.code-review-graphignore` (constante `_GRAPHIGNORE_NOTE` + `description=`); RED→GREEN em `tests/test_cli_help.py` (1→11); fork `2.4.0+dex.3` no PATH conferido (`--version` + linha nos 3 helps). Conselheiro oraculo-clean-code selou o desenho (Boundaries). Achado irmão: ISSUE-LOCAL-0007 (merge-check fora da tabela da suíte opt-in, preexistente). Evidências `.agents/EVIDENCIAS/2026-11-22-issue0003/`.
+
 - 2026-11-19 — [Cura do CI vermelho](PLAN-TASKS/2026-11-19-cura-ci-vermelho.md) CONCLUÍDA: 13 classes em 6 levas, runs verdes 44517837083 (22/22) + re-verde 44529405896; tag seca `v2.4.0+dex.1` (virou input da suíte released_shapes — 5ª forma de ocultação: skip condicional). [Bateria](receipts/CI-43929195987/green-battery.txt).
 
 - 2026-11-19 — [Bloco 0005](PLAN-TASKS/2026-11-19-bloco-0005-auditoria.md) CONCLUÍDO (GO do dono): 5 PRs dependabot fechados, `dependabot.yml` removido (branch staging FANTASMA), alerts ON (137 vulns herdadas visíveis — pendência CRG-VULNS-HERDADAS), publish `disabled_manually`, CODEOWNERS. Ciclo do laudo da auditoria 100% pago.
