@@ -1,3 +1,4 @@
+- 2026-11-21 — ISSUE-LOCAL-0006 FECHADA: merge-check Windows executa suíte npm (`resolve_suite_command`, `2.4.0+dex.2` no PATH). Consumidor dex-memoria com regressão de ponta-a-ponta verde. Pendência NOVA menor: `daemon_cli.py:358` `tail -f` (unix-ism interativo, nota no item 0006).
 # HANDOFF — retomada curta
 
 - 2026-11-19 — Ciclo da auditoria FECHADO: CI re-verde (44529405896), ISSUE-LOCAL-0004 (13 classes) e 0005 (automação órfã) fechados; main 100% verde em todos os runs do dia. Política do fork: acompanhar upstream por merge manual; publish.yml disabled até política de release. Pendências novas no [PENDENTES](PENDENTES.md): 137 vulns herdadas (CRG-VULNS-HERDADAS), flow PPIRTV 0711 órfão (CRG-FLOW-PPIRTV-ORFAO), drift beads×TRACKER no AGENTS (CRG-AGENTS-BEADS-DRIFT). Reversibilidade do 0005: `gh pr reopen`, restore do yml, `gh workflow enable`, `gh api -X DELETE .../vulnerability-alerts`.
