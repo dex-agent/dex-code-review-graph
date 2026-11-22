@@ -178,6 +178,15 @@ Causa-raiz na fonte: `code_review_graph/merge_check.py:90-92` spawna a suíte co
 - [ ] Ficha MERGE-CHECK sem E-SE WinError
 - [ ] goal_verdict + memórias + áudio Bruninha
 
+## validacao semantica + revisao (registrada no fechamento do GO PADRAO, 2026-11-21)
+
+- `structural_status`: pass — preflight.mjs exit 0 achados=0 (criação e final; receipt local, MCP ausente declarado em uncertainties).
+- `runtime_semantics_scope`: static_referential_integrity.
+- `causal_semantics_reviewed`: true (contrato dex-ppirtv-validate-spt, checklist M-02): regra 1 — ER-01..ER-06 todas com proves >= 1 critério; regra 2 — proves ⊆ done_when da task em todas as ERs (ER-01 [C-01]⊆A-01; ER-02/03 ⊆A-02; ER-04 [C-06]⊆A-03; ER-05 [C-05]/ER-06 [C-06] ⊆A-04); regra 3 — critérios pertencem a REQ coberta pelo covers (A-01→REQ-01, A-02→REQ-02, A-03→REQ-04, A-04→REQ-03+REQ-04); dependências A-01→A-02→A-03→A-04 acíclicas.
+- `semantic_status`: pass (sem warnings materiais).
+- spt-revisor (modo revisar, read-only): **APTO** — A estrutura/causalidade/critérios/evidência/caminho ok; lente ponytail: menor diff preservado (1 função + 1 teste + bump; sem ferramenta nova).
+- `goal_start_readiness`: **ready**; goal_start local registrado (execução iniciada na mesma sessão após o ready).
+
 ## goal_verdict
 
 **VERDICT: PRONTO** (2026-11-21; MCP ausente na janela — verdict no Trilho com evidências).
