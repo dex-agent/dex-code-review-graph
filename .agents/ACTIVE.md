@@ -1,3 +1,4 @@
+- 2026-11-21 — [ISSUE-LOCAL-0006 WinError 2](PLAN-TASKS/2026-11-21-issue0006-winerror2-spawn-npm.md) CONCLUÍDA: merge-check com suíte npm no Windows agora devolve veredito (resolve_suite_command no chokepoint _run_suite; fork `2.4.0+dex.2` no PATH via uv tool; RED0006/GREEN0006/PATH0006/GREEN-REAL-CRG no dex-memoria; pytest 8 passed; commit `6aa3cb23`; receipt `receipts/CRG-0006-WINERROR2-20261121.md`). Irmão `tail -f` do daemon_cli registrado fora do corte.
 # ACTIVE — code-review-graph (casa)
 
 - 2026-11-19 — [Cura do CI vermelho](PLAN-TASKS/2026-11-19-cura-ci-vermelho.md) CONCLUÍDA: 13 classes em 6 levas, runs verdes 44517837083 (22/22) + re-verde 44529405896; tag seca `v2.4.0+dex.1` (virou input da suíte released_shapes — 5ª forma de ocultação: skip condicional). [Bateria](receipts/CI-43929195987/green-battery.txt).
