@@ -180,4 +180,11 @@ Causa-raiz na fonte: `code_review_graph/merge_check.py:90-92` spawna a suíte co
 
 ## goal_verdict
 
-(A registrar em A-04.)
+**VERDICT: PRONTO** (2026-11-21; MCP ausente na janela — verdict no Trilho com evidências).
+
+- C-01: RED0006_CONFIRMADO (lab-issue0006-red.sh exit 0 — exit 2 + [WinError 2] no error do merge-check com suíte npm, Windows real).
+- C-02/C-03: GREEN0006_OK (lab-issue0006-green.sh exit 0 — passed exit 0 com 4 runs npm; regression exit 1 no vermelho-no-merged).
+- C-04: pytest tests/test_merge_check.py 8 passed (teste novo incluído).
+- C-05: GREEN-REAL-CRG_OK no dex-memoria (via-d do hook com CRG real instalado).
+- C-06: commit 6aa3cb23 pushed; wheel 2.4.0+dex.2 no PATH (PATH0006_OK); TRACKERs dos 2 repos integrados; receipt CRG-0006-WINERROR2-20261121.
+- Ressalva: irmão `daemon_cli.py:358` (`tail -f` unix-ism, não-suíte) registrado no item 0006 como fora do corte.

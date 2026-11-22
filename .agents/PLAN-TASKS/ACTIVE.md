@@ -1,5 +1,8 @@
 # Trilho ativo
 
+- [ISSUE-LOCAL-0006 WinError 2](2026-11-21-issue0006-winerror2-spawn-npm.md) | `issue0006-winerror2-spawn-npm-windows` | **concluído 2026-11-21**: verdict PRONTO.
+# Trilho ativo
+
 - [Bloco 0005: fecha o ciclo da auditoria](2026-11-19-bloco-0005-auditoria.md) | `fecha-ciclo-auditoria-0005-20261119` | concluído: 4 mutações com receipt (PRs dependabot, yml removido, alerts ON, publish off, CODEOWNERS).
 
 - [Cura do CI vermelho crônico](2026-11-19-cura-ci-vermelho.md) | `cura-ci-vermelho-20261119` | concluído: 13 classes em 6 levas, runs verdes 44517837083 + 44529405896, tag seca v2.4.0+dex.1.

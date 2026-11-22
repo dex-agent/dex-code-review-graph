@@ -1,5 +1,6 @@
 # Trilhos
 
+- [ISSUE-LOCAL-0006 WinError 2: merge-check Windows](2026-11-21-issue0006-winerror2-spawn-npm.md) | `issue0006-winerror2-spawn-npm-windows` | concluído: resolve_suite_command no chokepoint _run_suite (2.4.0+dex.2), RED→GREEN Windows real + PATH0006_OK + GREEN-REAL-CRG no dex-memoria, commit 6aa3cb23, receipt CRG-0006-WINERROR2-20261121.
 - [Recorte na CLI combinada](2026-11-16-crg-m19-recorte-cli.md) — `crg-m19`, RED preservado e 6/6 provas pelo executável.
 
 - [Troca do PATH 2.4.0+dex.1](2026-11-16-crg-240dex-path-troca.md) — `crg-240dex-path-troca-20261116`, ordem "troca": wheel combinado promovido ao PATH com receipt e rollback.

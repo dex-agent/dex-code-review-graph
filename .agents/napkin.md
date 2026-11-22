@@ -97,3 +97,13 @@ vigiar o run dele deixou um vermelho 2 dias invisível (44628482990, 11-19).
 **Faça em vez disso:** todo push que encerra bloco entra com watch
 (background) e o veredito entra no fechamento; vermelho ⇒ classe triada pela
 régua, sem esperar o dono perguntar.
+
+- [CRG-SPAWN-WINDOWS-CMD] Suíte spawnada como lista (`["npm","test"]`) no
+  Windows morre com `WinError 2` (npm é `npm.cmd`; CreateProcess sem extensão
+  não acha) e vira `execution_error` sem veredito — pago no merge-check
+  (ISSUE-LOCAL-0006, consumidor: hook do dex-memoria, 2.4.0+dex.1).
+  **Faça em vez disso:** resolver o executável com `shutil.which` antes do
+  `subprocess.run` (PATH+PATHEXT; `resolve_suite_command` no chokepoint
+  `_run_suite`); paths com separador de diretório NÃO reescrever (são
+  resolvidos pelo cwd do checkout, não do processo). Prova: RED→GREEN Windows
+  real + PATH0006_OK (receipt CRG-0006-WINERROR2-20261121).
