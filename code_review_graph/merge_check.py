@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import sqlite3
 import subprocess
 import tempfile
@@ -16,6 +17,23 @@ from .incremental import _decode_name_status_paths, full_build
 from .tools.build import _run_postprocess
 
 EXIT_CODES = {"passed": 0, "text_conflict": 1, "regression": 1, "execution_error": 2}
+
+
+def resolve_suite_command(command: list[str]) -> list[str]:
+    """Resolve the suite executable via PATH (Windows: also PATHEXT .cmd/.bat).
+
+    On Windows, spawning ``["npm", "test"]`` fails with WinError 2 because the
+    real executable is ``npm.cmd`` (ISSUE-LOCAL-0006). Paths containing a
+    directory separator are left untouched: they are resolved by the caller
+    relative to the suite checkout, not to this process.
+    """
+    name = command[0]
+    if os.sep in name or (os.altsep and os.altsep in name):
+        return command
+    executable = shutil.which(name)
+    if executable:
+        return [executable, *command[1:]]
+    return command
 
 
 def _git(repo, env, *args, check=True):
@@ -83,6 +101,7 @@ def _inspect_merge(repo: Path, database: Path, base: str, files: list[str]) -> d
 
 
 def _run_suite(root, objects, commits, command, failure_exit, env, report) -> str:
+    command = resolve_suite_command(command)
     for name, commit in commits.items():
         checkout = root / f"suite-{name}"
         _git(root, env, "clone", "--shared", "--quiet", "--no-checkout", objects, checkout)

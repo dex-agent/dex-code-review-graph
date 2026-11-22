@@ -174,3 +174,20 @@ def test_detect_brief_legacy_encoding(history, tmp_path):
     )
     assert result.returncode == 0, result.stderr.decode(errors="replace")
     assert "Token Savings" in result.stdout.decode("utf-8")
+
+
+def test_resolve_suite_command_by_platform(monkeypatch):
+    from code_review_graph.merge_check import resolve_suite_command
+
+    monkeypatch.setattr(
+        "code_review_graph.merge_check.shutil.which",
+        lambda name: f"/bin/{name}" if name == "npm" else None,
+    )
+    assert resolve_suite_command(["npm", "test"]) == ["/bin/npm", "test"]
+    assert resolve_suite_command(["missing-tool", "x"]) == ["missing-tool", "x"]
+    assert resolve_suite_command(["./node_modules/.bin/jest", "--ci"]) == [
+        "./node_modules/.bin/jest", "--ci",
+    ]
+    assert resolve_suite_command([r"C:\tools\runner.exe", "-q"]) == [
+        r"C:\tools\runner.exe", "-q",
+    ]
