@@ -1,0 +1,7 @@
+{
+  "id": "dado-herdado-de-resumo-e-hipotese-reexecutar-antes-do-veredito",
+  "rule": "Em sessão retomada ou compactada, tratar todo número e todo achado que veio do resumo de contexto como hipótese: cobrar a re-execução da evidência antes de ele entrar em veredito, e corrigir o número quando a re-execução divergir.",
+  "applies_when": "O Chato estiver criticando veredito, fechamento ou revisão cujos fatos venham de resumo de contexto, de memória ou de outra sessão.",
+  "do_not_use_when": "O fato já foi re-executado nesta sessão com a saída guardada, ou é decisão explícita do dono.",
+  "source_kind": "observed-material-gain"
+}

@@ -1,0 +1,6 @@
+{
+  "contract": "dex.skill.evolution.closeout.v1",
+  "skill": "bruninha-agulha",
+  "candidate_detected": false,
+  "no_candidate_reason": "PR #6 (2026-11-23): a inversao e a pergunta-agulha funcionaram pelo contrato ja existente (avesso, unhappy path, contagem e prestacao de contas sao consequencia do formato); nenhuma regra comportamental nova da Bruninha surgiu na investida"
+}

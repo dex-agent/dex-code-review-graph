@@ -1,0 +1,15 @@
+{
+ "contract": "dex.skill.evolution.closeout.v1",
+ "skill": "chato",
+ "candidate_detected": true,
+ "writer_receipt": {
+  "contract": "chato.adopted-preferences.v2",
+  "status": "committed",
+  "preference_id": "dado-herdado-de-resumo-e-hipotese-reexecutar-antes-do-veredito",
+  "memory_ref": "memory/private/adopted-preferences.json",
+  "backup_written": true,
+  "deduplicated": false,
+  "lock_cleanup": "released",
+  "validated": true
+ }
+}

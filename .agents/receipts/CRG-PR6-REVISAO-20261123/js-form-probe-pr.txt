@@ -1,0 +1,13 @@
+arvore: C:\Users\Administrator\AppData\Local\Temp\16\crg-pr6-wt | rotulo: pr-35ecc919
+[caso red_green]
+   funcoes indexadas 4/4 ['alias', 'direct', 'namespace', 'scan']
+   chamadas a load a partir delas: 4
+[caso forms]
+   a_tpl     rotulo template                  -> INDEXADO
+   b_arrow   corpo arrow                      -> INDEXADO
+   c_namevar rotulo por variavel              -> nao indexado
+   d_rootfn  fn importado de effect (raiz)    -> nao indexado
+   e_subfn   fn importado de effect/Effect    -> INDEXADO
+[caso typed_shadow]
+   Test indexados: ['test:outer@L9', 'test:plain-shadow@L4']
+   _commonjs_test_runner consultado 0 vez(es)

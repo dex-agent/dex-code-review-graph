@@ -32,3 +32,32 @@ Construir wheel e sdist do pacote e instalar a copia do PATH a partir de um whee
 Quando: Ao republicar a copia instalada do CRG; ao conferir se uv.lock esta em dia com o pyproject
 
 Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## js-form-probe (candidate)
+
+Sonda in-process das formas JS/TS que o parser de uma arvore do CRG indexa, para comparar duas arvores do mesmo repo
+Quando: Revisar PR que muda o parser JS/TS; reproduzir ISSUE-LOCAL-0010; comparar o comportamento de duas arvores antes de afirmar diferenca
+
+## consulta-tema (reviewed)
+
+Porta unica de consulta aos grafos ricos dos temas de mentores (AprendizadoConsultado), sem abrir graph.json direto
+Quando: Toda consulta de conselheiro oraculo-* (clausula GATE-CONSUMO-RELACIONAL); pergunta relacional sobre um tema com grafo registrado
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## validate-evolution-closeout (reviewed)
+
+Gate de fechamento das lentes com PADRAO_EVOLUTIVO (chato, bruninha-agulha, oraculos): so fecha com estado terminal valido
+Quando: Antes do veredito de todo bloco com chato, bruninha-agulha ou oraculo-* ativo
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## verificar-teto-cc (reviewed)
+
+Medir complexidade ciclomatica e tamanho por funcao em Python e julgar contra o teto da casa (CC 10, 50 linhas)
+Quando: Medir codigo novo ou alterado; comparar duas arvores; conferir ferramenta criada na sessao
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## gh (reviewed)
+
+Ler estado de PR, checks e logs de run do GitHub pela linha de comando
+Quando: Revisar PR ou CI de repo do fork; conferir autor e assinatura de commit; ler resultado de run vigiado
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner

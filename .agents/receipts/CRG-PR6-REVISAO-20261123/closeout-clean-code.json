@@ -1,0 +1,6 @@
+{
+  "contract": "dex.skill.evolution.closeout.v1",
+  "skill": "oraculo-clean-code",
+  "candidate_detected": false,
+  "no_candidate_reason": "PR #6 (2026-11-23): o contrato de selos ja cobriu o caso nesta consulta - o achado de convencao 'falta docstring' caiu para confirmado_repertorio com o livro divergente, pela propria regra de selo; nenhuma regra comportamental nova e reutilizavel surgiu"
+}
