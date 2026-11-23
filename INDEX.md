@@ -7,6 +7,7 @@
 - [Ferramentas](tools/INDEX.md) — ferramentas locais versionadas.
 - [Playbook](tools/playbook/INDEX.md) — geracao e verificacao das regras.
 - [Hooks de Playbook](tools/playbook/hooks/INDEX.md) — fiscal de drift no commit.
+- [Livro de ferramentas](TOOLSBOOK.md) — fichas do que foi examinado; [índice curto](TOOLSBOOK.index.md) para consultar antes e [fonte JSON](TOOLSBOOK.json) para registrar.
 - [Schemas da receita](workflow/code-review-graph-manutencao-iterativa-com-evidencia/SCHEMA/INDEX.md) — contratos do metodo.
 - [Licenca](LICENSE) — licenca MIT preservada do upstream.
 - [Changelog](CHANGELOG.md) — mudancas do produto e corte local.

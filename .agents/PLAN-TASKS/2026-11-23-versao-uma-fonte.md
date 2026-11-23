@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: 'ATIVO'
+status: 'CONCLUIDO_COM_RESSALVAS'
 owner: 'sessao:zcode (GO PADRAO do dono via quiz 2026-11-23)'
 date: '2026-11-23'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -13,13 +13,13 @@ origin: 'Anotacao do dono na analise do CI vermelho (2026-11-23): adiciona um te
 goal:
   id: 'versao-uma-fonte-20261123'
   title: 'Versao do CRG com um dono so: stamps sincronizados, alarme provado e gate no commit'
-  objective: 'A main do CRG volta a ficar verde com os 12 stamps em 2.4.0+dex.3, e um bump parcial nao consegue mais ser commitado nesta maquina nem passar sem ser visto no CI do fork'
+  objective: 'A main do CRG volta a ficar verde com os 13 stamps em 2.4.0+dex.3, e um bump parcial nao consegue mais ser commitado nesta maquina nem passar sem ser visto no CI do fork'
 context: 'Fork dex-agent/dex-code-review-graph empurra direto na main, sem PR e sem as branches staging/testing do fluxo do upstream'
 problem: 'Um bump que mexe so no pyproject.toml deixa a main vermelha e o doctor falso-vermelho em toda copia instalada, e os alarmes existentes nao rodam no fork'
 decision: 'Extrair a checagem para tools/release_version.py (um dono; leitura por abstracao), cobrir com regressao de mutacoes historicas e teste de integracao na copia instalada, e chamar a checagem no pre-commit (indice) e num job novo do ci.yml; comando unico de bump fica para o corte seguinte'
 scope:
   include:
-    - 'mover os 12 stamps para 2.4.0+dex.3 (pyproject ja esta; __init__, 5 READMEs, docs/GITHUB_ACTION.md, docs/USAGE.md, docs/FEATURES.md, .github/ISSUE_TEMPLATE/bug_report.yml, uv.lock pacote raiz)'
+    - 'mover os 13 stamps para 2.4.0+dex.3 (pyproject ja esta; __init__, 5 READMEs, docs/GITHUB_ACTION.md, docs/USAGE.md, docs/FEATURES.md, .github/ISSUE_TEMPLATE/bug_report.yml, uv.lock pacote raiz)'
     - 'tools/release_version.py + linha em tools/INDEX.md; teste de regressao em tests/test_documentation.py; teste de integracao em tests/test_packaging.py'
     - 'tools/playbook/hooks/pre-commit chama a checagem; job novo em .github/workflows/ci.yml'
     - 'commit e push com identidade dex-agent, vigia do CI, reinstalacao do wheel no PATH'
@@ -31,7 +31,7 @@ scope:
     - 'PR #6, revisao em bloco proprio'
 requirements:
   - id: REQ-01
-    statement: 'Os 12 stamps de versao dizem 2.4.0+dex.3 e a main fica verde no runner'
+    statement: 'Os 13 stamps de versao dizem 2.4.0+dex.3 e a main fica verde no runner'
     criteria:
       - id: C-01
         statement: 'os 3 testes que falhavam no CI passam localmente'
@@ -81,7 +81,7 @@ requirements:
 plan:
   - 'A-01 RED: testes novos antes do conserto, com o motivo previsto'
   - 'A-02 tools/release_version.py + regressao por mutacoes historicas'
-  - 'A-03 mover os 12 stamps para 2.4.0+dex.3 e ver GREEN'
+  - 'A-03 mover os 13 stamps para 2.4.0+dex.3 e ver GREEN'
   - 'A-04 integracao na copia instalada (suite packaging)'
   - 'A-05 gate: pre-commit no indice + job no ci.yml + controle positivo'
   - 'A-06 publicar com vigia ate o CI verde'
@@ -115,7 +115,7 @@ tasks:
           kind: command_exit
           expected_exit_code: 0
   - id: A-03
-    action: 'Mover os 12 stamps para 2.4.0+dex.3, incluindo a linha do pacote raiz no uv.lock'
+    action: 'Mover os 13 stamps para 2.4.0+dex.3, incluindo a linha do pacote raiz no uv.lock'
     covers: [REQ-01]
     done_when: [C-01]
     depends_on: [A-02]
@@ -226,17 +226,47 @@ validation:
   - 'python -B tools/release_version.py --check'
   - 'gh run list -R dex-agent/dex-code-review-graph --branch main --workflow ci.yml --limit 1'
 execution_prompt: |
-  /GOAL Executar o Trilho .agents/PLAN-TASKS/2026-11-23-versao-uma-fonte.md no workspace C:/CodexProjetos/code-review-graph: fases A-01 a A-08 sem parar entre fases — RED antes do conserto, tools/release_version.py dono unico da regra com regressao por mutacoes historicas, 12 stamps em 2.4.0+dex.3, teste de integracao na copia instalada, gate no pre-commit e job no ci.yml, push com vigia ate o CI verde, copia do PATH coerente com doctor limpo, rastro registrado; verdict no fim.
+  /GOAL Executar o Trilho .agents/PLAN-TASKS/2026-11-23-versao-uma-fonte.md no workspace C:/CodexProjetos/code-review-graph: fases A-01 a A-08 sem parar entre fases — RED antes do conserto, tools/release_version.py dono unico da regra com regressao por mutacoes historicas, 13 stamps em 2.4.0+dex.3, teste de integracao na copia instalada, gate no pre-commit e job no ci.yml, push com vigia ate o CI verde, copia do PATH coerente com doctor limpo, rastro registrado; verdict no fim.
 ---
 
 # Versão uma fonte — stamps sincronizados, alarme provado e gate no commit
 
 ## Checklist visual
-- [ ] A-01 — RED antes do conserto
-- [ ] A-02 — `tools/release_version.py` + regressão por mutações
-- [ ] A-03 — 12 stamps em `2.4.0+dex.3`, GREEN
-- [ ] A-04 — integração na cópia instalada
-- [ ] A-05 — gate no `pre-commit` + job no `ci.yml`
-- [ ] A-06 — publicar com vigia até o CI verde
-- [ ] A-07 — PATH coerente, `doctor` limpo
-- [ ] A-08 — rastro e fechamento
+- [x] A-01 — RED antes do conserto
+- [x] A-02 — `tools/release_version.py` + regressão por mutações
+- [x] A-03 — 13 stamps em `2.4.0+dex.3`, GREEN
+- [x] A-04 — integração na cópia instalada
+- [x] A-05 — gate no `pre-commit` + job no `ci.yml`
+- [x] A-06 — publicar com vigia até o CI verde
+- [x] A-07 — PATH coerente, `doctor` limpo
+- [x] A-08 — rastro e fechamento
+
+> FECHADO 2026-11-23 com ressalvas (GO PADRAO do dono via quiz).
+>
+> **Evidências**
+> - RED (antes do conserto): `release_version.py` listou 11 divergências
+>   (`__version__` dex.1 contra pyproject dex.3, `uv.lock` em 2.4.0, 6 pins,
+>   USAGE, FEATURES, `bug_report`); no venv limpo,
+>   `--version` 2.4.0+dex.3 contra `__version__` 2.4.0+dex.1; a regex antiga
+>   do teste de empacotamento rejeitava `+dex.N` (`re.fullmatch` → `None`).
+> - GREEN: 22 testes em `tests/test_documentation.py` (5 mutações históricas,
+>   controle negativo, índice contra disco) e 2 em `tests/test_packaging.py`
+>   (canais iguais no venv limpo). As 10 falhas restantes nas suítes rápidas
+>   existem no `HEAD` anterior (provado em worktree de `f86f9920`).
+> - Gate em clone de prova de `b45272a9`: bump só no `pyproject.toml` recusado
+>   com exit 1; commit sincronizado aceito com exit 0.
+> - CI run `45243420297` na main: `success` (20 jobs success, 1 skipped
+>   condicional); job `release-stamps` com os dois passos `success`.
+> - PATH: `--version`, `__version__` e metadata em 2.4.0+dex.3; `doctor`
+>   "All good." Wheel antigo (com `__version__` dex.1) na LIXEIRA com manifesto.
+> - CRG `detect-changes --base f86f9920`: 27 arquivos, risco 0.65.
+>
+> **Ressalvas**
+> - Dois dos três testes que falhavam no CI pulam no Windows por desenhos
+>   (cópias falsas são scripts POSIX); a prova deles é o runner ubuntu.
+> - O hook segue `100644` no índice: não roda em clone Linux/Mac, e a projeção
+>   do Playbook dá drift em clone novo (registry ISSUE-LOCAL-0051).
+> - Itens do registry (0048–0051) abertos offline, sem commit no registry.
+> - Pendentes de decisão do dono: proteção de branch; comando único de bump.
+> - O SHA deste fechamento (revisão pelas lentes + livro de ferramentas) tem o
+>   próprio run de CI, registrado no TRACKER 0008 quando conclui.

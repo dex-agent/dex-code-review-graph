@@ -19,7 +19,7 @@ Atualização em 2026-11-23. Trilho:
   ou `doctor` dizendo que a cópia no PATH é mais nova ou mais velha que ela
   mesma -> Faça em vez disso: `python -B tools/release_version.py` (lista os
   arquivos atrasados; `--check` é gate; `--from-index` lê o próximo commit).
-  Um bump mexe em 12 arquivos; commit parcial é recusado pelo hook pre-commit e
+  Um bump mexe em 13 arquivos; commit parcial é recusado pelo hook pre-commit e
   o job `release-stamps` do CI roda a checagem no fork. -> Fonte/validação:
   `tools/release_version.py` (dono único da lista),
   `tests/test_documentation.py` (mutações históricas) e

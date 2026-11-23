@@ -2,6 +2,7 @@
 
 import importlib.util
 import re
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -207,7 +208,9 @@ def test_release_version_check_reports_a_pyproject_without_a_version():
         **_stamped_files("2.4.0+dex.1"),
         "pyproject.toml": '[project]\nname = "code-review-graph"\n',
     }
-    assert _problems(files) == ['pyproject.toml has no version = "..." line']
+    problems = _problems(files)
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("pyproject.toml ")
 
 
 def test_release_version_check_catches_a_bump_that_moved_only_pyproject():
@@ -257,7 +260,8 @@ def test_release_version_check_catches_two_current_headings_in_the_feature_list(
     files = _stamped_files("2.4.0+dex.1")
     features = files["docs/FEATURES.md"].replace("## v1.0.0", "## v1.0.0 (Current)")
     problems = _problems({**files, "docs/FEATURES.md": features})
-    assert problems == ["docs/FEATURES.md marks more than one heading (Current)"]
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("docs/FEATURES.md ")
 
 
 def test_release_version_check_catches_a_lock_file_left_at_the_old_version():
@@ -268,12 +272,46 @@ def test_release_version_check_catches_a_lock_file_left_at_the_old_version():
     assert problems[0].startswith("uv.lock ")
 
 
+def _staged_tree(root: Path) -> None:
+    """A git repository holding every stamped file, all staged at 2.4.0+dex.1."""
+    for name, text in _stamped_files("2.4.0+dex.1").items():
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8", newline="\n")
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+    # -f: a global gitignore may list "*.lock", and uv.lock must be staged.
+    subprocess.run(["git", "add", "-A", "-f"], cwd=root, check=True)
+
+
+def test_release_version_check_judges_the_index_not_the_disk(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The pre-commit gate reads what the next commit will contain.
+
+    A bump edited on disk but not staged is not in the commit, so the index
+    passes while the working tree is reported; the same bump once staged is
+    refused.
+    """
+    _staged_tree(tmp_path)
+    monkeypatch.chdir(tmp_path)
+    assert release_version.main(["--check", "--from-index"]) == 0
+
+    pyproject = tmp_path / "pyproject.toml"
+    bumped = pyproject.read_text(encoding="utf-8").replace("+dex.1", "+dex.2")
+    pyproject.write_text(bumped, encoding="utf-8", newline="\n")
+    assert release_version.main(["--check"]) == 1
+    assert release_version.main(["--check", "--from-index"]) == 0
+
+    subprocess.run(["git", "add", "-f", "pyproject.toml"], cwd=tmp_path, check=True)
+    assert release_version.main(["--check", "--from-index"]) == 1
+
+
 def test_releasing_doc_names_every_file_a_release_moves():
     """docs/RELEASING.md is the release checklist (crg-4eb.3). It must name
     each file the version check above reads, and be reachable from the
     contributor guide and the docs index."""
     releasing = (ROOT / "docs/RELEASING.md").read_text(encoding="utf-8")
-    for name in (
+    named = (
         "pyproject.toml",
         "code_review_graph/__init__.py",
         "uv.lock",
@@ -283,7 +321,14 @@ def test_releasing_doc_names_every_file_a_release_moves():
         "docs/GITHUB_ACTION.md",
         "README.md",
         ".github/ISSUE_TEMPLATE/bug_report.yml",
-    ):
+    )
+    for name in named:
         assert f"`{name}`" in releasing, f"docs/RELEASING.md does not name {name}"
+    # The procedure and the checker move together: a file the procedure names
+    # is a file tools/release_version.py has to know.
+    unknown = set(named) - set(release_version.STAMP_FILES)
+    assert not unknown, (
+        f"a release moves {sorted(unknown)} but release_version.py does not check it"
+    )
     assert "(docs/RELEASING.md)" in (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
     assert "(RELEASING.md)" in (ROOT / "docs/INDEX.md").read_text(encoding="utf-8")

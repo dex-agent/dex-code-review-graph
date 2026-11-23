@@ -45,6 +45,7 @@ every pull request. The normal suite skips them; run them on demand with::
 from __future__ import annotations
 
 import ast
+import importlib.util
 import json
 import os
 import re
@@ -61,6 +62,15 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PKG_DIR = REPO_ROOT / "code_review_graph"
 PKG_NAME = "code_review_graph"
+
+# The patterns that find the version literal have one owner; this module reads
+# them from there instead of keeping a second copy.
+_rv_spec = importlib.util.spec_from_file_location(
+    "release_version", REPO_ROOT / "tools" / "release_version.py"
+)
+assert _rv_spec is not None and _rv_spec.loader is not None
+release_version = importlib.util.module_from_spec(_rv_spec)
+_rv_spec.loader.exec_module(release_version)
 
 # Generous: a cold interpreter, a pip resolve over the network and a full
 # tree-sitter build on a loaded runner are all slow, but nothing here should
@@ -644,22 +654,23 @@ def wheel_metadata(artefacts: Artefacts) -> str:
 
 
 def test_version_is_the_same_everywhere(wheel_metadata: str, artefacts: Artefacts) -> None:
-    init_match = re.search(
-        r'^__version__\s*=\s*"([^"]+)"', (PKG_DIR / "__init__.py").read_text(), re.MULTILINE
+    init_version = release_version.assigned_version(
+        (PKG_DIR / "__init__.py").read_text(), release_version.INIT_VERSION
     )
-    assert init_match, "code_review_graph/__init__.py has no __version__"
-    init_version = init_match.group(1)
+    assert init_version, "code_review_graph/__init__.py has no __version__"
     # A local version suffix (+dex.N, PEP 440) is how this fork marks its own
     # builds; the metadata keeps it, so this check has to accept it.
     assert re.fullmatch(r"\d+\.\d+\.\d+(\+[0-9A-Za-z.]+)?", init_version), (
         f"odd version {init_version!r}"
     )
 
-    project_match = re.search(r'^version\s*=\s*"([^"]+)"', _pyproject_text(), re.MULTILINE)
-    assert project_match, "pyproject.toml has no [project] version"
+    project_version = release_version.assigned_version(
+        _pyproject_text(), release_version.PYPROJECT_VERSION
+    )
+    assert project_version, "pyproject.toml has no [project] version"
 
-    assert project_match.group(1) == init_version, (
-        f"pyproject version {project_match.group(1)} != __init__ {init_version}"
+    assert project_version == init_version, (
+        f"pyproject version {project_version} != __init__ {init_version}"
     )
     assert _metadata_field(wheel_metadata, "Version") == init_version
     assert init_version in artefacts.wheel.name

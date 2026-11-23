@@ -95,7 +95,7 @@ vira item no TRACKER com evidência. Vacina nascida do bump 2.4.0+dex.1
 (2026-11-16), que deixou as duas skills desatualizadas por uma sessão.
 
 **O BUMP EM SI É UMA AÇÃO SÓ** (localizador `CRG-BUMP-UMA-FONTE`): a versão é
-escrita em 12 arquivos (`pyproject.toml`, `__version__`, `uv.lock`, 5 READMEs,
+escrita em 13 arquivos (`pyproject.toml`, `__version__`, `uv.lock`, 5 READMEs,
 `docs/GITHUB_ACTION.md`, `USAGE`, `FEATURES`, `CHANGELOG`, `bug_report.yml`).
 Mova todos juntos: `python -B tools/release_version.py` lista os atrasados
 (`--check` é gate; `--from-index` lê o próximo commit). O hook `pre-commit`
@@ -145,6 +145,16 @@ Catálogo automático; preserve regras humanas fora destes marcadores.
 4. `.agents/PLAN-TASKS/ACTIVE.md`
 5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)
 6. `.agents/napkin.md`
+
+<!-- TOOLSBOOK-USO:inicio -->
+## Toolsbook — consulta e registro de ferramentas
+
+1. **CONSULTAR ANTES.** Ao precisar de uma ferramenta no planejamento ou na execução, inclusive para uma etapa auxiliar, abra primeiro [TOOLSBOOK.index.md](TOOLSBOOK.index.md). Busque pela capacidade e pelo gatilho de uso. Escolha o ID exato e abra só essa ficha. Na raiz do repo, em PowerShell, substitua `ID_EXATO` em `python -B "$env:USERPROFILE/.agents/skills/dex-toolsbook/scripts/toolsbook.py" --card TOOLSBOOK.json ID_EXATO` (em Git Bash, `$USERPROFILE` no lugar de `$env:USERPROFILE`). Confira a fonte e reutilize o que atende. Se a busca vier vazia, varie os termos e examine scripts, comandos e consumidores relacionados antes de concluir que falta uma ferramenta. Antes de criar uma: `python -B "$env:USERPROFILE/.agents/skills/dex-toolsbook/scripts/reuso.py" "<intenção>" --repo . --skills --receipt --para <arquivo novo>` grava o recibo da consulta em `.agents/receipts/reuso/`.
+2. **REGISTRAR NO MESMO BLOCO.** Antes de responder, confira cada ferramenta local ou externa que você usou, criou ou recuperou, inclusive para uma simples consulta. Se faltar a ficha, você deve editar [TOOLSBOOK.json](TOOLSBOOK.json) agora e concluir o passo 3. Se a ficha existe, registre nela apenas mudança relevante de uso, limite ou evidência. Inclua ID, estado, propósito, capacidades, gatilho, invocação, entradas, saídas, limites, riscos, responsável, quando revisar, fontes com revisão e evidência observada. Para externas, identifique o dono e a revisão em `external_sources`. Consulte o schema canônico `dex-toolsbook/SCHEMA/dex.toolsbook.v2.schm.md` na instalação do helper e os campos com `--schema`. Ferramenta CLI local só entra em `sources` com a tríade respondendo (`--help`, `--schema`, `--usage`).
+3. **VALIDAR E PUBLICAR NO REPO.** Após editar o JSON, use o mesmo helper com `--check TOOLSBOOK.json` e confira o resultado. Ele imprime as projeções em stdout. Salve a saída de `--index TOOLSBOOK.json` em [TOOLSBOOK.index.md](TOOLSBOOK.index.md) e a de `--render TOOLSBOOK.json` em [TOOLSBOOK.md](TOOLSBOOK.md), em UTF-8. Confira as cópias salvas e abra os links do livro, do índice curto e do JSON neste arquivo e no [INDEX.md](INDEX.md).
+
+Em auditoria expressamente somente leitura, consulte e relate as lacunas sem escrever no repositório.
+<!-- TOOLSBOOK-USO:fim -->
 
 <!-- playbook-pointer:start -->
 ## Playbook (entrada externa)

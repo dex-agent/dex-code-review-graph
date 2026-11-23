@@ -7,11 +7,17 @@ disso:`.
 
 - [CRG-BUMP-UMA-FONTE] Bump de versão que mexeu só no `pyproject.toml` (CI
   vermelho em 3 testes, `doctor` acusando a própria cópia de desatualizada,
-  `--version` diferente de `__version__`) -> Faça em vez disso: um bump são 12
+  `--version` diferente de `__version__`) -> Faça em vez disso: um bump são 13
   arquivos de uma vez; `python -B tools/release_version.py` lista os atrasados
   (`--check` é gate; `--from-index` lê o próximo commit). O hook pre-commit
   recusa commit parcial e o job `release-stamps` do CI roda a checagem no
   fork. Ocorrências: 16/11, 21/11 (`6aa3cb23`), 22/11 (`f86f9920`).
+
+- [CRG-TESTED-BY-MODULO-POR-CAMINHO] `detect-changes` lista "Untested" para
+  função de módulo carregado por `spec_from_file_location` (idioma de
+  `scripts/` em `tests/test_action_render.py`) -> Faça em vez disso: não
+  abra falta de teste por esse relato sem conferir; o `pytest` do arquivo é a
+  prova (ISSUE-LOCAL-0009).
 
 - [CRG-REPO-PRIVADO] Publicar corte da casa -> confirmar `origin=dex-agent/dex-code-review-graph` privado e `upstream=tirth8205/code-review-graph`; revisar stage. Configs, backups, `.ppirtv` e caches locais estao ignorados. Origem publica nao e destino de push desta edicao.
 - [CRG-HIGIENE-README-EXEMPLOS] Aviso de path fixo no README -> abrir as linhas antes de alterar. `/home/user/project-a` e `C:\\path\\to\\...` sao exemplos genericos de instalacao; registrar a classificacao.

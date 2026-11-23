@@ -3,8 +3,8 @@
   "generated_by": "tools/playbook/generate-playbook.py",
   "authority": "derived_projection",
   "repo_name": "code-review-graph",
-  "sources_revision": "sha256:fe68cbd9cd4121159a4834866b6c86de18dc492fc3013294a1eaccf37ff6ac21",
-  "sent_revision": "sha256:fe68cbd9cd4121159a4834866b6c86de18dc492fc3013294a1eaccf37ff6ac21",
+  "sources_revision": "sha256:da80bbcab71123f97a33b35629cc7226cb5c2180ff677d5567d138f967ff8f5a",
+  "sent_revision": "sha256:da80bbcab71123f97a33b35629cc7226cb5c2180ff677d5567d138f967ff8f5a",
   "rules": [
     {
       "seal": "pb-0f77b1c2",
@@ -64,6 +64,10 @@
       "ancora": "AGENTS.md#L134"
     },
     {
+      "titulo": "Toolsbook — consulta e registro de ferramentas",
+      "ancora": "AGENTS.md#L150"
+    },
+    {
       "titulo": "Regras",
       "ancora": "workflow/code-review-graph-manutencao-iterativa-com-evidencia/RULES.md#L3"
     },
@@ -75,12 +79,12 @@
   "fontes": [
     {
       "caminho": "AGENTS.md",
-      "sha256": "a53ffaeed2a7419273a001328083525e26bbeaf13aa1c58fe330b40ad9096bb4",
+      "sha256": "1c45f94d4e2652a240d757d848b99d9d682452f2b7a19aee61a3e31b9a23c99f",
       "enviado": true
     },
     {
       "caminho": ".agents/napkin.md",
-      "sha256": "8ad680e6c8cd96b80a500a291b9033deba0c5f7e16aaa3117e3a7062c4534101",
+      "sha256": "7c5d27337c61468eff74d2c9dc0b5461f9c1bb4ae498c233a69583f4099669e8",
       "enviado": true
     },
     {

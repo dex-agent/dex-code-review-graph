@@ -1,6 +1,6 @@
 # Trilhos
 
-- [Versão uma fonte](2026-11-23-versao-uma-fonte.md) | `versao-uma-fonte-20261123` | em execução 2026-11-23: main vermelha por bump parcial de versão (3ª ocorrência); dono único da regra + regressão + integração + gate.
+- [Versão uma fonte](2026-11-23-versao-uma-fonte.md) | `versao-uma-fonte-20261123` | concluída com ressalvas 2026-11-23: dono único da lista de 13 stamps (`tools/release_version.py`), regressão por mutações históricas, integração na cópia instalada, gate no pre-commit + job `release-stamps`; `b45272a9`, run 45243420297 success.
 - [ISSUE-LOCAL-0006 WinError 2: merge-check Windows](2026-11-21-issue0006-winerror2-spawn-npm.md) | `issue0006-winerror2-spawn-npm-windows` | concluído: resolve_suite_command no chokepoint _run_suite (2.4.0+dex.2), RED→GREEN Windows real + PATH0006_OK + GREEN-REAL-CRG no dex-memoria, commit 6aa3cb23, receipt CRG-0006-WINERROR2-20261121.
 - [Recorte na CLI combinada](2026-11-16-crg-m19-recorte-cli.md) — `crg-m19`, RED preservado e 6/6 provas pelo executável.
 

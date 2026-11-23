@@ -1,6 +1,6 @@
 # Trilho ativo
 
-- [Versão uma fonte](2026-11-23-versao-uma-fonte.md) | `versao-uma-fonte-20261123` | em execução 2026-11-23 (GO PADRAO): 12 stamps em 2.4.0+dex.3, alarme com dono único provado por mutações, gate no pre-commit + CI.
+- [Versão uma fonte](2026-11-23-versao-uma-fonte.md) | `versao-uma-fonte-20261123` | **concluída com ressalvas 2026-11-23**: `b45272a9`, CI run 45243420297 success, `doctor` All good; ressalvas no Trilho e no TRACKER 0008.
 - [ISSUE-LOCAL-0006 WinError 2](2026-11-21-issue0006-winerror2-spawn-npm.md) | `issue0006-winerror2-spawn-npm-windows` | **concluído 2026-11-21**: verdict PRONTO.
 # Trilho ativo
 
