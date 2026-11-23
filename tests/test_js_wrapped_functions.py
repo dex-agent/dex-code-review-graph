@@ -70,6 +70,43 @@ function scope(Effect: typeof OtherEffect) {
     assert _functions(nodes).keys().isdisjoint({"configured", "computed", "other", "shadowed"})
 
 
+def test_effect_fn_accepts_a_template_string_name(tmp_path):
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+const prefix = "service";
+export const labelled = Effect.fn(`${prefix}-user`)(function* () { return 1; });
+""",
+    )
+    assert "labelled" in _functions(nodes).keys()
+
+
+def test_effect_fn_accepts_an_arrow_body(tmp_path):
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+export const addOne = Effect.fn("addOne")((value: number) => value + 1);
+""",
+    )
+    assert "addOne" in _functions(nodes).keys()
+
+
+def test_effect_fn_leaves_a_name_passed_as_a_value_alone(tmp_path):
+    # The name is read from a literal only: a value could be the function of
+    # Effect.fn(inner)(body), which calls the value it made instead of wrapping.
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+const NAME = "computed";
+export const computed = Effect.fn(NAME)(function* () { return 1; });
+""",
+    )
+    assert "computed" not in _functions(nodes).keys()
+
+
 def test_forward_ref_component_gets_a_function_node(tmp_path):
     path, (nodes, edges) = _parse(
         tmp_path,

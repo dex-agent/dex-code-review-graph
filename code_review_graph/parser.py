@@ -14911,55 +14911,85 @@ class CodeParser:
             return inner
         return None
 
-    def _js_effect_fn_body(self, call_node, imports: dict[str, str]):
-        callee = call_node.child_by_field_name("function")
+    def _js_effect_fn_body(self, call_node, imports: dict[str, str], chain=None):
+        """Return the function an ``Effect.fn`` call wraps, if any.
+
+        ``Effect.fn(body)``, ``Effect.fn("name")(body)`` and an imported
+        ``fn(body)`` put the function inside a ``call_expression`` the way a
+        component wrapper does ({@link _js_wrapped_function}), so the same
+        callers consume it and the wrapping call joins ``chain``.
+        """
         arguments = call_node.child_by_field_name("arguments")
-        if callee is None or arguments is None:
+        if arguments is None:
             return None
         args = self._js_argument_values(arguments)
         if not args or args[0].type not in self._JS_FUNC_VALUE_TYPES:
             return None
+        if self._js_effect_fn_callee(call_node, imports) is None:
+            return None
+        if chain is not None:
+            chain.append(call_node)
+        return args[0]
 
+    def _js_effect_fn_callee(self, call_node, imports: dict[str, str]):
+        """Return the identifier that names Effect's ``fn`` in a call, or None."""
+        callee = call_node.child_by_field_name("function")
+        if callee is None:
+            return None
         if callee.type == "call_expression":
-            options = callee.child_by_field_name("arguments")
-            if options is None:
-                return None
-            options_args = self._js_argument_values(options)
-            if not options_args or options_args[0].type not in {"string", "template_string"}:
+            if not self._js_string_first_argument(callee):
                 return None
             callee = callee.child_by_field_name("function")
-            if callee is None:
-                return None
+        if callee is None:
+            return None
+        binding = self._js_effect_fn_binding(callee, imports)
+        if binding is None or self._commonjs_binding(binding, binding.text) is not None:
+            return None
+        return binding
 
-        if callee.type == "member_expression":
-            receiver = callee.child_by_field_name("object")
+    def _js_string_first_argument(self, call_node) -> bool:
+        """Tell whether a call's first argument is a string literal.
+
+        ``Effect.fn("name")(body)`` names the span with a literal;
+        ``Effect.fn(inner)(body)`` passes a function and is calling the value
+        it just made, not wrapping ``body``.
+        """
+        arguments = call_node.child_by_field_name("arguments")
+        args = self._js_argument_values(arguments) if arguments is not None else []
+        return bool(args) and args[0].type in ("string", "template_string")
+
+    def _js_effect_fn_binding(self, callee, imports: dict[str, str]):
+        """Return the identifier Effect's ``fn`` was imported as, or None.
+
+        ``Effect.fn(...)`` accepts the object imported from ``effect/Effect``
+        under any name and the namespace ``Effect`` imported from ``effect``;
+        ``fn(...)`` accepts only the ``fn`` imported from ``effect/Effect``.
+        """
+        member = callee.type == "member_expression"
+        if member:
             method = callee.child_by_field_name("property")
-            if (
-                receiver is None or receiver.type != "identifier"
-                or method is None or method.text != b"fn"
-            ):
+            callee = callee.child_by_field_name("object")
+            if method is None or method.text != b"fn":
                 return None
-            binding = receiver
-            local = binding.text.decode("utf-8", errors="replace")
-            module = imports.get(local)
-            if module != "effect/Effect" and not (
-                module == "effect" and self._js_imported_symbol_name(local, imports) == "Effect"
-            ):
-                return None
-        elif callee.type == "identifier":
-            binding = callee
-            local = binding.text.decode("utf-8", errors="replace")
-            if (
-                imports.get(local) != "effect/Effect"
-                or self._js_imported_symbol_name(local, imports) != "fn"
-            ):
-                return None
-        else:
+        if callee is None or callee.type != "identifier":
             return None
+        if not member:
+            return self._js_imports_from(callee, imports, "effect/Effect", "fn")
+        return (
+            self._js_imports_from(callee, imports, "effect/Effect")
+            or self._js_imports_from(callee, imports, "effect", "Effect")
+        )
 
-        if self._commonjs_binding(binding, binding.text) is not None:
+    def _js_imports_from(
+        self, binding, imports: dict[str, str], module: str, name: Optional[str] = None,
+    ):
+        """Return ``binding`` when it is imported from ``module``, as ``name`` when given."""
+        local = binding.text.decode("utf-8", errors="replace")
+        if imports.get(local) != module:
             return None
-        return args[0]
+        if name is not None and self._js_imported_symbol_name(local, imports) != name:
+            return None
+        return binding
 
     def _js_in_test_body(
         self,
@@ -15044,9 +15074,7 @@ class CodeParser:
                     chain: list = []
                     wrapped = self._js_wrapped_function(sub, chain=chain)
                     if wrapped is None and import_map:
-                        wrapped = self._js_effect_fn_body(sub, import_map)
-                        if wrapped is not None:
-                            chain.append(sub)
+                        wrapped = self._js_effect_fn_body(sub, import_map, chain=chain)
                     if wrapped is not None and not self._js_in_test_body(
                         nodes, file_path, enclosing_class, enclosing_func,
                     ):
