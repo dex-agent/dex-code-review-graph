@@ -1,6 +1,6 @@
 # TOOLSBOOK
 
-code-review-graph (fork dex-agent/dex-code-review-graph): ferramentas examinadas e usadas nos Trilhos .agents/PLAN-TASKS/2026-11-23-versao-uma-fonte.md e .agents/PLAN-TASKS/2026-11-23-revisao-pr6.md. Livro inicial: cobertura parcial declarada, nao inventario do repo.
+code-review-graph (fork dex-agent/dex-code-review-graph): ferramentas examinadas e usadas nos Trilhos .agents/PLAN-TASKS/2026-11-23-versao-uma-fonte.md e .agents/PLAN-TASKS/2026-11-23-revisao-pr6.md, mais o bloco de higiene em .agents/PLAN-TASKS/2026-11-23-higiene-staging-toolsbook.md. Livro inicial: cobertura parcial declarada, nao inventario do repo.
 
 Fonte autorada: TOOLSBOOK.json. Projecao de leitura; nao editar esta copia.
 Checagem mecanica: structural_fresh.
@@ -24,6 +24,8 @@ Inspecionado:
 - tools/parser_diff.py: criado em 2026-11-23 com recibo de reuso, promovido do harness da Temp; lido e executado (dump, cmp, --expect-identical, --json e a triade) sobre corpus de teste e sobre os despejos do PR #6; 13 testes, ruff e verificar-teto-cc limpos
 - consciencia-memorias/scripts/espelhar-auto-memory.mjs: dry-run e apply com CWD no repo (27 auto-memories espelhadas, 0 erros); validate-memory-batch.py 27/27 validos
 - dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py e arquivar-temp.py: scan de fechamento e a cura da superficie TEMP/TMP (1842 arquivos relocados com MANIFEST)
+- dex-higiene-scan/scripts/scan-hygiene.py: executado duas vezes no bloco de higiene (--root . --exclude-dir .agents/LIXEIRA --json), 714 itens antes e 707 depois de apagar os caches de fonte; recibo em .agents/receipts/higiene-20261123.json
+- dex-toolsbook/scripts/ficha-gate.py: so o --schema lido (contrato dex.ficha-gate.v1, guarda dex.toolsbook.guarda.v1); a guarda nao esta implantada neste repo (PENDENTES PEND-2026-11-15-TOOLSBOOK)
 
 Nao inspecionado:
 - scripts/*.py do upstream (8 arquivos) e .agents/scripts: nao examinados neste bloco
@@ -31,6 +33,10 @@ Nao inspecionado:
 - guarda do toolsbook (reuso.py e ficha-gate.py em tools/dev/, toolsbook-guarda.json) nao implantada (PENDENTES PEND-2026-11-15-TOOLSBOOK); o bloqueador da staging .agents/TEMP saiu em 2026-11-23: os 1842 arquivos foram relocados por classe para .agents/EVIDENCIAS/ARQUIVO-TEMP com MANIFEST
 - git, python, pytest e ruff: usados como ferramentas de plataforma; sem ficha propria neste livro
 - harness diferencial de parser (resgate da Temp): os dois scripts de comparacao (diffdump.py, diffcmp.py) foram promovidos a tools/parser_diff.py (ficha parser-diff) em 2026-11-23 e a copia em .agents/receipts/CRG-PR6-REVISAO-20261123/harness-diferencial/bin/ e apenas historico. Ficam so em disco, como evidencia da revisao do PR #6: mkprobes.py (gerador descartavel das 17 sondas do PR), data/ (despejos e respostas da API do GitHub) e probes/
+- triagem A/B do merge 2.4.0-dex (run-chunks.py, run-files.py, diag36.py): recolhidos da Temp da maquina em 2026-11-23 para .agents/receipts/CRG-240DEX-MERGE-20261115/triage-merge/, com o caminho da venv e o da entrada cravados; fora de sources porque nao respondem a triade. Candidatos a ferramenta em tools/ no proximo merge do upstream; manifesto em RECOLHIMENTO.md na mesma pasta
+- Temp da maquina (%LOCALAPPDATA%\Temp e Temp\16): 158 itens inventariados com sha256 e triados por leitura (144 scripts de sessao e 14 temporarios de aplicativo; nenhum com marca Reuso: ou Descartavel:): 138 para a lixeira com manifesto, 18 em voo e 2 ferramentas sem copia viva; manifesto em ~/.agents/skills/.agents/receipts/higiene-temp-maquina-20261123/ (INVENTARIO.json, TRIAGEM.md e reutilizaveis/); fila por dono no ISSUE-LOCAL-0062 do registry. Deste repo so os 15 itens do merge 2.4.0-dex, recolhidos, com os originais removidos da Temp
+- duas ferramentas da casa recolhidas da Temp em 2026-11-23, fora de sources porque nao respondem a triade e nao sao deste repo: create-dex-memory-pre-hygiene-backup.ps1 (dono dex-memoria; gatilho: antes de higiene, migracao ou limpeza de um acervo, fazer backup restauravel com recibo) e preserve-worktree-state.mjs (dono indefinido; gatilho: antes de apagar ou resetar uma worktree com trabalho nao commitado); copia duravel com sha256 em ~/.agents/skills/.agents/receipts/higiene-temp-maquina-20261123/reutilizaveis/; promocao e ficha no ISSUE-LOCAL-0062 do registry
+- residuo deste repo fora do livro, apagar e decisao do dono: .venv-240dex (329 MB, venv do bloco de 2026-11-15), Temp/crg240dex-canario (1,4 GB) e Temp/crg240dex-data (178 MB), indices derivados que o INDEX do merge declara descartaveis
 
 ## release-version
 

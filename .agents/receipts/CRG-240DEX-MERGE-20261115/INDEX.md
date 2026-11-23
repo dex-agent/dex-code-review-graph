@@ -20,3 +20,12 @@ Flow: `flow_20261115215507246_0807_0001`.
 - venv isolada `.venv-240dex` (editável) e `.venv-base` no clone fresco `crg-upstream-fresh`.
 - Índices descartáveis: `CRG_DATA_DIR` em Temp (repo CRG + AprendizadoConsultado) — nenhum índice persistente tocado.
 - Logs completos das suítes: `Temp/suite-240dex-full.log` e `Temp/suite-upstream-baseline.log` (não versionados; números finais no c04-suite.txt).
+
+## Recolhimento da Temp (2026-11-23)
+
+Os arquivos que a linha acima citava em `Temp/` foram recolhidos para junto
+deste índice, em cópia byte a byte com sha256 conferido. Detalhe em
+[RECOLHIMENTO.md](RECOLHIMENTO.md) (só em disco):
+
+- `recolhido-temp/` — listas de testes que falharam, logs das suítes, `c08-detect.json`, roteiro.
+- `triage-merge/` — os três scripts da triagem A/B do merge e as saídas deles; candidatos a ferramenta em `tools/` no próximo merge do upstream.

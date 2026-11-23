@@ -63,6 +63,34 @@ Atualização em 2026-11-23. Trilho: `.agents/PLAN-TASKS/2026-11-23-revisao-pr6.
   scripts soltos em `/tmp`. -> Fonte/validação: `tools/js_form_probe.py` e
   `tools/parser_diff.py`; recibos em `.agents/receipts/reuso/`.
 
+## Regras do bloco de higiene (2026-11-23)
+
+Atualização em 2026-11-23. Trilho:
+`.agents/PLAN-TASKS/2026-11-23-higiene-staging-toolsbook.md`.
+
+- [TEMP-MAQUINA-STAGING-IMPLICITA] Pedido de "limpar a casa", higiene ou
+  fechamento -> a higiene do repo não enxerga a Temp da máquina; partir do que
+  já existe: inventário com sha256 e triagem por leitura em
+  `~/.agents/skills/.agents/receipts/higiene-temp-maquina-20261123/`
+  (`INVENTARIO.json`, `TRIAGEM.md`, `reutilizaveis/`), fila por dono no
+  ISSUE-LOCAL-0062 do registry. -> Fonte/validação: 158 itens (138 para a
+  lixeira, 18 em voo, 2 ferramentas sem cópia viva); 15 arquivos do merge
+  recolhidos e originais removidos com registro em `.agents/LIXEIRA/`.
+- **E se??** aparecer arquivo novo na Temp depois da triagem? -> Inventariar de
+  novo só o que mudou (hash), ler e classificar; nunca mover arquivo de outra
+  janela (o que tem mtime de 22–23/11 está marcado em voo).
+- [SHA256SUM-BARRA-ESPURIA] (nome canônico da casa; ficha 5W2H no
+  GATILHOS-VIVOS do registry e memória global de 2026-11-19) Comparar dois
+  arquivos por hash em Git Bash -> leitura binária (`hashlib.sha256`, modo `rb`)
+  ou caminho `/c/Users/...`; nunca `sha256sum | cut` com caminho `C:\...`: o
+  utilitário põe `\` antes do hash e o `cut` acusa falso "DIFERENTE". Antes de
+  acreditar em alarme, controle positivo (um par diferente precisa ser acusado).
+  -> Fonte/validação: 15 falsos "DIFERENTE" medidos em 2026-11-23 neste repo
+  (reincidência: o hub do projeto não apontava a ficha); a leitura binária deu
+  15 iguais; registro da reincidência no registry ISSUE-LOCAL-0063.
+- **E se?? só preciso conferir cópia contra um manifesto?** -> `sha256sum -c`
+  com caminho relativo serve; a armadilha é comparar dois caminhos absolutos.
+
 ## CRG-BUMP-UMA-FONTE
 
 Atualização em 2026-11-23. Trilho:
