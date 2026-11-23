@@ -1,16 +1,22 @@
 """Regression checks for user-facing command examples."""
 
+import importlib.util
 import re
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).parents[1]
-README_FILES = (
-    "README.md",
-    "README.hi-IN.md",
-    "README.ja-JP.md",
-    "README.ko-KR.md",
-    "README.zh-CN.md",
+
+# One owner for "which files carry the Action pin" and for the rule that the
+# version is the same in each of them: the pre-commit hook calls the same module.
+_spec = importlib.util.spec_from_file_location(
+    "release_version", ROOT / "tools" / "release_version.py"
 )
+assert _spec is not None and _spec.loader is not None
+release_version = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(release_version)
+README_FILES = release_version.README_FILES
 OPTIONAL_GROUPS = (
     "embeddings",
     "google-embeddings",
@@ -146,36 +152,120 @@ def test_release_version_is_current_everywhere_it_is_written_down():
     """The package version, in every place a release has to move it.
 
     A release bumps ``pyproject.toml`` and ``__version__``; the copy-paste
-    Action pins, the user guide, the feature list, the changelog heading and
-    the bug-report form each have to move with them, and the form had asked
-    for 2.3.5 through four releases.
+    Action pins, the user guide, the feature list, the changelog heading, the
+    bug-report form and the lock file each have to move with them, and the
+    form had asked for 2.3.5 through four releases. The list of places lives
+    in ``tools/release_version.py``; the pre-commit hook runs the same check.
     """
-    from code_review_graph import __version__
-
-    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    declared = re.search(r'^version = "([^"]+)"$', pyproject, re.MULTILINE)
-    assert declared is not None and declared.group(1) == __version__, (
-        "pyproject.toml and code_review_graph.__version__ disagree"
+    problems = release_version.release_version_mismatches(
+        release_version.read_working_tree(ROOT)
     )
+    assert problems == []
 
-    for name in README_FILES + ("docs/GITHUB_ACTION.md",):
-        content = (ROOT / name).read_text(encoding="utf-8")
-        pins = set(re.findall(r"tirth8205/code-review-graph@v([0-9][^\s]*)", content))
-        assert pins == {__version__}, (
-            f"{name} pins the Action at {sorted(pins)}; expected v{__version__}"
-        )
 
-    expected = {
-        "docs/USAGE.md": f"Applies to code-review-graph {__version__}.",
-        "docs/FEATURES.md": f"## v{__version__} (Current)",
-        "CHANGELOG.md": f"## [{__version__}] - ",
-        ".github/ISSUE_TEMPLATE/bug_report.yml": f'placeholder: "{__version__}"',
+def _stamped_files(version: str) -> dict[str, str]:
+    """Every file a release moves, all saying ``version``."""
+    files = {
+        "pyproject.toml": f'[project]\nname = "code-review-graph"\nversion = "{version}"\n',
+        "code_review_graph/__init__.py": f'"""Code Review Graph."""\n\n__version__ = "{version}"\n',
+        "uv.lock": (
+            'version = 1\n\n[[package]]\nname = "code-review-graph"\n'
+            f'version = "{version}"\nsource = {{ editable = "." }}\n'
+        ),
+        "docs/USAGE.md": f"# Usage\n\nApplies to code-review-graph {version}.\n",
+        "docs/FEATURES.md": (
+            f"# Features\n\n## v{version} (Current)\n\n- Highlights.\n\n## v1.0.0\n- Old.\n"
+        ),
+        "CHANGELOG.md": (
+            f"# Changelog\n\n## [Unreleased]\n\n## [{version}] - 2026-01-01\n\n- Notes.\n"
+        ),
+        ".github/ISSUE_TEMPLATE/bug_report.yml": (
+            "body:\n  - type: input\n    attributes:\n" f'      placeholder: "{version}"\n'
+        ),
     }
-    for name, text in expected.items():
-        content = (ROOT / name).read_text(encoding="utf-8")
-        assert text in content, f"{name} does not say {text!r}"
-    features = (ROOT / "docs/FEATURES.md").read_text(encoding="utf-8")
-    assert features.count("(Current)") == 1, "docs/FEATURES.md marks more than one Current"
+    for name in release_version.ACTION_PIN_FILES:
+        files[name] = f"      - uses: tirth8205/code-review-graph@v{version}\n"
+    return files
+
+
+def _moved(files: dict[str, str], name: str, old: str, new: str) -> dict[str, str]:
+    """``files`` with the version moved from ``old`` to ``new`` in ``name`` only."""
+    return {**files, name: files[name].replace(old, new)}
+
+
+def _problems(files: dict[str, str]) -> list[str]:
+    return release_version.release_version_mismatches(files.__getitem__)
+
+
+def test_release_version_check_stays_quiet_on_a_synchronized_tree():
+    """The negative control: nothing to report when every file agrees."""
+    assert _problems(_stamped_files("9.9.9+dex.7")) == []
+
+
+def test_release_version_check_reports_a_pyproject_without_a_version():
+    files = {
+        **_stamped_files("2.4.0+dex.1"),
+        "pyproject.toml": '[project]\nname = "code-review-graph"\n',
+    }
+    assert _problems(files) == ['pyproject.toml has no version = "..." line']
+
+
+def test_release_version_check_catches_a_bump_that_moved_only_pyproject():
+    """6aa3cb23 (2026-11-21) and f86f9920 (2026-11-22): ``pyproject.toml`` moved alone."""
+    stale = _stamped_files("2.4.0+dex.1")
+    problems = _problems(_moved(stale, "pyproject.toml", "2.4.0+dex.1", "2.4.0+dex.3"))
+    left_behind = (
+        "code_review_graph/__init__.py",
+        "README.md",
+        "docs/GITHUB_ACTION.md",
+        "docs/USAGE.md",
+        "docs/FEATURES.md",
+        "CHANGELOG.md",
+        ".github/ISSUE_TEMPLATE/bug_report.yml",
+        "uv.lock",
+    )
+    assert problems, "a bump that moved only pyproject.toml was not reported"
+    for name in left_behind:
+        assert any(problem.startswith(f"{name} ") for problem in problems), (
+            f"{name} was left behind and not reported: {problems}"
+        )
+    assert not any(problem.startswith("pyproject.toml ") for problem in problems), problems
+
+
+def test_release_version_check_catches_a_bump_that_moved_only_the_package_literal():
+    """The mirror image: ``__version__`` moved, the built metadata left behind."""
+    files = _stamped_files("2.4.0+dex.2")
+    moved = _moved(
+        files, "code_review_graph/__init__.py", "2.4.0+dex.2", "2.4.0+dex.3"
+    )
+    problems = _problems(moved)
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("code_review_graph/__init__.py ")
+
+
+@pytest.mark.parametrize("name", release_version.ACTION_PIN_FILES)
+def test_release_version_check_catches_one_pin_file_left_behind(name: str):
+    """Every translation counts: one stale pin is reported, and only that one."""
+    stale = _stamped_files("2.4.0+dex.1")
+    problems = _problems(_moved(stale, name, "2.4.0+dex.1", "2.4.0+dex.2"))
+    assert len(problems) == 1, problems
+    assert problems[0].startswith(f"{name} ")
+
+
+def test_release_version_check_catches_two_current_headings_in_the_feature_list():
+    """A new ``(Current)`` heading added without taking the mark off the old one."""
+    files = _stamped_files("2.4.0+dex.1")
+    features = files["docs/FEATURES.md"].replace("## v1.0.0", "## v1.0.0 (Current)")
+    problems = _problems({**files, "docs/FEATURES.md": features})
+    assert problems == ["docs/FEATURES.md marks more than one heading (Current)"]
+
+
+def test_release_version_check_catches_a_lock_file_left_at_the_old_version():
+    """uv.lock said 2.4.0 through three house bumps; no test read it until 2026-11-23."""
+    files = _stamped_files("2.4.0+dex.3")
+    problems = _problems(_moved(files, "uv.lock", "2.4.0+dex.3", "2.4.0"))
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("uv.lock ")
 
 
 def test_releasing_doc_names_every_file_a_release_moves():

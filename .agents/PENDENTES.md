@@ -180,6 +180,21 @@
       "criado_em": "2026-11-19",
       "concluida_em": null,
       "atualizado_em": null
+    },
+    {
+      "id": "CRG-REGISTRY-ITENS-BUMP-20261123",
+      "titulo": "Registry — itens a abrir no TRACKER do repo dono após o corte versao-uma-fonte: (a) skills oraculo-teste-de-integracao e oraculo-teste-de-unidade com âncoras de linha do build r2 (07874ccf) contra o corpus vivo r3 (971c316328560ffc) e grafo da porta ainda no build antigo; (b) oraculo-solid SKILL.md ensina receita de junction (readlink -f) que falha no registry; (c) skill code-review-graph em 2.4.0+dex.1 (SKILL.md l.81/89, CAPACITY.md l.13) com o PATH em 2.4.0+dex.3",
+      "status": "aberta",
+      "nivel": "P2",
+      "quando": "Fechamento do Trilho 2026-11-23-versao-uma-fonte; se a sessão não chegar, a próxima janela do registry",
+      "data_limite": "2026-11-25",
+      "owner": "sessao-do-projeto",
+      "prova": "rg -n \"07874ccf|readlink -f|2\\.4\\.0\\+dex\\.1\" C:/Users/Administrator/.agents/skills/oraculo-teste-de-integracao/SKILL.md C:/Users/Administrator/.agents/skills/oraculo-teste-de-unidade/SKILL.md C:/Users/Administrator/.agents/skills/oraculo-solid/SKILL.md C:/Users/Administrator/.agents/skills/code-review-graph/SKILL.md",
+      "motivo": "Gate CRG-BUMP-CONSUMIDORES do AGENTS local: consumidor documental stale vira item no TRACKER do repo dono (registry), não conserto paralelo",
+      "supercedido_por": null,
+      "criado_em": "2026-11-23",
+      "concluida_em": null,
+      "atualizado_em": null
     }
   ]
 }

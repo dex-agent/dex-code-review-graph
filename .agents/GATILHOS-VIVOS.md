@@ -10,6 +10,26 @@ este arquivo quando um gatilho mudar de estado (resolvido, supersedido ou novo
 material). Achado Graphify só vira fato após abrir a fonte (`source: graphify`
 até lá).
 
+## CRG-BUMP-UMA-FONTE
+
+Atualização em 2026-11-23. Trilho:
+`.agents/PLAN-TASKS/2026-11-23-versao-uma-fonte.md`.
+
+- [CRG-BUMP-UMA-FONTE] Bump de versão do CRG, CI vermelho em teste de versão,
+  ou `doctor` dizendo que a cópia no PATH é mais nova ou mais velha que ela
+  mesma -> Faça em vez disso: `python -B tools/release_version.py` (lista os
+  arquivos atrasados; `--check` é gate; `--from-index` lê o próximo commit).
+  Um bump mexe em 12 arquivos; commit parcial é recusado pelo hook pre-commit e
+  o job `release-stamps` do CI roda a checagem no fork. -> Fonte/validação:
+  `tools/release_version.py` (dono único da lista),
+  `tests/test_documentation.py` (mutações históricas) e
+  `tests/test_packaging.py` (canais da cópia instalada).
+- **E se??** O clone não tem `core.hooksPath` ativo, ou o commit passou com
+  `--no-verify`? O job `release-stamps` do CI ainda acusa depois do push;
+  travar antes do push é proteção de branch, decisão do dono (quiz próprio).
+- **E se??** O `uv lock --check` pede outras mudanças além da linha do pacote
+  raiz? Isso é o corte do Dependabot, não o bump; pare e registre.
+
 ## STALENESS-ARTEFATOS-DERIVADOS
 
 Atualizacao de inventario em 2026-11-08. Os mapas do corte

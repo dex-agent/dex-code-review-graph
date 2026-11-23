@@ -649,7 +649,11 @@ def test_version_is_the_same_everywhere(wheel_metadata: str, artefacts: Artefact
     )
     assert init_match, "code_review_graph/__init__.py has no __version__"
     init_version = init_match.group(1)
-    assert re.fullmatch(r"\d+\.\d+\.\d+", init_version), f"odd version {init_version!r}"
+    # A local version suffix (+dex.N, PEP 440) is how this fork marks its own
+    # builds; the metadata keeps it, so this check has to accept it.
+    assert re.fullmatch(r"\d+\.\d+\.\d+(\+[0-9A-Za-z.]+)?", init_version), (
+        f"odd version {init_version!r}"
+    )
 
     project_match = re.search(r'^version\s*=\s*"([^"]+)"', _pyproject_text(), re.MULTILINE)
     assert project_match, "pyproject.toml has no [project] version"
@@ -660,6 +664,37 @@ def test_version_is_the_same_everywhere(wheel_metadata: str, artefacts: Artefact
     assert _metadata_field(wheel_metadata, "Version") == init_version
     assert init_version in artefacts.wheel.name
     assert init_version in artefacts.sdist.name
+
+
+def test_installed_copy_reports_one_version_through_every_channel(
+    wheel_env: InstalledEnv,
+) -> None:
+    """``--version``, ``__version__`` and the dist metadata agree on the installed copy.
+
+    ``doctor`` compares what a copy prints with the ``__version__`` of the
+    copy that runs. When ``pyproject.toml`` was bumped and ``__init__.py`` was
+    not, the two disagreed inside one and the same install, and ``doctor``
+    told the user to upgrade the copy they were already running
+    (2.4.0+dex.3 against 2.4.0+dex.1, 2026-11-22).
+    """
+
+    def says(code: str) -> str:
+        return _run([str(wheel_env.python), "-c", code], cwd=wheel_env.root).stdout.strip()
+
+    reported = {
+        "code-review-graph --version": _run(
+            [str(wheel_env.script), "--version"], cwd=wheel_env.root
+        ).stdout.split()[-1],
+        "code_review_graph.__version__": says(
+            "import code_review_graph; print(code_review_graph.__version__)"
+        ),
+        "dist metadata": says(
+            "import importlib.metadata as m; print(m.version('code-review-graph'))"
+        ),
+    }
+    assert len(set(reported.values())) == 1, (
+        f"the installed copy answers more than one version: {reported}"
+    )
 
 
 def test_declared_python_floor_matches_the_code(wheel_metadata: str) -> None:

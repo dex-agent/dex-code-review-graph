@@ -94,6 +94,15 @@ mais `rg -l "code-review-graph" ~/.agents/skills` para vizinhos. Skill stale
 vira item no TRACKER com evidência. Vacina nascida do bump 2.4.0+dex.1
 (2026-11-16), que deixou as duas skills desatualizadas por uma sessão.
 
+**O BUMP EM SI É UMA AÇÃO SÓ** (localizador `CRG-BUMP-UMA-FONTE`): a versão é
+escrita em 12 arquivos (`pyproject.toml`, `__version__`, `uv.lock`, 5 READMEs,
+`docs/GITHUB_ACTION.md`, `USAGE`, `FEATURES`, `CHANGELOG`, `bug_report.yml`).
+Mova todos juntos: `python -B tools/release_version.py` lista os atrasados
+(`--check` é gate; `--from-index` lê o próximo commit). O hook `pre-commit`
+recusa commit parcial e o job `release-stamps` do CI roda a checagem no fork.
+Vacina nascida de três ocorrências (16/11, 21/11, 22/11): bump só no
+`pyproject.toml` derrubou 3 testes e deixou o `doctor` vermelho no PATH.
+
 **TRACKER-LOCAL** — leia [.agents/TRACKER/INDEX.md](.agents/TRACKER/INDEX.md)
 na retomada para encontrar issues locais abertas.
 

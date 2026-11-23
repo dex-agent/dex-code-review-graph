@@ -308,3 +308,25 @@ jobs:
           tests/test_cli.py::TestGraphToolExplicitRepoResolution
           tests/test_cli.py::test_explicit_monorepo_subproject_runs_a_real_graph_search
           tests/test_cli.py::test_explicit_markerless_repo_with_external_index
+
+  release-stamps:
+    # A release moves the version in a dozen files. Twice a partial bump reached
+    # `main` and left `doctor` red on every installed copy, and the only test
+    # that reads the installed copy (tests/test_packaging.py) is opt-in and ran
+    # only in the promotion gate, on a branch this fork does not have. This job
+    # always runs both: the stamps against pyproject.toml, and the version the
+    # installed copy answers through each channel.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+      - name: Every stamp agrees with pyproject.toml
+        run: python -B tools/release_version.py --check
+      - name: The installed copy answers one version through every channel
+        run: python -m pytest tests/test_packaging.py -m packaging -k "same_everywhere or installed_copy" -q --tb=short -rs

@@ -3,20 +3,20 @@
   "generated_by": "tools/playbook/generate-playbook.py",
   "authority": "derived_projection",
   "repo_name": "code-review-graph",
-  "sources_revision": "sha256:9036bef5ce6cb0c6ef3852dc68012cd5d0f3242b49425296e8ce309e26162f3a",
-  "sent_revision": "sha256:9036bef5ce6cb0c6ef3852dc68012cd5d0f3242b49425296e8ce309e26162f3a",
+  "sources_revision": "sha256:fe68cbd9cd4121159a4834866b6c86de18dc492fc3013294a1eaccf37ff6ac21",
+  "sent_revision": "sha256:fe68cbd9cd4121159a4834866b6c86de18dc492fc3013294a1eaccf37ff6ac21",
   "rules": [
     {
-      "seal": "pb-a8bd4dc6",
+      "seal": "pb-0f77b1c2",
       "locator": "CRG-BUMP-CONSUMIDORES",
       "title": "CLI: code-review-graph",
       "gatilho": "o [check de frescor](.agents/GATILHOS-VIVOS.md#staleness-artefatos-derivados).",
       "extrato": "**GATE DE CONSUMIDORES NO BUMP** (localizador `CRG-BUMP-CONSUMIDORES`): toda",
       "rotas": [],
-      "fonte": "AGENTS.md#L86-L109"
+      "fonte": "AGENTS.md#L86-L118"
     },
     {
-      "seal": "pb-457239ee",
+      "seal": "pb-fadeaf9c",
       "locator": "PENDENTES-LEDGER",
       "title": "Leitura obrigatoria (bootstrap)",
       "gatilho": "5. `.agents/PENDENTES.md` — ledger de pendências append-only (schema `dex.pendencias.v2`; gatilho `PENDENTES-LEDGER`)",
@@ -27,7 +27,7 @@
         "`.agents/HANDOFF.md`",
         "`.agents/PLAN-TASKS/ACTIVE.md`"
       ],
-      "fonte": "AGENTS.md#L132-L140"
+      "fonte": "AGENTS.md#L141-L149"
     }
   ],
   "mesa": {
@@ -57,11 +57,11 @@
     },
     {
       "titulo": "Graphify local",
-      "ancora": "AGENTS.md#L110"
+      "ancora": "AGENTS.md#L119"
     },
     {
       "titulo": "Continuidade local (leitura obrigatória antes de trabalho não trivial)",
-      "ancora": "AGENTS.md#L125"
+      "ancora": "AGENTS.md#L134"
     },
     {
       "titulo": "Regras",
@@ -75,12 +75,12 @@
   "fontes": [
     {
       "caminho": "AGENTS.md",
-      "sha256": "368b9562794709ef756d94c749cef6522b030ea7cb436d13c62894817fd52842",
+      "sha256": "a53ffaeed2a7419273a001328083525e26bbeaf13aa1c58fe330b40ad9096bb4",
       "enviado": true
     },
     {
       "caminho": ".agents/napkin.md",
-      "sha256": "a15ecd736006608b8536867f459565c04f9a6e39bbb45c61503aa05b06724961",
+      "sha256": "8ad680e6c8cd96b80a500a291b9033deba0c5f7e16aaa3117e3a7062c4534101",
       "enviado": true
     },
     {

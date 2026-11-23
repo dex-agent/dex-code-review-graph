@@ -2,7 +2,16 @@
 
 Release highlights by version. The full changelog is in [CHANGELOG.md](../CHANGELOG.md).
 
-## v2.4.0+dex.1 (Current)
+## v2.4.0+dex.3 (Current)
+
+- **`merge-check` runs on Windows**: the suite command is resolved the way a
+  shell would (`shutil.which` over PATH and PATHEXT), so `merge-check -- npm test`
+  delivers its verdict instead of dying with `WinError 2` on `npm.cmd`.
+- **The ignore file is findable**: `build`, `update` and `forget` say in their
+  `--help` that files matching `.code-review-graphignore` are left out of the
+  graph, and point at [ignore patterns](USAGE.md#ignore-patterns).
+
+## v2.4.0+dex.1
 
 - **Dex local edition**: combined build of upstream 2.4.0 with the house
   patches — `detect-changes --files` scoping, the `merge-check` three-way
