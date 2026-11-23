@@ -20,6 +20,93 @@ def _functions(nodes):
     return {node.name: node for node in nodes if node.kind == "Function"}
 
 
+def test_effect_fn_indexes_callable_exports_and_keeps_body_calls(tmp_path):
+    path, (nodes, edges) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect, Effect as Fx } from "effect";
+import * as EffectModule from "effect/Effect";
+import { fn as traced } from "effect/Effect";
+function load() { return 1; }
+function options() { return {}; }
+function transform(value: unknown) { return value; }
+export const scan = Effect.fn("scan", options())(function* () { return load(); }, transform);
+export const alias = Fx.fn(function* () { return load(); });
+export const namespace = EffectModule.fn("scan")(function* () { return load(); });
+export const direct = traced(function* () { return load(); });
+export function caller() { return scan(); }
+""",
+    )
+    names = {"scan", "alias", "namespace", "direct"}
+    assert names <= _functions(nodes).keys()
+    calls = {
+        (edge.source, edge.target)
+        for edge in edges
+        if edge.kind == "CALLS"
+    }
+    file = path.as_posix()
+    for name in names:
+        assert (f"{file}::{name}", f"{file}::load") in calls
+    assert (f"{file}::caller", f"{file}::scan") in calls
+    assert (file, f"{file}::options") in calls
+    assert (f"{file}::scan", f"{file}::options") not in calls
+    assert (file, f"{file}::load") not in calls
+
+
+def test_effect_fn_does_not_index_factory_values_or_shadowed_bindings(tmp_path):
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+import { Effect as OtherEffect } from "./other";
+const configured = Effect.fn("configured");
+const computed = Effect.fn(function* () { return 1; })(function* () {});
+const other = OtherEffect.fn("unrelated")(function* () { return 1; });
+function scope(Effect: typeof OtherEffect) {
+    const shadowed = Effect.fn("shadowed")(function* () { return 1; });
+}
+""",
+    )
+    assert _functions(nodes).keys().isdisjoint({"configured", "computed", "other", "shadowed"})
+
+
+def test_effect_fn_accepts_a_template_string_name(tmp_path):
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+const prefix = "service";
+export const labelled = Effect.fn(`${prefix}-user`)(function* () { return 1; });
+""",
+    )
+    assert "labelled" in _functions(nodes).keys()
+
+
+def test_effect_fn_accepts_an_arrow_body(tmp_path):
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+export const addOne = Effect.fn("addOne")((value: number) => value + 1);
+""",
+    )
+    assert "addOne" in _functions(nodes).keys()
+
+
+def test_effect_fn_leaves_a_name_passed_as_a_value_alone(tmp_path):
+    # The name is read from a literal only: a value could be the function of
+    # Effect.fn(inner)(body), which calls the value it made instead of wrapping.
+    _, (nodes, _) = _parse(
+        tmp_path,
+        "effects.ts",
+        """import { Effect } from "effect";
+const NAME = "computed";
+export const computed = Effect.fn(NAME)(function* () { return 1; });
+""",
+    )
+    assert "computed" not in _functions(nodes).keys()
+
+
 def test_forward_ref_component_gets_a_function_node(tmp_path):
     path, (nodes, edges) = _parse(
         tmp_path,

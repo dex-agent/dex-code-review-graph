@@ -4,6 +4,12 @@
 
 ### Added
 
+- Dex local edition: TypeScript functions created with `Effect.fn` are indexed,
+  with the calls in their body attributed to them: `Effect.fn(body)`,
+  `Effect.fn("name")(body)` and an `fn` imported from `effect/Effect`. A graph
+  built before this needs a full `code-review-graph build`; `update` re-parses
+  only the files that changed.
+
 - Dex local edition: `detect-changes --files PATH ...` scopes change analysis
   to selected files and returns an empty JSON result when the scope has no
   changes.
