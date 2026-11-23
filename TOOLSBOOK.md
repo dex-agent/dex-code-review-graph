@@ -276,7 +276,7 @@ Sonda in-process das formas JS/TS que o parser de uma arvore do CRG indexa, para
 Revisar PR que muda o parser JS/TS; reproduzir ISSUE-LOCAL-0010; comparar o comportamento de duas arvores antes de afirmar diferenca
 
 **how:**
-Na raiz da arvore sob prova: PYTHONPATH=. python -B .agents/receipts/CRG-PR6-REVISAO-20261123/js_form_probe.py [--caso red_green|forms|typed_shadow] [--rotulo texto]. Nunca com python -I.
+Na raiz da arvore sob prova: PYTHONPATH=. python -B tools/js_form_probe.py [--caso red_green|forms|typed_shadow] [--rotulo texto]. Nunca com python -I.
 
 **inputs:**
 Sources TS declarados no proprio script; nenhuma flag obrigatoria
@@ -308,9 +308,10 @@ No proximo PR de parser: confirmar o segundo uso e passar a reviewed, ou aposent
 - Execucao nas duas arvores (2026-11-23): main 49caadcf e PR 35ecc919, exit 0; 12 linhas differentes, todas do efeito do PR; caso typed_shadow identico
 - Controle positivo do caminho de erro: python -I devolve exit 2 com a mensagem de PYTHONPATH
 - Medida: verificar-teto-cc.py da casa com CC OK em 8 funcoes; ruff check limpo
+- Licao do CI (run 45256809972): a primeira versao ficou sob .agents/receipts com git add -f e quebrou tests/test_install_outputs_are_ignored.py::test_no_tracked_file_is_ignored; ferramenta de repo mora em tools/ e recibo fica so em disco
 
 **Fontes examinadas:**
-- `.agents/receipts/CRG-PR6-REVISAO-20261123/js_form_probe.py` — SHA256 `497e4440251c5a16aebf208d6120c225d24e4aab0b9bf5ca4c58783da844fad0`
+- `tools/js_form_probe.py` — SHA256 `497e4440251c5a16aebf208d6120c225d24e4aab0b9bf5ca4c58783da844fad0`
 
 ## consulta-tema
 
