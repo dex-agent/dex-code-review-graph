@@ -8,6 +8,8 @@
 - [ ] CRG-UPSTREAM-GATES [P2] — Revalidar refactor, uninstall e hooks Windows antes de habilitar no perfil real — quando: Antes de habilitar as operacoes no perfil real; achados PARK-20260728-02 — owner: mantenedor-CRG
 - [ ] CRG-GRAPHIFY-HISTORICO [P2] — Regenerar Graphify com corpus atual e confirmar labeling e versao — quando: Na proxima consulta relacional que exigir grafo atual; antes de citar o corte antigo — owner: mantenedor-Graphify
 - [ ] CRG-ZCODE-CONTRATO [P2] — Provar contrato de cliente ZCode com fonte e tools-list real — quando: Antes de declarar compatibilidade ou editar configuracao ZCode — owner: mantenedor-ZCode
+- [ ] CRG-WHEEL-PATH-SEM-EFFECT-FN-20261123 [P2] — A cópia do CRG no PATH (2.4.0+dex.3) não tem a indexação de Effect.fn do PR #6 — quando: próximo bump (dex.4), que também fecha a entrada Unreleased do FEATURES; decisão do dono
+- [ ] CRG-HARNESS-DIFERENCIAL-SEM-FICHA-20261123 [P3] — Harness diferencial de parser em Temp, fora do repo, sem tríade e sem ficha — quando: próximo PR de parser; senão LIXEIRA com MANIFEST
 ## Adiadas
 ## Supersedidas
 - [~] CRG-PROMOCAO-MCP [P2] — Promover a correcao testada para o runtime MCP instalado — quando: No proximo corte de instalacao apos o repo privado publicado — motivo: Dono definiu CLI como interface principal da edicao Dex; priorizar o recorte no executavel — supercedido por: CRG-CLI-RECORTE — owner: mantenedor-CRG
@@ -206,6 +208,36 @@
       "owner": "mantenedor CRG",
       "prova": ".github/workflows/promotion-gate.yml (on: push branches [testing] e workflow_dispatch); o ci.yml só roda 2 testes de packaging, pelo job release-stamps",
       "motivo": "R8/R15: classe verificada nos irmãos; medir antes de decidir (gh workflow run promotion-gate.yml) — não ligar suíte pesada sem prova de custo",
+      "supercedido_por": null,
+      "criado_em": "2026-11-23",
+      "concluida_em": null,
+      "atualizado_em": null
+    },
+    {
+      "id": "CRG-WHEEL-PATH-SEM-EFFECT-FN-20261123",
+      "titulo": "A copia do CRG instalada no PATH (wheel de b45272a9, 2.4.0+dex.3) nao tem a indexacao de Effect.fn do PR #6: quem usa o executavel da casa nao ganha as funcoes ate um wheel novo",
+      "status": "aberta",
+      "nivel": "P2",
+      "quando": "Proximo bump (2.4.0+dex.4), que tambem fecha a entrada Unreleased do docs/FEATURES.md; decisao do dono",
+      "data_limite": "2026-12-01",
+      "owner": "mantenedor CRG",
+      "prova": "code-review-graph build com o executavel do PATH num repo com Effect.fn indexa so load (2026-11-23, provado no bloco do PR #6); a sonda tools/js_form_probe.py --caso red_green reproduz",
+      "motivo": "Troca de executavel dispara o gate CRG-BUMP-CONSUMIDORES do AGENTS local e exige mover as 13 fontes de versao junto; nao e acao de fim de bloco",
+      "supercedido_por": null,
+      "criado_em": "2026-11-23",
+      "concluida_em": null,
+      "atualizado_em": null
+    },
+    {
+      "id": "CRG-HARNESS-DIFERENCIAL-SEM-FICHA-20261123",
+      "titulo": "Harness diferencial de parser em .agents/receipts/CRG-PR6-REVISAO-20261123/harness-diferencial/ (bin/diffdump.py, diffcmp.py, mkprobes.py) esta so em disco, sem triade, sem teste e sem ficha no TOOLSBOOK",
+      "status": "aberta",
+      "nivel": "P3",
+      "quando": "Proximo PR que mude o parser; se nao houver ate la, LIXEIRA com MANIFEST",
+      "data_limite": "2026-12-07",
+      "owner": "sessao-do-projeto",
+      "prova": "TOOLSBOOK.json, campo unexplored; README.md na pasta do harness; comparacao de 160 arquivos em 6 corpora re-executada sobre os dumps guardados em 2026-11-23; resgatado da Temp no mesmo dia",
+      "motivo": "R13 e REUSO-ANTES-DE-CRIAR: nasceu sem recibo de reuso; promover a tools/ com triade, teste e ficha, ou aposentar com MANIFEST",
       "supercedido_por": null,
       "criado_em": "2026-11-23",
       "concluida_em": null,

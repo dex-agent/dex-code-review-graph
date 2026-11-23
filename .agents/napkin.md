@@ -27,6 +27,54 @@ disso:`.
   gerada (hash de bytes brutos) e o hook vai como `100644`. Registry
   ISSUE-LOCAL-0051.
 
+- [TEMP-ARTEFATO-EXIGE-DESTINO] Criar script, harness, clone ou worktree
+  em `/tmp`, `mktemp -d` ou `%LOCALAPPDATA%\Temp` -> Faça em vez disso:
+  decidir o destino na hora em que cria: `tools/` com ficha, recibo em
+  `.agents/receipts/` (só em disco), ou descarte declarado. Pendência
+  registrada não é destino. No ZCode, `/tmp` do Git Bash é
+  `%LOCALAPPDATA%\Temp\<n>\`, que o passo TEMP/TMP do
+  `dex-fechamento-projeto-atualizado` não enxerga (ele só olha dentro do
+  repo). Ocorrências (2026-11-23): harness diferencial uma janela só na
+  Temp; commit `6f0b85d` só numa pasta descartável há 7 dias; 5 scripts em
+  `/tmp`. Pergunta do dono que revela lacuna é intervenção: gravar o
+  aprendizado antes de retomar a tarefa. Gatilho L1:
+  `ARTEFATO-EM-TEMP-EXIGE-DESTINO-DURAVEL`.
+
+- [CRG-RECEIPTS-NAO-RASTREAR] `git add -f` de arquivo sob `.agents/receipts/`
+  (pasta ignorada) deixa a main vermelha em
+  `tests/test_install_outputs_are_ignored.py::test_no_tracked_file_is_ignored`
+  (run 45256809972) -> Faça em vez disso: ferramenta de repo nasce em
+  `tools/` (entrada em `tools/INDEX.md` e ficha no `TOOLSBOOK.json`); recibo
+  fica só em disco. Rastrear recibo exige exceção explícita no `.gitignore`,
+  como as pastas `crg-cli-*`.
+
+- [CRG-REAUTORIA-COMMIT-BRANCH] Commit da casa chega com email de máquina de
+  teste (caso `crsantosxx` no PR #6) -> Faça em vez disso: re-autorar para
+  `dex-agent <dex-agent@proton.me>` sempre (regra do dono 2026-11-23). No
+  worktree da branch: `git rebase origin/main`; `generate-playbook.py --repo .
+  --write` antes do primeiro commit (o hook recusa worktree novo); commit pelo
+  caminho normal; re-autoria por `git commit-tree` com a mesma árvore
+  (`GIT_AUTHOR_*` de dex-agent) e `git update-ref`; `git stash push -- PLAYBOOK.md
+  PLAYBOOK.index.json` para o rebase aceitar a árvore; push com
+  `--force-with-lease=<branch>:<sha revisado>`.
+
+- [CRG-RED-ENTRE-WORKTREES] pytest com arquivo de teste de outro worktree,
+  rodado a partir da main, importa o pacote do worktree do arquivo -> o RED
+  vira verde falso (deu 2 passed onde se esperava 1 failed). Faça em vez
+  disso: `PYTHONPATH=. python -B tools/js_form_probe.py --caso red_green` em
+  cada árvore, ou copie o teste para a árvore sob prova.
+
+- [CRG-SONDA-E-FERRAMENTA] Sonda em `/tmp` para provar comportamento do
+  parser -> Faça em vez disso: `reuso.py --receipt --para <arquivo>` antes, e
+  use ou lapide `tools/js_form_probe.py` (casos `red_green`, `forms`,
+  `typed_shadow`; ficha `js-form-probe`). Função da sonda não pode se chamar
+  `suite`: é nome de runner e o parser a transforma em nó de teste.
+
+- [CRG-EFFECT-4-TYPINGS] Conferir a API do `effect` -> typings em
+  `C:/CodexProjetos/DriveAutoTeste/.mimocode/node_modules/effect/dist/Effect.d.ts`
+  (4.0.0-beta.48; `fn` em l.15979, a raiz só exporta o namespace). Não há
+  cópia 3.x na máquina.
+
 - [CRG-REPO-PRIVADO] Publicar corte da casa -> confirmar `origin=dex-agent/dex-code-review-graph` privado e `upstream=tirth8205/code-review-graph`; revisar stage. Configs, backups, `.ppirtv` e caches locais estao ignorados. Origem publica nao e destino de push desta edicao.
 - [CRG-HIGIENE-README-EXEMPLOS] Aviso de path fixo no README -> abrir as linhas antes de alterar. `/home/user/project-a` e `C:\\path\\to\\...` sao exemplos genericos de instalacao; registrar a classificacao.
 

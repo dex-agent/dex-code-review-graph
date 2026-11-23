@@ -20,7 +20,7 @@
     "tools/playbook/generate-playbook.py: lido em parte (l.66-70, 229-240, 404-463) e executado (--check, --write); fora de sources porque nao responde a triade (--schema e --usage saem com exit 2). Dono do molde: skill dex-playbook-entrada (registry ISSUE-LOCAL-0045 e ISSUE-LOCAL-0051)",
     "guarda do toolsbook (reuso.py e ficha-gate.py em tools/dev/, toolsbook-guarda.json) nao implantada: a staging .agents/TEMP com 1842 arquivos bloquearia o gate (PENDENTES CRG-TEMP-RELOCAR e PEND-2026-11-15-TOOLSBOOK)",
     "git, python, pytest e ruff: usados como ferramentas de plataforma; sem ficha propria neste livro",
-    "harness diferencial de parser em Temp/16/crg-dep-20261123/bin (diffdump.py, diffcmp.py, mkprobes.py): criado na janela anterior sem recibo de reuso e sem triade, reutilizado no bloco do PR #6 para comparar 160 arquivos de seis corpora; fora de sources por nao ter triade e morar fora do repo. Decisao pendente: promover a tools/ com triade, ou LIXEIRA com MANIFEST"
+    "harness diferencial de parser em .agents/receipts/CRG-PR6-REVISAO-20261123/harness-diferencial/ (bin/diffdump.py, diffcmp.py e mkprobes.py, com data/ e probes/): criado na janela anterior sem recibo de reuso, reutilizado no bloco do PR #6 para comparar 160 arquivos de seis corpora e resgatado da Temp em 2026-11-23 a pedido do dono; so em disco, sem triade e sem teste, por isso fora de sources. Decisao pendente: promover a tools/ com triade, ou LIXEIRA com MANIFEST (PENDENTES CRG-HARNESS-DIFERENCIAL-SEM-FICHA-20261123)"
   ],
   "tools": [
     {
