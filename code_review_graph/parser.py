@@ -14911,6 +14911,56 @@ class CodeParser:
             return inner
         return None
 
+    def _js_effect_fn_body(self, call_node, imports: dict[str, str]):
+        callee = call_node.child_by_field_name("function")
+        arguments = call_node.child_by_field_name("arguments")
+        if callee is None or arguments is None:
+            return None
+        args = self._js_argument_values(arguments)
+        if not args or args[0].type not in self._JS_FUNC_VALUE_TYPES:
+            return None
+
+        if callee.type == "call_expression":
+            options = callee.child_by_field_name("arguments")
+            if options is None:
+                return None
+            options_args = self._js_argument_values(options)
+            if not options_args or options_args[0].type not in {"string", "template_string"}:
+                return None
+            callee = callee.child_by_field_name("function")
+            if callee is None:
+                return None
+
+        if callee.type == "member_expression":
+            receiver = callee.child_by_field_name("object")
+            method = callee.child_by_field_name("property")
+            if (
+                receiver is None or receiver.type != "identifier"
+                or method is None or method.text != b"fn"
+            ):
+                return None
+            binding = receiver
+            local = binding.text.decode("utf-8", errors="replace")
+            module = imports.get(local)
+            if module != "effect/Effect" and not (
+                module == "effect" and self._js_imported_symbol_name(local, imports) == "Effect"
+            ):
+                return None
+        elif callee.type == "identifier":
+            binding = callee
+            local = binding.text.decode("utf-8", errors="replace")
+            if (
+                imports.get(local) != "effect/Effect"
+                or self._js_imported_symbol_name(local, imports) != "fn"
+            ):
+                return None
+        else:
+            return None
+
+        if self._commonjs_binding(binding, binding.text) is not None:
+            return None
+        return args[0]
+
     def _js_in_test_body(
         self,
         nodes: list[NodeInfo],
@@ -14993,6 +15043,10 @@ class CodeParser:
                     # test's, as they were before wrapped components were indexed.
                     chain: list = []
                     wrapped = self._js_wrapped_function(sub, chain=chain)
+                    if wrapped is None and import_map:
+                        wrapped = self._js_effect_fn_body(sub, import_map)
+                        if wrapped is not None:
+                            chain.append(sub)
                     if wrapped is not None and not self._js_in_test_body(
                         nodes, file_path, enclosing_class, enclosing_func,
                     ):
@@ -17692,6 +17746,8 @@ class CodeParser:
             return pattern.text == name
         if pattern.type == "pair_pattern":
             return cls._js_pattern_binds(pattern.child_by_field_name("value"), name)
+        if pattern.type in {"required_parameter", "optional_parameter"}:
+            return cls._js_pattern_binds(pattern.child_by_field_name("pattern"), name)
         if pattern.type in ("assignment_pattern", "object_assignment_pattern"):
             return cls._js_pattern_binds(pattern.child_by_field_name("left"), name)
         return pattern.type in {
