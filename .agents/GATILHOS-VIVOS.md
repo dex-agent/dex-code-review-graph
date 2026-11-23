@@ -90,6 +90,14 @@ Atualização em 2026-11-23. Trilho:
   15 iguais; registro da reincidência no registry ISSUE-LOCAL-0063.
 - **E se?? só preciso conferir cópia contra um manifesto?** -> `sha256sum -c`
   com caminho relativo serve; a armadilha é comparar dois caminhos absolutos.
+- [TAMANHO-CITADO-UMA-MEDICAO-EM-BYTES] Citar tamanho de arquivo, pasta,
+  índice ou resíduo em recibo, ledger, livro ou fechamento -> medir UMA vez em
+  bytes, declarar a unidade (MB e GB decimais) e copiar o mesmo número para os
+  demais documentos do bloco; nunca converter de cabeça nem remedir em outra
+  unidade. -> Fonte/validação: regra do chato
+  `apontamento-publico-exige-medicao` (emenda de 2026-11-23, closeout
+  `valid=true`); a mesma pasta da Temp apareceu como 1,3 GB e 1,4 GB em dois
+  documentos do mesmo bloco.
 
 ## CRG-BUMP-UMA-FONTE
 
