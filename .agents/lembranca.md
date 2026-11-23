@@ -110,3 +110,5 @@
 - untangle-codebase-com-crg-regimes-20261117 -> [untangle-codebase-com-crg-regimes-20261117](memorias/untangle-codebase-com-crg-regimes-20261117-a458223d46a1.md) [[memorias/untangle-codebase-com-crg-regimes-20261117-a458223d46a1|untangle-codebase-com-crg-regimes-20261117]] #auto-memory/project ^untangle-codebase-com-crg-regimes-20261117-a458223d46a1
 
 - zcode-session-db-lookup-receita-20261117 -> [zcode-session-db-lookup-receita-20261117](memorias/zcode-session-db-lookup-receita-20261117-4f91200015de.md) [[memorias/zcode-session-db-lookup-receita-20261117-4f91200015de|zcode-session-db-lookup-receita-20261117]] #auto-memory/reference ^zcode-session-db-lookup-receita-20261117-4f91200015de
+
+- espelho-auto-memory-mjs-ferramenta-canonica -> [espelho-auto-memory-mjs-ferramenta-canonica](memorias/espelho-auto-memory-mjs-ferramenta-canonica-6c0a07084f49.md) [[memorias/espelho-auto-memory-mjs-ferramenta-canonica-6c0a07084f49|espelho-auto-memory-mjs-ferramenta-canonica]] #auto-memory/reference ^espelho-auto-memory-mjs-ferramenta-canonica-6c0a07084f49
