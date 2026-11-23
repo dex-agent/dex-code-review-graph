@@ -3,8 +3,8 @@
   "generated_by": "tools/playbook/generate-playbook.py",
   "authority": "derived_projection",
   "repo_name": "code-review-graph",
-  "sources_revision": "sha256:da80bbcab71123f97a33b35629cc7226cb5c2180ff677d5567d138f967ff8f5a",
-  "sent_revision": "sha256:da80bbcab71123f97a33b35629cc7226cb5c2180ff677d5567d138f967ff8f5a",
+  "sources_revision": "sha256:f00959628814403be97922df44ec8b0de112691f4b45d3fa42192a21904764bb",
+  "sent_revision": "sha256:f00959628814403be97922df44ec8b0de112691f4b45d3fa42192a21904764bb",
   "rules": [
     {
       "seal": "pb-0f77b1c2",
@@ -84,7 +84,7 @@
     },
     {
       "caminho": ".agents/napkin.md",
-      "sha256": "7c5d27337c61468eff74d2c9dc0b5461f9c1bb4ae498c233a69583f4099669e8",
+      "sha256": "93ad82275331d7f01b69a9f3e9bd2d64e91b74041d57fba27b842987b172f72c",
       "enviado": true
     },
     {

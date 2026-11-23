@@ -19,6 +19,14 @@ disso:`.
   abra falta de teste por esse relato sem conferir; o `pytest` do arquivo é a
   prova (ISSUE-LOCAL-0009).
 
+- [CRG-PLAYBOOK-CLONE-NOVO-BLOQUEIA] Em clone ou worktree novo, todo commit é
+  recusado com `DRIFT DETECTADO (exit 2)` pelo gate do Playbook -> Faça em
+  vez disso: rodar `python -B tools/playbook/generate-playbook.py --repo .
+  --write` antes de commitar nesse clone, sem levar a projeção regenerada
+  junto por engano. Causa: a projeção commitada só é fresca na árvore onde foi
+  gerada (hash de bytes brutos) e o hook vai como `100644`. Registry
+  ISSUE-LOCAL-0051.
+
 - [CRG-REPO-PRIVADO] Publicar corte da casa -> confirmar `origin=dex-agent/dex-code-review-graph` privado e `upstream=tirth8205/code-review-graph`; revisar stage. Configs, backups, `.ppirtv` e caches locais estao ignorados. Origem publica nao e destino de push desta edicao.
 - [CRG-HIGIENE-README-EXEMPLOS] Aviso de path fixo no README -> abrir as linhas antes de alterar. `/home/user/project-a` e `C:\\path\\to\\...` sao exemplos genericos de instalacao; registrar a classificacao.
 
