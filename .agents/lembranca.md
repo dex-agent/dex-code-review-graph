@@ -56,3 +56,57 @@
 - SONDA-E-SCRIPT-SEGUEM-DEX-TOOLSBOOK -> [Sonda e script de prova seguem o dex-toolsbook: reuso antes, triade, ficha; ferramenta mora em tools](memorias/sonda-e-script-de-prova-seguem-o-dex-toolsbook-reus-1dfc5c64c85d.md) [[memorias/sonda-e-script-de-prova-seguem-o-dex-toolsbook-reus-1dfc5c64c85d|Sonda e script de prova seguem o dex-toolsbook: reuso antes, triade, ficha; ferramenta mora em tools]] #crg/ferramenta #dex-toolsbook/regra #agente/comportamento ^sonda-e-script-de-prova-seguem-o-dex-toolsbook-reus-1dfc5c64c85d
 
 - RELATORIO-DISTINGUE-ALTERADO-DE-CRIADO -> [Relatorio distingue arquivo alterado de ferramenta criada](memorias/relatorio-distingue-arquivo-alterado-de-ferramenta-02e1d83b5594.md) [[memorias/relatorio-distingue-arquivo-alterado-de-ferramenta-02e1d83b5594|Relatorio distingue arquivo alterado de ferramenta criada]] #agente/comportamento #relatorio/regra ^relatorio-distingue-arquivo-alterado-de-ferramenta-02e1d83b5594
+
+- artefato-em-temp-exige-destino-duravel-no-mesmo-bloco -> [artefato-em-temp-exige-destino-duravel-no-mesmo-bloco](memorias/artefato-em-temp-exige-destino-duravel-no-mesmo-blo-7fcf5ea2eb43.md) [[memorias/artefato-em-temp-exige-destino-duravel-no-mesmo-blo-7fcf5ea2eb43|artefato-em-temp-exige-destino-duravel-no-mesmo-bloco]] #auto-memory/feedback ^artefato-em-temp-exige-destino-duravel-no-mesmo-blo-7fcf5ea2eb43
+
+- crg-240dex-merge-fechado-20261115 -> [crg-240dex-merge-fechado-20261115](memorias/crg-240dex-merge-fechado-20261115-aa9b6b16dbff.md) [[memorias/crg-240dex-merge-fechado-20261115-aa9b6b16dbff|crg-240dex-merge-fechado-20261115]] #auto-memory/project ^crg-240dex-merge-fechado-20261115-aa9b6b16dbff
+
+- crg-35-comandos-prompts-modelos-20261119 -> [crg-35-comandos-prompts-modelos-20261119](memorias/crg-35-comandos-prompts-modelos-20261119-b150c10bbec7.md) [[memorias/crg-35-comandos-prompts-modelos-20261119-b150c10bbec7|crg-35-comandos-prompts-modelos-20261119]] #auto-memory/reference ^crg-35-comandos-prompts-modelos-20261119-b150c10bbec7
+
+- crg-cura-ci-8-classes-20261119 -> [crg-cura-ci-8-classes-20261119](memorias/crg-cura-ci-8-classes-20261119-4f3ee30d7254.md) [[memorias/crg-cura-ci-8-classes-20261119-4f3ee30d7254|crg-cura-ci-8-classes-20261119]] #auto-memory/project ^crg-cura-ci-8-classes-20261119-4f3ee30d7254
+
+- crg-grafo-registry-scripts-20261117 -> [crg-grafo-registry-scripts-20261117](memorias/crg-grafo-registry-scripts-20261117-5fe109962211.md) [[memorias/crg-grafo-registry-scripts-20261117-5fe109962211|crg-grafo-registry-scripts-20261117]] #auto-memory/project ^crg-grafo-registry-scripts-20261117-5fe109962211
+
+- crg-path-240-oficial -> [crg-path-240-oficial](memorias/crg-path-240-oficial-af4c4c133542.md) [[memorias/crg-path-240-oficial-af4c4c133542|crg-path-240-oficial]] #auto-memory/project ^crg-path-240-oficial-af4c4c133542
+
+- crg-piloto-adapter-veredito-20261114 -> [crg-piloto-adapter-veredito-20261114](memorias/crg-piloto-adapter-veredito-20261114-3423b9460083.md) [[memorias/crg-piloto-adapter-veredito-20261114-3423b9460083|crg-piloto-adapter-veredito-20261114]] #auto-memory/project ^crg-piloto-adapter-veredito-20261114-3423b9460083
+
+- crg-pr6-effect-fn-revisao-20261123 -> [crg-pr6-effect-fn-revisao-20261123](memorias/crg-pr6-effect-fn-revisao-20261123-a715e7b80c99.md) [[memorias/crg-pr6-effect-fn-revisao-20261123-a715e7b80c99|crg-pr6-effect-fn-revisao-20261123]] #auto-memory/project ^crg-pr6-effect-fn-revisao-20261123-a715e7b80c99
+
+- crg-versao-uma-fonte-gates-cegos-20261123 -> [crg-versao-uma-fonte-gates-cegos-20261123](memorias/crg-versao-uma-fonte-gates-cegos-20261123-675313426b00.md) [[memorias/crg-versao-uma-fonte-gates-cegos-20261123-675313426b00|crg-versao-uma-fonte-gates-cegos-20261123]] #auto-memory/project ^crg-versao-uma-fonte-gates-cegos-20261123-675313426b00
+
+- dado-herdado-de-resumo-e-hipotese-reexecutar -> [dado-herdado-de-resumo-e-hipotese-reexecutar](memorias/dado-herdado-de-resumo-e-hipotese-reexecutar-c5be2e1ed932.md) [[memorias/dado-herdado-de-resumo-e-hipotese-reexecutar-c5be2e1ed932|dado-herdado-de-resumo-e-hipotese-reexecutar]] #auto-memory/feedback ^dado-herdado-de-resumo-e-hipotese-reexecutar-c5be2e1ed932
+
+- dex-audio-motor-contrato-novo-20261121 -> [dex-audio-motor-contrato-novo-20261121](memorias/dex-audio-motor-contrato-novo-20261121-afec3eca0d8f.md) [[memorias/dex-audio-motor-contrato-novo-20261121-afec3eca0d8f|dex-audio-motor-contrato-novo-20261121]] #auto-memory/reference ^dex-audio-motor-contrato-novo-20261121-afec3eca0d8f
+
+- dex-ignore-auditoria-registry-20261114 -> [dex-ignore-auditoria-registry-20261114](memorias/dex-ignore-auditoria-registry-20261114-58706b71e0bd.md) [[memorias/dex-ignore-auditoria-registry-20261114-58706b71e0bd|dex-ignore-auditoria-registry-20261114]] #auto-memory/project ^dex-ignore-auditoria-registry-20261114-58706b71e0bd
+
+- entropia-conserta-na-descoberta-20261116 -> [entropia-conserta-na-descoberta-20261116](memorias/entropia-conserta-na-descoberta-20261116-6b6c163b7d99.md) [[memorias/entropia-conserta-na-descoberta-20261116-6b6c163b7d99|entropia-conserta-na-descoberta-20261116]] #auto-memory/feedback ^entropia-conserta-na-descoberta-20261116-6b6c163b7d99
+
+- github-auditoria-executada-crg-20261119 -> [github-auditoria-executada-crg-20261119](memorias/github-auditoria-executada-crg-20261119-e0e5ca2698f2.md) [[memorias/github-auditoria-executada-crg-20261119-e0e5ca2698f2|github-auditoria-executada-crg-20261119]] #auto-memory/project ^github-auditoria-executada-crg-20261119-e0e5ca2698f2
+
+- github-auditoria-repo-online-prompt-20261119 -> [github-auditoria-repo-online-prompt-20261119](memorias/github-auditoria-repo-online-prompt-20261119-e5a03f701696.md) [[memorias/github-auditoria-repo-online-prompt-20261119-e5a03f701696|github-auditoria-repo-online-prompt-20261119]] #auto-memory/reference ^github-auditoria-repo-online-prompt-20261119-e5a03f701696
+
+- identidade-git-dex-agent-rewrite-20261121 -> [identidade-git-dex-agent-rewrite-20261121](memorias/identidade-git-dex-agent-rewrite-20261121-0cd25611ea22.md) [[memorias/identidade-git-dex-agent-rewrite-20261121-0cd25611ea22|identidade-git-dex-agent-rewrite-20261121]] #auto-memory/project ^identidade-git-dex-agent-rewrite-20261121-0cd25611ea22
+
+- merge-check-gatilho-prompt-pronto-20261116 -> [merge-check-gatilho-prompt-pronto-20261116](memorias/merge-check-gatilho-prompt-pronto-20261116-49f29c8892ec.md) [[memorias/merge-check-gatilho-prompt-pronto-20261116-49f29c8892ec|merge-check-gatilho-prompt-pronto-20261116]] #auto-memory/project ^merge-check-gatilho-prompt-pronto-20261116-49f29c8892ec
+
+- ppirtv-mcp-stdio-harness-review-envelope -> [ppirtv-mcp-stdio-harness-review-envelope](memorias/ppirtv-mcp-stdio-harness-review-envelope-9e3fbefacaae.md) [[memorias/ppirtv-mcp-stdio-harness-review-envelope-9e3fbefacaae|ppirtv-mcp-stdio-harness-review-envelope]] #auto-memory/reference ^ppirtv-mcp-stdio-harness-review-envelope-9e3fbefacaae
+
+- ppirtv-tracker-0012-attribution-verdict-20261117 -> [ppirtv-tracker-0012-attribution-verdict-20261117](memorias/ppirtv-tracker-0012-attribution-verdict-20261117-5e9c6a2c805e.md) [[memorias/ppirtv-tracker-0012-attribution-verdict-20261117-5e9c6a2c805e|ppirtv-tracker-0012-attribution-verdict-20261117]] #auto-memory/project ^ppirtv-tracker-0012-attribution-verdict-20261117-5e9c6a2c805e
+
+- reconhecimento-code-review-graph -> [reconhecimento-code-review-graph](memorias/reconhecimento-code-review-graph-641357db608d.md) [[memorias/reconhecimento-code-review-graph-641357db608d|reconhecimento-code-review-graph]] #auto-memory/project ^reconhecimento-code-review-graph-641357db608d
+
+- registry-governanca-3505-guarda-plaquinhas -> [registry-governanca-3505-guarda-plaquinhas](memorias/registry-governanca-3505-guarda-plaquinhas-c9be73967e8f.md) [[memorias/registry-governanca-3505-guarda-plaquinhas-c9be73967e8f|registry-governanca-3505-guarda-plaquinhas]] #auto-memory/project ^registry-governanca-3505-guarda-plaquinhas-c9be73967e8f
+
+- regra-oraculo-solid-fechamento-analise-lentes-go-padrao -> [regra-oraculo-solid-fechamento-analise-lentes-go-padrao](memorias/regra-oraculo-solid-fechamento-analise-lentes-go-pa-0e3723b2e1f9.md) [[memorias/regra-oraculo-solid-fechamento-analise-lentes-go-pa-0e3723b2e1f9|regra-oraculo-solid-fechamento-analise-lentes-go-padrao]] #auto-memory/feedback ^regra-oraculo-solid-fechamento-analise-lentes-go-pa-0e3723b2e1f9
+
+- relatorios-distinguem-arquivo-alterado-de-ferramenta-criada -> [relatorios-distinguem-arquivo-alterado-de-ferramenta-criada](memorias/relatorios-distinguem-arquivo-alterado-de-ferrament-2d1ead95e14a.md) [[memorias/relatorios-distinguem-arquivo-alterado-de-ferrament-2d1ead95e14a|relatorios-distinguem-arquivo-alterado-de-ferramenta-criada]] #auto-memory/feedback ^relatorios-distinguem-arquivo-alterado-de-ferrament-2d1ead95e14a
+
+- revisao-adversarial-workflow-prompt-20261117 -> [revisao-adversarial-workflow-prompt-20261117](memorias/revisao-adversarial-workflow-prompt-20261117-1ad0d1b00791.md) [[memorias/revisao-adversarial-workflow-prompt-20261117-1ad0d1b00791|revisao-adversarial-workflow-prompt-20261117]] #auto-memory/reference ^revisao-adversarial-workflow-prompt-20261117-1ad0d1b00791
+
+- triade-cli-argparse-required-e-library-importada -> [triade-cli-argparse-required-e-library-importada](memorias/triade-cli-argparse-required-e-library-importada-6ab419a079fa.md) [[memorias/triade-cli-argparse-required-e-library-importada-6ab419a079fa|triade-cli-argparse-required-e-library-importada]] #auto-memory/project ^triade-cli-argparse-required-e-library-importada-6ab419a079fa
+
+- untangle-codebase-com-crg-regimes-20261117 -> [untangle-codebase-com-crg-regimes-20261117](memorias/untangle-codebase-com-crg-regimes-20261117-a458223d46a1.md) [[memorias/untangle-codebase-com-crg-regimes-20261117-a458223d46a1|untangle-codebase-com-crg-regimes-20261117]] #auto-memory/project ^untangle-codebase-com-crg-regimes-20261117-a458223d46a1
+
+- zcode-session-db-lookup-receita-20261117 -> [zcode-session-db-lookup-receita-20261117](memorias/zcode-session-db-lookup-receita-20261117-4f91200015de.md) [[memorias/zcode-session-db-lookup-receita-20261117-4f91200015de|zcode-session-db-lookup-receita-20261117]] #auto-memory/reference ^zcode-session-db-lookup-receita-20261117-4f91200015de

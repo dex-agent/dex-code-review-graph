@@ -61,3 +61,7 @@ Ler estado de PR, checks e logs de run do GitHub pela linha de comando
 Quando: Revisar PR ou CI de repo do fork; conferir autor e assinatura de commit; ler resultado de run vigiado
 
 Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## parser-diff (candidate)
+
+Provar que uma mudanca no parser so mexe onde diz que mexe: diff de nos e arestas, por arquivo, entre duas arvores do CRG sobre os mesmos corpora
+Quando: Revisar PR que muda o parser; comparar arvore ou wheel novo contra o atual sobre um corpus local, inclusive privado

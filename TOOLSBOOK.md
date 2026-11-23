@@ -21,13 +21,16 @@ Inspecionado:
 - verificar-teto-cc.py: parser.py da main e do PR #6, e o proprio js_form_probe.py
 - code-review-graph build e detect-changes --base f86f9920 no worktree do PR #6: risco 0.85, 3 lacunas de teste
 - gh 2.93.0: pr view, pr checks, run view --log-failed e api commits, sempre com -R
+- tools/parser_diff.py: criado em 2026-11-23 com recibo de reuso, promovido do harness da Temp; lido e executado (dump, cmp, --expect-identical, --json e a triade) sobre corpus de teste e sobre os despejos do PR #6; 13 testes, ruff e verificar-teto-cc limpos
+- consciencia-memorias/scripts/espelhar-auto-memory.mjs: dry-run e apply com CWD no repo (27 auto-memories espelhadas, 0 erros); validate-memory-batch.py 27/27 validos
+- dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py e arquivar-temp.py: scan de fechamento e a cura da superficie TEMP/TMP (1842 arquivos relocados com MANIFEST)
 
 Nao inspecionado:
 - scripts/*.py do upstream (8 arquivos) e .agents/scripts: nao examinados neste bloco
 - tools/playbook/generate-playbook.py: lido em parte (l.66-70, 229-240, 404-463) e executado (--check, --write); fora de sources porque nao responde a triade (--schema e --usage saem com exit 2). Dono do molde: skill dex-playbook-entrada (registry ISSUE-LOCAL-0045 e ISSUE-LOCAL-0051)
-- guarda do toolsbook (reuso.py e ficha-gate.py em tools/dev/, toolsbook-guarda.json) nao implantada: a staging .agents/TEMP com 1842 arquivos bloquearia o gate (PENDENTES CRG-TEMP-RELOCAR e PEND-2026-11-15-TOOLSBOOK)
+- guarda do toolsbook (reuso.py e ficha-gate.py em tools/dev/, toolsbook-guarda.json) nao implantada (PENDENTES PEND-2026-11-15-TOOLSBOOK); o bloqueador da staging .agents/TEMP saiu em 2026-11-23: os 1842 arquivos foram relocados por classe para .agents/EVIDENCIAS/ARQUIVO-TEMP com MANIFEST
 - git, python, pytest e ruff: usados como ferramentas de plataforma; sem ficha propria neste livro
-- harness diferencial de parser em .agents/receipts/CRG-PR6-REVISAO-20261123/harness-diferencial/ (bin/diffdump.py, diffcmp.py e mkprobes.py, com data/ e probes/): criado na janela anterior sem recibo de reuso, reutilizado no bloco do PR #6 para comparar 160 arquivos de seis corpora e resgatado da Temp em 2026-11-23 a pedido do dono; so em disco, sem triade e sem teste, por isso fora de sources. Decisao pendente: promover a tools/ com triade, ou LIXEIRA com MANIFEST (PENDENTES CRG-HARNESS-DIFERENCIAL-SEM-FICHA-20261123)
+- harness diferencial de parser (resgate da Temp): os dois scripts de comparacao (diffdump.py, diffcmp.py) foram promovidos a tools/parser_diff.py (ficha parser-diff) em 2026-11-23 e a copia em .agents/receipts/CRG-PR6-REVISAO-20261123/harness-diferencial/bin/ e apenas historico. Ficam so em disco, como evidencia da revisao do PR #6: mkprobes.py (gerador descartavel das 17 sondas do PR), data/ (despejos e respostas da API do GitHub) e probes/
 
 ## release-version
 
@@ -301,7 +304,7 @@ No proximo PR de parser: confirmar o segundo uso e passar a reviewed, ou aposent
 
 **not_for:**
 - Julgar a arvore: a sonda observa e imprime, o veredito e da sessao
-- Comparar arquivos de um repositorio consumidor: isso e papel de um harness diferencial, ainda sem ficha
+- Comparar arquivos de um repositorio consumidor: isso e papel de tools/parser_diff.py (ficha parser-diff)
 - Rodar com -I ou fora da raiz da arvore sob prova
 
 **evidence:**
@@ -500,3 +503,52 @@ Na proxima troca de versao do gh
 - gh, dono GitHub CLI, no PATH, 2.93.0 (2026-05-27), usado em 2026-11-23 no PR #6 e nos runs 45228997839 e 45249810297
 
 **Fontes examinadas:**
+
+## parser-diff
+
+**Estado autorado:** candidate
+
+**purpose:**
+Provar que uma mudanca no parser so mexe onde diz que mexe: diff de nos e arestas, por arquivo, entre duas arvores do CRG sobre os mesmos corpora
+
+**when:**
+Revisar PR que muda o parser; comparar arvore ou wheel novo contra o atual sobre um corpus local, inclusive privado
+
+**how:**
+python -B tools/parser_diff.py dump <raiz do CRG> base.json <rotulo>=<pasta> [...]; repetir com a outra raiz para candidato.json; python -B tools/parser_diff.py cmp base.json candidato.json [<rotulo> ...] [--json] [--expect-identical <rotulos>]. dump roda sem python -I.
+
+**inputs:**
+Duas razes de arvores do CRG (so no dump) e pastas de corpus locais; nenhum clone nem rede
+
+**outputs:**
+dump: arquivo JSON e resumo no stdout; cmp: uma linha de resumo por rotulo mais os arquivos alterados; exit 0, 1 (gate) ou 2 (uso invalido, arvore nao importavel, despejo ilegivel)
+
+**risks:**
+Somente leitura nas arvores e nos corpora; escreve so o arquivo de saida do dump. Candidata: promovida do harness da revisao do PR #6 em 2026-11-23, ainda sem segundo uso fora deste bloco. O teste carrega o modulo por spec_from_file_location, como tests/test_documentation.py faz com release_version (ISSUE-LOCAL-0009).
+
+**owner:**
+casa dex-agent; Trilho .agents/PLAN-TASKS/2026-11-23-revisao-pr6.md
+
+**next_review:**
+No proximo PR de parser: confirmar o segundo uso e passar a reviewed, ou aposentar
+
+**capabilities:**
+- dump: despeja nos e arestas que o parser de UMA arvore produz sobre corpora JS/TS rotulados (pula node_modules e .git; falha de parse vira dado, nao crash)
+- cmp: compara dois despejos por rotulo e arquivo; lista o que entrou e o que saiu
+- --expect-identical <rotulos>: gate; rotulo que mudou ou que falta devolve exit 1
+- --json: relatorios por rotulo em JSON; triade --help, --schema (crg.parser_diff.v1) e --usage
+
+**not_for:**
+- Comparar propriedades agregadas de repositorios publicos fixados: isso e tests/test_real_repo_corpus.py (precisa de clone e rede)
+- Medir tempo, qualidade de resolucao de arestas ou cobertura de testes: aqui entra so o que o parser extraiu de cada arquivo
+- Corpora que mudam de pasta entre os dois despejos: o caminho absoluto faz parte do nome dos nos, entao o corpus tem de ser a mesma pasta
+
+**evidence:**
+- Recibo de reuso antes de criar: .agents/receipts/reuso/20261123T210732Z-comparar-saida-parser-duas.json; vizinho aberto: tests/real_repo_corpus.py (doze propriedades agregadas de oito repos fixados), proposito diferente
+- Equivalencia com o harness de origem: cmp sobre os despejos guardados da revisao do PR #6 (main 49caadcf x PR 35ecc919, 160 arquivos de seis corpora) reproduz as seis linhas de resumo do README; aidocs +37/-0 em 20 arquivos, fixtures/ppirtv/vscode identicos
+- Gate: --expect-identical fixtures,ppirtv,vscode devolve exit 0; controle positivo --expect-identical aidocs devolve exit 1
+- tests/test_parser_diff.py: 13 passed (2026-11-23); um deles pegou despejo sem a chave files derrubando a ferramenta com traceback, corrigido para exit 2
+- Medida: verificar-teto-cc.py da casa com CC maximo 8; ruff check limpo
+
+**Fontes examinadas:**
+- `tools/parser_diff.py` — SHA256 `09d78b6e3733f2a503e7ae92f5d5e125a929e23ea0f01a7e6f135efc72d538d5`

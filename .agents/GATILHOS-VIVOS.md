@@ -10,6 +10,59 @@ este arquivo quando um gatilho mudar de estado (resolvido, supersedido ou novo
 material). Achado Graphify só vira fato após abrir a fonte (`source: graphify`
 até lá).
 
+## Regras do bloco do PR #6 (promoção do napkin, 2026-11-23)
+
+Atualização em 2026-11-23. Trilho: `.agents/PLAN-TASKS/2026-11-23-revisao-pr6.md`.
+
+- [ARTEFATO-EM-TEMP-EXIGE-DESTINO-DURAVEL] Pasta, script, worktree ou clone
+  criado em `/tmp`, `%TEMP%` ou `mktemp -d` -> decidir o destino na hora, no
+  mesmo bloco: ferramenta em `tools/` com ficha, evidência em
+  `.agents/receipts/`, ou descarte declarado; gravar o aprendizado antes de
+  seguir. No fechamento, conferir `git worktree list` e a Temp do sistema: o
+  `/tmp` do Git Bash nesta máquina é `%LOCALAPPDATA%\Temp\16\`. ->
+  Fonte/validação: memória global `ARTEFATO-EM-TEMP-EXIGE-DESTINO-DURAVEL`;
+  `tools/parser_diff.py` como exemplo de promoção; registry ISSUE-LOCAL-0053
+  (o fiscal de fechamento ainda é cego para a Temp do sistema).
+- **E se??** o artefato já está na Temp e o bloco acabou? -> Resgatar antes de
+  qualquer limpeza, declarar destino durável ou descarte, e só então apagar;
+  apagar dado não atribuído exige palavra do dono.
+- [CRG-RECEIPTS-NAO-RASTREAR] Commit de evidência sob `.agents/receipts/` ->
+  nunca `git add -f`: a guarda
+  `tests/test_install_outputs_are_ignored.py::test_no_tracked_file_is_ignored`
+  proíbe arquivo rastreado em caminho ignorado e derruba a main. Evidência
+  pequena que precisa viajar ganha exceção `!` explícita no `.gitignore`, no
+  mesmo commit. -> Fonte/validação: run 45256809972 (vermelho) e cura
+  `b9976bd3` (run 45258942044); antes do push de commit com `.py` rastreado,
+  rodar `python -B -m pytest tests/test_install_outputs_are_ignored.py
+  tests/test_documentation.py -q`.
+- [DADO-HERDADO-DE-RESUMO-E-HIPOTESE] Número, veredito ou achado que veio de
+  resumo de contexto, de memória ou de outra sessão -> re-executar a evidência
+  nesta sessão antes de usar em veredito ou fechamento; o que a fonte refuta
+  entra como REFUTADO, não some. -> Fonte/validação: memória global
+  `DADO-HERDADO-DE-RESUMO-E-HIPOTESE`; no PR #6 derrubou 1 achado, 2 números e
+  1 fato.
+- [IDENTIDADE-GIT-SEMPRE-DEX-AGENT] Commit de outra máquina com autor
+  diferente de `dex-agent <dex-agent@proton.me>` -> re-autorar antes de
+  publicar (plumbing `commit-tree` com a árvore idêntica e a data original,
+  depois `--force-with-lease`); commit de terceiro de verdade não se
+  re-autora. -> Fonte/validação: memória
+  `identidade-git-dex-agent-rewrite-20261121`; commits `a9e490ae` e `d3771a6b`
+  do PR #6.
+- **E se??** a main já recebeu o commit com o email errado? -> Não reescrever
+  a main publicada por conta própria: registrar em PENDENTES e levar a
+  decisão ao dono (o rewrite de 2026-11-21 foi escolha dele).
+- [CRG-RED-ENTRE-WORKTREES] RED de teste que não reproduz com duas árvores do
+  mesmo repo -> pytest de uma árvore pode importar o pacote de outra; provar
+  RED→GREEN por sonda direta na árvore (`PYTHONPATH=<árvore> python -B
+  tools/js_form_probe.py --rotulo <árvore>`), nunca por pytest cruzado entre
+  worktrees. -> Fonte/validação: napkin `[CRG-RED-ENTRE-WORKTREES]`;
+  `tools/js_form_probe.py` (ficha `js-form-probe`).
+- [CRG-SONDA-E-FERRAMENTA] Script de prova ou sonda de parser -> antes de
+  criar, `reuso.py` com recibo; ferramenta única em `tools/` com tríade
+  (`--help`, `--schema`, `--usage`), teste e ficha no `TOOLSBOOK.json`; nunca
+  scripts soltos em `/tmp`. -> Fonte/validação: `tools/js_form_probe.py` e
+  `tools/parser_diff.py`; recibos em `.agents/receipts/reuso/`.
+
 ## CRG-BUMP-UMA-FONTE
 
 Atualização em 2026-11-23. Trilho:

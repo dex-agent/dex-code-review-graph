@@ -17,3 +17,5 @@
 - [Referências da receita CRG](workflow/code-review-graph-manutencao-iterativa-com-evidencia/references/INDEX.md) — configuração e histórico por corte.
 - [Exemplos do template](workflow/code-review-graph-manutencao-iterativa-com-evidencia/examples/INDEX.md) — fixtures de proveniência.
 - [Perfis do template](workflow/code-review-graph-manutencao-iterativa-com-evidencia/profiles/INDEX.md) — perfil opcional do medidor.
+- [Trilhos](.agents/PLAN-TASKS/INDEX.md) — plano e estado de cada bloco de trabalho; a retomada curta fica em `.agents/ACTIVE.md` e `.agents/HANDOFF.md`.
+- [Mapas](.agents/MAPAS/INDEX.md) — capacidades, decisões e dependências comprovadas por corte.
