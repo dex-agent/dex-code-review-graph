@@ -3,6 +3,14 @@
 Runbook operacional curto. Item forte = `[LOCALIZADOR] regra -> Faça em vez
 disso:`.
 
+- [GATE-SEM-FAIL-FAST] Gate ou varredura que quebra no meio de um comando
+  encadeado não barra o passo seguinte: em 2026-11-23 a varredura de
+  credencial quebrou no próprio controle positivo e o mesmo comando seguiu
+  com `git add`, commit e push; o push saiu sem a varredura (rodada depois,
+  0 casamentos em 42 linhas) -> Faça em vez disso: gate e ação irreversível
+  em passos separados, ou encadeados com `&&` / `set -e`, para que gate com
+  exit diferente de zero pare a cadeia antes do `git add`.
+
 - [CRG-NODE-TEST-LEXICAL] Para testar o vínculo de um runner CommonJS, confira o escopo em ECMAScript e a API `node:test` no mentor Node. Use as [referências abertas e a prova de sombra](receipts/crg-commonjs-tests-20261114/INDEX.md#referências-da-linguagem).
 
 - [CRG-BUMP-UMA-FONTE] Bump de versão que mexeu só no `pyproject.toml` (CI
