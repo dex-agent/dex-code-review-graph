@@ -289,7 +289,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: tirth8205/code-review-graph@v2.4.0+dex.3
+      - uses: tirth8205/code-review-graph@v2.4.0+dex.4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```

@@ -2,13 +2,13 @@
 
 Release highlights by version. The full changelog is in [CHANGELOG.md](../CHANGELOG.md).
 
-## Unreleased
+## v2.4.0+dex.4 (Current)
 
 - **`Effect.fn` functions are indexed**: TypeScript functions created with
   `Effect.fn` get their own node, with the calls in their body attributed to
   them. A graph built before this needs a full `code-review-graph build`.
 
-## v2.4.0+dex.3 (Current)
+## v2.4.0+dex.3
 
 - **`merge-check` runs on Windows**: the suite command is resolved the way a
   shell would (`shutil.which` over PATH and PATHEXT), so `merge-check -- npm test`

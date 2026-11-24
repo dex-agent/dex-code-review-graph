@@ -8,7 +8,7 @@ from .context_savings import (
     format_context_savings,
 )
 
-__version__ = "2.4.0+dex.3"
+__version__ = "2.4.0+dex.4"
 
 __all__ = [
     "__version__",

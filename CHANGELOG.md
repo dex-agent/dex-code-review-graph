@@ -4,12 +4,6 @@
 
 ### Added
 
-- Dex local edition: TypeScript functions created with `Effect.fn` are indexed,
-  with the calls in their body attributed to them: `Effect.fn(body)`,
-  `Effect.fn("name")(body)` and an `fn` imported from `effect/Effect`. A graph
-  built before this needs a full `code-review-graph build`; `update` re-parses
-  only the files that changed.
-
 - Dex local edition: `detect-changes --files PATH ...` scopes change analysis
   to selected files and returns an empty JSON result when the scope has no
   changes.
@@ -176,6 +170,14 @@
   its analysis; it leaves a notice naming both commits.
 - A call that could mean several functions now stores them in sorted order, so
   the same code gives the same graph whatever order its files are read in.
+
+## [2.4.0+dex.4] - 2026-11-23
+
+Indexing: TypeScript functions created with `Effect.fn` are indexed, with the
+calls in their body attributed to them: `Effect.fn(body)`,
+`Effect.fn("name")(body)` and an `fn` imported from `effect/Effect`. A graph
+built before this needs a full `code-review-graph build`; `update` re-parses
+only the files that changed.
 
 ## [2.4.0+dex.3] - 2026-11-22
 
