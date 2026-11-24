@@ -463,6 +463,9 @@ SCALING_AND_TOKEN_EFFICIENCY_PLAN.md
 /.agents/receipts/rewrite-20261121/*
 !/.agents/receipts/rewrite-20261121/crg-commit-map.txt
 !/.agents/receipts/workflow-review.json
+!/.agents/receipts/CRG-PATH-DEX4-20261123/
+/.agents/receipts/CRG-PATH-DEX4-20261123/*
+!/.agents/receipts/CRG-PATH-DEX4-20261123/INDEX.md
 
 # Local wheel build output (2.4.0-dex evidence stays in receipts)
 dist-240dex/

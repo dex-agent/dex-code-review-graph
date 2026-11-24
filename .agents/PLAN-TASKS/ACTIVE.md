@@ -1,5 +1,6 @@
 # Trilho ativo
 
+- [Sincronizar o PATH com a main: 2.4.0+dex.4](2026-11-23-sync-path-dex4.md) | `sync-path-dex4-20261123` | **em execução 2026-11-23**: PATH em 2.4.0+dex.4 com a feature do PR #6; falta publicar o rastro, CI e fiscal.
 - [Higiene, staging e livro](2026-11-23-higiene-staging-toolsbook.md) | `higiene-staging-toolsbook-20261123` | **concluída com ressalvas 2026-11-23**: higiene medida, Temp da máquina inventariada e triada, 15 arquivos do merge recolhidos, livro do CRG atualizado, ISSUE-LOCAL-0062 no registry; ressalvas no Trilho e em PENDENTES (`CRG-RESIDUO-FORA-DO-REPO-20261123`).
 - [Versão uma fonte](2026-11-23-versao-uma-fonte.md) | `versao-uma-fonte-20261123` | **concluída com ressalvas 2026-11-23**: `b45272a9`, CI run 45243420297 success, `doctor` All good; ressalvas no Trilho e no TRACKER 0008.
 - [ISSUE-LOCAL-0006 WinError 2](2026-11-21-issue0006-winerror2-spawn-npm.md) | `issue0006-winerror2-spawn-npm-windows` | **concluído 2026-11-21**: verdict PRONTO.
