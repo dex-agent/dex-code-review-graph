@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: 'EM_EXECUCAO'
+status: 'CONCLUIDO_COM_RESSALVAS'
 owner: 'sessao:zcode (CRG)'
 date: '2026-11-23'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -192,6 +192,6 @@ execution_prompt: |
 - [x] A-02 — commit do bump e wheel do HEAD
 - [x] A-03 — troca do PATH com rollback guardado
 - [x] A-04 — prova na cópia instalada e rebuild do índice
-- [ ] A-05 — consumidores, ledger, publicação, CI e fiscal
+- [x] A-05 — consumidores, ledger, publicação, CI e fiscal
 
-Recibos: `.agents/receipts/CRG-PATH-DEX4-20261123/`.
+Recibos: `.agents/receipts/CRG-PATH-DEX4-20261123/`. Fiscal no HEAD final: `.agents/receipts/fechamento-20261124-sync-path.json` (só em disco). Provas ER-08/ER-09/ER-10 colhidas em 2026-11-24 no HEAD `83d51548` (CI success nos quatro heads empurrados: `4003ac7e`, `f0b0707c`, `83d51548`; fiscal default vermelho 0). Ressalva: 4 superfícies n-a no modo default (13–15 sem avaliação formal de reuso deste bloco — a troca seguiu a receita existente `fechamento-corte`); P1 `CRG-CREDENCIAL-BACKUP` segue aberta, decisão do dono.
