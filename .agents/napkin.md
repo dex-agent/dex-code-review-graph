@@ -3,6 +3,14 @@
 Runbook operacional curto. Item forte = `[LOCALIZADOR] regra -> Faça em vez
 disso:`.
 
+- [HANDOFF-DATA-DEPOIS-DA-MEIA-NOITE] Bloco longo que atravessa a meia-noite
+  deixa o rodapé do HANDOFF com a data da abertura e o fiscal `memoria-viva`
+  acusa `stale` ("declarado em 23/11 < último commit 24/11"); medido no fecho
+  do Trilho `sync-path-dex4`, corrigido no commit `83d51548` -> Faça em vez
+  disso: ao gravar HANDOFF em bloco que pode virar dia, usar a data da última
+  edição real no rodapé e conferir `git log -1 --format=%cs` antes de declarar
+  pronto; se divergir, corrigir e commitar, não argumentar com o fiscal.
+
 - [GATE-SEM-FAIL-FAST] Gate ou varredura que quebra no meio de um comando
   encadeado não barra o passo seguinte: em 2026-11-23 a varredura de
   credencial quebrou no próprio controle positivo e o mesmo comando seguiu

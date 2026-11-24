@@ -10,6 +10,32 @@ este arquivo quando um gatilho mudar de estado (resolvido, supersedido ou novo
 material). Achado Graphify só vira fato após abrir a fonte (`source: graphify`
 até lá).
 
+## Regras de fechamento e memória — ponteiros para o global (GO do dono)
+
+- [APRENDIZADO-MEMORAVEL-CONTINUO] **Quem:** sessão que fecha bloco material.
+  **O quê:** manter `$garimpeiro` + `$estacionamento` + `$investigador-socratico`
+  ativos; achado forte gravar sem permissão via `dex-memoria` (L1 → 1 destino
+  L2/L3) + validar conexão com `consciencia-memorias`; NOTAVEL citável em
+  `$dex-notas-citaveis` pelo gate; tropeco tático no napkin. **Por quê:** o dono
+  não quer repetir o pedido; regra gravada no chat não é aplicada. **Onde:**
+  fonte canônica `~/.agents/AGENTS.md` (plaquinha com mesmo localizador) e
+  contrato `~/.agents/CONTRACTS/APRENDIZADO-MEMORAVEL-CONTINUO.md`. **Quando:**
+  abertura e fechamento de TODO bloco. **Como:** seguir o contrato, não copiar o
+  corpo para cá; conferir com `$guarda-plaquinhas`. **E se??** a janela fria não
+  achar? → o drift é da plaquinha local, não do dono repetir.
+
+- [AUTO-MEMORY-ZCODE-GARIMPA-DEX-MEMORIA] **Quem:** sessão ZCode (ou qualquer
+  host da frota) que gravar/atualizar auto-memory. **O quê:** garimpar e espelhar
+  o achado no `dex-memoria` NA MESMA SESSÃO, com recibo COMMITTED e validação
+  L1↔L2 ou L1↔L3; host sem auto-memory usa o dex como rota única. **Por quê:**
+  memória de host sem espelho some para as outras janelas. **Onde:** fonte
+  canônica `~/.agents/AGENTS.md` (plaquinha com mesmo localizador) e contrato
+  `~/.agents/CONTRACTS/AUTO-MEMORY-ZCODE-GARIMPA-DEX-MEMORIA.md`; ferramenta
+  canônica `consciencia-memorias/scripts/espelhar-auto-memory.mjs`. **Quando:**
+  toda gravação ou atualização de auto-memory. **Como:** `--dry-run --json` →
+  `--apply --json` com CWD no repo → `validate-memory-batch.py`. **E se??** o
+  host não for ZCode? → vale a generalização da frota; não criar exceção local.
+
 ## Regras do bloco do PR #6 (promoção do napkin, 2026-11-23)
 
 Atualização em 2026-11-23. Trilho: `.agents/PLAN-TASKS/2026-11-23-revisao-pr6.md`.
