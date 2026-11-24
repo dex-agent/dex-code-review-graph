@@ -99,6 +99,25 @@ Atualização em 2026-11-23. Trilho:
   `valid=true`); a mesma pasta da Temp apareceu como 1,3 GB e 1,4 GB em dois
   documentos do mesmo bloco.
 
+## Regras do bloco sync-path-dex4 (2026-11-23)
+
+Atualização em 2026-11-23. Trilho: `.agents/PLAN-TASKS/2026-11-23-sync-path-dex4.md`;
+recibo: `.agents/receipts/CRG-PATH-DEX4-20261123/INDEX.md`.
+
+- [CRG-TROCA-PATH-PROVA-COPIA-INSTALADA] Trocar o executável do PATH ou provar
+  algo "na cópia instalada" -> (1) retrato de dependências antes
+  (`uv pip list --python <tool> | sort`) e reinstalar com `-c constraints.txt`:
+  `uv tool install --force` SEM vínculos sobe dependências (medido:
+  `packaging` 26.3→26.4); (2) prova com `python -P` + `PYTHONPATH` para
+  `.../Roaming/uv/tools/.../site-packages` e assert na origem do import — sem
+  `-P`, a pasta do repo vence e o teste fica verde por motivo errado (RED
+  verdadeiro na dex.3: 3 falhas); (3) versão com `+` em regex é quantificador:
+  `rg -q -F "2.4.0+dex.4"`; (4) rollback ensaiado nos dois sentidos antes de
+  declarar pronto. -> Fonte/validação: recibo da troca; `python -P` do Python 3.11+.
+- **E se??** a troca for só de patch sem mudança de dependências? -> O retrato
+  custa um comando; segue obrigatório, porque o diff antes/depois é a prova de
+  que nada mais mudou.
+
 ## CRG-BUMP-UMA-FONTE
 
 Atualização em 2026-11-23. Trilho:

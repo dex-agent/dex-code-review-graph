@@ -121,3 +121,5 @@
 - hash-em-git-bash-leitura-binaria-nao-sha256sum-cut -> [hash-em-git-bash-leitura-binaria-nao-sha256sum-cut](memorias/hash-em-git-bash-leitura-binaria-nao-sha256sum-cut-960b5ebace67.md) [[memorias/hash-em-git-bash-leitura-binaria-nao-sha256sum-cut-960b5ebace67|hash-em-git-bash-leitura-binaria-nao-sha256sum-cut]] #auto-memory/reference ^hash-em-git-bash-leitura-binaria-nao-sha256sum-cut-960b5ebace67
 
 - tamanho-citado-sai-de-uma-medicao-em-bytes-com-unidade -> [tamanho-citado-sai-de-uma-medicao-em-bytes-com-unidade](memorias/tamanho-citado-sai-de-uma-medicao-em-bytes-com-unid-d90234c2269a.md) [[memorias/tamanho-citado-sai-de-uma-medicao-em-bytes-com-unid-d90234c2269a|tamanho-citado-sai-de-uma-medicao-em-bytes-com-unidade]] #auto-memory/feedback ^tamanho-citado-sai-de-uma-medicao-em-bytes-com-unid-d90234c2269a
+
+- crg-path-dex4-sync-troca-e-prova -> [crg-path-dex4-sync-troca-e-prova](memorias/crg-path-dex4-sync-troca-e-prova-7504a50533f2.md) [[memorias/crg-path-dex4-sync-troca-e-prova-7504a50533f2|crg-path-dex4-sync-troca-e-prova]] #auto-memory/project ^crg-path-dex4-sync-troca-e-prova-7504a50533f2
