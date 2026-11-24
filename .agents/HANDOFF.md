@@ -23,7 +23,7 @@
 
 - Na próxima consulta a um índice persistente, o mantenedor verifica o [frescor](GATILHOS-VIVOS.md#staleness-artefatos-derivados). Os bancos desta adoção são descartáveis. [Rollback ensaiado](receipts/crg-cjs-20261113/rollback.json).
 
-Ultima atualizacao: 2026-11-23
+Ultima atualizacao: 2026-11-24
 
 - [Modo efetivo no uninstall](PLAN-TASKS/2026-11-09-crg-iu1-uninstall-mode.md) — `f5fb25d` e CI 9/9. `crg-iu1` fechado após o saldo integral chegar a zero IDs de falha. Antes de publicar um release Windows, o mantenedor valida o wheel em uma instalação Windows limpa e isolada, conferindo a versão, o executável e um smoke CLI com projeto descartável. [Saldo por ID](receipts/crg-iu1-uninstall-mode/comparison.json) · [Modo efetivo](memorias/crg-uninstall-modo-efetivo.md).
 
