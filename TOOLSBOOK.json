@@ -18,7 +18,17 @@
     "consciencia-memorias/scripts/espelhar-auto-memory.mjs: dry-run e apply com CWD no repo (27 auto-memories espelhadas, 0 erros); validate-memory-batch.py 27/27 validos",
     "dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py e arquivar-temp.py: scan de fechamento e a cura da superficie TEMP/TMP (1842 arquivos relocados com MANIFEST)",
     "dex-higiene-scan/scripts/scan-hygiene.py: executado duas vezes no bloco de higiene (--root . --exclude-dir .agents/LIXEIRA --json), 714 itens antes e 707 depois de apagar os caches de fonte; recibo em .agents/receipts/higiene-20261123.json",
-    "dex-toolsbook/scripts/ficha-gate.py: so o --schema lido (contrato dex.ficha-gate.v1, guarda dex.toolsbook.guarda.v1); a guarda nao esta implantada neste repo (PENDENTES PEND-2026-11-15-TOOLSBOOK)"
+    "dex-toolsbook/scripts/ficha-gate.py: so o --schema lido (contrato dex.ficha-gate.v1, guarda dex.toolsbook.guarda.v1); a guarda nao esta implantada neste repo (PENDENTES PEND-2026-11-15-TOOLSBOOK)",
+    "tools/playbook/generate-playbook.py: lido (cabecalho e help --write/--check/--check-sent) e executado --write e --check apos editar napkin; sem ficha porque nao responde a triade (fora de sources, como registrado em unexplored)",
+    ".agents/scripts/mcp-handshake.mjs e mcp-handshake-dex.mjs: lidos (cabecalhos, allowlist de tools e contrato de handshake stdio); NAO executados neste bloco, sem ficha; hashes 1e0185a3... e 699ac9cf...",
+    "dex-notas-citaveis/scripts/gate-notas-citaveis.py: lido via --schema e executado emit/check na nota HANDOFF-DATA-DEPOIS-DA-MEIA-NOITE",
+    "consciencia-memorias/scripts/espelhar-auto-memory.mjs e validate-memory-batch.py: dry-run/apply e validacao por lote no bloco do garimpo",
+    "dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py: scan no HEAD 1bec61aa, receipt salvo",
+    "guarda-plaquinhas/scripts/check-plaquinhas.py: superficie gatilhos consultada; uso correto exige --target como caminho",
+    "estacionamento/scripts/parking-directory.py e validate-parking-item.py: proposta validada e item gravado com INDEX",
+    "dex-audio-motor/scripts/motor.py: resolver e enviar para dex-pai, message_id 1341",
+    "dex-toolsbook/scripts/toolsbook.py e reuso.py: --schema, --card e consulta por intencao nesta auditoria",
+    "governancia-skills/scripts/find-registry-skills.py: busca por termos no registry, 722 skills indexadas"
   ],
   "unexplored": [
     "scripts/*.py do upstream (8 arquivos) e .agents/scripts: nao examinados neste bloco",
@@ -29,7 +39,10 @@
     "triagem A/B do merge 2.4.0-dex (run-chunks.py, run-files.py, diag36.py): recolhidos da Temp da maquina em 2026-11-23 para .agents/receipts/CRG-240DEX-MERGE-20261115/triage-merge/, com o caminho da venv e o da entrada cravados; fora de sources porque nao respondem a triade. Candidatos a ferramenta em tools/ no proximo merge do upstream; manifesto em RECOLHIMENTO.md na mesma pasta",
     "Temp da maquina (%LOCALAPPDATA%\\Temp e Temp\\16): 158 itens inventariados com sha256 e triados por leitura (144 scripts de sessao e 14 temporarios de aplicativo; nenhum com marca Reuso: ou Descartavel:): 138 para a lixeira com manifesto, 18 em voo e 2 ferramentas sem copia viva; manifesto em ~/.agents/skills/.agents/receipts/higiene-temp-maquina-20261123/ (INVENTARIO.json, TRIAGEM.md e reutilizaveis/); fila por dono no ISSUE-LOCAL-0062 do registry. Deste repo so os 15 itens do merge 2.4.0-dex, recolhidos, com os originais removidos da Temp",
     "duas ferramentas da casa recolhidas da Temp em 2026-11-23, fora de sources porque nao respondem a triade e nao sao deste repo: create-dex-memory-pre-hygiene-backup.ps1 (dono dex-memoria; gatilho: antes de higiene, migracao ou limpeza de um acervo, fazer backup restauravel com recibo) e preserve-worktree-state.mjs (dono indefinido; gatilho: antes de apagar ou resetar uma worktree com trabalho nao commitado); copia duravel com sha256 em ~/.agents/skills/.agents/receipts/higiene-temp-maquina-20261123/reutilizaveis/; promocao e ficha no ISSUE-LOCAL-0062 do registry",
-    "residuo deste repo fora do livro, apagar e decisao do dono: .venv-240dex (329 MB, venv do bloco de 2026-11-15), Temp/crg240dex-canario (1,4 GB) e Temp/crg240dex-data (178 MB), indices derivados que o INDEX do merge declara descartaveis"
+    "residuo deste repo fora do livro, apagar e decisao do dono: .venv-240dex (329 MB, venv do bloco de 2026-11-15), Temp/crg240dex-canario (1,4 GB) e Temp/crg240dex-data (178 MB), indices derivados que o INDEX do merge declara descartaveis",
+    "Os 9 scripts locais em sources nao foram executados nesta auditoria: suas fichas vieram de evidencia de blocos anteriores e foram preservadas sem re-execcao",
+    "Ferramentas de plataforma (git, python, pytest, rg, node, uv ja tem ficha, gh ja tem ficha): usadas como transporte, nao catalogadas alem das existentes",
+    "Repertorio rico de 722 skills: only as skills com papel concreto neste bloco foram abertas; mentores/oraculos nao usados como fonte de dominio ficam fora do livro"
   ],
   "tools": [
     {
@@ -361,6 +374,268 @@
         "Gate: --expect-identical fixtures,ppirtv,vscode devolve exit 0; controle positivo --expect-identical aidocs devolve exit 1",
         "tests/test_parser_diff.py: 13 passed (2026-11-23); um deles pegou despejo sem a chave files derrubando a ferramenta com traceback, corrigido para exit 2",
         "Medida: verificar-teto-cc.py da casa com CC maximo 8; ruff check limpo"
+      ]
+    },
+    {
+      "id": "gate-notas-citaveis",
+      "status": "reviewed",
+      "purpose": "Gravar e fiscalizar notas citaveis do acervo da casa com gatilho vivo, indice e ponteiro na mesma sessao",
+      "capabilities": [
+        "emit: payload JSON por stdin grava nota + notas/INDEX.md + bloco no GATILHOS-VIVOS.md + ponteiro no MEMORY.md com backup e rollback",
+        "check [--root DIR]: fiscaliza o nivel inteiro e devolve achados com rota de correcao",
+        "gatilhos vazios sao recusados antes do primeiro byte"
+      ],
+      "when": "Ao transformar achado NOTAVEL em referencia citavel; ao fechar bloco que tocou o acervo de notas",
+      "how": "python -B \"$USERPROFILE/.agents/skills/dex-notas-citaveis/scripts/gate-notas-citaveis.py\" emit < payload.json; check com o mesmo script e --root opcional",
+      "inputs": "JSON com slug, gatilhos, resumo, corpo com prova reabivel, hub_porque e hub_como",
+      "outputs": "exit 0 com slug, gatilhos e lista de arquivos escritos; check exit 0 limpo ou 1 com findings",
+      "not_for": [
+        "Memoria operacional L1/L2/L3: isso e dex-memoria + consciencia-memorias",
+        "Escrever nota sem prova reabivel: nota sem ancoragem e boato",
+        "Corrigir divida antiga do acervo fora do corte: registrar com owner e quando"
+      ],
+      "risks": "Escrita no acervo global; o gate usa lock contra emissao concorrente. O check do acervo inteiro pode acusar divida antiga alheia ao bloco.",
+      "owner": "registry de skills (skill dex-notas-citaveis)",
+      "next_review": "Quando o contrato dex.notas-citaveis.gate.v1 mudar",
+      "sources": {},
+      "external_sources": [
+        "dex-notas-citaveis, dono registry de skills, $USERPROFILE/.agents/skills/dex-notas-citaveis/scripts/gate-notas-citaveis.py sha256 b4ea95fca05ba5fbc107d9f7a4b3b9a86e1e450158769c6c2ee67c43e29d1d54; contrato dex.notas-citaveis.gate.v1 lido via --schema"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: emit gravou handoff-data-depois-da-meia-noite + 3 superficies de indice/gatilho; check apos correcao de cabecalho duplicado deixou a nota nova sem finding",
+        "check exit 1 com 2 findings antigos da nota 2026-11-10-padrão-quiz-exaurir-recomendado, estacionada com review.after 2026-12-01"
+      ]
+    },
+    {
+      "id": "espelho-auto-memory",
+      "status": "reviewed",
+      "purpose": "Espelhar auto-memory do host ZCode no dex-memoria do projeto em lote, com dedupe por prefixo e receita por rota",
+      "capabilities": [
+        "--dry-run --json: lista candidatas, ignoradas e erros sem escrever",
+        "--apply --json --out: grava memorias scope=project no CWD do repo alvo",
+        "dedupe pela regua do garimpo: prefixo de 3 tokens do stem"
+      ],
+      "when": "Toda auto-memory gravada ou atualizada no host; antes do scan de fechamento",
+      "how": "Com CWD no repo: node \"$USERPROFILE/.agents/skills/consciencia-memorias/scripts/espelhar-auto-memory.mjs\" --memory-dir <dir> --dry-run --json, depois --apply --json --out .agents/receipts/espelho-auto-memory.json",
+      "inputs": "Diretorio da auto-memory do host e CWD no repo alvo",
+      "outputs": "Receita JSON com candidatas, committed, skipped, ressalvas e errors",
+      "not_for": [
+        "Gravar memoria global: o espelho e scope=project; escopo global exige dex-memoria v2 remember",
+        "Rodar fora do repo alvo: o remember resolve o root pelo CWD",
+        "Substituir validacao: validar depois com validate-memory-batch.py"
+      ],
+      "risks": "Nao reespele conteudo ja espelhado com o mesmo prefixo: mudanca em auto-memory existente exige regravacao manual do espelho.",
+      "owner": "registry de skills (skill consciencia-memorias)",
+      "next_review": "Quando o contrato dex.consciencia.espelhar-auto-memory.v1 mudar",
+      "sources": {},
+      "external_sources": [
+        "consciencia-memorias, dono registry de skills, $USERPROFILE/.agents/skills/consciencia-memorias/scripts/espelhar-auto-memory.mjs sha256 5ff65972c81caa14c822e9177e57845eb5b04ded288f81ea833e580d2ecb24b1"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: --dry-run achou 1 candidata, --apply gravou 1 COMMITTED, lote do projeto 62/62 valido",
+        "Uso anterior registrado no livro: 27 auto-memories espelhadas no bloco do PR #6"
+      ]
+    },
+    {
+      "id": "validador-memoria-lote",
+      "status": "reviewed",
+      "purpose": "Validar pares L1->L2 ou L1->L3 do dex-memoria em lote, com recorte por slugs",
+      "capabilities": [
+        "--root <root> --l1 lembranca.md --dest-dir memorias --slugs a.md,b.md",
+        "exit 0 todos validos, 1 falha em >=1 par, 2 uso incorreto"
+      ],
+      "when": "Depois de escrever, mover ou curar memoria; no fechamento de bloco com memoria nova",
+      "how": "python -B \"$USERPROFILE/.agents/skills/consciencia-memorias/scripts/validate-memory-batch.py\" --root <root> --l1 lembranca.md --dest-dir memorias [--slugs a.md,b.md]",
+      "inputs": "Root do vault/root do projeto e os slugs a conferir",
+      "outputs": "Uma linha OK/FALHOU por par e resumo BATCH: n/m validos",
+      "not_for": [
+        "Decidir o merito da memoria: valida forma e conexoes, nao verdade",
+        "Validar o vault inteiro sem necessidade: use --slugs para o corte"
+      ],
+      "risks": "Nao substitui v2 validate nem a reabertura da fonte viva.",
+      "owner": "registry de skills (skill consciencia-memorias)",
+      "next_review": "Quando o validador dex-memoria v2 mudar",
+      "sources": {},
+      "external_sources": [
+        "consciencia-memorias, dono registry de skills, $USERPROFILE/.agents/skills/consciencia-memorias/scripts/validate-memory-batch.py sha256 997826285b7015fa3cf5b34f1ca314954e217b12b5f5298393add19b2e3f5edf"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: par HANDOFF-DATA-DEPOIS-DA-MEIA-NOITE 1/1 valido; lote global 478/478; lote do projeto 62/62"
+      ]
+    },
+    {
+      "id": "fiscal-fechamento",
+      "status": "reviewed",
+      "purpose": "Medir 15 superficies de fechamento do projeto com receipt de contrato chato.fechamento.scan.v1",
+      "capabilities": [
+        "scan padrao: exit 0 sem RED; --strict exige not_evaluated, semantic e warnings vazios",
+        "--out - imprime; --out caminho grava receipt atomico; --force sobrescreve",
+        "--block-id e --workflow-review ligam a avaliacao de reuso do bloco"
+      ],
+      "when": "Fechamento de bloco material e diagnosticos de estado vivo",
+      "how": "python -B \"$USERPROFILE/.agents/skills/dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py\" --repo C:/CodexProjetos/code-review-graph --out -",
+      "inputs": "Repo, opcoes de corte, avaliacao de reuso opcional",
+      "outputs": "JSON com items[], red[], not_evaluated[], semantic_review_required[] e warnings[]",
+      "not_for": [
+        "Corrigir RED: a correcao pertence ao owner da superficie",
+        "Decidir pronto: autoridade negativa; o script so mede",
+        "Fechar estrito sem declarar warnings conhecidos: o gate reprova"
+      ],
+      "risks": "Heuristicas declaradas: garimpo por prefixo de 3 tokens, HANDOFF por data declarada contra ultimo commit.",
+      "owner": "registry de skills (skill dex-fechamento-projeto-atualizado)",
+      "next_review": "Quando o contrato chato.fechamento.scan.v1 mudar",
+      "sources": {},
+      "external_sources": [
+        "dex-fechamento-projeto-atualizado, dono registry de skills, $USERPROFILE/.agents/skills/dex-fechamento-projeto-atualizado/scripts/scan-fechamento.py sha256 7b63b1de8bae001dd662205f23710494beb569b708300d758c38652915a1eaea"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24 no HEAD 1bec61aa: 12 de 15 ok, red [], 3 superficies n-a sem avaliacao de reuso",
+        "Caso pago: HANDOFF declarado 23/11 contra commit 24/11 gerou memoria-viva stale; corrigido no commit 83d51548"
+      ]
+    },
+    {
+      "id": "guarda-plaquinhas",
+      "status": "reviewed",
+      "purpose": "Fiscalizar superficies de plaquinhas e apontar drift, gatilho morto ou rota supersedida sem editar",
+      "capabilities": [
+        "check-plaquinhas.py --surface gatilhos --target <arquivo> --root <repo>",
+        "superficies: agents-global, gatilhos, governanca, napkin, skill-reference"
+      ],
+      "when": "Apos escrever ponteiro em plaquinha; em janela fria que nao acha regra",
+      "how": "python -B \"$USERPROFILE/.agents/skills/guarda-plaquinhas/scripts/check-plaquinhas.py\" --surface gatilhos --target <caminho> --root <repo>",
+      "inputs": "Superficie e caminho alvo relativo ao root",
+      "outputs": "JSON guarda-plaquinhas.check.v1 com target_exists e findings",
+      "not_for": [
+        "Editar plaquinha: a Guardia e fiscal; escrita pertence a grava-contexto-local, napkin-projeto ou governancia-skills",
+        "Provar presenca por texto: use rg no arquivo da superficie"
+      ],
+      "risks": "--target e caminho, nao localizador; passar localizador gera target_exists=false falso.",
+      "owner": "registry de skills (skill guarda-plaquinhas)",
+      "next_review": "Quando o contrato da skill mudar",
+      "sources": {},
+      "external_sources": [
+        "guarda-plaquinhas, dono registry de skills, $USERPROFILE/.agents/skills/guarda-plaquinhas/scripts/check-plaquinhas.py sha256 82fbea42478445a3b3be7665ffa2db45054284db27b8a0c49089c53b3e79a07f"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: uso com --target localizador devolveu target_exists=false; corrigido para caminho e prova definitiva por rg nas duas regras no GATILHOS-VIVOS do projeto e no AGENTS global"
+      ]
+    },
+    {
+      "id": "estacionamento",
+      "status": "reviewed",
+      "purpose": "Registrar achado lateral util com owner e quando sem desviar do bloco atual",
+      "capabilities": [
+        "validate-parking-item.py <proposta.json> --format json",
+        "parking-directory.py record --repo-root <repo> --proposal <proposta.json>",
+        "rebuild-index reconstrói INDEX derivado dos itens canonicos"
+      ],
+      "when": "Residuo util, imaturo ou divida de outro repo descoberta no bloco",
+      "how": "python -B \"$USERPROFILE/.agents/skills/estacionamento/scripts/parking-directory.py\" record --repo-root . --proposal <proposta.json> --format json",
+      "inputs": "Proposta no perfil dex.parking.item.v1 com localizador, owner, review.triggers e garimpo vinculado",
+      "outputs": "Receita com item e index gravados, indexed_items e writes_performed",
+      "not_for": [
+        "Blocker do passo atual: estacionar esconderia trabalho vigente",
+        "Memoria forte: vai para dex-memoria, nao para fila",
+        "Item sem quando: rebaixar a hipotese"
+      ],
+      "risks": "Validador da ponte exige chaves de proposta alem do frontmatter canonico (localizer, reason, garimpo, resume_data).",
+      "owner": "registry de skills (skill estacionamento)",
+      "next_review": "Quando o perfil dex.parking.item.v1 mudar",
+      "sources": {},
+      "external_sources": [
+        "estacionamento, dono registry de skills, $USERPROFILE/.agents/skills/estacionamento/scripts/parking-directory.py sha256 aca961b63b68ba2a3dac56a0cd378fc998e017145bfb4add7bcd40c0e877df38"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: proposta validada (issues []), record criou .agents/ESTACIONAMENTO/itens/NOTAS-CITAVEIS-DEVIDA-20261110.md e INDEX.md com review.after 2026-12-01"
+      ]
+    },
+    {
+      "id": "motor-audio",
+      "status": "reviewed",
+      "purpose": "Sintetizar e enviar audio explicativo ao destino resolvido por dex-contatos, com idempotencia e recibo de entrega",
+      "capabilities": [
+        "enviar --uso <uso> --texto-arquivo <arquivo> --idempotency-key <chave> [--voz ...]",
+        "resolver --uso <uso>: mostra destino, via e presenca do token sem ecoar segredo",
+        "selftest e motores para diagnostico"
+      ],
+      "when": "Avanco substancial ou achado muito importante; audio normalizado para dex-pai",
+      "how": "python -B \"$USERPROFILE/.agents/skills/dex-audio-motor/scripts/motor.py\" enviar --uso dex-pai --texto-arquivo <resumo.txt> --idempotency-key <chave>",
+      "inputs": "Texto normalizado para fala, uso de contato e chave de idempotencia estavel",
+      "outputs": "JSON com ok, message_id, chat_id, via, motor_efetivo, voz_efetiva e fallback_usado",
+      "not_for": [
+        "Ponte antiga ~/.dex-agent/.../send-dex-agent-audio-summary.ps1: SUPERSEDED, termina sem JSON",
+        "Enviar sem message_id: entrega so provada por recibo",
+        "Audio em avanco rotineiro: enviar so em avanco substancial ou achado importante"
+      ],
+      "risks": "Erros tipados 1 contato, 2 entrada, 3 skill irmã, 4 TTS/rede. Destino e segredo vem so de dex-contatos.",
+      "owner": "registry de skills (skill dex-audio-motor / dex-audio)",
+      "next_review": "Quando a rota dex-audio-motor ou dex-contatos mudar",
+      "sources": {},
+      "external_sources": [
+        "dex-audio-motor, dono registry de skills, $USERPROFILE/.agents/skills/dex-audio-motor/scripts/motor.py sha256 fb67c07ebc628bff71e64d114d7d40aa3e8a804ac339de6ddee31a79c7c0e394; contrato lido em dex-audio/SKILL.md"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: resolver --uso dex-pai devolveu ok true e via dex_maximus_bot; enviar devolveu message_id 1341, voz pt-BR-FranciscaNeural, fallback false",
+        "Roteiro normalizado gravado em .agents/receipts/garimpo-vivo-20261124/audio-roterio-normalizado-20261124.txt"
+      ]
+    },
+    {
+      "id": "toolsbook-motor",
+      "status": "reviewed",
+      "purpose": "Consultar, auditar e checar o livro de ferramentas por intenção, com fatos e projecoes deterministicas",
+      "capabilities": [
+        "--buscar <catalogo> --termos <palavras>: fichas cujos campos autorados casam, ranqueadas",
+        "--card <catalogo> <id>: abre uma ficha; --facts <arquivo>: SHA256 e revisao da fonte",
+        "--check: estrutura, frescura de hash e triade --help/--schema/--usage das fontes CLI locais",
+        "--render e --index: projecoes TOOLSBOOK.md e TOOLSBOOK.index.md",
+        "reuso.py: consulta por intencao em fichas, territorio do repo e INDEX do registry com recibo opcional"
+      ],
+      "when": "Antes de usar ou criar ferramenta; ao auditar ou atualizar o livro do repo",
+      "how": "python -B \"$USERPROFILE/.agents/skills/dex-toolsbook/scripts/toolsbook.py\" --repo . --card TOOLSBOOK.json <id>; reuso: python -B \"$USERPROFILE/.agents/skills/dex-toolsbook/scripts/reuso.py\" \"<intencao>\" --repo . --skills --receipt --para <arquivo>",
+      "inputs": "Catalogo TOOLSBOOK.json, ids ou termos de intencao, arquivos de fonte para --facts",
+      "outputs": "Ficha, lista de candidatos, projetos em stdout, findings de check e recibo de reuso",
+      "not_for": [
+        "Interpretar capacidade ou certificar adequacy: LLM le e decide; motor confere forma",
+        "Gerar ferramenta nova: so consulta e auditoria",
+        "Substituir governancia de skill: Governanta decide admissao"
+      ],
+      "risks": "Exit 0 do check nao prova qualidade semantica; --check executa triade de toda fonte CLI em sources.",
+      "owner": "registry de skills (skill dex-toolsbook)",
+      "next_review": "Quando o contrato dex.toolsbook.v2 mudar",
+      "sources": {},
+      "external_sources": [
+        "dex-toolsbook, dono registry de skills, $USERPROFILE/.agents/skills/dex-toolsbook/scripts/toolsbook.py sha256 04de45b93fe2568c7a99a3721b6966c3c879412a9cc61a4847a5bd58515f55d8; reuso.py sha256 dd3227de2613dd7ec7617408771f250aa1bf6900ed7161deb0ff846503bf3936"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: --schema, --card chama-o-vigia e --buscar por intencao lidos; reuso.py com '--repo . --skills --receipt --para TOOLSBOOK.json' devolveu recibo dex.reuso-recibo.v1 em .agents/receipts/reuso/",
+        "Uso anterior: --check do livro exit 0 em multiplos cortes; projecoes regeneradas com --render e --index"
+      ]
+    },
+    {
+      "id": "finder-registry-skills",
+      "status": "reviewed",
+      "purpose": "Localizar skills no registry por frase, slug, dominio ou tag sem carregar a governanca inteira",
+      "capabilities": [
+        "--query <texto> [--pretty], --slug, --domain, --tag",
+        "resultado dex.skills.registry-finder.v1 com summary.matched e resultados"
+      ],
+      "when": "Ao montar repertorio de cooperadores ou decidir qual skill consultar",
+      "how": "python -B \"$USERPROFILE/.agents/skills/governancia-skills/scripts/find-registry-skills.py\" --query \"<termo>\" --pretty",
+      "inputs": "Termo de busca ou filtro estruturado",
+      "outputs": "JSON com matched, returned e entradas do INDEX",
+      "not_for": [
+        "Admitir ou certificar skill: localizar nao e governanca",
+        "Frases longas com AND: --query usa AND; usar termos menores e sinonimos quando matched=0"
+      ],
+      "risks": "Apenas INDEX.md; skills sem tag ficam fora de filtros de tag, nao deixam de existir.",
+      "owner": "registry de skills (skill governancia-skills)",
+      "next_review": "Quando o formato do INDEX ou do finder mudar",
+      "sources": {},
+      "external_sources": [
+        "governancia-skills, dono registry de skills, $USERPROFILE/.agents/skills/governancia-skills/scripts/find-registry-skills.py sha256 ccdfb86b7a0a92b3abca5be14d673a3114b69ae21cf6f92c8df319dd0fd55e6d"
+      ],
+      "evidence": [
+        "Execucao em 2026-11-24: 722 skills indexadas; termos menores acharam 215 mentor-documental, 128 oraculo, 38 questionador, 22 o-arquiteto; frases longas devolveram matched=0 e foram reconsultadas"
       ]
     }
   ]

@@ -65,3 +65,58 @@ Revisão: warning — external_sources_not_checked; reopen the canonical owner
 
 Provar que uma mudanca no parser so mexe onde diz que mexe: diff de nos e arestas, por arquivo, entre duas arvores do CRG sobre os mesmos corpora
 Quando: Revisar PR que muda o parser; comparar arvore ou wheel novo contra o atual sobre um corpus local, inclusive privado
+
+## gate-notas-citaveis (reviewed)
+
+Gravar e fiscalizar notas citaveis do acervo da casa com gatilho vivo, indice e ponteiro na mesma sessao
+Quando: Ao transformar achado NOTAVEL em referencia citavel; ao fechar bloco que tocou o acervo de notas
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## espelho-auto-memory (reviewed)
+
+Espelhar auto-memory do host ZCode no dex-memoria do projeto em lote, com dedupe por prefixo e receita por rota
+Quando: Toda auto-memory gravada ou atualizada no host; antes do scan de fechamento
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## validador-memoria-lote (reviewed)
+
+Validar pares L1->L2 ou L1->L3 do dex-memoria em lote, com recorte por slugs
+Quando: Depois de escrever, mover ou curar memoria; no fechamento de bloco com memoria nova
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## fiscal-fechamento (reviewed)
+
+Medir 15 superficies de fechamento do projeto com receipt de contrato chato.fechamento.scan.v1
+Quando: Fechamento de bloco material e diagnosticos de estado vivo
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## guarda-plaquinhas (reviewed)
+
+Fiscalizar superficies de plaquinhas e apontar drift, gatilho morto ou rota supersedida sem editar
+Quando: Apos escrever ponteiro em plaquinha; em janela fria que nao acha regra
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## estacionamento (reviewed)
+
+Registrar achado lateral util com owner e quando sem desviar do bloco atual
+Quando: Residuo util, imaturo ou divida de outro repo descoberta no bloco
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## motor-audio (reviewed)
+
+Sintetizar e enviar audio explicativo ao destino resolvido por dex-contatos, com idempotencia e recibo de entrega
+Quando: Avanco substancial ou achado muito importante; audio normalizado para dex-pai
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## toolsbook-motor (reviewed)
+
+Consultar, auditar e checar o livro de ferramentas por intenção, com fatos e projecoes deterministicas
+Quando: Antes de usar ou criar ferramenta; ao auditar ou atualizar o livro do repo
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
+## finder-registry-skills (reviewed)
+
+Localizar skills no registry por frase, slug, dominio ou tag sem carregar a governanca inteira
+Quando: Ao montar repertorio de cooperadores ou decidir qual skill consultar
+
+Revisão: warning — external_sources_not_checked; reopen the canonical owner
