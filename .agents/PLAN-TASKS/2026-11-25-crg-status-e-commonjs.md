@@ -1,7 +1,7 @@
 ---
 dex_contract: spt
 version: 3
-status: 'EM_EXECUCAO'
+status: 'CONCLUIDO_COM_RESSALVAS'
 owner: 'mantenedor CRG'
 date: '2026-11-25'
 workspace: 'C:/CodexProjetos/code-review-graph'
@@ -60,3 +60,8 @@ execution_prompt: |
 ---
 
 # Status somente leitura e testes CommonJS
+
+- RED em dois locais de banco v9. GREEN com preservação de bytes e caminho.
+- Testes Windows: 91 aprovados nas suítes focais, 112 nas relacionadas e nove verificações de superfície CLI habilitadas explicitamente.
+- Índice local reconstruído com a CLI instalada. O banco anterior foi copiado e verificado via SQLite `quick_check`.
+- Publicação: [PR #7](https://github.com/dex-agent/dex-code-review-graph/pull/7). A CLI no PATH segue na versão publicada `2.4.0+dex.4`.
