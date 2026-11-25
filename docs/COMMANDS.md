@@ -68,7 +68,7 @@ code-review-graph update --embedding-provider local --embedding-model all-MiniLM
                                                 # Refresh an existing embedding index (default: off)
 
 # Monitor and inspect
-code-review-graph status                       # Graph statistics (no graph: exit 1, no DB created)
+code-review-graph status                       # Read graph statistics without migrating the DB
 code-review-graph status --json                # One JSON object
 code-review-graph context-history              # Per-day trend of the opt-in context savings log
 code-review-graph context-history --by tool --days 7  # Per tool, last 7 UTC days (--json for JSON)
@@ -265,7 +265,9 @@ A hook or CI job can tell these apart without reading the message. `75` is
   ```
 - `status`, `detect-changes`, `visualize`, `wiki`, `watch`, `forget`,
   `dead-code` and the read-only graph queries (`query` to `refactor` above)
-  exit 1 when no graph exists and do not create one. `status`,
+  exit 1 when no graph exists and do not create one. `status` reads existing
+  graphs in place, including the legacy top-level file, without migrating
+  the schema.
   `detect-changes`, `visualize`, `wiki`, `watch`, `forget` and `dead-code`
   still move a legacy top-level `.code-review-graph.db` into
   `.code-review-graph/graph.db` before running.

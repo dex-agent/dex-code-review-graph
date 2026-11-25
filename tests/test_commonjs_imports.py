@@ -63,8 +63,8 @@ def test_cjs_indexes_exports_and_resolves_explicit_require(tmp_path):
         for node in nodes
     )
     assert [(edge.source, edge.target) for edge in _imports(edges)] == [
-        (str(path), str(dependency.resolve())),
-        (str(path), "./dependency"),
+        (path.as_posix(), dependency.resolve().as_posix()),
+        (path.as_posix(), "./dependency"),
     ]
 
 
@@ -78,10 +78,10 @@ def test_missing_explicit_cjs_does_not_bind_to_javascript_homonym(tmp_path, suff
     )
 
     assert [(edge.source, edge.target) for edge in _imports(edges)] == [
-        (str(path), f"./dependency{suffix}"),
+        (path.as_posix(), f"./dependency{suffix}"),
     ]
     assert all(
-        edge.target != f"{dependency.resolve()}::run"
+        edge.target != f"{dependency.resolve().as_posix()}::run"
         for edge in edges if edge.kind == "CALLS"
     )
 
@@ -94,7 +94,7 @@ def test_require_cjs_named_directory_resolves_its_index(tmp_path):
     (tmp_path / "dependency.js").write_text("module.exports = () => 2;\n", encoding="utf-8")
     _path, (_nodes, edges) = _parse(tmp_path, "require('./dependency.cjs');\n")
 
-    assert [edge.target for edge in _imports(edges)] == [str(index.resolve())]
+    assert [edge.target for edge in _imports(edges)] == [index.resolve().as_posix()]
 
 
 def test_static_dynamic_import_is_recorded(tmp_path):
@@ -162,7 +162,7 @@ def test_commonjs_node_test_alias_in_test_directory(tmp_path):
     assert [node.name for node in nodes if node.kind == "Test"] == ["test:install@L2"]
     assert any(
         edge.kind == "TESTED_BY" and edge.source == "install"
-        and edge.target == f"{path}::test:install@L2"
+        and edge.target == f"{path.as_posix()}::test:install@L2"
         for edge in edges
     )
 

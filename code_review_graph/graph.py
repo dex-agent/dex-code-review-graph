@@ -1011,6 +1011,7 @@ class GraphStore:
         db_path: str | Path,
         *,
         read_only: bool | None = None,
+        allow_legacy_schema: bool = False,
     ) -> None:
         self.db_path = Path(db_path)
         self.read_only = read_only_requested() if read_only is None else read_only
@@ -1055,7 +1056,9 @@ class GraphStore:
                     f"No graph found at {self.db_path}. "
                     "Run `code-review-graph build` first."
                 )
-            if self.read_only and get_schema_version(conn) < LATEST_VERSION:
+            if self.read_only and not allow_legacy_schema and (
+                get_schema_version(conn) < LATEST_VERSION
+            ):
                 # Migrations write, so queries would hit tables and columns
                 # this old graph does not have yet.
                 raise GraphStoreError(

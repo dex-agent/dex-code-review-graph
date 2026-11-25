@@ -3276,10 +3276,10 @@ def _dispatch() -> None:
             and db_path.resolve() == default_db.resolve()
             and legacy_db.exists()
         ):
-            # Preserve the established one-time legacy migration, but do not
-            # materialize graph state when neither database exists. ``forget``
-            # moves it itself, once it holds the write lock.
-            if args.command == "forget":
+            if args.command == "status":
+                db_path = legacy_db
+            elif args.command == "forget":
+                # Move it only once forget holds the write lock.
                 legacy_pending = True
             else:
                 db_path = get_db_path(repo_root)
@@ -3298,7 +3298,13 @@ def _dispatch() -> None:
     if args.command == "forget":
         _handle_forget(args, repo_root, db_path, legacy=legacy_pending)
         return
-    store = _open_graph_store(db_path, args.command)
+    if args.command == "status":
+        from .graph import GraphStore
+
+        # Statistics and build metadata predate the newer query indexes.
+        store = GraphStore(db_path, read_only=True, allow_legacy_schema=True)
+    else:
+        store = _open_graph_store(db_path, args.command)
 
     try:
         # A graph.db copied or cached from another checkout answers every
