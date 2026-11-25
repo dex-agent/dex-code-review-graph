@@ -1,5 +1,7 @@
 # Trilho ativo
 
+- [Status somente leitura e testes CommonJS](2026-11-25-crg-status-e-commonjs.md) | `crg-status-e-commonjs-20261125` | **concluído localmente**: testes verdes, índice reconstruído e [PR #7 aberto](https://github.com/dex-agent/dex-code-review-graph/pull/7).
+
 - [Garimpo vivo, plaquinhas e fechamento](2026-11-24-garimpo-vivo-plaquinhas.md) | `garimpo-vivo-plaquinhas-20261124` | **concluído 2026-11-24**: duas regras do dono no GATILHOS-VIVOS do projeto; ouro novo em memória global + nota citável + napkin; dívida antiga do acervo estacionada com `quando`.
 - [Sincronizar o PATH com a main: 2.4.0+dex.4](2026-11-23-sync-path-dex4.md) | `sync-path-dex4-20261123` | **concluída com ressalvas 2026-11-24**: PATH em 2.4.0+dex.4; CI success e fiscal vermelho 0 no HEAD `83d51548`; ressalvas no Trilho.
 - [Higiene, staging e livro](2026-11-23-higiene-staging-toolsbook.md) | `higiene-staging-toolsbook-20261123` | **concluída com ressalvas 2026-11-23**: higiene medida, Temp da máquina inventariada e triada, 15 arquivos do merge recolhidos, livro do CRG atualizado, ISSUE-LOCAL-0062 no registry; ressalvas no Trilho e em PENDENTES (`CRG-RESIDUO-FORA-DO-REPO-20261123`).

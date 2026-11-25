@@ -5,7 +5,9 @@ from __future__ import annotations
 import io
 import json
 import logging
+import sqlite3
 import sys
+from contextlib import closing
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
@@ -229,15 +231,25 @@ def test_read_only_commands_data_dir_option_is_read_only(
     assert not registry_path.exists()
 
 
-def test_status_preserves_legacy_graph_migration(tmp_path, monkeypatch, capsys):
+@pytest.mark.parametrize("legacy_path", [False, True])
+def test_status_reads_v9_without_migrating(tmp_path, monkeypatch, capsys, legacy_path):
     repo = tmp_path / "repo"
     repo.mkdir()
     (repo / ".git").mkdir()
-    legacy_db = repo / ".code-review-graph.db"
-    with code_review_graph.graph.GraphStore(legacy_db):
+    data_dir = repo / ".code-review-graph"
+    db_path = repo / ".code-review-graph.db" if legacy_path else data_dir / "graph.db"
+    with code_review_graph.graph.GraphStore(db_path):
         pass
+    with closing(sqlite3.connect(db_path)) as conn:
+        conn.executescript("""
+            UPDATE metadata SET value = '9' WHERE key = 'schema_version';
+            INSERT INTO metadata VALUES ('git_head_sha', 'revision');
+            INSERT INTO nodes (kind, name, qualified_name, file_path, language, updated_at)
+            VALUES ('File', 'main.py', 'main.py', 'main.py', 'python', 0);
+        """)
+    before = db_path.read_bytes()
     monkeypatch.delenv("CRG_DATA_DIR", raising=False)
-    argv = ["code-review-graph", "status", "--repo", str(repo)]
+    argv = ["code-review-graph", "status", "--json", "--repo", str(repo)]
 
     with patch(
         "code_review_graph.registry.default_registry_path",
@@ -246,9 +258,13 @@ def test_status_preserves_legacy_graph_migration(tmp_path, monkeypatch, capsys):
         with patch.object(sys, "argv", argv):
             cli.main()
 
-    assert "Nodes: 0" in capsys.readouterr().out
-    assert not legacy_db.exists()
-    assert (repo / ".code-review-graph" / "graph.db").exists()
+    result = json.loads(capsys.readouterr().out)
+    assert result["files"] == 1
+    assert result["built_at_commit"] == "revision"
+    assert db_path.read_bytes() == before
+    assert data_dir.exists() is not legacy_path
+    assert not db_path.with_name(db_path.name + "-wal").exists()
+    assert not db_path.with_name(db_path.name + "-shm").exists()
 
 
 def test_status_external_data_dir_does_not_migrate_unrelated_legacy_graph(

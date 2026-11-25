@@ -39,6 +39,9 @@
 
 ### Fixed
 
+- `status` reads graph statistics and build metadata without upgrading the
+  database schema or relocating the legacy graph file.
+
 - The MCP entry and every hook `install` writes now run the copy of
   code-review-graph that ran `install`. The MCP entry used `uvx` whenever it
   was on PATH, and hooks ran the first copy on PATH, so an older copy could
